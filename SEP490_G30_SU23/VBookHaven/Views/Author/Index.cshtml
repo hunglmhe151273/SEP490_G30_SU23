@@ -1,0 +1,10 @@
+﻿@using VBookHaven.Models
+@model List<Author>
+
+<a href="author/add">Add author</a>
+<ul>
+	@foreach (Author a in Model)
+	{
+		<li><a href="#">@a.AuthorId - @a.AuthorName - @a.Description</a></li>
+	}
+</ul>

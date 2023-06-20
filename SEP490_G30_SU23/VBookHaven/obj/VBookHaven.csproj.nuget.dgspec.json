@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj": {}
+    "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj": {}
   },
   "projects": {
-    "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj": {
+    "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
+        "projectUniqueName": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
         "projectName": "VBookHaven",
-        "projectPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
-        "packagesPath": "C:\\Users\\PCDELL\\.nuget\\packages\\",
-        "outputPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\",
+        "projectPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
+        "packagesPath": "C:\\Users\\kienq\\.nuget\\packages\\",
+        "outputPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\PCDELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\kienq\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -76,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
