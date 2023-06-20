@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven
 build_property._RazorSourceGeneratorDebug = 
 
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Login/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
