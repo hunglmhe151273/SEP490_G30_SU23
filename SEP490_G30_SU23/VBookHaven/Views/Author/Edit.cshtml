@@ -1,0 +1,24 @@
+﻿@using VBookHaven.Models;
+@model VBookHaven.Controllers.AuthorController;
+@{
+	Author author = (Author)ViewData["author"];
+}
+
+<form method="post">
+	<label>Author ID</label>
+	<input readonly asp-for="Author.AuthorId" value="@author.AuthorId" /><br />
+	
+	<label>Author Name</label>
+	<input asp-for="Author.AuthorName" value="@author.AuthorName" /><br />
+	
+	<label>Author Description</label>
+	<input asp-for="Author.Description" value="@author.Description"/><br />
+	
+	<label>Status</label>
+	<input type="radio" asp-for="Author.Status" value="true" checked="@author.Status"/>
+	<label>Active</label>
+	<input type="radio" asp-for="Author.Status" value="false" checked="@(!author.Status)"/>
+	<label>Inactive</label><br />
+
+	<input type="submit" value="Submit" />
+</form>

@@ -1,25 +1,63 @@
-﻿using VBookHaven.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using VBookHaven.Models;
 
 namespace VBookHaven.Common
 {
-	public static class CommonGetCode
+	public class CommonGetCode
 	{
-		private static VBookHavenDBContext dBContext = new VBookHavenDBContext();
+		private VBookHavenDBContext dBContext;
+		public CommonGetCode()
+		{
+			dBContext = new VBookHavenDBContext();
+		}
 
-		public static List<SubCategory> GetAllSubCategories()
+		public List<SubCategory> GetAllSubCategories()
 		{
 			List<SubCategory> subCategories = new List<SubCategory>();
-			subCategories = dBContext.SubCategories.Where(s => s.Status == true).ToList();
+			subCategories = dBContext.SubCategories.ToList();
 
 			return subCategories;
 		}
 
-		public static List<Author> GetAllAuthors()
+		public List<Author> GetAllAuthors()
 		{
 			List<Author> authors = new List<Author>();
-			authors = dBContext.Authors.Where(a => a.Status == true).ToList();
+			authors = dBContext.Authors.ToList();
 
 			return authors;
 		}
+
+		public List<Product> GetAllProduct()
+		{
+			List<Product> products = new List<Product>();
+			products = dBContext.Products.ToList();
+
+			return products;
+		}
+
+		public Author? GetAuthorById(int id)
+		{
+			var author = dBContext.Authors.SingleOrDefault(a => a.AuthorId == id);
+			return author;
+		}
+
+		public Product? GetProductById(int id)
+		{
+			var product = dBContext.Products.SingleOrDefault(p => p.ProductId == id);
+			return product;
+		}
+
+		public Book? GetBookById(int id)
+		{
+			var book = dBContext.Books.SingleOrDefault(b => b.ProductId == id);
+			return book;
+		}
+
+		public Stationery? GetStationeryById(int id)
+		{
+			var stationery = dBContext.Stationeries.SingleOrDefault(s => s.ProductId == id);
+			return stationery;
+		}
+
 	}
 }

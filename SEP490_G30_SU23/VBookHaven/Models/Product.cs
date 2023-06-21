@@ -37,8 +37,9 @@ public partial class Product
     [Column(TypeName = "text")]
     public string? Description { get; set; }
 
-    [StringLength(50)]
-    public string? Status { get; set; }
+    public bool? Status { get; set; }
+
+    public bool? IsBook { get; set; }
 
     public int? SubCategoryId { get; set; }
 

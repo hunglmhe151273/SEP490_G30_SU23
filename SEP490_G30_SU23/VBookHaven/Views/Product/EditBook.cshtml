@@ -1,0 +1,39 @@
+﻿@using VBookHaven.Models
+@model VBookHaven.Controllers.ProductController
+@{
+	Product product = (Product)ViewData["product"];
+	Book book = (Book)ViewData["book"];
+}
+
+<form method="post">
+	<label>Product ID</label>
+	<input readonly asp-for="Product.ProductId" value="@product.ProductId"/><br />
+	<label>Product Name</label>
+	<input asp-for="Product.Name" value="@product.Name"/><br />
+	<label>Quantity per Unit</label>
+	<input asp-for="Product.QuantityPerUnit" value="@product.QuantityPerUnit"/><br />
+	<label>Retail Price</label>
+	<input asp-for="Product.RetailPrice" value="@product.RetailPrice"/><br />
+	<label>Retail Discount</label>
+	<input asp-for="Product.RetailDiscount" value="@product.RetailDiscount"/><br />
+	<label>Wholesale Price</label>
+	<input asp-for="Product.WholesalePrice" value="@product.WholesalePrice"/><br />
+	<label>Wholesale Discount</label>
+	<input asp-for="Product.WholesaleDiscount" value="@product.WholesaleDiscount"/><br />
+	<label>Size</label>
+	<input asp-for="Product.Size" value="@product.Size"/><br />
+	<label>Weight</label>
+	<input asp-for="Product.Weight" value="@product.Weight"/><br />
+	<label>Description</label>
+	<input asp-for="Product.Description" value="@product.Description"/><br />
+	<label>Subcategory</label>
+	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories" ></select><br />
+
+	<label>Page Number</label>
+	<input asp-for="Book.Pages" value="@book.Pages"/><br />
+	<label>Language</label>
+	<input asp-for="Book.Language" value="@book.Language"/><br />
+	<label>Publisher</label>
+	<input asp-for="Book.Publisher" value="@book.Publisher"/><br />
+	<input type="submit" value="Submit" />
+</form>

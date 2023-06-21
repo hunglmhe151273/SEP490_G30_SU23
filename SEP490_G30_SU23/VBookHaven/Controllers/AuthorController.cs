@@ -6,9 +6,12 @@ namespace VBookHaven.Controllers
 {
     public class AuthorController : Controller
     {
+        private VBookHavenDBContext dbContext = new VBookHavenDBContext();
+        private CommonGetCode commonGetCode = new CommonGetCode();
+
         public IActionResult Index()
         {
-            var authors = CommonGetCode.GetAllAuthors();
+            var authors = commonGetCode.GetAllAuthors();
             return View(authors);
         }
 
@@ -29,8 +32,6 @@ namespace VBookHaven.Controllers
                 return View();
             }
 
-            var dbContext = new VBookHavenDBContext();
-
             Author.Status = true;
             Author.CreateDate = DateTime.Now;
             Author.CreatorId = 1;
@@ -40,5 +41,40 @@ namespace VBookHaven.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Edit(int id)
+        {
+            var author = commonGetCode.GetAuthorById(id);
+            if (author == null)
+                return NotFound();
+
+            ViewData["author"] = author;
+            return View();
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditPost(int id)
+        {
+			if (!ModelState.IsValid)
+			{
+				return View();
+			}
+
+            var oldAuthor = dbContext.Authors.SingleOrDefault(a => a.AuthorId == id);
+            if (oldAuthor == null)
+                return NotFound();
+
+            oldAuthor.AuthorName = Author.AuthorName;
+            oldAuthor.Description = Author.Description;
+            oldAuthor.Status = Author.Status;
+
+            oldAuthor.EditDate = DateTime.Now;
+            oldAuthor.EditorId = 1;
+
+            dbContext.SaveChanges();
+
+			return RedirectToAction("Index");
+		}
     }
 }

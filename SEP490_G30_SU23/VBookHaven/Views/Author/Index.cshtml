@@ -5,6 +5,6 @@
 <ul>
 	@foreach (Author a in Model)
 	{
-		<li><a href="#">@a.AuthorId - @a.AuthorName - @a.Description</a></li>
+		<li><a href="author/edit/@a.AuthorId">@a.AuthorId - @a.AuthorName - @a.Status</a></li>
 	}
 </ul>
