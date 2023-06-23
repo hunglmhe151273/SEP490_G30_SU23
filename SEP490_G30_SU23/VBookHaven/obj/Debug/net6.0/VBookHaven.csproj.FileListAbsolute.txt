@@ -141,9 +141,7 @@ F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\staticwebassets.pack.json
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\staticwebassets.build.json
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\staticwebassets.development.json
-F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\scopedcss\bundle\VBookHaven.styles.css
-F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\scopedcss\projectbundle\VBookHaven.bundle.scp.css
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\VBookHaven.csproj.CopyComplete
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\VBookHaven.genruntimeconfig.cache
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\ref\VBookHaven.dll

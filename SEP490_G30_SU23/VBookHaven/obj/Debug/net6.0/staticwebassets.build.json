@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "pZIBKuOErxGRH+mf6Ux1gGXeao9eX05cl7piD6Awgf4=",
+  "Hash": "zSdb0UdybkCqwMBgNyvLg2bLsf49E9vvziwEzxKGq1o=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\VBookHaven.styles.css",
-      "SourceId": "VBookHaven",
-      "SourceType": "Computed",
-      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/VBookHaven",
-      "RelativePath": "VBookHaven.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\VBookHaven.styles.css"
-    },
-    {
-      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\VBookHaven.bundle.scp.css",
-      "SourceId": "VBookHaven",
-      "SourceType": "Computed",
-      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/VBookHaven",
-      "RelativePath": "VBookHaven.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\VBookHaven.bundle.scp.css"
-    },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\css\\site.css",
       "SourceId": "VBookHaven",

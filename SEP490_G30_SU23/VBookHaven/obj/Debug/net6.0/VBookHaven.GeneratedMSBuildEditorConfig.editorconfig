@@ -16,12 +16,44 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven
 build_property._RazorSourceGeneratorDebug = 
 
-[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Account/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Account/ResetPassword.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Customer/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Customer/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Customer/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Customer/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQ3VzdG9tZXJcVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_LayoutCustomer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDdXN0b21lci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_ValidationScriptsPartial.cshtml]
@@ -35,7 +67,3 @@ build_metadata.AdditionalFiles.CssScope =
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
-
-[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-xsyjym14ao
