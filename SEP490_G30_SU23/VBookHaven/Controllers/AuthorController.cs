@@ -48,8 +48,8 @@ namespace VBookHaven.Controllers
             if (author == null)
                 return NotFound();
 
-            ViewData["author"] = author;
-            return View();
+            Author = author;
+            return View(this);
         }
 
         [HttpPost, ActionName("Edit")]
@@ -58,20 +58,13 @@ namespace VBookHaven.Controllers
         {
 			if (!ModelState.IsValid)
 			{
-				return View();
+				return View(this);
 			}
 
-            var oldAuthor = dbContext.Authors.SingleOrDefault(a => a.AuthorId == id);
-            if (oldAuthor == null)
-                return NotFound();
+            Author.EditDate = DateTime.Now;
+            Author.EditorId = 1;
 
-            oldAuthor.AuthorName = Author.AuthorName;
-            oldAuthor.Description = Author.Description;
-            oldAuthor.Status = Author.Status;
-
-            oldAuthor.EditDate = DateTime.Now;
-            oldAuthor.EditorId = 1;
-
+            dbContext.Entry<Author>(Author).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             dbContext.SaveChanges();
 
 			return RedirectToAction("Index");

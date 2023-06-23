@@ -41,6 +41,17 @@ namespace VBookHaven.Common
 			return author;
 		}
 
+		public List<Author> GetAuthorsByBookId(int id)
+		{
+			var authors = new List<Author>();
+			
+			var book = dBContext.Books.Include(b => b.Authors).SingleOrDefault(p => p.ProductId == id);
+			if (book != null)
+				authors = book.Authors.ToList();
+
+			return authors;
+		}
+
 		public Product? GetProductById(int id)
 		{
 			var product = dBContext.Products.SingleOrDefault(p => p.ProductId == id);

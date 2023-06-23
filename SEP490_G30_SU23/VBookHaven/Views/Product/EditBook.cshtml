@@ -1,39 +1,114 @@
 ﻿@using VBookHaven.Models
 @model VBookHaven.Controllers.ProductController
-@{
-	Product product = (Product)ViewData["product"];
-	Book book = (Book)ViewData["book"];
-}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#btnAddAuthor").click(function () {
+			AddAuthor();
+		});
+	});
+
+	function AddAuthor() {
+		var value = $("#authorInfo").val();
+		var text = $("#authorInfo option:selected").text();
+
+		if (value == null) return;
+
+		$("#authorInfo option:selected").remove();
+
+		var authorRow = "<tr><td>" + value + "</td><td>" + text + "</td><td>"
+			+ "<input type='button' value='Delete' onclick='DeleteAuthor(this)'/>" + "</td></tr>";
+		$("#listAuthor").last().append(authorRow);
+	}
+
+	function DeleteAuthor(element) {
+		var parent = $(element).parent();
+		var grandparent = $(parent).parent();
+
+		var text = $(parent).prev().text();
+		var value = $(parent).prev().prev().text();
+
+		console.log(value, text);
+
+		var authorRow = "<option value='" + value + "'>" + text + "</option>";
+		$("#authorInfo").append(authorRow);
+		$(grandparent).remove();
+	}
+
+	function SaveAuthorList() {
+		var i = 0;
+		$("#listAuthor").find("tr:gt(0)").each(function () {
+			var id = $(this).find("td:eq(0)").text();
+			var authorRow = "<input type='hidden' name='AuthorIdList[" + i + "]' value='" + id + "'/>";
+			$("#listAuthorBind").append(authorRow);
+			++i;
+		});
+	}
+</script>
 
 <form method="post">
 	<label>Product ID</label>
-	<input readonly asp-for="Product.ProductId" value="@product.ProductId"/><br />
+	<input readonly asp-for="Product.ProductId" /><br />
 	<label>Product Name</label>
-	<input asp-for="Product.Name" value="@product.Name"/><br />
+	<input asp-for="Product.Name" /><br />
 	<label>Quantity per Unit</label>
-	<input asp-for="Product.QuantityPerUnit" value="@product.QuantityPerUnit"/><br />
+	<input asp-for="Product.QuantityPerUnit" /><br />
 	<label>Retail Price</label>
-	<input asp-for="Product.RetailPrice" value="@product.RetailPrice"/><br />
+	<input asp-for="Product.RetailPrice" /><br />
 	<label>Retail Discount</label>
-	<input asp-for="Product.RetailDiscount" value="@product.RetailDiscount"/><br />
+	<input asp-for="Product.RetailDiscount" /><br />
 	<label>Wholesale Price</label>
-	<input asp-for="Product.WholesalePrice" value="@product.WholesalePrice"/><br />
+	<input asp-for="Product.WholesalePrice" /><br />
 	<label>Wholesale Discount</label>
-	<input asp-for="Product.WholesaleDiscount" value="@product.WholesaleDiscount"/><br />
+	<input asp-for="Product.WholesaleDiscount" /><br />
 	<label>Size</label>
-	<input asp-for="Product.Size" value="@product.Size"/><br />
+	<input asp-for="Product.Size" /><br />
 	<label>Weight</label>
-	<input asp-for="Product.Weight" value="@product.Weight"/><br />
+	<input asp-for="Product.Weight" /><br />
 	<label>Description</label>
-	<input asp-for="Product.Description" value="@product.Description"/><br />
+	<input asp-for="Product.Description" /><br />
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories" ></select><br />
 
+	<input hidden asp-for="Product.UnitInStock" />
+	<input hidden asp-for="Product.IsBook" />
+	<input hidden asp-for="Product.CreateDate" />
+	<input hidden asp-for="Product.CreatorId" />
+
+	<label>Authors</label>
+	<select asp-items="ViewBag.otherAuthors" id="authorInfo"></select>
+	<input type="button" value="Add" id="btnAddAuthor" /><br />
+	<table id="listAuthor">
+		<tr>
+			<th>ID</th>
+			<th>Author name</th>
+			<th></th>
+		</tr>
+		@foreach (Author a in ViewBag.authors)
+		{
+			<tr>
+				<td>@a.AuthorId</td>
+				<td>@a.AuthorName</td>
+				<td><input type="button" value="Delete" onclick="DeleteAuthor(this)" /></td>
+			</tr>
+		}
+	</table>
+	<div id="listAuthorBind"></div>
+
+	<input hidden asp-for="Book.ProductId" />
 	<label>Page Number</label>
-	<input asp-for="Book.Pages" value="@book.Pages"/><br />
+	<input asp-for="Book.Pages" /><br />
 	<label>Language</label>
-	<input asp-for="Book.Language" value="@book.Language"/><br />
+	<input asp-for="Book.Language" /><br />
 	<label>Publisher</label>
-	<input asp-for="Book.Publisher" value="@book.Publisher"/><br />
-	<input type="submit" value="Submit" />
+	<input asp-for="Book.Publisher" /><br />
+
+	<label>Status</label>
+	<input type="radio" asp-for="Product.Status" value="true" checked="@Model.Product.Status" />
+	<label>Active</label>
+	<input type="radio" asp-for="Product.Status" value="false" checked="@(!Model.Product.Status)" />
+	<label>Inactive</label><br />
+
+	<input type="submit" value="Submit" onclick="SaveAuthorList()" />
 </form>

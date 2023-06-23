@@ -1,0 +1,49 @@
+﻿@using VBookHaven.Models
+@model VBookHaven.Controllers.ProductController
+
+<form method="post">
+	<label>Product ID</label>
+	<input readonly asp-for="Product.ProductId" /><br />
+	<label>Product Name</label>
+	<input asp-for="Product.Name" /><br />
+	<label>Quantity per Unit</label>
+	<input asp-for="Product.QuantityPerUnit" /><br />
+	<label>Retail Price</label>
+	<input asp-for="Product.RetailPrice" /><br />
+	<label>Retail Discount</label>
+	<input asp-for="Product.RetailDiscount" /><br />
+	<label>Wholesale Price</label>
+	<input asp-for="Product.WholesalePrice" /><br />
+	<label>Wholesale Discount</label>
+	<input asp-for="Product.WholesaleDiscount" /><br />
+	<label>Size</label>
+	<input asp-for="Product.Size" /><br />
+	<label>Weight</label>
+	<input asp-for="Product.Weight" /><br />
+	<label>Description</label>
+	<input asp-for="Product.Description" /><br />
+	<label>Subcategory</label>
+	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
+	<label>Activated</label>
+
+	<input hidden asp-for="Product.UnitInStock" />
+	<input hidden asp-for="Product.IsBook" />
+	<input hidden asp-for="Product.CreateDate" />
+	<input hidden asp-for="Product.CreatorId" />
+
+	<input hidden asp-for="Stationery.ProductId" />
+	<label>Material</label>
+	<input asp-for="Stationery.Material" /><br />
+	<label>Origin</label>
+	<input asp-for="Stationery.Origin" /><br />
+	<label>Brand</label>
+	<input asp-for="Stationery.Brand" /><br />
+
+	<label>Status</label>
+	<input type="radio" asp-for="Product.Status" value="true" checked="@Model.Product.Status" />
+	<label>Active</label>
+	<input type="radio" asp-for="Product.Status" value="false" checked="@(!Model.Product.Status)" />
+	<label>Inactive</label><br />
+
+	<input type="submit" value="Submit" />
+</form>

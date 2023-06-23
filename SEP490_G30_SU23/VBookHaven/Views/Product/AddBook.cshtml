@@ -1,5 +1,54 @@
 ﻿@model VBookHaven.Controllers.ProductController
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btnAddAuthor").click(function(){
+			AddAuthor();
+		});
+	});
+
+	function AddAuthor()
+	{	
+		var value = $("#authorInfo").val();
+		var text = $("#authorInfo option:selected").text();
+
+		if (value == null) return;
+
+		$("#authorInfo option:selected").remove();
+
+		var authorRow = "<tr><td>" + value + "</td><td>" + text + "</td><td>"
+			+ "<input type='button' value='Delete' onclick='DeleteAuthor(this)'/>" + "</td></tr>";
+		$("#listAuthor").last().append(authorRow);
+	}
+
+	function DeleteAuthor(element)
+	{
+		var parent = $(element).parent();
+		var grandparent = $(parent).parent();
+
+		var text = $(parent).prev().text();
+		var value = $(parent).prev().prev().text();
+
+		console.log(value, text);
+
+		var authorRow = "<option value='" + value + "'>" + text + "</option>";
+		$("#authorInfo").append(authorRow);
+		$(grandparent).remove();
+	}
+
+	function SaveAuthorList()
+	{
+		var i = 0;
+		$("#listAuthor").find("tr:gt(0)").each(function () {
+			var id = $(this).find("td:eq(0)").text();
+			var authorRow = "<input type='hidden' name='AuthorIdList[" + i + "]' value='" + id + "'/>";
+			$("#listAuthorBind").append(authorRow);
+			++i;
+		});
+	}
+</script>
+
 <form method="post">
 	<label>Product Name</label>
 	<input asp-for="Product.Name" /><br />
@@ -22,11 +71,23 @@
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
 
+	<label>Authors</label>
+	<select asp-items="ViewBag.authors" id="authorInfo"></select>
+	<input type="button" value="Add" id="btnAddAuthor" /><br />
+	<table id="listAuthor">
+		<tr>
+			<th>ID</th>
+			<th>Author name</th>
+			<th></th>
+		</tr>
+	</table>
+	<div id="listAuthorBind"></div>
+
 	<label>Page Number</label>
 	<input asp-for="Book.Pages" /><br />
 	<label>Language</label>
 	<input asp-for="Book.Language" /><br />
 	<label>Publisher</label>
 	<input asp-for="Book.Publisher" /><br />
-	<input type="submit" value="Submit" />
+	<input type="submit" value="Submit" onclick="SaveAuthorList()"/>
 </form>
