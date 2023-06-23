@@ -51,8 +51,8 @@ public partial class VBookHavenDBContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //    => optionsBuilder.UseSqlServer("name=DefaultConnection");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("name=DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
