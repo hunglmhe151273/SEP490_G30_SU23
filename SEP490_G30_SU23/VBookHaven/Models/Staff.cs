@@ -29,8 +29,10 @@ public partial class Staff
     [StringLength(10)]
     public string? Phone { get; set; }
 
-    [Column(TypeName = "image")]
-    public byte[]? Image { get; set; }
+    [StringLength(50)]
+    public string? Image { get; set; }
+
+    public bool? IsMale { get; set; }
 
     [ForeignKey("AccountId")]
     [InverseProperty("Staff")]

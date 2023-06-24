@@ -9,7 +9,7 @@ namespace VBookHaven.Respository
         Task<Product> CreateProduct(Product product);
     }
 
-    public class ProductRespository
+    public class ProductRespository : IProductRespository
     {
         private readonly VBookHavenDBContext _dbContext;
         public ProductRespository(VBookHavenDBContext dbContext)

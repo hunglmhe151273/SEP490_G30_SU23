@@ -115,7 +115,7 @@ namespace VBookHaven.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime");
@@ -330,6 +330,10 @@ namespace VBookHaven.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
+                    b.Property<string>("Barcode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime");
 
@@ -337,7 +341,7 @@ namespace VBookHaven.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("ntext");
 
                     b.Property<DateTime?>("EditDate")
                         .HasColumnType("datetime");
@@ -345,9 +349,15 @@ namespace VBookHaven.Migrations
                     b.Property<int?>("EditorId")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsBook")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("PurchasePrice")
+                        .HasColumnType("int");
 
                     b.Property<string>("QuantityPerUnit")
                         .HasMaxLength(50)
@@ -363,12 +373,15 @@ namespace VBookHaven.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Status")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Thumbnail")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("UnitInStock")
                         .HasColumnType("int");
@@ -390,6 +403,10 @@ namespace VBookHaven.Migrations
                     b.HasIndex("EditorId");
 
                     b.HasIndex("SubCategoryId");
+
+                    b.HasIndex(new[] { "Barcode" }, "UK_Product")
+                        .IsUnique()
+                        .HasFilter("[Barcode] IS NOT NULL");
 
                     b.ToTable("Product");
                 });
@@ -617,8 +634,12 @@ namespace VBookHaven.Migrations
                         .HasColumnType("nchar(12)")
                         .IsFixedLength();
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("image");
+                    b.Property<string>("Image")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool?>("IsMale")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(50)

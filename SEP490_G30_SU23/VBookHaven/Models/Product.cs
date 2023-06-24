@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace VBookHaven.Models;
 
 [Table("Product")]
+[Index("Barcode", Name = "UK_Product", IsUnique = true)]
 public partial class Product
 {
     [Key]
@@ -16,6 +17,9 @@ public partial class Product
     public string? Name { get; set; }
 
     [StringLength(50)]        
+    public string? Barcode { get; set; }
+
+    [StringLength(50)]
     public string? Barcode { get; set; }
 
     [StringLength(50)]
@@ -46,9 +50,6 @@ public partial class Product
 
     public bool? IsBook { get; set; }
 
-    [StringLength(50)]
-    public string? Thumbnail { get; set; }
-
     public int? SubCategoryId { get; set; }
 
     [Column(TypeName = "datetime")]
@@ -60,6 +61,9 @@ public partial class Product
     public DateTime? EditDate { get; set; }
 
     public int? EditorId { get; set; }
+
+    [StringLength(50)]
+    public string? Thumbnail { get; set; }
 
     [InverseProperty("Product")]
     public virtual Book? Book { get; set; }

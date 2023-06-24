@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\VBookHaven.bundle.scp.css",
-      "PackagePath": "staticwebassets\\VBookHaven.bundle.scp.css"
-    },
-    {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
