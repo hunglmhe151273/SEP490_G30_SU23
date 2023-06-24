@@ -3,8 +3,12 @@
 <form method="post">
 	<label>Product Name</label>
 	<input asp-for="Product.Name" /><br />
+	<label>Barcode</label>
+	<input asp-for="Product.Barcode" placeholder="Tự generate nếu để trống" /><br />
 	<label>Quantity per Unit</label>
 	<input asp-for="Product.QuantityPerUnit" /><br />
+	<label>Purchase Price</label>
+	<input asp-for="Product.PurchasePrice" /><br />
 	<label>Retail Price</label>
 	<input asp-for="Product.RetailPrice" /><br />
 	<label>Retail Discount</label>

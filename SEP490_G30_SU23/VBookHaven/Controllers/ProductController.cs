@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace VBookHaven.Controllers
 {
+	// Chua co kiem tra unique Barcode
+	// Khi Model State co van de, thay doi voi Authors khong duoc luu lai
+
 	public class ProductController : Controller
 	{
 		private CommonGetCode commonGetCode = new CommonGetCode();
@@ -32,16 +35,35 @@ namespace VBookHaven.Controllers
 		public Book Book { get; set; }
 		[BindProperty]
 		public List<int> AuthorIdList { get; set; }
+		[BindProperty]
+		public IFormFile Thumbnail { get; set; }
+
+		private void UploadThumbnail()
+		{
+			// TBA
+		}
 
 		[HttpPost, ActionName("AddBook")]
 		[ValidateAntiForgeryToken]
 		public ActionResult AddBookPost()
 		{
+			bool validModel = true;
+
 			ModelState.Remove("Book.Product");
 			if (!ModelState.IsValid)
 			{
+				validModel = false;
+			}
+			if (Product.Barcode != null)
+				if (Product.Barcode.StartsWith("PVN"))
+					validModel = false;
+			
+			if (!validModel)
+			{
 				var subCategories = commonGetCode.GetAllSubCategories();
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
+				var authors = commonGetCode.GetAllAuthors();
+				ViewData["authors"] = new SelectList(authors, "AuthorId", "AuthorName");
 				return View();
 			}
 
@@ -53,6 +75,9 @@ namespace VBookHaven.Controllers
 
 			dbContext.Products.Add(Product);
 			dbContext.SaveChanges();
+
+			if (Product.Barcode == null)
+				Product.Barcode = "PVN" + Product.ProductId;
 
 			Book.ProductId = Product.ProductId;
 
@@ -89,7 +114,7 @@ namespace VBookHaven.Controllers
 			foreach (Author a in authors)
 				otherAuthors.Remove(a);
 			ViewData["authors"] = authors;
-			ViewData["otherAuthors"] = new SelectList(otherAuthors, "AuthorId", "AuthorName"); ;
+			ViewData["otherAuthors"] = new SelectList(otherAuthors, "AuthorId", "AuthorName");
 
 			return View(this);
 		}
@@ -98,16 +123,37 @@ namespace VBookHaven.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult EditBookPost(int id)
 		{
+			bool validModel = true;
+			
 			ModelState.Remove("Book.Product");
 			if (!ModelState.IsValid)
 			{
+				validModel = false;
+			}
+			if (Product.Barcode != null)
+				if (Product.Barcode.StartsWith("PVN") && !Product.Barcode.Equals("PVN" + Product.ProductId))
+					validModel = false;
+
+			if (!validModel)
+			{
 				var subCategories = commonGetCode.GetAllSubCategories();
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", Product.SubCategoryId);
+				
+				var authors = commonGetCode.GetAuthorsByBookId(id);
+				var otherAuthors = commonGetCode.GetAllAuthors();
+				foreach (Author a in authors)
+					otherAuthors.Remove(a);
+				ViewData["authors"] = authors;
+				ViewData["otherAuthors"] = new SelectList(otherAuthors, "AuthorId", "AuthorName");
+				
 				return View(this);
 			}
 
 			Product.EditDate = DateTime.Now;
 			Product.EditorId = 1;
+
+			if (Product.Barcode == null)
+				Product.Barcode = "PVN" + Product.ProductId;
 
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Book>(Book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -141,12 +187,22 @@ namespace VBookHaven.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult AddStationeryPost()
 		{
+			bool validModel = true;
+			
 			ModelState.Remove("Stationery.Product");
 			if (!ModelState.IsValid)
 			{
+				validModel = false;
+			}
+			if (Product.Barcode != null)
+				if (Product.Barcode.StartsWith("PVN"))
+					validModel = false;
+
+			if (!validModel)
+			{
 				var subCategories = commonGetCode.GetAllSubCategories();
-				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", Product.SubCategoryId);
-				return View(this);
+				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
+				return View();
 			}
 
 			Product.UnitInStock = 0;
@@ -157,6 +213,9 @@ namespace VBookHaven.Controllers
 
 			dbContext.Products.Add(Product);
 			dbContext.SaveChanges();
+
+			if (Product.Barcode == null)
+				Product.Barcode = "PVN" + Product.ProductId;
 
 			Stationery.ProductId = Product.ProductId;
 			dbContext.Stationeries.Add(Stationery);
@@ -186,8 +245,18 @@ namespace VBookHaven.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult EditStationeryPost(int id)
 		{
+			bool validModel = true;
+
 			ModelState.Remove("Stationery.Product");
 			if (!ModelState.IsValid)
+			{
+				validModel = false;
+			}
+			if (Product.Barcode != null)
+				if (Product.Barcode.StartsWith("PVN") && !Product.Barcode.Equals("PVN" + Product.ProductId))
+					validModel = false;
+
+			if (!validModel)
 			{
 				var subCategories = commonGetCode.GetAllSubCategories();
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", Product.SubCategoryId);
@@ -196,6 +265,9 @@ namespace VBookHaven.Controllers
 
 			Product.EditDate = DateTime.Now;
 			Product.EditorId = 1;
+
+			if (Product.Barcode == null)
+				Product.Barcode = "PVN" + Product.ProductId;
 
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Stationery>(Stationery).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

@@ -15,7 +15,7 @@ public partial class Author
     [StringLength(50)]
     public string? AuthorName { get; set; }
 
-    [Column(TypeName = "text")]
+    [Column(TypeName = "ntext")]
     public string? Description { get; set; }
 
     public bool? Status { get; set; }

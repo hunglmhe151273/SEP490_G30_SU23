@@ -49,11 +49,15 @@
 	}
 </script>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<label>Product Name</label>
 	<input asp-for="Product.Name" /><br />
+	<label>Barcode</label>
+	<input asp-for="Product.Barcode" placeholder="Tự generate nếu để trống"/><br />
 	<label>Quantity per Unit</label>
 	<input asp-for="Product.QuantityPerUnit" /><br />
+	<label>Purchase Price</label>
+	<input asp-for="Product.PurchasePrice" /><br />
 	<label>Retail Price</label>
 	<input asp-for="Product.RetailPrice" /><br />
 	<label>Retail Discount</label>
@@ -70,6 +74,9 @@
 	<input asp-for="Product.Description" /><br />
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
+	<label>Thumbnail</label>
+	<input asp-for="Thumbnail" /><br />
+	@Html.AntiForgeryToken()
 
 	<label>Authors</label>
 	<select asp-items="ViewBag.authors" id="authorInfo"></select>

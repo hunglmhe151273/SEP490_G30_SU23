@@ -15,10 +15,15 @@ public partial class Product
     [StringLength(100)]
     public string? Name { get; set; }
 
+    [StringLength(50)]        
+    public string? Barcode { get; set; }
+
     [StringLength(50)]
     public string? QuantityPerUnit { get; set; }
 
     public int? UnitInStock { get; set; }
+
+    public int? PurchasePrice { get; set; }
 
     public int? RetailPrice { get; set; }
 
@@ -34,12 +39,15 @@ public partial class Product
     [StringLength(50)]
     public string? Weight { get; set; }
 
-    [Column(TypeName = "text")]
+    [Column(TypeName = "ntext")]
     public string? Description { get; set; }
 
     public bool? Status { get; set; }
 
     public bool? IsBook { get; set; }
+
+    [StringLength(50)]
+    public string? Thumbnail { get; set; }
 
     public int? SubCategoryId { get; set; }
 
