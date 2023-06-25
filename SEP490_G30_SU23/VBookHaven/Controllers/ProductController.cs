@@ -8,7 +8,18 @@ using Microsoft.IdentityModel.Tokens;
 namespace VBookHaven.Controllers
 {
 	// Chua co kiem tra unique Barcode
-	// Khi Model State co van de, thay doi voi Authors khong duoc luu lai
+	// Khi Model State co van de, thay doi voi Authors khong duoc luu lai -> Sua thanh multiple select list?
+	// Khi Model State co van de, delete image ko dc luu lai (co the sua), added image ko dc luu lai (kinda impossible)
+
+	// Sua delete thumbnail thanh button -> hide thumbnail di
+	// Paging, filter, search trong product management
+	// Sua design theo mock up?
+	
+	// Don code - Cho function, design lap vao 1 file rieng - Cho vao repository, js file, html layout...
+	// Authorize - lay user info tu session(?)
+	
+	// Khi author bi disabled thi tinh sao?
+	// Khong hien khi product bi disabled
 
 	public class ProductController : Controller
 	{
@@ -47,6 +58,10 @@ namespace VBookHaven.Controllers
 		public IFormFile? Thumbnail { get; set; }
 		[BindProperty]
 		public bool DoDeleteThumbnail { get; set; }
+		[BindProperty]
+		public List<IFormFile> AddImageList { get; set; }
+		[BindProperty]
+		public List<int> DeleteImageIdList { get; set; }
 
 		private void UploadThumbnail(int id)
 		{
@@ -97,6 +112,54 @@ namespace VBookHaven.Controllers
 			}
 		}
 
+		public void UploadImages(int id)
+		{
+			string wwwRootPath = webHostEnvironment.WebRootPath;
+			foreach (IFormFile image in AddImageList)
+			{
+				if (image != null)
+				{
+					Image imageInfo = new Image();
+					imageInfo.CreateDate = DateTime.Now;
+					imageInfo.CreatorId = 1;
+					imageInfo.Status = true;
+					imageInfo.ProductId = id;
+
+					dbContext.Images.Add(imageInfo);
+					dbContext.SaveChanges();
+
+					string fileName = "image_" + imageInfo.ImageId + Path.GetExtension(image.FileName);
+					string imagePath = Path.Combine(wwwRootPath, @"images\img");
+
+					using (var fileStream = new FileStream(Path.Combine(imagePath, fileName), FileMode.Create))
+					{
+						image.CopyTo(fileStream);
+					}
+
+					imageInfo.ImageName = fileName;
+					dbContext.SaveChanges();
+				}
+			}
+			
+		}
+
+		public void DeleteImage()
+		{
+			foreach (int i in DeleteImageIdList)
+			{
+				var image = commonGetCode.GetImageById(i);
+				if (image != null)
+				{
+					image.EditDate = DateTime.Now;
+					image.EditorId = 1;
+					image.Status = false;
+					dbContext.Entry<Image>(image).State = EntityState.Modified;
+				}
+			}
+
+			dbContext.SaveChanges();
+		}
+
 		[HttpPost, ActionName("AddBook")]
 		[ValidateAntiForgeryToken]
 		public ActionResult AddBookPost()
@@ -138,6 +201,7 @@ namespace VBookHaven.Controllers
 			dbContext.Books.Add(Book);
 
 			UploadThumbnail(Product.ProductId);
+			UploadImages(Product.ProductId);
 			dbContext.SaveChanges();
 
 			foreach (int id in AuthorIdList)
@@ -172,6 +236,9 @@ namespace VBookHaven.Controllers
 			ViewData["authors"] = authors;
 			ViewData["otherAuthors"] = new SelectList(otherAuthors, "AuthorId", "AuthorName");
 
+			var imageList = commonGetCode.GetImagesByProductId(id);
+			ViewData["images"] = imageList;
+
 			return View(this);
 		}
 
@@ -201,7 +268,10 @@ namespace VBookHaven.Controllers
 					otherAuthors.Remove(a);
 				ViewData["authors"] = authors;
 				ViewData["otherAuthors"] = new SelectList(otherAuthors, "AuthorId", "AuthorName");
-				
+
+				var imageList = commonGetCode.GetImagesByProductId(id);
+				ViewData["images"] = imageList;
+
 				return View(this);
 			}
 
@@ -212,6 +282,8 @@ namespace VBookHaven.Controllers
 				Product.Barcode = "PVN" + Product.ProductId;
 
 			ChangeThumbnail(id);
+			DeleteImage();
+			UploadImages(id);
 
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Book>(Book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
@@ -279,6 +351,7 @@ namespace VBookHaven.Controllers
 			dbContext.Stationeries.Add(Stationery);
 
 			UploadThumbnail(Product.ProductId);
+			UploadImages(Product.ProductId);
 			dbContext.SaveChanges();
 
 			return RedirectToAction("Index");
@@ -297,6 +370,9 @@ namespace VBookHaven.Controllers
 
 			var subCategories = commonGetCode.GetAllSubCategories();
 			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", product.SubCategoryId);
+
+			var imageList = commonGetCode.GetImagesByProductId(id);
+			ViewData["images"] = imageList;
 
 			return View(this);
 		}
@@ -320,6 +396,9 @@ namespace VBookHaven.Controllers
 			{
 				var subCategories = commonGetCode.GetAllSubCategories();
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", Product.SubCategoryId);
+				
+				var imageList = commonGetCode.GetImagesByProductId(id);
+				ViewData["images"] = imageList;
 				return View(this);
 			}
 
@@ -330,6 +409,8 @@ namespace VBookHaven.Controllers
 				Product.Barcode = "PVN" + Product.ProductId;
 
 			ChangeThumbnail(id);
+			DeleteImage();
+			UploadImages(id);
 
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Stationery>(Stationery).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

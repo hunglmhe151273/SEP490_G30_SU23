@@ -1,19 +1,19 @@
 ﻿@using VBookHaven.Models
 @model List<Product>
 
-<a href="product/addbook">Add Book</a><br />
-<a href="product/addstationery">Add Stationery</a>
+<a href="/product/addbook">Add Book</a><br />
+<a href="/product/addstationery">Add Stationery</a>
 
 <ul>
 	@foreach (Product p in Model)
 	{
 		if (p.IsBook == true)
 		{
-			<li><a href="product/editbook/@p.ProductId">@p.ProductId - @p.Name - @p.Status</a></li>
+			<li><a href="/product/editbook/@p.ProductId">@p.ProductId - @p.Name - @p.Status</a></li>
 		}
 		else
 		{
-			<li><a href="product/editstationery/@p.ProductId">@p.ProductId - @p.Name - @p.Status</a></li>
+			<li><a href="/product/editstationery/@p.ProductId">@p.ProductId - @p.Name - @p.Status</a></li>
 		}
 	}
 </ul>

@@ -1,6 +1,19 @@
 ﻿@model VBookHaven.Controllers.ProductController
 
-<form method="post">
+<script type="text/javascript">
+	function AddImage() {
+		var imageRow = "<tr><td><input type='file' accept='image/*' name='AddImageList'/></td>" +
+			"<td><input type='button' value='Delete' onclick='DeleteImage(this)'/></td></tr>"
+		$("#listImage").last().append(imageRow);
+	}
+
+	function DeleteImage(element) {
+		var grandparent = $(element).parent().parent();
+		$(grandparent).remove();
+	}
+</script>
+
+<form method="post" enctype="multipart/form-data">
 	<label>Product Name</label>
 	<input asp-for="Product.Name" /><br />
 	<label>Barcode</label>
@@ -26,6 +39,14 @@
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
 
+	<label>Thumbnail</label>
+	<input asp-for="Thumbnail" accept="image/*" /><br />
+	@Html.AntiForgeryToken()
+
+	<lable>Additional Images</lable>
+	<input type="button" value="Add" id="btnAddImage" onclick="AddImage()" /><br />
+	<table id="listImage"></table>
+
 	<label>Material</label>
 	<input asp-for="Stationery.Material" /><br />
 	<label>Origin</label>
@@ -33,4 +54,5 @@
 	<label>Brand</label>
 	<input asp-for="Stationery.Brand" /><br />
 	<input type="submit" value="Submit" />
+	<a href="/product/index">Cancel</a>
 </form>

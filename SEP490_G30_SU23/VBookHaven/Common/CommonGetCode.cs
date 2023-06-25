@@ -70,5 +70,19 @@ namespace VBookHaven.Common
 			return stationery;
 		}
 
+		public Image? GetImageById(int id)
+		{
+			var image = dBContext.Images.SingleOrDefault(s => s.ImageId == id);
+			return image;
+		}
+
+		public List<Image> GetImagesByProductId(int id)
+		{
+			var images = new List<Image>();
+
+			images = dBContext.Images.Where(i => i.ProductId == id && i.Status == true).ToList();
+
+			return images;
+		}
 	}
 }

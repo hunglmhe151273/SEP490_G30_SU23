@@ -35,6 +35,29 @@
 		$("#authorInfo").append(authorRow);
 		$(grandparent).remove();
 	}
+	
+	function AddImage() {
+		var imageRow = "<tr><td><input type='file' accept='image/*' name='AddImageList'/></td>" +
+			"<td><input type='button' value='Delete' onclick='DeleteImage(this)'/></td></tr>"
+		$("#listImage").last().append(imageRow);
+	}
+
+	function DeleteImage(element) {
+		var grandparent = $(element).parent().parent();
+		$(grandparent).remove();
+	}
+
+	function DeleteExistingImage(element)
+	{
+		var grandparent = $(element).parent().parent();
+		var id = $(grandparent).find("td:eq(0)").text();
+
+		//console.log(id);
+
+		var deleteInfoRow = "<input type='hidden' name='DeleteImageIdList' value='" + id + "' />";
+		$("#deleteList").append(deleteInfoRow);
+		$(grandparent).remove();
+	}
 
 	function SaveAuthorList() {
 		var i = 0;
@@ -50,7 +73,7 @@
 <form method="post" enctype="multipart/form-data">
 	@if (Model.Product.Thumbnail != null)
 	{
-		<img src="~/images/thumbnail/@Model.Product.Thumbnail" width="600px"/><br />
+		<img src="~/images/thumbnail/@Model.Product.Thumbnail" width="400px"/><br />
 	}
 	<input hidden asp-for="Product.Thumbnail" />
 	<input asp-for="DoDeleteThumbnail" />
@@ -111,6 +134,21 @@
 	</table>
 	<div id="listAuthorBind"></div>
 
+	<label>Additional Images</label>
+	<table>
+		@foreach (Image i in ViewBag.images)
+		{
+			<tr>
+				<td hidden>@i.ImageId</td>
+				<td><img src="~/images/img/@i.ImageName" width="400px" /></td>
+				<td><input type="button" value="Delete" onclick="DeleteExistingImage(this)" /></td>
+			</tr>
+		}
+	</table><br />
+	<div hidden id="deleteList"></div>
+	<input type="button" value="Add" onclick="AddImage()" /><br />
+	<table id="listImage"></table>
+
 	<input hidden asp-for="Book.ProductId" />
 	<label>Page Number</label>
 	<input asp-for="Book.Pages" /><br />
@@ -126,4 +164,5 @@
 	<label>Inactive</label><br />
 
 	<input type="submit" value="Submit" onclick="SaveAuthorList()" />
+	<a href="/product/index">Cancel</a>
 </form>

@@ -1,10 +1,34 @@
 ﻿@using VBookHaven.Models
 @model VBookHaven.Controllers.ProductController
 
+<script type="text/javascript">
+	function AddImage() {
+		var imageRow = "<tr><td><input type='file' accept='image/*' name='AddImageList'/></td>" +
+			"<td><input type='button' value='Delete' onclick='DeleteImage(this)'/></td></tr>"
+		$("#listImage").last().append(imageRow);
+	}
+
+	function DeleteImage(element) {
+		var grandparent = $(element).parent().parent();
+		$(grandparent).remove();
+	}
+
+	function DeleteExistingImage(element) {
+		var grandparent = $(element).parent().parent();
+		var id = $(grandparent).find("td:eq(0)").text();
+
+		//console.log(id);
+
+		var deleteInfoRow = "<input type='hidden' name='DeleteImageIdList' value='" + id + "' />";
+		$("#deleteList").append(deleteInfoRow);
+		$(grandparent).remove();
+	}
+</script>
+
 <form method="post" enctype="multipart/form-data">
 	@if (Model.Product.Thumbnail != null)
 	{
-		<img src="~/images/thumbnail/@Model.Product.Thumbnail" width="600px" />
+		<img src="~/images/thumbnail/@Model.Product.Thumbnail" width="400px" />
 
 		<br />
 	}
@@ -41,12 +65,26 @@
 	<input asp-for="Product.Description" /><br />
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
-	<label>Activated</label>
 
 	<input hidden asp-for="Product.UnitInStock" />
 	<input hidden asp-for="Product.IsBook" />
 	<input hidden asp-for="Product.CreateDate" />
 	<input hidden asp-for="Product.CreatorId" />
+
+	<label>Additional Images</label>
+	<table>
+		@foreach (Image i in ViewBag.images)
+		{
+			<tr>
+				<td hidden>@i.ImageId</td>
+				<td><img src="~/images/img/@i.ImageName" width="400px" /></td>
+				<td><input type="button" value="Delete" onclick="DeleteExistingImage(this)" /></td>
+			</tr>
+		}
+	</table><br />
+	<div hidden id="deleteList"></div>
+	<input type="button" value="Add" onclick="AddImage()" /><br />
+	<table id="listImage"></table>
 
 	<input hidden asp-for="Stationery.ProductId" />
 	<label>Material</label>
@@ -63,4 +101,5 @@
 	<label>Inactive</label><br />
 
 	<input type="submit" value="Submit" />
+	<a href="/product/index">Cancel</a>
 </form>
