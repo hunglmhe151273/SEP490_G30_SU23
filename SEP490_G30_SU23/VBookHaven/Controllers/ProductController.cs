@@ -3,6 +3,7 @@ using VBookHaven.Common;
 using VBookHaven.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace VBookHaven.Controllers
 {
@@ -11,8 +12,15 @@ namespace VBookHaven.Controllers
 
 	public class ProductController : Controller
 	{
-		private CommonGetCode commonGetCode = new CommonGetCode();
-		private VBookHavenDBContext dbContext = new VBookHavenDBContext();
+		private CommonGetCode commonGetCode;
+		private VBookHavenDBContext dbContext;
+		private readonly IWebHostEnvironment webHostEnvironment;
+		public ProductController(IWebHostEnvironment webHostEnvironment)
+		{
+			commonGetCode = new CommonGetCode();
+			dbContext = new VBookHavenDBContext();
+			this.webHostEnvironment = webHostEnvironment;
+		}
 
 		public IActionResult Index()
 		{
@@ -36,11 +44,57 @@ namespace VBookHaven.Controllers
 		[BindProperty]
 		public List<int> AuthorIdList { get; set; }
 		[BindProperty]
-		public IFormFile Thumbnail { get; set; }
+		public IFormFile? Thumbnail { get; set; }
+		[BindProperty]
+		public bool DoDeleteThumbnail { get; set; }
 
-		private void UploadThumbnail()
+		private void UploadThumbnail(int id)
 		{
-			// TBA
+			string wwwRootPath = webHostEnvironment.WebRootPath;
+			if (Thumbnail != null)
+			{
+				string fileName = "thumbnail_" + id + Path.GetExtension(Thumbnail.FileName);
+				string thumbnailPath = Path.Combine(wwwRootPath, @"images\thumbnail");
+
+				using (var fileStream = new FileStream(Path.Combine(thumbnailPath, fileName), FileMode.Create))
+				{
+					Thumbnail.CopyTo(fileStream);
+				}
+
+				Product.Thumbnail = fileName;
+			}
+		}
+
+		private void ChangeThumbnail(int id)
+		{
+			string wwwRootPath = webHostEnvironment.WebRootPath;
+			string? fileName = commonGetCode.GetProductById(id).Thumbnail;
+			string path = "";
+			if (fileName != null)
+			{
+				path = Path.Combine(wwwRootPath, @"images\thumbnail", fileName);
+			}
+
+			if (Thumbnail != null)
+			{
+				if (!path.IsNullOrEmpty())
+				{
+					FileInfo file = new FileInfo(path);
+					if (file.Exists)
+						file.Delete();
+				}
+				UploadThumbnail(id);
+			}
+			else if (DoDeleteThumbnail)
+			{
+				if (!path.IsNullOrEmpty())
+				{
+					FileInfo file = new FileInfo(path);
+					if (file.Exists)
+						file.Delete();
+				}
+				Product.Thumbnail = null;
+			}
 		}
 
 		[HttpPost, ActionName("AddBook")]
@@ -82,6 +136,8 @@ namespace VBookHaven.Controllers
 			Book.ProductId = Product.ProductId;
 
 			dbContext.Books.Add(Book);
+
+			UploadThumbnail(Product.ProductId);
 			dbContext.SaveChanges();
 
 			foreach (int id in AuthorIdList)
@@ -155,6 +211,8 @@ namespace VBookHaven.Controllers
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;
 
+			ChangeThumbnail(id);
+
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Book>(Book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.SaveChanges();
@@ -219,6 +277,8 @@ namespace VBookHaven.Controllers
 
 			Stationery.ProductId = Product.ProductId;
 			dbContext.Stationeries.Add(Stationery);
+
+			UploadThumbnail(Product.ProductId);
 			dbContext.SaveChanges();
 
 			return RedirectToAction("Index");
@@ -268,6 +328,8 @@ namespace VBookHaven.Controllers
 
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;
+
+			ChangeThumbnail(id);
 
 			dbContext.Entry<Product>(Product).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 			dbContext.Entry<Stationery>(Stationery).State = Microsoft.EntityFrameworkCore.EntityState.Modified;

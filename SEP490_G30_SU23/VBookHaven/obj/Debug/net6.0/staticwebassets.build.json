@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "csLd/autcX+z+qTL1gccCrJZLZoRtbh/Xy0XLPAuYwA=",
+  "Hash": "weHxLGAy2J8tVJLzPqVVAZDA8LV1WRQTMk6Ki5BQCy8=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -16,40 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\VBookHaven.styles.css",
-      "SourceId": "VBookHaven",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/VBookHaven",
-      "RelativePath": "VBookHaven.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\bundle\\VBookHaven.styles.css"
-    },
-    {
-      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\VBookHaven.bundle.scp.css",
-      "SourceId": "VBookHaven",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/VBookHaven",
-      "RelativePath": "VBookHaven.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\VBookHaven.bundle.scp.css"
-    },
     {
       "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\css\\site.css",
       "SourceId": "VBookHaven",

@@ -1,7 +1,20 @@
 ﻿@using VBookHaven.Models
 @model VBookHaven.Controllers.ProductController
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
+	@if (Model.Product.Thumbnail != null)
+	{
+		<img src="~/images/thumbnail/@Model.Product.Thumbnail" width="600px" />
+
+		<br />
+	}
+	<input hidden asp-for="Product.Thumbnail" />
+	<input asp-for="DoDeleteThumbnail" />
+	<label>Delete Thumbnail</label><br />
+	<label>Change Thumbnail</label>
+	<input asp-for="Thumbnail" accept="image/*" /><br />
+	@Html.AntiForgeryToken()
+	
 	<label>Product ID</label>
 	<input readonly asp-for="Product.ProductId" /><br />
 	<label>Product Name</label>

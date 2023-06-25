@@ -16,9 +16,6 @@ public partial class Product
     [StringLength(100)]
     public string? Name { get; set; }
 
-    [StringLength(50)]        
-    public string? Barcode { get; set; }
-
     [StringLength(50)]
     public string? Barcode { get; set; }
 
