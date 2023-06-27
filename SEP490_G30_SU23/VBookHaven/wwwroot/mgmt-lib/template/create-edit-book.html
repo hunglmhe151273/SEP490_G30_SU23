@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Syndash - Bootstrap4 Admin Template</title>
+	<!--favicon-->
+	<link rel="icon" href="/mgmt-lib/images/favicon-32x32.png" type="image/png" />
+	<!--plugins-->
+	<link href="/mgmt-lib/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="/mgmt-lib/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+	<link href="/mgmt-lib/plugins/select2/css/select2.min.css" rel="stylesheet" />
+	<link href="/mgmt-lib/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+	<link href="/mgmt-lib/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="/mgmt-lib/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<!-- loader-->
+	<link href="/mgmt-lib/css/pace.min.css" rel="stylesheet" />
+	<script src="/mgmt-lib/js/pace.min.js"></script>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="/mgmt-lib/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+	<!-- Icons CSS -->
+	<link rel="stylesheet" href="/mgmt-lib/css/icons.css" />
+	<!-- App CSS -->
+	<link rel="stylesheet" href="/mgmt-lib/css/app.css" />
+	<link rel="stylesheet" href="/mgmt-lib/css/dark-sidebar.css" />
+	<link rel="stylesheet" href="/mgmt-lib/css/dark-theme.css" />
+</head>
+
+<body>
+	<!-- wrapper -->
+	<div class="wrapper">
+		<!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<!--breadcrumb-->
+					<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+						<div class="breadcrumb-title pe-3">Sản phẩm</div>
+						<div class="ps-3">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb mb-0 p-0">
+									<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Thêm sản phẩm</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<!--end breadcrumb-->
+					<form>
+						<div class="row">
+							<div class="col-5 mx-auto h6">
+								<div class="card border-top border-0 border-4 border-primary">
+									<div class="card-body p-5">
+										<div class="card-title d-flex align-items-center">
+											<h3 class="mb-0 text-primary">Ảnh</h3>
+										</div>
+										<hr>
+										<input id="image-uploadify" type="file" accept=".jpg, .png, image/jpeg, image/png" multiple="" style="display: inline;">
+									</div>
+								</div>
+							</div>
+							<div class="col-7 mx-auto">
+								<div class="card border-top border-0 border-4 border-primary">
+									<div class="card-body p-5">
+										<div class="card-title d-flex align-items-center">
+											<h3 class="mb-0 text-primary">Thông tin chung</h3>
+										</div>
+										<hr>
+										<div class="row g-3">
+											<div class="col-md-4">
+												<label class="form-label">Mã vạch</label>
+												<input type="text" class="form-control" value="" placeholder="VD: 0000000000000" required>
+											</div>
+											<div class="col-md-8">
+												<label class="form-label">Tên sản phẩm</label>
+												<input type="text" class="form-control" value="" placeholder="VD: Sách a, Bút bi xyz, v.v.." required>
+											</div>
+											<div class="col-md-12">
+												<label class="form-label">Mô tả</label>
+												<textarea class="form-control" placeholder="Mô tả về sản phẩm..."></textarea>
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Đơn vị</label>
+												<input type="text" class="form-control" value="" placeholder="VD: Chiếc, Quyển, Bộ, v.v..">
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Kích thước</label>
+												<div class="input-group">
+													<input type="text" class="form-control" value="">
+													<span class="input-group-text">cm</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Trọng lượng</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="">
+													<span class="input-group-text">gram</span>
+												</div>
+											</div>
+											<div class="col-md-12">
+												<label class="form-label">Loại</label>
+												<div class="input-group">
+													<span class="input-group-text">Chọn</span>
+													<select class="multiple-select" data-placeholder="Choose anything" multiple="multiple" required>
+														<option value="1" selected>Sách</option>
+														<option value="2">Chuyện tranh</option>
+														<option value="3">Tiểu thuyết</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6 mx-auto">
+								<div class="card border-top border-0 border-4 border-primary">
+									<div class="card-body p-5">
+										<div class="card-title d-flex align-items-center">
+											<h3 class="mb-0 text-primary">Thông tin sách</h3>
+										</div>
+										<hr>
+										<div class="row g-3">
+											<div class="col-md-6">
+												<label class="form-label">Số trang</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">Trang</span>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<label class="form-label">Ngôn ngữ</label>
+												<select class="form-select" required>
+													<option value="1" selected>Tiếng Việt</option>
+													<option value="2">Tiếng Anh</option>
+													<option value="3">Tiếng Pháp</option>
+												</select>
+											</div>
+											<div class="col-md-12">
+												<label class="form-label">Tác giả</label>
+												<div class="input-group">
+													<span class="input-group-text">Chọn</span>
+													<select class="multiple-select" data-placeholder="Choose anything" multiple="multiple">
+														<option value="United States" selected>United States</option>
+														<option value="United Kingdom">United Kingdom</option>
+														<option value="Afghanistan">Afghanistan</option>
+														<option value="Aland Islands">Aland Islands</option>
+														<option value="Albania">Albania</option>
+														<option value="Algeria">Algeria</option>
+														<option value="American Samoa">American Samoa</option>
+														<option value="Andorra">Andorra</option>
+													</select>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-6 mx-auto">
+								<div class="card border-top border-0 border-4 border-primary">
+									<div class="card-body p-5">
+										<div class="card-title d-flex align-items-center">
+											<h3 class="mb-0 text-primary">Giá sản phẩm</h3>
+										</div>
+										<hr>
+										<div class="row g-3">
+											<div class="col-md-8">
+												<label class="form-label">Giá nhập</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">VNĐ</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Ck nhập</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">%</span>
+												</div>
+											</div>
+											<div class="col-md-8">
+												<label class="form-label">Giá lẻ</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">VNĐ</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Ck lẻ</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">%</span>
+												</div>
+											</div>
+											<div class="col-md-8">
+												<label class="form-label">Giá sỉ</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">VNĐ</span>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<label class="form-label">Ck sỉ</label>
+												<div class="input-group">
+													<input type="number" class="form-control" value="" required>
+													<span class="input-group-text">%</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 mx-auto">
+								<div class="card border-top border-0 border-4 border-primary" style="justify-content: left;">
+									<div class="card-body p-5">
+										<input type="submit" class="btn btn-primary" value="Lưu">
+										<input type="reset" class="btn btn-secondary" value="Hủy">
+										<a href="" class="btn btn-danger">Ngừng kinh doanh</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!--end page-content-wrapper-->
+		</div>
+		<!--end page-wrapper-->
+		<!--start overlay-->
+		<div class="overlay toggle-btn-mobile"></div>
+		<!--end overlay-->
+		<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+		<!--End Back To Top Button-->
+		<!--footer -->
+		<div class="footer">
+			<p class="mb-0">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent" target="_blank">codervent</a>
+			</p>
+		</div>
+		<!-- end footer -->
+	</div>
+	<!-- end wrapper -->
+	<!--start switcher-->
+	<div class="switcher-body">
+		<button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i class="bx bx-cog bx-spin"></i></button>
+		<div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling">
+		  <div class="offcanvas-header border-bottom">
+			<h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+		  </div>
+		  <div class="offcanvas-body">
+			<h6 class="mb-0">Theme Variation</h6>
+			<hr>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode" value="option1" checked>
+			  <label class="form-check-label" for="lightmode">Light</label>
+			</div>
+			<hr>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode" value="option2">
+			  <label class="form-check-label" for="darkmode">Dark</label>
+			</div>
+			<hr>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar" value="option3">
+				<label class="form-check-label" for="darksidebar">Semi Dark</label>
+			  </div>
+			  <hr>
+			 <div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons" value="option3">
+				<label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+			  </div>
+		  </div>
+		</div>
+	   </div>
+	   <!--end switcher-->
+	<!-- JavaScript -->
+	<!-- Bootstrap JS -->
+	<script src="/mgmt-lib/js/bootstrap.bundle.min.js"></script>
+	
+	<!--plugins-->
+	<script src="/mgmt-lib/js/jquery.min.js"></script>
+	<script src="/mgmt-lib/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="/mgmt-lib/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="/mgmt-lib/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+		<!--Select2 plugins-->
+	<script src="/mgmt-lib/plugins/select2/js/select2.min.js"></script>
+	   	<!--File-Uploader plugins-->
+	<script src="/mgmt-lib/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+	<script>
+		$('.single-select').select2({
+			theme: 'bootstrap4',
+			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+			placeholder: $(this).data('placeholder'),
+			allowClear: Boolean($(this).data('allow-clear')),
+		});
+		$('.multiple-select').select2({
+			theme: 'bootstrap4',
+			width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+			placeholder: $(this).data('placeholder'),
+			allowClear: Boolean($(this).data('allow-clear')),
+		});
+		$(document).ready(function () {
+			$('#image-uploadify').imageuploadify();
+		});
+		$(function(){
+            $("input[type = 'submit']").click(function(){
+               var $fileUpload = $("input[type='file']");
+               if (parseInt($fileUpload.get(0).files.length) > 4){
+                  alert("You are only allowed to upload a maximum of 4 files");
+               }
+            });
+         });
+	</script>
+	<!-- App JS -->
+	<script src="/mgmt-lib/js/app.js"></script>
+</body>
+
+</html>
