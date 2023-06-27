@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "2WglaIPJ1Clae5z54z+bbiVxws+rts6PC4n8X/D0xzY=",
+  "Hash": "BO/iNHihJJ8s5hQupteAHwrGhc6SeSwIiEwYPnV+6Ro=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -8092,6 +8092,23 @@
       "OriginalItemSpec": "wwwroot\\images\\img\\image_1.png"
     },
     {
+      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_10.png",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/img/image_10.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\img\\image_10.png"
+    },
+    {
       "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_2.png",
       "SourceId": "VBookHaven",
       "SourceType": "Discovered",
@@ -8243,6 +8260,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\thumbnail\\thumbnail_1017.jpg"
+    },
+    {
+      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\thumbnail\\thumbnail_1019.png",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/thumbnail/thumbnail_1019.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\thumbnail\\thumbnail_1019.png"
     },
     {
       "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\thumbnail\\thumbnail_14.png",
