@@ -1,21 +1,21 @@
 using VBookHaven.Models;
 using Microsoft.EntityFrameworkCore;
-using VBookHaven.Respository;
-using VBookHaven.Services;
+using Microsoft.AspNetCore.Identity;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-
 // Add services to the container.
 var service = builder.Services;
+
 service.AddControllersWithViews();
 service.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(60));
 service.AddDbContext<VBookHavenDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-service.AddTransient<IAccountRespository, AccountRespository>();
-service.AddTransient<IEmailSender, EmailSender>();
-
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<VBookHavenDBContext>();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -27,11 +27,13 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseSession();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Product}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
