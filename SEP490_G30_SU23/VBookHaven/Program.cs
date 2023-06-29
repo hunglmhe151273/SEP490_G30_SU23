@@ -1,7 +1,7 @@
 using VBookHaven.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
+using VBookHaven.Respository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,11 @@ service.AddDbContext<VBookHavenDBContext>(options =>
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<VBookHavenDBContext>();
 builder.Services.AddRazorPages();
+
+service.AddScoped<IProductRespository, ProductRespository>();
+service.AddScoped<IAuthorRepository, AuthorRepository>();
+service.AddScoped<ICategoryRepository, CategoryRepository>();
+service.AddScoped<IImageRepository, ImageRepository>();
 
 var app = builder.Build();
 
@@ -34,6 +39,6 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Admin}/{controller=Product}/{action=Index}/{id?}");
 
 app.Run();

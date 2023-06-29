@@ -20,8 +20,8 @@
 	<input type="radio" asp-for="Author.Status" value="false" checked="@(!Model.Author.Status)"/>
 	<label>Inactive</label><br />
 
-	<input hidden asp-for="Author.CreateDate" />
-	<input hidden asp-for="Author.CreatorId" />
+@*	<input hidden asp-for="Author.CreateDate" />
+	<input hidden asp-for="Author.CreatorId" />*@
 
 	<input type="submit" value="Submit" />
 	<a href="/author/index">Cancel</a>

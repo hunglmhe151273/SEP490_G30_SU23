@@ -33,8 +33,8 @@ namespace VBookHaven.Controllers
             }
 
             Author.Status = true;
-            Author.CreateDate = DateTime.Now;
-            Author.CreatorId = 1;
+            //Author.CreateDate = DateTime.Now;
+            //Author.CreatorId = 1;
 
             dbContext.Authors.Add(Author);
             dbContext.SaveChanges();
@@ -61,8 +61,8 @@ namespace VBookHaven.Controllers
 				return View(this);
 			}
 
-            Author.EditDate = DateTime.Now;
-            Author.EditorId = 1;
+            //Author.EditDate = DateTime.Now;
+            //Author.EditorId = 1;
 
             dbContext.Entry<Author>(Author).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             dbContext.SaveChanges();

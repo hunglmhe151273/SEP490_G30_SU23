@@ -67,8 +67,8 @@ namespace VBookHaven.Controllers
 				if (image != null)
 				{
 					Image imageInfo = new Image();
-					imageInfo.CreateDate = DateTime.Now;
-					imageInfo.CreatorId = 1;
+					//imageInfo.CreateDate = DateTime.Now;
+					//imageInfo.CreatorId = 1;
 					imageInfo.Status = true;
 					imageInfo.ProductId = id;
 
@@ -97,8 +97,8 @@ namespace VBookHaven.Controllers
 				var image = commonGetCode.GetImageById(i);
 				if (image != null)
 				{
-					image.EditDate = DateTime.Now;
-					image.EditorId = 1;
+					//image.EditDate = DateTime.Now;
+					//image.EditorId = 1;
 					image.Status = false;
 					dbContext.Entry<Image>(image).State = EntityState.Modified;
 				}
@@ -134,8 +134,8 @@ namespace VBookHaven.Controllers
 			Product.UnitInStock = 0;
 			Product.IsBook = true;
 			Product.Status = true;
-			Product.CreateDate = DateTime.Now;
-			Product.CreatorId = 1;
+			//Product.CreateDate = DateTime.Now;
+			//Product.CreatorId = 1;
 
 			dbContext.Products.Add(Product);
 			dbContext.SaveChanges();
@@ -221,8 +221,8 @@ namespace VBookHaven.Controllers
 				return View(this);
 			}
 
-			Product.EditDate = DateTime.Now;
-			Product.EditorId = 1;
+			//Product.EditDate = DateTime.Now;
+			//Product.EditorId = 1;
 
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;
@@ -281,8 +281,8 @@ namespace VBookHaven.Controllers
 			Product.UnitInStock = 0;
 			Product.IsBook = false;
 			Product.Status = true;
-			Product.CreateDate = DateTime.Now;
-			Product.CreatorId = 1;
+			//Product.CreateDate = DateTime.Now;
+			//Product.CreatorId = 1;
 
 			dbContext.Products.Add(Product);
 			dbContext.SaveChanges();
@@ -344,8 +344,8 @@ namespace VBookHaven.Controllers
 				return View(this);
 			}
 
-			Product.EditDate = DateTime.Now;
-			Product.EditorId = 1;
+			//Product.EditDate = DateTime.Now;
+			//Product.EditorId = 1;
 
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;

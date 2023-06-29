@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
-    <Folder Include="Respository\" />
   </ItemGroup>
 
   <ItemGroup>
