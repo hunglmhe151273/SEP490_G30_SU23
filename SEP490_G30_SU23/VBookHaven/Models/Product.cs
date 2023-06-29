@@ -59,9 +59,6 @@ public partial class Product
 
     public int? EditorId { get; set; }
 
-    [StringLength(50)]
-    public string? Thumbnail { get; set; }
-
     [InverseProperty("Product")]
     public virtual Book? Book { get; set; }
 

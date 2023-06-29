@@ -95,10 +95,7 @@
 	<label>Subcategory</label>
 	<select asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select><br />
 	
-	<label>Thumbnail</label>
-	<input asp-for="Thumbnail" accept="image/*" /><br />
 	@Html.AntiForgeryToken()
-	
 	<lable>Additional Images</lable>
 	<input type="button" value="Add" onclick="AddImage()"/><br />
 	<table id="listImage"></table>

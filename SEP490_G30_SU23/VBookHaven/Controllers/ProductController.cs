@@ -8,18 +8,18 @@ using Microsoft.IdentityModel.Tokens;
 namespace VBookHaven.Controllers
 {
 	// Chua co kiem tra unique Barcode
-	// Khi Model State co van de, thay doi voi Authors khong duoc luu lai -> Sua thanh multiple select list?
-	// Khi Model State co van de, delete image ko dc luu lai (co the sua), added image ko dc luu lai (kinda impossible)
+	// (!) Khi du lieu co van de, luc load lai View -> Khong luu input cu
+	// (!) ModelState luon bi invalid (dang tam comment lai)
+	// Khi de trong ten san pham -> Chua co warning
 
-	// Sua delete thumbnail thanh button -> hide thumbnail di
 	// Paging, filter, search trong product management
-	// Sua design theo mock up?
-	
 	// Don code - Cho function, design lap vao 1 file rieng - Cho vao repository, js file, html layout...
 	// Authorize - lay user info tu session(?)
-	
+
 	// Khi author bi disabled thi tinh sao?
-	// Khong hien khi product bi disabled
+
+	// Khi Model State co van de, thay doi voi Authors khong duoc luu lai -> Sua thanh multiple select list?
+	// Khi Model State co van de, delete image ko dc luu lai (co the sua), added image ko dc luu lai (kinda impossible)
 
 	public class ProductController : Controller
 	{
@@ -55,62 +55,9 @@ namespace VBookHaven.Controllers
 		[BindProperty]
 		public List<int> AuthorIdList { get; set; }
 		[BindProperty]
-		public IFormFile? Thumbnail { get; set; }
-		[BindProperty]
-		public bool DoDeleteThumbnail { get; set; }
-		[BindProperty]
 		public List<IFormFile> AddImageList { get; set; }
 		[BindProperty]
 		public List<int> DeleteImageIdList { get; set; }
-
-		private void UploadThumbnail(int id)
-		{
-			string wwwRootPath = webHostEnvironment.WebRootPath;
-			if (Thumbnail != null)
-			{
-				string fileName = "thumbnail_" + id + Path.GetExtension(Thumbnail.FileName);
-				string thumbnailPath = Path.Combine(wwwRootPath, @"images\thumbnail");
-
-				using (var fileStream = new FileStream(Path.Combine(thumbnailPath, fileName), FileMode.Create))
-				{
-					Thumbnail.CopyTo(fileStream);
-				}
-
-				Product.Thumbnail = fileName;
-			}
-		}
-
-		private void ChangeThumbnail(int id)
-		{
-			string wwwRootPath = webHostEnvironment.WebRootPath;
-			string? fileName = commonGetCode.GetProductById(id).Thumbnail;
-			string path = "";
-			if (fileName != null)
-			{
-				path = Path.Combine(wwwRootPath, @"images\thumbnail", fileName);
-			}
-
-			if (Thumbnail != null)
-			{
-				if (!path.IsNullOrEmpty())
-				{
-					FileInfo file = new FileInfo(path);
-					if (file.Exists)
-						file.Delete();
-				}
-				UploadThumbnail(id);
-			}
-			else if (DoDeleteThumbnail)
-			{
-				if (!path.IsNullOrEmpty())
-				{
-					FileInfo file = new FileInfo(path);
-					if (file.Exists)
-						file.Delete();
-				}
-				Product.Thumbnail = null;
-			}
-		}
 
 		public void UploadImages(int id)
 		{
@@ -200,7 +147,6 @@ namespace VBookHaven.Controllers
 
 			dbContext.Books.Add(Book);
 
-			UploadThumbnail(Product.ProductId);
 			UploadImages(Product.ProductId);
 			dbContext.SaveChanges();
 
@@ -281,7 +227,6 @@ namespace VBookHaven.Controllers
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;
 
-			ChangeThumbnail(id);
 			DeleteImage();
 			UploadImages(id);
 
@@ -305,9 +250,7 @@ namespace VBookHaven.Controllers
 		{
 			var subCategories = commonGetCode.GetAllSubCategories();
 			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
-			return View();
-
-			return View();
+			return View(this);
 		}
 
 		[BindProperty]
@@ -318,12 +261,12 @@ namespace VBookHaven.Controllers
 		public IActionResult AddStationeryPost()
 		{
 			bool validModel = true;
-			
-			ModelState.Remove("Stationery.Product");
-			if (!ModelState.IsValid)
-			{
-				validModel = false;
-			}
+
+			//ModelState.Remove("Stationery.Product");
+			//if (!ModelState.IsValid)
+			//{
+			//	validModel = false;
+			//}
 			if (Product.Barcode != null)
 				if (Product.Barcode.StartsWith("PVN"))
 					validModel = false;
@@ -332,7 +275,7 @@ namespace VBookHaven.Controllers
 			{
 				var subCategories = commonGetCode.GetAllSubCategories();
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
-				return View();
+				return View(this);
 			}
 
 			Product.UnitInStock = 0;
@@ -350,7 +293,6 @@ namespace VBookHaven.Controllers
 			Stationery.ProductId = Product.ProductId;
 			dbContext.Stationeries.Add(Stationery);
 
-			UploadThumbnail(Product.ProductId);
 			UploadImages(Product.ProductId);
 			dbContext.SaveChanges();
 
@@ -408,7 +350,6 @@ namespace VBookHaven.Controllers
 			if (Product.Barcode == null)
 				Product.Barcode = "PVN" + Product.ProductId;
 
-			ChangeThumbnail(id);
 			DeleteImage();
 			UploadImages(id);
 
