@@ -22,19 +22,6 @@ namespace VBookHaven.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AuthorId", "BookId");
-
-                    b.ToTable("AuthorBook");
-                });
-
             modelBuilder.Entity("BookAuthor", b =>
                 {
                     b.Property<int>("BookId")
@@ -50,50 +37,259 @@ namespace VBookHaven.Migrations
                     b.ToTable("Book_Author", (string)null);
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.Account", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<int>("AccountId")
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("int")
-                        .HasColumnName("RoleID");
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Username")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("AccountId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Account");
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("VBookHaven.Models.ActivityLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("ActivityDetails")
+                        .HasColumnType("ntext")
+                        .HasColumnName("Activity Details");
+
+                    b.Property<string>("ActivitySummary")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Activity Summary");
+
+                    b.Property<int?>("ActorId")
+                        .HasColumnType("int")
+                        .HasColumnName("ActorID");
+
+                    b.Property<string>("ItemsId")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("TableName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("Timestamp")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id")
+                        .HasName("PK_Activity Log");
+
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("ActivityLog", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Author", b =>
@@ -108,31 +304,15 @@ namespace VBookHaven.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("ntext");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("AuthorId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("Author");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Book", b =>
@@ -153,7 +333,7 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Book");
+                    b.ToTable("Book", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Category", b =>
@@ -168,47 +348,70 @@ namespace VBookHaven.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Customer", b =>
                 {
-                    b.Property<int>("AccountId")
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(15)
+                        .HasColumnType("nchar(15)")
+                        .IsFixedLength();
+
+                    b.Property<string>("UserName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength();
+                    b.HasKey("CustomerId");
 
-                    b.HasKey("AccountId");
+                    b.HasIndex(new[] { "AccountId" }, "IX_Customer")
+                        .IsUnique()
+                        .HasFilter("[AccountId] IS NOT NULL");
 
-                    b.ToTable("Customer");
+                    b.ToTable("Customer", (string)null);
+                });
+
+            modelBuilder.Entity("VBookHaven.Models.Exchange", b =>
+                {
+                    b.Property<int>("ExchangeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExchangeId"));
+
+                    b.Property<int?>("BaseProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuantityBaseProduct")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExchangeId")
+                        .HasName("PK__Exchange__72E6008B8FB6C369");
+
+                    b.HasIndex("BaseProductId");
+
+                    b.HasIndex(new[] { "ProductId", "BaseProductId" }, "UC_Product_BaseProduct")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL AND [BaseProductId] IS NOT NULL");
+
+                    b.ToTable("Exchange", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Image", b =>
@@ -218,18 +421,6 @@ namespace VBookHaven.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
-
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ImageName")
                         .HasMaxLength(50)
@@ -243,13 +434,9 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("ImageId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Image");
+                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Order", b =>
@@ -260,19 +447,7 @@ namespace VBookHaven.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("OrderDate")
@@ -287,15 +462,11 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CreatorId");
-
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("EditorId");
 
                     b.HasIndex("ShippingInfoId");
 
-                    b.ToTable("Order");
+                    b.ToTable("Order", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.OrderDetail", b =>
@@ -319,7 +490,7 @@ namespace VBookHaven.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetail", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Product", b =>
@@ -334,20 +505,8 @@ namespace VBookHaven.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("ntext");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("IsBook")
                         .HasColumnType("bit");
@@ -358,10 +517,6 @@ namespace VBookHaven.Migrations
 
                     b.Property<int?>("PurchasePrice")
                         .HasColumnType("int");
-
-                    b.Property<string>("QuantityPerUnit")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<double?>("RetailDiscount")
                         .HasColumnType("float");
@@ -379,7 +534,7 @@ namespace VBookHaven.Migrations
                     b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Thumbnail")
+                    b.Property<string>("Unit")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -398,17 +553,13 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
                     b.HasIndex("SubCategoryId");
 
                     b.HasIndex(new[] { "Barcode" }, "UK_Product")
                         .IsUnique()
                         .HasFilter("[Barcode] IS NOT NULL");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.PurchaseOrder", b =>
@@ -419,20 +570,8 @@ namespace VBookHaven.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseOrderId"));
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("StaffId")
                         .HasColumnType("int");
@@ -445,15 +584,11 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("PurchaseOrderId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
                     b.HasIndex("StaffId");
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("PurchaseOrder");
+                    b.ToTable("PurchaseOrder", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.PurchaseOrderDetail", b =>
@@ -478,7 +613,7 @@ namespace VBookHaven.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("PurchaseOrderDetail");
+                    b.ToTable("PurchaseOrderDetail", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
@@ -501,12 +636,6 @@ namespace VBookHaven.Migrations
                     b.Property<int?>("CreatorId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
@@ -518,52 +647,9 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Review");
-                });
-
-            modelBuilder.Entity("VBookHaven.Models.Role", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("RoleID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("RoleId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("Role");
+                    b.ToTable("Review", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
@@ -574,20 +660,12 @@ namespace VBookHaven.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShipInfoId"));
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(10)
@@ -603,19 +681,21 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("ShipInfoId");
 
-                    b.HasIndex("CreatorId");
-
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("ShippingInfo");
+                    b.ToTable("ShippingInfo", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>
                 {
-                    b.Property<int>("AccountId")
+                    b.Property<int>("StaffId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StaffId"));
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
                         .HasMaxLength(200)
@@ -650,7 +730,11 @@ namespace VBookHaven.Migrations
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
 
-                    b.HasKey("AccountId");
+                    b.HasKey("StaffId");
+
+                    b.HasIndex(new[] { "AccountId" }, "IX_Staff")
+                        .IsUnique()
+                        .HasFilter("[AccountId] IS NOT NULL");
 
                     b.ToTable("Staff");
                 });
@@ -675,7 +759,7 @@ namespace VBookHaven.Migrations
                     b.HasKey("ProductId")
                         .HasName("PK_Other_1");
 
-                    b.ToTable("Stationery");
+                    b.ToTable("Stationery", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.SubCategory", b =>
@@ -689,18 +773,6 @@ namespace VBookHaven.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
@@ -712,11 +784,7 @@ namespace VBookHaven.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("EditorId");
-
-                    b.ToTable("SubCategory");
+                    b.ToTable("SubCategory", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Supplier", b =>
@@ -732,18 +800,6 @@ namespace VBookHaven.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<DateTime?>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("EditDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("EditorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -758,11 +814,14 @@ namespace VBookHaven.Migrations
 
                     b.HasKey("SupplierId");
 
-                    b.HasIndex("CreatorId");
+                    b.ToTable("Supplier", (string)null);
+                });
 
-                    b.HasIndex("EditorId");
+            modelBuilder.Entity("VBookHaven.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.ToTable("Supplier");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("BookAuthor", b =>
@@ -780,45 +839,65 @@ namespace VBookHaven.Migrations
                         .HasConstraintName("FK_Book_Author_Book");
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.Account", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("InverseCreator")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Account_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("InverseEditor")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Account_Account_Edit");
-
-                    b.HasOne("VBookHaven.Models.Role", "Role")
-                        .WithMany("Accounts")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
                         .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_Account_Role");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
-
-                    b.Navigation("Role");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.Author", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("AuthorCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Author_Account_Create");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("AuthorEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Author_Account_Edit");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("Creator");
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Editor");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("VBookHaven.Models.ActivityLog", b =>
+                {
+                    b.HasOne("VBookHaven.Models.Staff", "Actor")
+                        .WithMany("ActivityLogs")
+                        .HasForeignKey("ActorId")
+                        .HasConstraintName("FK_ActivityLog_Staff");
+
+                    b.Navigation("Actor");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Book", b =>
@@ -832,85 +911,55 @@ namespace VBookHaven.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.Category", b =>
-                {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("CategoryCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Category_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("CategoryEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Category_Account_Edit");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
-                });
-
             modelBuilder.Entity("VBookHaven.Models.Customer", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Account")
+                    b.HasOne("VBookHaven.Models.ApplicationUser", "Account")
                         .WithOne("Customer")
-                        .HasForeignKey("VBookHaven.Models.Customer", "AccountId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Customer_Account");
+                        .HasForeignKey("VBookHaven.Models.Customer", "AccountId");
 
                     b.Navigation("Account");
                 });
 
+            modelBuilder.Entity("VBookHaven.Models.Exchange", b =>
+                {
+                    b.HasOne("VBookHaven.Models.Product", "BaseProduct")
+                        .WithMany("ExchangeBaseProducts")
+                        .HasForeignKey("BaseProductId")
+                        .HasConstraintName("FK_Exchange_Product1");
+
+                    b.HasOne("VBookHaven.Models.Product", "Product")
+                        .WithMany("ExchangeProducts")
+                        .HasForeignKey("ProductId")
+                        .HasConstraintName("FK_Exchange_Product");
+
+                    b.Navigation("BaseProduct");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("VBookHaven.Models.Image", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("ImageCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Image_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("ImageEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Image_Account_Edit");
-
                     b.HasOne("VBookHaven.Models.Product", "Product")
                         .WithMany("Images")
                         .HasForeignKey("ProductId")
                         .HasConstraintName("FK_Image_Product");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
 
                     b.Navigation("Product");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Order", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("OrderCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Order_Account_Create");
-
                     b.HasOne("VBookHaven.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_Order_Customer");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("OrderEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Order_Account_Edit");
 
                     b.HasOne("VBookHaven.Models.ShippingInfo", "ShippingInfo")
                         .WithMany("Orders")
                         .HasForeignKey("ShippingInfoId")
                         .HasConstraintName("FK_Order_ShippingInfo");
 
-                    b.Navigation("Creator");
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Editor");
 
                     b.Navigation("ShippingInfo");
                 });
@@ -936,40 +985,16 @@ namespace VBookHaven.Migrations
 
             modelBuilder.Entity("VBookHaven.Models.Product", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("ProductCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Product_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("ProductEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Product_Account_Edit");
-
                     b.HasOne("VBookHaven.Models.SubCategory", "SubCategory")
                         .WithMany("Products")
                         .HasForeignKey("SubCategoryId")
                         .HasConstraintName("FK_Product_SubCategory");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
 
                     b.Navigation("SubCategory");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.PurchaseOrder", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("PurchaseOrderCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_PurchaseOrder_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("PurchaseOrderEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_PurchaseOrder_Account_Edit");
-
                     b.HasOne("VBookHaven.Models.Staff", "Staff")
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("StaffId")
@@ -979,10 +1004,6 @@ namespace VBookHaven.Migrations
                         .WithMany("PurchaseOrders")
                         .HasForeignKey("SupplierId")
                         .HasConstraintName("FK_PurchaseOrder_Supplier");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
 
                     b.Navigation("Staff");
 
@@ -1010,83 +1031,29 @@ namespace VBookHaven.Migrations
 
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Account")
-                        .WithMany("ReviewAccounts")
-                        .HasForeignKey("AccountId")
-                        .HasConstraintName("FK_Review_Account");
-
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("ReviewCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Review_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("ReviewEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Review_Account_Edit");
-
                     b.HasOne("VBookHaven.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductId")
                         .HasConstraintName("FK_Review_Product");
 
-                    b.Navigation("Account");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
-
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("VBookHaven.Models.Role", b =>
-                {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("RoleCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Role_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("RoleEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Role_Account_Edit");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("ShippingInfoCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_ShippingInfo_Account_Create");
-
                     b.HasOne("VBookHaven.Models.Customer", "Customer")
                         .WithMany("ShippingInfos")
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_ShippingInfo_Customer");
 
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("ShippingInfoEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_ShippingInfo_Account_Edit");
-
-                    b.Navigation("Creator");
-
                     b.Navigation("Customer");
-
-                    b.Navigation("Editor");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>
                 {
-                    b.HasOne("VBookHaven.Models.Account", "Account")
+                    b.HasOne("VBookHaven.Models.ApplicationUser", "Account")
                         .WithOne("Staff")
-                        .HasForeignKey("VBookHaven.Models.Staff", "AccountId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Staff_Account");
+                        .HasForeignKey("VBookHaven.Models.Staff", "AccountId");
 
                     b.Navigation("Account");
                 });
@@ -1109,95 +1076,7 @@ namespace VBookHaven.Migrations
                         .HasForeignKey("CategoryId")
                         .HasConstraintName("FK_SubCategory_Category");
 
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("SubCategoryCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_SubCategory_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("SubCategoryEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_SubCategory_Account_Edit");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
-                });
-
-            modelBuilder.Entity("VBookHaven.Models.Supplier", b =>
-                {
-                    b.HasOne("VBookHaven.Models.Account", "Creator")
-                        .WithMany("SupplierCreators")
-                        .HasForeignKey("CreatorId")
-                        .HasConstraintName("FK_Supplier_Account_Create");
-
-                    b.HasOne("VBookHaven.Models.Account", "Editor")
-                        .WithMany("SupplierEditors")
-                        .HasForeignKey("EditorId")
-                        .HasConstraintName("FK_Supplier_Account_Edit");
-
-                    b.Navigation("Creator");
-
-                    b.Navigation("Editor");
-                });
-
-            modelBuilder.Entity("VBookHaven.Models.Account", b =>
-                {
-                    b.Navigation("AuthorCreators");
-
-                    b.Navigation("AuthorEditors");
-
-                    b.Navigation("CategoryCreators");
-
-                    b.Navigation("CategoryEditors");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("ImageCreators");
-
-                    b.Navigation("ImageEditors");
-
-                    b.Navigation("InverseCreator");
-
-                    b.Navigation("InverseEditor");
-
-                    b.Navigation("OrderCreators");
-
-                    b.Navigation("OrderEditors");
-
-                    b.Navigation("ProductCreators");
-
-                    b.Navigation("ProductEditors");
-
-                    b.Navigation("PurchaseOrderCreators");
-
-                    b.Navigation("PurchaseOrderEditors");
-
-                    b.Navigation("ReviewAccounts");
-
-                    b.Navigation("ReviewCreators");
-
-                    b.Navigation("ReviewEditors");
-
-                    b.Navigation("RoleCreators");
-
-                    b.Navigation("RoleEditors");
-
-                    b.Navigation("ShippingInfoCreators");
-
-                    b.Navigation("ShippingInfoEditors");
-
-                    b.Navigation("Staff");
-
-                    b.Navigation("SubCategoryCreators");
-
-                    b.Navigation("SubCategoryEditors");
-
-                    b.Navigation("SupplierCreators");
-
-                    b.Navigation("SupplierEditors");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Category", b =>
@@ -1221,6 +1100,10 @@ namespace VBookHaven.Migrations
                 {
                     b.Navigation("Book");
 
+                    b.Navigation("ExchangeBaseProducts");
+
+                    b.Navigation("ExchangeProducts");
+
                     b.Navigation("Images");
 
                     b.Navigation("OrderDetails");
@@ -1237,11 +1120,6 @@ namespace VBookHaven.Migrations
                     b.Navigation("PurchaseOrderDetails");
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.Role", b =>
-                {
-                    b.Navigation("Accounts");
-                });
-
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
                 {
                     b.Navigation("Orders");
@@ -1249,6 +1127,8 @@ namespace VBookHaven.Migrations
 
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>
                 {
+                    b.Navigation("ActivityLogs");
+
                     b.Navigation("PurchaseOrders");
                 });
 
@@ -1260,6 +1140,13 @@ namespace VBookHaven.Migrations
             modelBuilder.Entity("VBookHaven.Models.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("VBookHaven.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace VBookHaven.Models;
 
-public partial class VBookHavenDBContext : DbContext
+public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 {
     public VBookHavenDBContext()
     {
@@ -14,8 +16,8 @@ public partial class VBookHavenDBContext : DbContext
         : base(options)
     {
     }
-
-    public virtual DbSet<Account> Accounts { get; set; }
+    public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public virtual DbSet<ActivityLog> ActivityLogs { get; set; }
 
     public virtual DbSet<Author> Authors { get; set; }
 
@@ -24,6 +26,8 @@ public partial class VBookHavenDBContext : DbContext
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
+
+    public virtual DbSet<Exchange> Exchanges { get; set; }
 
     public virtual DbSet<Image> Images { get; set; }
 
@@ -39,8 +43,6 @@ public partial class VBookHavenDBContext : DbContext
 
     public virtual DbSet<Review> Reviews { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
-
     public virtual DbSet<ShippingInfo> ShippingInfos { get; set; }
 
     public virtual DbSet<Staff> Staff { get; set; }
@@ -51,32 +53,56 @@ public partial class VBookHavenDBContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("name=DefaultConnection");
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //    => optionsBuilder.UseSqlServer("name=DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Account>(entity =>
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ActivityLog>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.InverseCreator).HasConstraintName("FK_Account_Account_Create");
+            entity.HasKey(e => e.Id).HasName("PK_Activity Log");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.InverseEditor).HasConstraintName("FK_Account_Account_Edit");
+            entity.ToTable("ActivityLog");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Accounts).HasConstraintName("FK_Account_Role");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Action).HasMaxLength(30);
+            entity.Property(e => e.ActivityDetails)
+                .HasColumnType("ntext")
+                .HasColumnName("Activity Details");
+            entity.Property(e => e.ActivitySummary)
+                .HasMaxLength(100)
+                .HasColumnName("Activity Summary");
+            entity.Property(e => e.ActorId).HasColumnName("ActorID");
+            entity.Property(e => e.ItemsId).HasMaxLength(30);
+            entity.Property(e => e.TableName).HasMaxLength(50);
+            entity.Property(e => e.Timestamp).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Actor).WithMany(p => p.ActivityLogs)
+                .HasForeignKey(d => d.ActorId)
+                .HasConstraintName("FK_ActivityLog_Staff");
         });
 
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.AuthorCreators).HasConstraintName("FK_Author_Account_Create");
+            entity.ToTable("Author");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.AuthorEditors).HasConstraintName("FK_Author_Account_Edit");
+            entity.Property(e => e.AuthorName).HasMaxLength(50);
+            entity.Property(e => e.Description).HasColumnType("ntext");
         });
 
         modelBuilder.Entity<Book>(entity =>
         {
+            entity.HasKey(e => e.ProductId);
+
+            entity.ToTable("Book");
+
             entity.Property(e => e.ProductId).ValueGeneratedNever();
+            entity.Property(e => e.Language).HasMaxLength(50);
+            entity.Property(e => e.Publisher).HasMaxLength(100);
 
             entity.HasOne(d => d.Product).WithOne(p => p.Book)
+                .HasForeignKey<Book>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Book_Product");
 
@@ -100,150 +126,221 @@ public partial class VBookHavenDBContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.CategoryCreators).HasConstraintName("FK_Category_Account_Create");
+            entity.ToTable("Category");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.CategoryEditors).HasConstraintName("FK_Category_Account_Edit");
+            entity.Property(e => e.CategoryName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.Property(e => e.AccountId).ValueGeneratedNever();
-            entity.Property(e => e.Phone).IsFixedLength();
+            entity.ToTable("Customer");
 
-            entity.HasOne(d => d.Account).WithOne(p => p.Customer)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Customer_Account");
+            entity.HasIndex(e => e.AccountId, "IX_Customer").IsUnique();
+
+            entity.Property(e => e.UserName).HasMaxLength(50);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .IsFixedLength();
+        });
+
+        modelBuilder.Entity<Exchange>(entity =>
+        {
+            entity.HasKey(e => e.ExchangeId).HasName("PK__Exchange__72E6008B8FB6C369");
+
+            entity.ToTable("Exchange");
+
+            entity.HasIndex(e => new { e.ProductId, e.BaseProductId }, "UC_Product_BaseProduct").IsUnique();
+
+            entity.HasOne(d => d.BaseProduct).WithMany(p => p.ExchangeBaseProducts)
+                .HasForeignKey(d => d.BaseProductId)
+                .HasConstraintName("FK_Exchange_Product1");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ExchangeProducts)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Exchange_Product");
         });
 
         modelBuilder.Entity<Image>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.ImageCreators).HasConstraintName("FK_Image_Account_Create");
+            entity.ToTable("Image");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.ImageEditors).HasConstraintName("FK_Image_Account_Edit");
+            entity.Property(e => e.ImageName).HasMaxLength(50);
 
-            entity.HasOne(d => d.Product).WithMany(p => p.Images).HasConstraintName("FK_Image_Product");
+            entity.HasOne(d => d.Product).WithMany(p => p.Images)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Image_Product");
         });
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.OrderCreators).HasConstraintName("FK_Order_Account_Create");
+            entity.ToTable("Order");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.Orders).HasConstraintName("FK_Order_Customer");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(50);
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.OrderEditors).HasConstraintName("FK_Order_Account_Edit");
+            entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK_Order_Customer");
 
-            entity.HasOne(d => d.ShippingInfo).WithMany(p => p.Orders).HasConstraintName("FK_Order_ShippingInfo");
+            entity.HasOne(d => d.ShippingInfo).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.ShippingInfoId)
+                .HasConstraintName("FK_Order_ShippingInfo");
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {
+            entity.HasKey(e => new { e.OrderId, e.ProductId });
+
+            entity.ToTable("OrderDetail");
+
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_Order");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
+                .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderDetail_Product");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.ProductCreators).HasConstraintName("FK_Product_Account_Create");
+            entity.ToTable("Product");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.ProductEditors).HasConstraintName("FK_Product_Account_Edit");
+            entity.HasIndex(e => e.Barcode, "UK_Product").IsUnique();
 
-            entity.HasOne(d => d.SubCategory).WithMany(p => p.Products).HasConstraintName("FK_Product_SubCategory");
+            entity.Property(e => e.Barcode).HasMaxLength(50);
+            entity.Property(e => e.Description).HasColumnType("ntext");
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Size).HasMaxLength(50);
+            entity.Property(e => e.Unit).HasMaxLength(50);
+            entity.Property(e => e.Weight).HasMaxLength(50);
+
+            entity.HasOne(d => d.SubCategory).WithMany(p => p.Products)
+                .HasForeignKey(d => d.SubCategoryId)
+                .HasConstraintName("FK_Product_SubCategory");
         });
 
         modelBuilder.Entity<PurchaseOrder>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.PurchaseOrderCreators).HasConstraintName("FK_PurchaseOrder_Account_Create");
+            entity.ToTable("PurchaseOrder");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.PurchaseOrderEditors).HasConstraintName("FK_PurchaseOrder_Account_Edit");
+            entity.Property(e => e.Date).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders).HasConstraintName("FK_PurchaseOrder_Staff");
+            entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders)
+                .HasForeignKey(d => d.StaffId)
+                .HasConstraintName("FK_PurchaseOrder_Staff");
 
-            entity.HasOne(d => d.Supplier).WithMany(p => p.PurchaseOrders).HasConstraintName("FK_PurchaseOrder_Supplier");
+            entity.HasOne(d => d.Supplier).WithMany(p => p.PurchaseOrders)
+                .HasForeignKey(d => d.SupplierId)
+                .HasConstraintName("FK_PurchaseOrder_Supplier");
         });
 
         modelBuilder.Entity<PurchaseOrderDetail>(entity =>
         {
             entity.HasKey(e => new { e.PurchaseOrderId, e.ProductId }).HasName("PK_PurchaseOrderDetail_1");
 
+            entity.ToTable("PurchaseOrderDetail");
+
             entity.HasOne(d => d.Product).WithMany(p => p.PurchaseOrderDetails)
+                .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchaseOrderDetail_Product");
 
             entity.HasOne(d => d.PurchaseOrder).WithMany(p => p.PurchaseOrderDetails)
+                .HasForeignKey(d => d.PurchaseOrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchaseOrderDetail_PurchaseOrder");
         });
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasOne(d => d.Account).WithMany(p => p.ReviewAccounts).HasConstraintName("FK_Review_Account");
+            entity.ToTable("Review");
 
-            entity.HasOne(d => d.Creator).WithMany(p => p.ReviewCreators).HasConstraintName("FK_Review_Account_Create");
+            entity.Property(e => e.Comment).HasColumnType("text");
+            entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.ReviewEditors).HasConstraintName("FK_Review_Account_Edit");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.Reviews).HasConstraintName("FK_Review_Product");
-        });
-
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasOne(d => d.Creator).WithMany(p => p.RoleCreators).HasConstraintName("FK_Role_Account_Create");
-
-            entity.HasOne(d => d.Editor).WithMany(p => p.RoleEditors).HasConstraintName("FK_Role_Account_Edit");
+            entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Review_Product");
         });
 
         modelBuilder.Entity<ShippingInfo>(entity =>
         {
-            entity.Property(e => e.Phone).IsFixedLength();
+            entity.HasKey(e => e.ShipInfoId);
 
-            entity.HasOne(d => d.Creator).WithMany(p => p.ShippingInfoCreators).HasConstraintName("FK_ShippingInfo_Account_Create");
+            entity.ToTable("ShippingInfo");
 
-            entity.HasOne(d => d.Customer).WithMany(p => p.ShippingInfos).HasConstraintName("FK_ShippingInfo_Customer");
+            entity.Property(e => e.CustomerName).HasMaxLength(50);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.ShipAddress).HasMaxLength(200);
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.ShippingInfoEditors).HasConstraintName("FK_ShippingInfo_Account_Edit");
+            entity.HasOne(d => d.Customer).WithMany(p => p.ShippingInfos)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK_ShippingInfo_Customer");
         });
 
         modelBuilder.Entity<Staff>(entity =>
         {
-            entity.Property(e => e.AccountId).ValueGeneratedNever();
-            entity.Property(e => e.IdCard).IsFixedLength();
-            entity.Property(e => e.Phone).IsFixedLength();
+            entity.HasIndex(e => e.AccountId, "IX_Staff").IsUnique();
 
-            entity.HasOne(d => d.Account).WithOne(p => p.Staff)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Staff_Account");
+            entity.Property(e => e.Address).HasMaxLength(200);
+            entity.Property(e => e.Dob)
+                .HasColumnType("date")
+                .HasColumnName("DOB");
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.IdCard)
+                .HasMaxLength(12)
+                .IsFixedLength();
+            entity.Property(e => e.Image).HasMaxLength(50);
+            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<Stationery>(entity =>
         {
             entity.HasKey(e => e.ProductId).HasName("PK_Other_1");
 
+            entity.ToTable("Stationery");
+
             entity.Property(e => e.ProductId).ValueGeneratedNever();
+            entity.Property(e => e.Brand).HasMaxLength(100);
+            entity.Property(e => e.Material).HasMaxLength(50);
+            entity.Property(e => e.Origin).HasMaxLength(50);
 
             entity.HasOne(d => d.Product).WithOne(p => p.Stationery)
+                .HasForeignKey<Stationery>(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Stationery_Product");
         });
 
         modelBuilder.Entity<SubCategory>(entity =>
         {
-            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories).HasConstraintName("FK_SubCategory_Category");
+            entity.ToTable("SubCategory");
 
-            entity.HasOne(d => d.Creator).WithMany(p => p.SubCategoryCreators).HasConstraintName("FK_SubCategory_Account_Create");
+            entity.Property(e => e.SubCategoryName).HasMaxLength(50);
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.SubCategoryEditors).HasConstraintName("FK_SubCategory_Account_Edit");
+            entity.HasOne(d => d.Category).WithMany(p => p.SubCategories)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_SubCategory_Category");
         });
 
         modelBuilder.Entity<Supplier>(entity =>
         {
-            entity.HasOne(d => d.Creator).WithMany(p => p.SupplierCreators).HasConstraintName("FK_Supplier_Account_Create");
+            entity.ToTable("Supplier");
 
-            entity.HasOne(d => d.Editor).WithMany(p => p.SupplierEditors).HasConstraintName("FK_Supplier_Account_Edit");
+            entity.Property(e => e.Address)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(15)
+                .IsUnicode(false);
+            entity.Property(e => e.SupplierName).HasMaxLength(100);
         });
 
         OnModelCreatingPartial(modelBuilder);
