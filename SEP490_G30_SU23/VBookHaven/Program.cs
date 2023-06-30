@@ -1,7 +1,8 @@
 using VBookHaven.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.AspNetCore.Identity.UI.Services;
+using VBookHaven.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +14,15 @@ service.AddControllersWithViews();
 service.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(60));
 service.AddDbContext<VBookHavenDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddDefaultIdentity<IdentityUser>()
-    .AddEntityFrameworkStores<VBookHavenDBContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<VBookHavenDBContext>().AddDefaultTokenProviders();
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});// add sau identity
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 

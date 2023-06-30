@@ -27,6 +27,49 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_FullName" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_FullName" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_FullName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_Address" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_Address" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_Address" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_Dob" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_Dob" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_Dob" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_IdCard" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_IdCard" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_IdCard" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_Image" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_Image" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_Image" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_IsMale" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_IsMale" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_IsMale" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="Input.Staff_Phone" class="form-control" placeholder="name@example.com" />
+                <label asp-for="Input.Staff_Phone" class="ms-2 text-muted"></label>
+                <span asp-validation-for="Input.Staff_Phone" class="text-danger"></span>
+            </div>
+           @* @if (User.IsInRole(SD.Role_Owner))
+            {*@
+                <div class="form-floating">
+                    <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select">
+                        <option disabled selected>-Select Role-</option>
+                    </select>
+                </div>
+           @* }*@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

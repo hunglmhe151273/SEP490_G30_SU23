@@ -291,14 +291,13 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Dob)
                 .HasColumnType("date")
                 .HasColumnName("DOB");
-            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.FullName).HasMaxLength(70);
             entity.Property(e => e.IdCard)
                 .HasMaxLength(12)
                 .IsFixedLength();
-            entity.Property(e => e.Image).HasMaxLength(50);
-            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.Image).HasMaxLength(100);
             entity.Property(e => e.Phone)
-                .HasMaxLength(10)
+                .HasMaxLength(15)
                 .IsFixedLength();
         });
 
