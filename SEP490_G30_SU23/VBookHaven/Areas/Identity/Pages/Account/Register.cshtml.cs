@@ -138,6 +138,12 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             [Display(Name = "Giới tính")]
             public bool? Staff_IsMale { get; set; }
             //Customer
+            [StringLength(20, ErrorMessage = "Họ và Tên không được vượt quá 20 kí tự.")]
+            [Display(Name = "Tên Tài Khoản")]
+            public String? Customer_UserName { get; set; }
+            [Display(Name = "Số điện thoại")]
+            [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
+            public String? Customer_Phone { get; set; }
         }
 
 
@@ -173,27 +179,39 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 //add user info
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                Staff s = new Staff();
-                s.FullName = Input.Staff_FullName;
-                s.Phone = Input.Staff_Phone;
-                s.IdCard = Input.Staff_IdCard;
-                s.IsMale = Input.Staff_IsMale;
-                s.Dob = Input.Staff_Dob;
-                s.Address = Input.Staff_Address;
-                if (Input.Staff_ImageFile != null)
-                {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.Staff_ImageFile.FileName);
-                    string staffPath = Path.Combine(wwwRootPath, @"images\staff");
-
-                    using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
-                    {
-                        Input.Staff_ImageFile.CopyTo(fileStream);
-                    }
-
-                    s.Image = @"\images\staff\" + fileName;
+                if (Input.Role == null || Input.Role.Equals("Customer")) {
+                    //add customer info
+                    VBookHaven.Models.Customer c = new VBookHaven.Models.Customer();
+                    c.UserName = Input.Customer_UserName;
+                    c.Phone = Input.Customer_Phone;
+                    user.Customer = c;
                 }
-                user.Staff = s;
+                else {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    Staff s = new Staff();
+                    s.FullName = Input.Staff_FullName;
+                    s.Phone = Input.Staff_Phone;
+                    s.IdCard = Input.Staff_IdCard;
+                    s.IsMale = Input.Staff_IsMale;
+                    s.Dob = Input.Staff_Dob;
+                    s.Address = Input.Staff_Address;
+                    if (Input.Staff_ImageFile != null)
+                    {
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.Staff_ImageFile.FileName);
+                        string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+
+                        using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                        {
+                            Input.Staff_ImageFile.CopyTo(fileStream);
+                        }
+
+                        s.Image = @"\images\staff\" + fileName;
+                    }
+                    user.Staff = s;
+                }
+                
+               
+                //Create account
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
