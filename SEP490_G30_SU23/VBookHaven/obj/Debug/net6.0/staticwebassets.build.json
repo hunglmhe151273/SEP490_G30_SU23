@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "s+YyRUR5mHASLTITjrBWMsUphIYGmAKg0Z2RTAtMFds=",
+  "Hash": "AfQ3TPQVrlFnOC8VlNq9dmI1Azfada8jp0mvs7G4BkU=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -9093,6 +9093,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\3798ced9-1c32-42aa-839d-5826d14e20ef.jpg",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/Staff/3798ced9-1c32-42aa-839d-5826d14e20ef.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\3798ced9-1c32-42aa-839d-5826d14e20ef.jpg"
+    },
+    {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\4de84040-cbe3-4668-9187-4660f84b36c9.png",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/Staff/4de84040-cbe3-4668-9187-4660f84b36c9.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\4de84040-cbe3-4668-9187-4660f84b36c9.png"
     },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\js\\site.js",

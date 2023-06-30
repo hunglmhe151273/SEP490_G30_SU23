@@ -1897,6 +1897,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\3798ced9-1c32-42aa-839d-5826d14e20ef.jpg",
+      "PackagePath": "staticwebassets\\images\\Staff\\3798ced9-1c32-42aa-839d-5826d14e20ef.jpg"
+    },
+    {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\4de84040-cbe3-4668-9187-4660f84b36c9.png",
+      "PackagePath": "staticwebassets\\images\\Staff\\4de84040-cbe3-4668-9187-4660f84b36c9.png"
+    },
+    {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

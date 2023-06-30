@@ -34,6 +34,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -41,7 +42,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -50,6 +52,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         /// <summary>
@@ -93,6 +96,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             [Required]
             [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
+            [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Passwords must have at least one non-alphanumeric character, one digit, and one uppercase letter.")]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
@@ -108,6 +112,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> GenderList { get; set; }
             // Staff_ info
 
             [Display(Name = "Họ và Tên")]
@@ -127,7 +133,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
             public string? Staff_Phone { get; set; }
             [Display(Name = "Ảnh Đại Diện")]
-            public string? Staff_Image { get; set; }
+            [DataType(DataType.Upload)]
+            public IFormFile? Staff_ImageFile { get; set; }
             [Display(Name = "Giới tính")]
             public bool? Staff_IsMale { get; set; }
             //Customer
@@ -143,7 +150,6 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Seller)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Storekeeper)).GetAwaiter().GetResult();
             }
-          
             Input = new()
             {
                 RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
@@ -151,7 +157,6 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }),
-
             };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -168,14 +173,26 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 //add user info
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
                 Staff s = new Staff();
                 s.FullName = Input.Staff_FullName;
                 s.Phone = Input.Staff_Phone;
                 s.IdCard = Input.Staff_IdCard;
-                s.Image = Input.Staff_Image;
                 s.IsMale = Input.Staff_IsMale;
                 s.Dob = Input.Staff_Dob;
                 s.Address = Input.Staff_Address;
+                if (Input.Staff_ImageFile != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.Staff_ImageFile.FileName);
+                    string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+
+                    using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                    {
+                        Input.Staff_ImageFile.CopyTo(fileStream);
+                    }
+
+                    s.Image = @"\images\staff\" + fileName;
+                }
                 user.Staff = s;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -191,7 +208,6 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     {
                         await _userManager.AddToRoleAsync(user, SD.Role_Customer);
                     }
-
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -209,13 +225,13 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
-                    {
+                    {  
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
-
                 }
-              
+
+                //- TO DO: Neu add khong thanh cong xoa anh vua add
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
