@@ -65,7 +65,7 @@ namespace VBookHaven.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(UserVM model, string? returnUrl)
         {
-            //returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/");
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)

@@ -1913,6 +1913,10 @@
       "PackagePath": "staticwebassets\\images\\Staff\\4fb955a0-38d4-493b-8655-d11ec92e3aff.png"
     },
     {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\dcc3e1d6-36aa-4e57-a3da-c6f8d54b271b.png",
+      "PackagePath": "staticwebassets\\images\\Staff\\dcc3e1d6-36aa-4e57-a3da-c6f8d54b271b.png"
+    },
+    {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
