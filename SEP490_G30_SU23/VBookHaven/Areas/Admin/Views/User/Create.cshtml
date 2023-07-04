@@ -1,0 +1,141 @@
+﻿ @model UserVM 
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" enctype="multipart/form-data" asp-controller="User" asp-action="Create" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (!User.IsInRole(SD.Role_Owner))
+            {
+                <div class="form-floating">
+                    <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="@Model.Email"></label>
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <label asp-for="@Model.Password"></label>
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_FullName" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_FullName" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Staff_FullName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_Address" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_Address" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Staff_Address" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_Dob" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_Dob" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Staff_Dob" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_IdCard" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_IdCard" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Staff_IdCard" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_ImageFile" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_ImageFile" class="ms-2 text-muted"></label>
+                </div>
+                <label asp-for="@Model.Staff_IsMale" class="ms-2 text-muted"></label>
+                <div class="form-check">
+                    <input type="radio" asp-for="@Model.Staff_IsMale" value="true" class="form-check-input" />
+                    <label class="form-check-label">Nam</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="@Model.Staff_IsMale" value="false" class="form-check-input" />
+                    <label class="form-check-label">Nữ</label>
+                </div>
+                <span asp-validation-for="@Model.Staff_IsMale" class="text-danger"></span>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Staff_Phone" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Staff_Phone" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Staff_Phone" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <select asp-for="@Model.Role" asp-items="@Model.RoleList" class="form-select">
+                        <option disabled selected>-Select Role-</option>
+                    </select>
+                    @if (@Model.RoleValidate != null)
+                    {
+                        <span class="text-danger">@Model.RoleValidate </span>
+                    }
+                </div>
+            }
+            @*else
+            {
+                <div class="form-floating">
+                    <input asp-for="@Model.Email" class="form-control" autocomplete="username" aria-required="true" />
+                    <label asp-for="@Model.Email"></label>
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <label asp-for="@Model.Password"></label>
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+                    <label asp-for="@Model.ConfirmPassword"></label>
+                    <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Customer_UserName" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Customer_UserName" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Customer_UserName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.Customer_Phone" class="form-control" placeholder="name@example.com" />
+                    <label asp-for="@Model.Customer_Phone" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.Customer_Phone" class="text-danger"></span>
+                </div>
+            }*@
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to register.</h3>
+            <hr />
+            @{
+                if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <div>
+                        <p>
+                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                article
+                                about setting up this ASP.NET application to support logging in via external services
+                            </a>.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins!)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                }
+            }
+        </section>
+    </div>*@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

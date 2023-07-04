@@ -7,9 +7,7 @@ public partial class Staff
 {
     public int StaffId { get; set; }
 
-    public string? FirstName { get; set; }
-
-    public string? LastName { get; set; }
+    public string? FullName { get; set; }
 
     public DateTime? Dob { get; set; }
 
@@ -29,4 +27,5 @@ public partial class Staff
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
 
     public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
+
 }

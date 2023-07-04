@@ -20,12 +20,14 @@ namespace VBookHaven.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -114,8 +116,21 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var roles = await _userManager.GetRolesAsync(user);
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    if (roles.Contains("Owner"))
+                    {
+                        // Redirect to the admin page
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                    }
+                    else if (!roles.Contains("Owner"))
+                    {
+                        // Redirect to the user page
+                        return RedirectToAction("Index", "Home", new { area = "Customer" });
+                    }
+                    //return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -10,9 +10,12 @@
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
     <Folder Include="wwwroot\images\img\" />
+    <Folder Include="Respository\" />
+    <Folder Include="wwwroot\images\Staff\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.19" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7">

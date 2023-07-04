@@ -15,6 +15,18 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Home/IndexStoreKeepper.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleFN0b3JlS2VlcHBlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Home/RegisterStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxSZWdpc3RlclN0YWZmLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Product/AddBook.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxBZGRCb29rLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -49,6 +61,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/_ViewImports.cshtml]
@@ -273,6 +289,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_LayoutAuthentication.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBdXRoZW50aWNhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Tai_lieu_hoc_tap/Đồ án/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_LayoutCustomer.cshtml]
