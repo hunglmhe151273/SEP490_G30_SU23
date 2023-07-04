@@ -8,26 +8,27 @@ namespace VBookHaven.Utility
 {
     public class EmailSender : IEmailSender
     {
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("VBookHaven Management System", "acchunglmhe151273@gmail.com"));
-            message.To.Add(new MailboxAddress(email, email));
-            message.Subject = $"{subject}";
-            message.Body = new TextPart("html")
-            {
-                Text = $"{htmlMessage}",
+            //var message = new MimeMessage();
+            //message.From.Add(new MailboxAddress("VBookHaven Management System", "EmailAddress"));
+            //message.To.Add(new MailboxAddress(email, email));
+            //message.Subject = $"{subject}";
+            //message.Body = new TextPart("html")
+            //{
+            //    Text = $"{htmlMessage}",
 
-            };
-            using (var client = new MailKit.Net.Smtp.SmtpClient())
-            {
-                await client.ConnectAsync("smtp.gmail.com", 587, false);
-                await client.AuthenticateAsync("acchunglmhe151273@gmail.com", "");
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
-            }
+            //};
+            //using (var client = new MailKit.Net.Smtp.SmtpClient())
+            //{
+            //    await client.ConnectAsync("smtp.gmail.com", 587, false);
+            //    await client.AuthenticateAsync("acchunglmhe151273@gmail.com", "");
+            //    await client.SendAsync(message);
+            //    await client.DisconnectAsync(true);
+            //}
+           
+            return Task.CompletedTask;
             //c2
-            //return Task.CompletedTask;
         }
     }
 }
@@ -46,3 +47,4 @@ namespace VBookHaven.Utility
 //smtp.Host = "smtp.gmail.com";
 //smtp.Credentials = new System.Net.NetworkCredential("acchunglmhe151273@gmail.com", "");
 //smtp.Send(mail);
+//return Task.CompletedTask;

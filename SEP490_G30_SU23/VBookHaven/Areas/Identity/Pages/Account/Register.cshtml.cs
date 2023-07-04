@@ -112,38 +112,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
-            [ValidateNever]
-            public IEnumerable<SelectListItem> GenderList { get; set; }
-            // Staff_ info
 
-            [Display(Name = "Họ và Tên")]
-            [StringLength(20, ErrorMessage = "Họ và Tên không được vượt quá 20 kí tự.")]
-            public string? Staff_FullName { get; set; }
-            [Display(Name = "Ngày sinh")]
-            public DateTime? Staff_Dob { get; set; }
-            [Display(Name = "Số CMND")]
-            [StringLength(12, MinimumLength = 12, ErrorMessage = "Số CMND phải có đúng 12 kí tự.")]
-            [RegularExpression(@"^\d+$", ErrorMessage = "Số CMND chỉ được chứa chữ số.")]
-            public string? Staff_IdCard { get; set; }
-            [Display(Name = "Địa chỉ nhân viên")]
-            [StringLength(100, ErrorMessage = "Địa chỉ không được vượt quá 100 kí tự.")]
-            public string? Staff_Address { get; set; }
-            [Display(Name = "Số điện thoại nhân viên")]
-            [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
-            [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
-            public string? Staff_Phone { get; set; }
-            [Display(Name = "Ảnh Đại Diện")]
-            [DataType(DataType.Upload)]
-            public IFormFile? Staff_ImageFile { get; set; }
-            [Display(Name = "Giới tính")]
-            public bool? Staff_IsMale { get; set; }
-            //Customer
-            [StringLength(20, ErrorMessage = "Họ và Tên không được vượt quá 20 kí tự.")]
-            [Display(Name = "Tên Tài Khoản")]
-            public String? Customer_UserName { get; set; }
-            [Display(Name = "Số điện thoại")]
-            [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
-            public String? Customer_Phone { get; set; }
         }
 
 
@@ -182,32 +151,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 if (Input.Role == null || Input.Role.Equals("Customer")) {
                     //add customer info
                     VBookHaven.Models.Customer c = new VBookHaven.Models.Customer();
-                    c.UserName = Input.Customer_UserName;
-                    c.Phone = Input.Customer_Phone;
+                    c.UserName = Input.Email;
                     user.Customer = c;
-                }
-                else {
-                    string wwwRootPath = _webHostEnvironment.WebRootPath;
-                    Staff s = new Staff();
-                    s.FullName = Input.Staff_FullName;
-                    s.Phone = Input.Staff_Phone;
-                    s.IdCard = Input.Staff_IdCard;
-                    s.IsMale = Input.Staff_IsMale;
-                    s.Dob = Input.Staff_Dob;
-                    s.Address = Input.Staff_Address;
-                    if (Input.Staff_ImageFile != null)
-                    {
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.Staff_ImageFile.FileName);
-                        string staffPath = Path.Combine(wwwRootPath, @"images\staff");
-
-                        using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
-                        {
-                            Input.Staff_ImageFile.CopyTo(fileStream);
-                        }
-
-                        s.Image = @"\images\staff\" + fileName;
-                    }
-                    user.Staff = s;
                 }
                 
                
@@ -235,8 +180,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Xác nhận email",
+                        $"Xác nhận email bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

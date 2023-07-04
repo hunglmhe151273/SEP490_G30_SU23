@@ -20,6 +20,14 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Home/IndexStoreKeepper.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleFN0b3JlS2VlcHBlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/Home/RegisterStaff.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxSZWdpc3RlclN0YWZmLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Areas/Admin/Views/User/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlclxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -214,6 +222,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_LayoutAuthentication.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBdXRoZW50aWNhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [F:/Semester 9/SEP490/SEP490_G30_SU23/SEP490_G30_SU23/VBookHaven/Views/Shared/_LayoutCustomer.cshtml]
