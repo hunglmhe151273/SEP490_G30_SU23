@@ -1,5 +1,8 @@
 ﻿@using VBookHaven.Models
 @model List<Product>
+@{
+	Dictionary<int, string?> thumbnails = (Dictionary<int, string?>)ViewBag.thumbnails;
+}
 
 <!--breadcrumb-->
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -41,28 +44,24 @@
 								<div class="col-md-12 mb-2">
 									<label class="form-label">Tìm kiếm</label>
 									<input type="text" class="form-control filter" id="search"
-										   placeholder="Nhập từ khóa vào đây...">
+										   placeholder="Nhập từ khóa vào đây..." 
+										   name="searchModel.Search" value="@ViewBag.search.Search">
 								</div>
 								<div class="col-md-6 mb-2">
-									<label class="form-label">Loại</label>
-									<select class="form-select filter" id="category">
-										<option value="" selected>--Không--</option>
-										<option value="Sách">Sách</option>
-										<option value="Chuyện tranh">Chuyện tranh</option>
-										<option value="Bút bi">Bút bi</option>
+									<label class="form-label">Loại sản phẩm</label>
+									<select class="form-select filter" id="category"
+										name="searchModel.SubCategoryId" asp-items="@ViewBag.subCategories">
 									</select>
 								</div>
 								<div class="col-md-6 mb-2">
 									<label class="form-label">Trạng thái</label>
-									<select class="form-select filter" id="status">
-										<option value="" selected>--Không--</option>
-										<option value="Hoạt động">Hoạt động</option>
-										<option value="Đình chỉ">Đình chỉ</option>
+									<select class="form-select filter" id="status"
+										name="searchModel.Status" asp-items="@ViewBag.statusList">
 									</select>
 								</div>
-								<!-- <div class="col-md-4"></div>
+								<div class="col-md-4"></div>
 								<input type="submit" class="btn btn-primary mt-3 col-md-4" value="Lọc">
-								<div class="col-md-4"></div> -->
+								<div class="col-md-4"></div>
 							</form>
 						</div>
 					</div>
@@ -103,8 +102,11 @@
 						{
 							<tr>
 								<td>
-									<img src="#"
-									 alt="">
+									@if (thumbnails[p.ProductId] != null)
+									{
+										<img src="~/images/img/@thumbnails[p.ProductId]"
+										width="105px" height="70px" alt="">
+									}
 								</td>
 								<td>@p.Barcode</td>
 								<td>@p.Name</td>
@@ -114,9 +116,18 @@
 								<td>@p.RetailPrice VNĐ</td>
 								<td>@p.WholesalePrice VNĐ</td>
 								<td>
-									<a href="" class="btn btn-sm btn-default">
-										<i class="lni lni-eye"></i>
-									</a>
+									@if (p.IsBook == true)
+									{
+										<a href="/admin/product/viewbook/@p.ProductId" class="btn btn-sm btn-default">
+											<i class="lni lni-eye"></i>
+										</a>
+									}
+									else
+									{
+										<a href="/admin/product/viewstationery/@p.ProductId" class="btn btn-sm btn-default">
+											<i class="lni lni-eye"></i>
+										</a>
+									}
 								</td>
 								<td>
 									@if (p.Status == true)
@@ -129,9 +140,20 @@
 									}
 								</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-default">
-										<i class="lni lni-pencil-alt"></i>
-									</button>
+									@if (p.IsBook == true)
+									{
+										<button type="button" class="btn btn-sm btn-default"
+											onclick="window.location.href='/admin/product/editbook/@p.ProductId'">
+											<i class="lni lni-pencil-alt"></i>
+										</button>
+									}
+									else
+									{
+										<button type="button" class="btn btn-sm btn-default"
+											onclick="window.location.href='/admin/product/editstationery/@p.ProductId'">
+											<i class="lni lni-pencil-alt"></i>
+										</button>
+									}
 								</td>
 							</tr>
 						}

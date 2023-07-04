@@ -53,10 +53,19 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //    => optionsBuilder.UseSqlServer("name=DefaultConnection");
+	//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	//    => optionsBuilder.UseSqlServer("name=DefaultConnection");
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		var builder = new ConfigurationBuilder()
+			.SetBasePath(Directory.GetCurrentDirectory())
+			.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+		IConfigurationRoot configuration = builder.Build();
+		optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+	}
+
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<ActivityLog>(entity =>

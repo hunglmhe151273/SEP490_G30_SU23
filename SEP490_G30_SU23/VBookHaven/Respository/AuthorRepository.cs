@@ -7,39 +7,60 @@ namespace VBookHaven.Respository
 	{
 		Task<List<Author>> GetAllAuthorsAsync();
 		Task<Author?> GetAuthorByIdAsync(int id);
+		Task<List<Author>> GetAuthorsByBookIdAsync(int id);
+
 		Task AddAuthorAsync(Author author);
 		Task UpdateAuthorAsync(Author author);
 	}
 	
 	public class AuthorRepository : IAuthorRepository
 	{
-		private readonly VBookHavenDBContext dbContext;
-
-		public AuthorRepository(VBookHavenDBContext dbContext)
-		{
-			this.dbContext = dbContext;
-		}
-
 		public async Task AddAuthorAsync(Author author)
 		{
-			dbContext.Authors.Add(author);
-			await dbContext.SaveChangesAsync();
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				dbContext.Authors.Add(author);
+				await dbContext.SaveChangesAsync();
+			}
 		}
 
 		public async Task<List<Author>> GetAllAuthorsAsync()
 		{
-			return await dbContext.Authors.ToListAsync();
+			using (var dbContext = new VBookHavenDBContext())
+			{ 
+				return await dbContext.Authors.ToListAsync(); 
+			}
 		}
 
 		public async Task<Author?> GetAuthorByIdAsync(int id)
 		{
-			return await dbContext.Authors.FindAsync(id);
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.Authors.FindAsync(id);
+			}
+		}
+
+		public async Task<List<Author>> GetAuthorsByBookIdAsync(int id)
+		{
+			var authorsId = new List<int>();
+
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				var book = await dbContext.Books.Include(b => b.Authors)
+					.SingleOrDefaultAsync(b => b.ProductId == id);
+				if (book != null)
+					return book.Authors.ToList();
+				else return new List<Author>();
+			}
 		}
 
 		public async Task UpdateAuthorAsync(Author author)
 		{
-			dbContext.Entry(author).State = EntityState.Modified;
-			await dbContext.SaveChangesAsync();
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				dbContext.Entry(author).State = EntityState.Modified;
+				await dbContext.SaveChangesAsync();
+			}
 		}
 	}
 }
