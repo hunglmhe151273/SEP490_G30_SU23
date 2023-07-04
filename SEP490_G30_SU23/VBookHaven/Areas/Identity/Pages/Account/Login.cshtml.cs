@@ -120,12 +120,12 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     var roles = await _userManager.GetRolesAsync(user);
                     _logger.LogInformation("User logged in.");
 
-                    if (roles.Contains("Admin"))
+                    if (roles.Contains("Owner"))
                     {
                         // Redirect to the admin page
                         return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
-                    else if (!roles.Contains("Admin"))
+                    else if (!roles.Contains("Owner"))
                     {
                         // Redirect to the user page
                         return RedirectToAction("Index", "Home", new { area = "Customer" });

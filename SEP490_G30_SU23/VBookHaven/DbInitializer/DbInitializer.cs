@@ -10,7 +10,7 @@ namespace VBookHaven.DbInitializer
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly VBookHavenDBContext _db;
-
+        private String password = "pass123@";
         public DbInitializer(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -43,46 +43,44 @@ namespace VBookHaven.DbInitializer
                 //if roles are not created, then we will create admin user as well
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "OwnerUserName",
-                    Email = "hunglmhe151273@fpt.edu.vn",
                     Staff = new Staff
                     {
                         FullName = "OwerFullName",
                     },
+                    UserName = "hunglmhe151273@fpt.edu.vn",
+                    Email = "hunglmhe151273@fpt.edu.vn",
                     EmailConfirmed = true,
-                }, "Owner123*").GetAwaiter().GetResult();
-
+                },"Pass123@").GetAwaiter().GetResult();
 
                 ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "hunglmhe151273@fpt.edu.vn");
                 _userManager.AddToRoleAsync(user, SD.Role_Owner).GetAwaiter().GetResult();
             }
-            //create product
             if (_db.Staff.Count() < 2)
             {
                 //Staff1 - storekeeper
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "storekeeper1UserName",
+                    UserName = "storekeeper1@gmail.com",
                     Email = "storekeeper1@gmail.com",
                     Staff = new Staff
                     {
                         FullName = "storekeeper1FullName",
                     },
                     EmailConfirmed = true,
-                }, "Staff123*").GetAwaiter().GetResult();
+                }, "Pass123@").GetAwaiter().GetResult();
                 ApplicationUser user1 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "storekeeper1@gmail.com");
                 _userManager.AddToRoleAsync(user1, SD.Role_Owner).GetAwaiter().GetResult();
                 //Staff2 - seller
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "seller1UserName",
+                    UserName = "seller1@gmail.com",
                     Email = "seller1@gmail.com",
                     Staff = new Staff
                     {
                         FullName = "seller1FullName",
                     },
                     EmailConfirmed = true,
-                }, "Staff123*").GetAwaiter().GetResult();
+                }, "Pass123@").GetAwaiter().GetResult();
                 ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "seller1@gmail.com");
                 _userManager.AddToRoleAsync(user2, SD.Role_Owner).GetAwaiter().GetResult();
             }
