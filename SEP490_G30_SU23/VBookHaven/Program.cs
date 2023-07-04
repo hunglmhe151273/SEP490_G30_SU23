@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using VBookHaven.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using VBookHaven.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,22 +13,24 @@ var builder = WebApplication.CreateBuilder(args);
 var service = builder.Services;
 
 service.AddControllersWithViews();
-service.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(60));
 service.AddDbContext<VBookHavenDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()//options => options.SignIn.RequireConfirmedAccount = true
     .AddEntityFrameworkStores<VBookHavenDBContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options => {
     options.LoginPath = $"/Identity/Account/Login";
     options.LogoutPath = $"/Identity/Account/Logout";
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });// add sau identity
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+service.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(60));
 builder.Services.Configure<CookieAuthenticationOptions>(options =>
 {
     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
 });
+
 
 var app = builder.Build();
 
@@ -38,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseSession();
+SeedDatabase();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -49,3 +53,12 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}
