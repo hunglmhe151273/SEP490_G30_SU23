@@ -46,13 +46,6 @@ namespace VBookHaven.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            if (!_roleManager.RoleExistsAsync(SD.Role_Customer).GetAwaiter().GetResult())
-            {
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Owner)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Seller)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Storekeeper)).GetAwaiter().GetResult();
-            }
             UserVM userVM = new()
             {
                 RoleList = GetRoleList(),
@@ -154,6 +147,15 @@ namespace VBookHaven.Areas.Admin.Controllers
             model.RoleList = GetRoleList();
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            UserVM userVM = new()
+            {
+                RoleList = GetRoleList(),
+            };
+            return View(userVM);
         }
         private ApplicationUser CreateUser()
         {
