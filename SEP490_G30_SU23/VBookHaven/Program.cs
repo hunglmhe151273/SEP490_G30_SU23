@@ -32,7 +32,7 @@ builder.Services.Configure<CookieAuthenticationOptions>(options =>
     options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
 });
 
-
+builder.Services.AddScoped<IApplicationUserRespository, ApplicationUserRespository>();
 service.AddScoped<IProductRespository, ProductRespository>();
 service.AddScoped<IAuthorRepository, AuthorRepository>();
 service.AddScoped<ICategoryRepository, CategoryRepository>();

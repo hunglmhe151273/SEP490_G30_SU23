@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Encodings.Web;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using VBookHaven.Respository;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VBookHaven.Areas.Admin.Controllers
 {
@@ -23,8 +27,7 @@ namespace VBookHaven.Areas.Admin.Controllers
         //private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-
+        private readonly IApplicationUserRespository _IApplicationUserRespository;
         public UserController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -32,6 +35,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             SignInManager<IdentityUser> signInManager,
             //ILogger<RegisterModel> logger,
             IEmailSender emailSender,
+            IApplicationUserRespository applicationUserRespository,
             IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
@@ -41,7 +45,9 @@ namespace VBookHaven.Areas.Admin.Controllers
             _signInManager = signInManager;
             //_logger = logger;
             _emailSender = emailSender;
+            _IApplicationUserRespository = applicationUserRespository;
             _webHostEnvironment = webHostEnvironment;
+
         }
         [HttpGet]
         public IActionResult Create()
@@ -75,17 +81,6 @@ namespace VBookHaven.Areas.Admin.Controllers
                 var user = CreateUser();
                 await _userStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
-                //add user info
-                //if (model.Role == null || model.Role.Equals("Customer"))
-                //{
-                //    //add customer info
-                //    VBookHaven.Models.Customer c = new VBookHaven.Models.Customer();
-                //    c.UserName = model.Customer_UserName;
-                //    c.Phone = model.Customer_Phone;
-                //    user.Customer = c;
-                //}
-                //else
-                //{
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
                     Staff s = new Staff();
                     s.FullName = model.Staff_FullName;
@@ -107,9 +102,6 @@ namespace VBookHaven.Areas.Admin.Controllers
                         s.Image = @"\images\staff\" + fileName;
                     }
                     user.Staff = s;
-                //}
-
-
                 //Create account
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -149,13 +141,67 @@ namespace VBookHaven.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            UserVM userVM = new()
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //get application user by id
+            StaffProfileVM model = new StaffProfileVM();
+
+            model.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);
+            
+            // view application user
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Profile(StaffProfileVM staffProfileVM)
+        {
+            if (staffProfileVM.ApplicationUser.Staff.IsMale == null)
             {
-                RoleList = GetRoleList(),
-            };
-            return View(userVM);
+                staffProfileVM.GenderValidate = "Hãy chọn giới tính của nhân viên";
+                return View(staffProfileVM);
+            }
+            if (ModelState.IsValid)
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (staffProfileVM.Staff_ImageFile != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(staffProfileVM.Staff_ImageFile.FileName);
+                    string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+                    if (!string.IsNullOrEmpty(staffProfileVM.ApplicationUser.Staff.Image))
+                    {
+                        //delete the old image
+                        var oldImagePath =
+                            Path.Combine(wwwRootPath, staffProfileVM.ApplicationUser.Staff.Image.TrimStart('\\'));
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    //add image, update url
+                    using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                    {
+                        staffProfileVM.Staff_ImageFile.CopyTo(fileStream);
+                    }
+
+                    staffProfileVM.ApplicationUser.Staff.Image = @"\images\staff\" + fileName;
+                }
+
+                //update staff
+                await _IApplicationUserRespository.UpdateStaffByAsync(staffProfileVM.ApplicationUser);
+
+                ////- TO DO: Neu update khong thanh cong xoa anh vua add
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
+                return RedirectToAction(nameof(Profile));
+            }
+            
+
+            // view application user
+            return View(staffProfileVM);
         }
         private ApplicationUser CreateUser()
         {

@@ -10,7 +10,6 @@ namespace VBookHaven.DbInitializer
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly VBookHavenDBContext _db;
-        private String password = "pass123@";
         public DbInitializer(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -46,6 +45,12 @@ namespace VBookHaven.DbInitializer
                     Staff = new Staff
                     {
                         FullName = "OwerFullName",
+                        Dob = new DateTime(2001, 1, 1),
+                        IdCard = "123456789101",
+                        Address = "123 Example Street, City, Country", 
+                        Phone = "0123456789",
+                        Image = "\\images\\Staff\\330352f8-a5c6-4d11-8a6d-3e2f0ca09ff0.png", 
+                        IsMale = true 
                     },
                     UserName = "hunglmhe151273@fpt.edu.vn",
                     Email = "hunglmhe151273@fpt.edu.vn",
@@ -65,6 +70,12 @@ namespace VBookHaven.DbInitializer
                     Staff = new Staff
                     {
                         FullName = "storekeeper1FullName",
+                        Dob = new DateTime(2002, 2, 2),
+                        IdCard = "123456789101",
+                        Address = "123 Example Street, City, Country",
+                        Phone = "0123456789",
+                        Image = "\\images\\Staff\\330352f8-a5c6-4d11-8a6d-3e2f0ca09ff0.png",
+                        IsMale = true
                     },
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
@@ -78,13 +89,25 @@ namespace VBookHaven.DbInitializer
                     Staff = new Staff
                     {
                         FullName = "seller1FullName",
+                        Dob = new DateTime(2003, 3, 3),
+                        IdCard = "123456789101",
+                        Address = "123 Example Street, City, Country",
+                        Phone = "0123456789",
+                        Image = "\\images\\Staff\\3798ced9-1c32-42aa-839d-5826d14e20ef.png",
+                        IsMale = true
                     },
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
                 ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "seller1@gmail.com");
                 _userManager.AddToRoleAsync(user2, SD.Role_Owner).GetAwaiter().GetResult();
             }
-            //Create product
+            //1.Author
+
+            //2.Product
+
+            //3.Stationary
+
+
 
             _db.SaveChangesAsync();
             return;

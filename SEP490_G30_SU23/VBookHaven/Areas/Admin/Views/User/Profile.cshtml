@@ -1,0 +1,90 @@
+﻿@model StaffProfileVM
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+}
+@inject UserManager<IdentityUser> UserManager
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" enctype="multipart/form-data" asp-controller="User" asp-action="Profile" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
+            <h2>Create a new account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="@Model.ApplicationUser.Id" hidden/>
+            <input asp-for="@Model.ApplicationUser.Staff.Image" hidden />
+                <div class="form-floating">
+                <input asp-for="@Model.ApplicationUser.Email" class="form-control" autocomplete="username" aria-required="true" disabled />
+                <label asp-for="@Model.ApplicationUser.Email"></label>
+                <span asp-validation-for="@Model.ApplicationUser.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" value="123@123Aa" aria-required="true" />
+                    <label asp-for="@Model.Password"></label>
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                <input asp-for="@Model.ApplicationUser.Staff.FullName" class="form-control"/>
+                    <label asp-for="@Model.ApplicationUser.Staff.FullName" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.ApplicationUser.Staff.FullName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.ApplicationUser.Staff.Address" class="form-control" placeholder="" />
+                    <label asp-for="@Model.ApplicationUser.Staff.Address" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.ApplicationUser.Staff.Address" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.ApplicationUser.Staff.Dob" class="form-control" placeholder="" />
+                    <label asp-for="@Model.ApplicationUser.Staff.Dob" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.ApplicationUser.Staff.Dob" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="@Model.ApplicationUser.Staff.IdCard" class="form-control"/>
+                    <label asp-for="@Model.ApplicationUser.Staff.IdCard" class="ms-2 text-muted"></label>
+                    <span asp-validation-for="@Model.ApplicationUser.Staff.IdCard" class="text-danger"></span>
+                </div>
+            <div class="form-floating mb-3 col-md-6">
+                <input asp-for="@Model.ApplicationUser.Staff.Phone" class="form-control" placeholder="" />
+                <label asp-for="@Model.ApplicationUser.Staff.Phone" class="ms-2 text-muted"></label>
+                <span asp-validation-for="@Model.ApplicationUser.Staff.Phone" class="text-danger"></span>
+            </div>
+                <div class="form-floating mb-3 col-md-6">
+                <img src="@Model.ApplicationUser.Staff.Image" width="100%"
+                     style="border-radius:5px; border:1px solid #bbb9b9" />
+                    <input asp-for="@Model.Staff_ImageFile" class="form-control" placeholder="" />
+                    <label asp-for="@Model.Staff_ImageFile" class="ms-2 text-muted"></label>
+                </div>
+           
+                <label asp-for="@Model.ApplicationUser.Staff.IsMale" class="ms-2 text-muted"></label>
+                <div class="form-check">
+                    <input type="radio" asp-for="@Model.ApplicationUser.Staff.IsMale" value="true" class="form-check-input" />
+                    <label class="form-check-label">Nam</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="@Model.ApplicationUser.Staff.IsMale" value="false" class="form-check-input" />
+                    <label class="form-check-label">Nữ</label>
+                </div>
+                <span asp-validation-for="@Model.ApplicationUser.Staff.IsMale" class="text-danger"></span>
+             
+                    @if (User.IsInRole(SD.Role_Customer))
+                    {
+                        <input disabled value="@SD.Role_Customer" class="form-control" />
+                    }
+                    else if (User.IsInRole(SD.Role_Owner))
+                    {
+                        <input disabled value="@SD.Role_Owner" class="form-control" />
+                    }
+                    else if (User.IsInRole(SD.Role_Storekeeper))
+                    {
+                        <input disabled value="@SD.Role_Storekeeper" class="form-control" />
+                    }
+                    else if (User.IsInRole(SD.Role_Seller))
+                    {
+                    <input disabled value="@SD.Role_Seller" class="form-control" />
+                    }
+           
+                
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+        </form>
+    </div>
+</div>
+
