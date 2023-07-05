@@ -1,0 +1,40 @@
+﻿@using VBookHaven.Models
+@using VBookHaven.Areas.Customer.Controllers
+@model ProductBuyingViewModel
+
+<table>
+	<tr>
+		<th>Thumbnail</th>
+		<th>Name</th>
+		<th>Price</th>
+		<th>Discount</th>
+		<th>Final Price</th>
+	</tr>
+	@foreach (Product p in Model.Products)
+	{
+		int id = p.ProductId;
+		<tr>
+			@if (Model.Thumbnails[id] != null)
+			{
+				<td width="20%"><img src="~/images/img/@Model.Thumbnails[id]" width="100%"></td>
+			}
+			else 
+			{
+				<td></td>
+			}
+			<td><a href="/customer/product/detail/@id">@p.Name</a></td>
+			@if (p.RetailDiscount != 0)
+			{
+				<td><s>@p.RetailPrice</s></td>
+				<td>@p.RetailDiscount%</td>
+				<td>@(p.RetailPrice * (100 - p.RetailDiscount) / 100)</td>
+			}
+			else
+			{
+				<td>@p.RetailPrice</td>
+				<td></td>
+				<td></td>
+			}
+		</tr>
+	}
+</table>

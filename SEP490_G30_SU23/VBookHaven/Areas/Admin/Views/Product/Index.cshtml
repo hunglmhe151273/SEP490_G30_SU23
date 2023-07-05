@@ -110,7 +110,7 @@
 								</td>
 								<td>@p.Barcode</td>
 								<td>@p.Name</td>
-								<td hidden>@p.SubCategory</td>
+								<td hidden>@p.SubCategoryId</td>
 								<td>@p.UnitInStock</td>
 								<td>@p.PurchasePrice VNĐ</td>
 								<td>@p.RetailPrice VNĐ</td>
@@ -133,10 +133,12 @@
 									@if (p.Status == true)
 									{
 										<span class="badge bg-success">Hoạt động</span>
+										<span hidden>1</span>
 									}
 									else
 									{
 										<span class="badge bg-danger">Đình chỉ</span>
+										<span hidden>0</span>
 									}
 								</td>
 								<td>

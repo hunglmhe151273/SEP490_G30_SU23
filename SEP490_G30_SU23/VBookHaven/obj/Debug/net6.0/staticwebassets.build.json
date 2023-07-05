@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HKb5wBXSUYFHlUrCPw34D1dQgDgjAtPQwygUHvNdLFM=",
+  "Hash": "VDRuMrLP91ZfKb0onVyEu+pHwJGIsEFsg0LFdb8UcFk=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -9195,6 +9195,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\img\\image_1006.jpg"
+    },
+    {
+      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_2002.jpg",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/img/image_2002.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\img\\image_2002.jpg"
+    },
+    {
+      "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_2003.jpg",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/img/image_2003.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\img\\image_2003.jpg"
     },
     {
       "Identity": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_3.jpg",

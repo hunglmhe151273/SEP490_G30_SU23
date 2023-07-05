@@ -10,6 +10,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 {
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
+	// Neu khong sua barcode va barcode ko theo format PVN -> Loi
 
 	// Chua co add author view
 	// Loc index lam het o front end?
@@ -24,7 +25,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 	// Authorize - lay user info tu session(?)
 	// Khi author bi disabled thi tinh sao?
 
-	public class ProductViewModel
+	public class ProductManagementViewModel
 	{
 		public Product Product { get; set; }
 		public Book Book { get; set; }
@@ -33,7 +34,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 		public List<IFormFile> AddImageList { get; set; }
 		public List<int> DeleteImageIdList { get; set; }
 
-		public ProductViewModel()
+		public ProductManagementViewModel()
 		{
 			Product = new Product();
 			Book = new Book();
@@ -44,13 +45,13 @@ namespace VBookHaven.Areas.Admin.Controllers
 		}
 	}
 
-	public class SearchModel
+	public class ProductManagementSearchModel
 	{
 		public string Search { get; set; }
 		public int SubCategoryId { get; set; }
 		public int Status { get; set; }
 		
-		public SearchModel()
+		public ProductManagementSearchModel()
 		{
 			Search = "";
 			SubCategoryId = 0;
@@ -76,7 +77,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 		}
 
 		// Chuyen thanh POST, them 1 action GET -> De giau thong tin khoi url bar
-		public async Task<IActionResult> Index(SearchModel searchModel)
+		public async Task<IActionResult> Index(ProductManagementSearchModel searchModel)
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 			
@@ -143,7 +144,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddBook(ProductViewModel model)
+		public async Task<IActionResult> AddBook(ProductManagementViewModel model)
 		{
 			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 			
@@ -200,7 +201,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddStationery(ProductViewModel model)
+		public async Task<IActionResult> AddStationery(ProductManagementViewModel model)
 		{
 			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 
@@ -247,7 +248,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (product == null || book == null)
 				return NotFound();
 
-			var model = new ProductViewModel();
+			var model = new ProductManagementViewModel();
 			model.Product = product;
 			model.Book = book;
 
@@ -278,7 +279,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EditBook(int id, ProductViewModel model)
+		public async Task<IActionResult> EditBook(int id, ProductManagementViewModel model)
 		{
 			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
@@ -339,7 +340,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (product == null || stationery == null)
 				return NotFound();
 
-			var model = new ProductViewModel();
+			var model = new ProductManagementViewModel();
 			model.Product = product;
 			model.Stationery = stationery;
 
@@ -357,7 +358,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EditStationery(int id, ProductViewModel model)
+		public async Task<IActionResult> EditStationery(int id, ProductManagementViewModel model)
 		{
 			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
@@ -414,7 +415,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (product == null || book == null)
 				return NotFound();
 
-			var model = new ProductViewModel()
+			var model = new ProductManagementViewModel()
 			{
 				Product = product,
 				Book = book
@@ -434,7 +435,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (product == null || stationery == null)
 				return NotFound();
 
-			var model = new ProductViewModel()
+			var model = new ProductManagementViewModel()
 			{
 				Product = product,
 				Stationery = stationery
@@ -462,8 +463,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (barcode.StartsWith("PVN"))
 					return "Mã vạch không được có tiền tố PVN của hệ thống";
 
-			var isBarcodeExist = await productRespository.IsBarcodeExistAsync(barcode);
-			if (isBarcodeExist)
+			var product = await productRespository.GetProductByBarcodeAsync(barcode);
+			if (product != null)
 				return "Mã vạch đã tồn tại";
 
 			return "";
@@ -477,10 +478,13 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (barcode.StartsWith("PVN") && !barcode.Equals("PVN" + id))
 				return "Mã vạch không được có tiền tố PVN của hệ thống";
 
-			var isBarcodeExist = await productRespository.IsBarcodeExistAsync(barcode);
-			if (isBarcodeExist && !barcode.Equals("PVN" + id))
-				return "Mã vạch đã tồn tại";
-
+			var product = await productRespository.GetProductByBarcodeAsync(barcode);
+			if (product != null)
+			{
+				if (product.ProductId != id)
+					return "Mã vạch đã tồn tại";
+			}
+				
 			return "";
 		}
 
