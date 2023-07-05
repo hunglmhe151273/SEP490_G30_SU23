@@ -12,7 +12,9 @@ namespace VBookHaven.Areas.Admin.Controllers
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
 
 	// Chua co add author view
+	// Loc index lam het o front end?
 
+	// Khi tim kiem -> Can uppercase moi thu truoc -> Barcode co can auto uppercase ko?
 	// Cho subcategories vao select list group
 	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi de trong ten san pham -> Chua co warning
