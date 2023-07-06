@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\template\**" />
+    <Content Remove="wwwroot\template\**" />
+    <EmbeddedResource Remove="wwwroot\template\**" />
+    <None Remove="wwwroot\template\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Common\" />
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
