@@ -6,8 +6,8 @@ using VBookHaven.Models;
 namespace VBookHaven.ViewModels
 {
     public class StaffProfileVM
-    {  
-       
+    {
+
         [EmailAddress(ErrorMessage = "Cần ghi đúng định dạng Email")]
         [Display(Name = "Email")]
         [ValidateNever]
@@ -31,6 +31,6 @@ namespace VBookHaven.ViewModels
         //
         public String? RoleValidate { get; set; }
         public String? GenderValidate { get; set; }
-       
+
     }
 }

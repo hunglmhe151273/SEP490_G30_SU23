@@ -146,62 +146,95 @@ namespace VBookHaven.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             //get application user by id
-            StaffProfileVM model = new StaffProfileVM();
 
-            model.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);
-            
-            // view application user
-            return View(model);
+            ProfileVM profileVM = new ProfileVM();
+            profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);
+            //view application user
+            return View(profileVM);
         }
         [HttpPost]
-        public async Task<IActionResult> Profile(StaffProfileVM staffProfileVM)
+        public async Task<IActionResult> Profile(ProfileVM profileVM)
         {
-            if (staffProfileVM.ApplicationUser.Staff.IsMale == null)
+            if (profileVM.StaffProfileVM.ApplicationUser.Staff.IsMale == null)
             {
-                staffProfileVM.GenderValidate = "Hãy chọn giới tính của nhân viên";
-                return View(staffProfileVM);
+                profileVM.StaffProfileVM.GenderValidate = "Hãy chọn giới tính của nhân viên";
+                return View(profileVM);
             }
-            if (ModelState.IsValid)
+            ModelState.Clear();
+			if (!TryValidateModel(profileVM.StaffProfileVM))
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (staffProfileVM.Staff_ImageFile != null)
+
+				// view application user
+				return View(profileVM);
+            }
+
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (profileVM.StaffProfileVM.Staff_ImageFile != null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(profileVM.StaffProfileVM.Staff_ImageFile.FileName);
+                string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+                if (!string.IsNullOrEmpty(profileVM.StaffProfileVM.ApplicationUser.Staff.Image))
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(staffProfileVM.Staff_ImageFile.FileName);
-                    string staffPath = Path.Combine(wwwRootPath, @"images\staff");
-                    if (!string.IsNullOrEmpty(staffProfileVM.ApplicationUser.Staff.Image))
-                    {
-                        //delete the old image
-                        var oldImagePath =
-                            Path.Combine(wwwRootPath, staffProfileVM.ApplicationUser.Staff.Image.TrimStart('\\'));
+                    //delete the old image
+                    var oldImagePath =
+                        Path.Combine(wwwRootPath, profileVM.StaffProfileVM.ApplicationUser.Staff.Image.TrimStart('\\'));
 
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
-                    }
-                    //add image, update url
-                    using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                    if (System.IO.File.Exists(oldImagePath))
                     {
-                        staffProfileVM.Staff_ImageFile.CopyTo(fileStream);
+                        System.IO.File.Delete(oldImagePath);
                     }
-
-                    staffProfileVM.ApplicationUser.Staff.Image = @"\images\staff\" + fileName;
+                }
+                //add image, update url
+                using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                {
+                    profileVM.StaffProfileVM.Staff_ImageFile.CopyTo(fileStream);
                 }
 
-                //update staff
-                await _IApplicationUserRespository.UpdateStaffByAsync(staffProfileVM.ApplicationUser);
+                profileVM.StaffProfileVM.ApplicationUser.Staff.Image = @"\images\staff\" + fileName;
+            }
 
-                ////- TO DO: Neu update khong thanh cong xoa anh vua add
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError(string.Empty, error.Description);
-                //}
+            //update staff
+            await _IApplicationUserRespository.UpdateStaffByAsync(profileVM.StaffProfileVM.ApplicationUser);
+
+            ////- TO DO: Neu update khong thanh cong xoa anh vua add
+            //foreach (var error in result.Errors)
+            //{
+            //    ModelState.AddModelError(string.Empty, error.Description);
+            //}
+            return RedirectToAction(nameof(Profile));
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ProfileVM profileVM)
+        {
+            ModelState.Clear();
+            if (!TryValidateModel(profileVM.ChangePwdVM))
+            {
+                // view application user
+                return View(profileVM);
+            }
+            //update password
+            var user = await _userManager.GetUserAsync(User);
+            //var user = await _userManager.FindByEmailAsync(profileVM.ChangePwdVM.Email);
+            if (user == null)
+            {
+                return View(profileVM);
+            }
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, profileVM.ChangePwdVM.CurrentPwd, profileVM.ChangePwdVM.NewPwd);
+            if (changePasswordResult.Succeeded)
+            {
+                // Xử lý thành công
                 return RedirectToAction(nameof(Profile));
             }
-            
+            else
+            {
+                foreach (var error in changePasswordResult.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+            }
+            return RedirectToAction(nameof(Profile));
 
-            // view application user
-            return View(staffProfileVM);
         }
         private ApplicationUser CreateUser()
         {
