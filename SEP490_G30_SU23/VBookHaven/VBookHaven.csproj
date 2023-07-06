@@ -10,7 +10,6 @@
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
     <Folder Include="wwwroot\images\img\" />
-    <Folder Include="Respository\" />
     <Folder Include="wwwroot\images\Staff\" />
   </ItemGroup>
 

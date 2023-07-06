@@ -14,15 +14,9 @@ namespace VBookHaven.ViewModels
         [Required(ErrorMessage = "Password là bắt buộc.")]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Passwords must have at least one non-alphanumeric character, one digit, and one uppercase letter.")]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự không chữ số và không phải là chữ cái, một chữ số và một chữ cái in hoa.")]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        //[DataType(DataType.Password)]
-        //[Required(ErrorMessage = "ConfirmPassword là bắt buộc.")]
-        //[Display(Name = "Confirm password")]
-        //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        //public string ConfirmPassword { get; set; }
 
         public string? Role { get; set; }
         [ValidateNever]
