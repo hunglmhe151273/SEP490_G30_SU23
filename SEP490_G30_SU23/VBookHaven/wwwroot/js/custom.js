@@ -14,3 +14,8 @@ function DeleteImage(element) {
 	$(grandparent).remove();
 	//console.log(id);
 }
+
+function AddToCart() {
+	$("#add-to-cart").attr("action", "/Customer/Order/AddToCart");
+	$("#add-to-cart").submit();
+}

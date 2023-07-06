@@ -10,12 +10,10 @@ namespace VBookHaven.Areas.Admin.Controllers
 {
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
-	// Neu khong sua barcode va barcode ko theo format PVN -> Loi
 
 	// Chua co add author view
-	// Loc index lam het o front end?
+	// Kiem tra xem paging front end hoat dong ko
 
-	// Khi tim kiem -> Can uppercase moi thu truoc -> Barcode co can auto uppercase ko?
 	// Cho subcategories vao select list group
 	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi de trong ten san pham -> Chua co warning
@@ -44,20 +42,6 @@ namespace VBookHaven.Areas.Admin.Controllers
 			DeleteImageIdList = new List<int>();
 		}
 	}
-
-	public class ProductManagementSearchModel
-	{
-		public string Search { get; set; }
-		public int SubCategoryId { get; set; }
-		public int Status { get; set; }
-		
-		public ProductManagementSearchModel()
-		{
-			Search = "";
-			SubCategoryId = 0;
-			Status = -1;
-		}
-	}
 	
 	[Area("Admin")]
 	public class ProductController : Controller
@@ -76,25 +60,11 @@ namespace VBookHaven.Areas.Admin.Controllers
 			this.imageRepository = imageRepository;
 		}
 
-		// Chuyen thanh POST, them 1 action GET -> De giau thong tin khoi url bar
-		public async Task<IActionResult> Index(ProductManagementSearchModel searchModel)
+		public async Task<IActionResult> Index()
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 			
 			var products = await productRespository.GetAllProductsAsync();
-
-			if (searchModel.Search == null)
-				searchModel.Search = "";
-
-			products = products.Where(p => p.Name.Contains(searchModel.Search)
-				|| p.Barcode.Contains(searchModel.Search)).ToList();
-			if (searchModel.SubCategoryId != 0)
-				products = products.Where(p => p.SubCategoryId == searchModel.SubCategoryId).ToList();
-			if (searchModel.Status != -1)
-			{
-				var status = searchModel.Status == 1;
-				products = products.Where(p => p.Status == status).ToList();
-			}
 
 			var thumbnails = new Dictionary<int, string?>();
 			foreach (Product p in products)
@@ -108,15 +78,13 @@ namespace VBookHaven.Areas.Admin.Controllers
 			}
 			ViewData["thumbnails"] = thumbnails;
 
-			ViewData["search"] = searchModel;
-
 			var subCategories = await subCategoriesTask;
 			subCategories.Insert(0, new SubCategory
 			{
 				SubCategoryId = 0,
 				SubCategoryName = "--Không--"
 			});
-			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", searchModel.SubCategoryId);
+			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
 
 			var statusList = new[]
 			{
@@ -124,7 +92,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 				new { Value = 1, Name = "Hoạt động" },
 				new { Value = 0, Name = "Đình chỉ" }
 			}.ToList();
-			ViewData["statusList"] = new SelectList(statusList, "Value", "Name", searchModel.Status);
+			ViewData["statusList"] = new SelectList(statusList, "Value", "Name");
 
 			return View(products);
 		}

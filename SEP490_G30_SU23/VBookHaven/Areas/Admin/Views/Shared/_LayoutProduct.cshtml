@@ -151,14 +151,13 @@
 				var search = $("#search").val().toLowerCase();
 				var category = $("#category").val();
 				var status = $("#status").val();
-				console.log(search, category, status);
+				//console.log(search, category, status);
 
-				// Van chua filter bang js duoc @@
 				$("#myTable tr").filter(function () {
 					var catSearch;
 					if (category == 0)
 					{
-						catSearch = $(this).find('td:eq(3)').text();
+						catSearch = true;
 					}
 					else 
 					{
@@ -168,11 +167,11 @@
 					var statusSearch
 					if (status == -1)
 					{
-						$(this).find('td:eq(9) > span:eq(1)').text();
+						statusSearch = true;
 					}
 					else
 					{
-						$(this).find('td:eq(9) > span:eq(1)').text() == status;
+						statusSearch = $(this).find('td:eq(9) > span:eq(1)').text() == status;
 					}
 
 					$(this).toggle(

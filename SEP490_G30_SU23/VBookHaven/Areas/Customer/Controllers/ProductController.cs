@@ -4,6 +4,9 @@ using VBookHaven.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {
+	// Giau inactivated product
+	// Khi dat hang -> Chi cho max la so luong con lai
+	
 	public class ProductBuyingViewModel
 	{
 		public List<Product> Products { get; set; }
