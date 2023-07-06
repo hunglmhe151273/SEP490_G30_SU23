@@ -19,6 +19,7 @@
     <Folder Include="Entities\" />
     <Folder Include="Models\" />
     <Folder Include="Respository\" />
+    <Folder Include="wwwroot\cust-lib\template\" />
   </ItemGroup>
 
   <ItemGroup>
