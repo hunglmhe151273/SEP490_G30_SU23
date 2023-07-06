@@ -13,6 +13,7 @@ using System.Security.Claims;
 using VBookHaven.Respository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VBookHaven.Areas.Admin.Controllers
 {
@@ -127,7 +128,7 @@ namespace VBookHaven.Areas.Admin.Controllers
                         protocol: Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
                         $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
-                    return RedirectToAction("RegisterStaff", "Home");
+                    return RedirectToAction(nameof(Create));
                 }
 
                 //- TO DO: Neu add khong thanh cong xoa anh vua add
@@ -148,7 +149,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             //get application user by id
 
             ProfileVM profileVM = new ProfileVM();
-            profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);
+            profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
             //view application user
             return View(profileVM);
         }

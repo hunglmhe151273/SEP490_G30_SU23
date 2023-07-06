@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <!--favicon-->
+    <link rel="icon" href="~/mgmt-lib/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link href="~/mgmt-lib/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <!-- loader-->
+  @*  <link href="~/mgmt-lib/css/pace.min.css" rel="stylesheet" />
+    <script src="~/mgmt-lib/js/pace.min.js"></script>*@
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/icons.css" />
+    <!-- App CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/app.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/dark-sidebar.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/dark-theme.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/avatar.css" />
+</head>
+
+<body>
+    <!-- wrapper -->
+        @RenderBody()
+    <!-- end wrapper -->
+    <!--start switcher-->
+    <div class="switcher-body">
+        <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
+				class="bx bx-cog bx-spin"></i></button>
+        <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h6 class="mb-0">Theme Variation</h6>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode" value="option1" checked>
+                    <label class="form-check-label" for="lightmode">Light</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode" value="option2">
+                    <label class="form-check-label" for="darkmode">Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar" value="option3">
+                    <label class="form-check-label" for="darksidebar">Semi Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons" value="option3">
+                    <label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end switcher-->
+    <!-- JavaScript -->
+    <!-- Bootstrap JS -->
+    <script src="~/mgmt-lib/js/bootstrap.bundle.min.js"></script>
+    <!--plugins-->
+    <script src="~/mgmt-lib/js/jquery.min.js"></script>
+    <script src="~/mgmt-lib/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="~/mgmt-lib/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="~/mgmt-lib/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <!-- App JS -->
+    <script src="~/mgmt-lib/js/app.js"></script>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear() - 18;
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("datefield").setAttribute("max", today);
+
+        $(document).ready(function() {
+            var readURL = function(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('.profile-pic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function() {
+                readURL(this);
+            });
+            $(".upload-button").on('click', function() {
+                $(".file-upload").click();
+            });
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

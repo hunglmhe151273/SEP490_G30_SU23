@@ -1905,6 +1905,10 @@
       "PackagePath": "staticwebassets\\images\\Staff\\719d29b2-48ca-4ff2-be24-a8248f9d884b.jpg"
     },
     {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\ad2d5f40-0fa1-4393-9f29-1cbe0d83db03.jpg",
+      "PackagePath": "staticwebassets\\images\\Staff\\ad2d5f40-0fa1-4393-9f29-1cbe0d83db03.jpg"
+    },
+    {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\img\\image_1002.jpg",
       "PackagePath": "staticwebassets\\images\\img\\image_1002.jpg"
     },
@@ -2191,6 +2195,10 @@
     {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\mgmt-lib\\css\\app.css",
       "PackagePath": "staticwebassets\\mgmt-lib\\css\\app.css"
+    },
+    {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\mgmt-lib\\css\\avatar.css",
+      "PackagePath": "staticwebassets\\mgmt-lib\\css\\avatar.css"
     },
     {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\mgmt-lib\\css\\bootstrap.min.css",
