@@ -11,7 +11,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
 
-	// Chua co add author view
+	// Chua co add author view - Add author, category... la 1 pop up o add product
 	// Kiem tra xem paging front end hoat dong ko
 
 	// Cho subcategories vao select list group
