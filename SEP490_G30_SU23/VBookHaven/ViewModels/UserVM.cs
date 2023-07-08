@@ -12,9 +12,9 @@ namespace VBookHaven.ViewModels
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password là bắt buộc.")]
-        [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự không chữ số và không phải là chữ cái, một chữ số và một chữ cái in hoa.")]
+		[StringLength(20, ErrorMessage = "{0} phải ít nhất {2} kí tự và nhiều nhất {1} kí tự.", MinimumLength = 6)]
+		[DataType(DataType.Password)]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự đặc biệt, một chữ số và một chữ cái in hoa.")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 

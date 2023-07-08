@@ -41,11 +41,10 @@
 	display: block;
 	font-size: 7em;
 	text-align: center;
-	margin-top: .5em;
 	padding-bottom: 12px
 }
 .imageuploadify .imageuploadify-images-list span.imageuploadify-message {
-	font-size: 24px;
+	font-size: 20px;
 	border-top: 1px solid #007bff;
 	border-bottom: 1px solid #007bff;
 	padding: 10px;
@@ -56,7 +55,7 @@
 	color: #007bff;
 	border-color: #007bff;
 	border-radius: 1em;
-	margin: 25px auto;
+	margin: 10px auto;
 	width: 100%;
 	max-width: 500px
 }

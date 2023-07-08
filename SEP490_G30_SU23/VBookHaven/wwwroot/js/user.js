@@ -9,11 +9,11 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/GetAllStaff' },
         "columns": [
-            { "data": "staff.fullName", "width": "5%" },
-            { "data": "email", "width": "5%" },
-            { "data": "staff.phone", "width": "5%" },
-            { "data": "staff.address", "width": "5%" },
-            { "data": "role", "width": "5%" },
+            { "data": "staff.fullName", "width": "15%" },
+            { "data": "email", "width": "15%" },
+            { "data": "staff.phone", "width": "15%" },
+            { "data": "staff.address", "width": "15%" },
+            { "data": "role", "width": "15%" },
             {
                 data: { id: "id", lockoutEnd: "lockoutEnd" },
                 "render": function (data) {
@@ -40,7 +40,7 @@ function loadDataTable() {
                     }
 
                 },
-                "width": "10%"
+                "width": "20%"
             }
         ]
     });

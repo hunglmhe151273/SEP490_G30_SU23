@@ -1,0 +1,59 @@
+﻿@model VBookHaven.Models.Category
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Quản lý sản phẩm</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Chi tiết sản phẩm</h3>
+                <hr>
+                <div>
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CategoryName)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CategoryName)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Status)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Status)
+                        </dd>
+                    </dl>
+                </div>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model?.CategoryId">Chỉnh sửa</a> |
+                    <a asp-action="Index">Quay lại danh sách</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end page-content-wrapper-->
+</div>
+
+<!--end page-wrapper-->

@@ -3,139 +3,122 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="wrapper">
-        <!--sidebar-wrapper-->
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="javascript:;"><i
+										class="bx bx-home-alt"></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Tạo nhân viên mới</h3>
+                <hr>
 
-        <!--end sidebar-wrapper-->
-        <!--page-wrapper-->
-        <div class="page-wrapper">
-            <!--page-content-wrapper-->
-            <div class="page-content-wrapper">
-                <div class="page-content">
-                    <!--breadcrumb-->
-                    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                        <div class="breadcrumb-title pe-3">Quản trị viên</div>
-                        <div class="ps-3">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb mb-0 p-0">
-                                    <li class="breadcrumb-item"><a href="javascript:;"><i
-												class="bx bx-home-alt"></i></a>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                    <!--end breadcrumb-->
-                    <div class="mx-auto">
-                        <h3 class="mb-0 text-uppercase">Tạo nhân viên mới</h3>
-                        <hr>
-
-                        <div class="card border-top border-0 border-4 border-primary">
-                            <div class="card-body p-5">
-                                <div class="card-title d-flex align-items-center">
-                                    <div><i class="bx bxs-user me-1 font-22 text-primary"></i>
-                                    </div>
-                                    <h4 class="mb-0 text-primary">Thông tin cá nhân</h4>
-                                </div>
-                                <hr>
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <form class="row" enctype="multipart/form-data" asp-controller="User" asp-action="Create" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
-                                    <div class="col-md-8 row g-3 mt-0">
-                                        <div class="col-md-4">
-                                            <label asp-for="@Model.Staff_FullName" for="inputName" class="form-label"></label>
-                                            <input asp-for="@Model.Staff_FullName" class="form-control" id="inputName" placeholder="Nhập tên">
-                                            <span asp-validation-for="@Model.Staff_FullName" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="inputRole" class="form-label">Chức vụ</label>
-                                            <select asp-for="@Model.Role" asp-items="@Model.RoleList" id="inputRole" class="form-select">
-												<option disabled selected>-Select Role-</option>
-											</select> @if (@Model.RoleValidate != null) {
-                                            <span class="text-danger">@Model.RoleValidate </span> }
-
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label asp-for="@Model.Staff_IdCard" for="inputIdNumber" class="form-label">Số CCCD/CMND</label>
-                                            <input asp-for="@Model.Staff_IdCard" asp-for="@Model.Staff_IdCard" class="form-control" id="inputFirstName" placeholder="Nhập số CCCD/CMND">
-                                            <span asp-validation-for="@Model.Staff_IdCard" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label asp-for="@Model.Email" for="inputUserName" class="form-label">Tên đăng nhập</label>
-                                            <input asp-for="@Model.Email" type="text" class="form-control" id="inputUserName" placeholder="Nhập tên đăng nhập">
-                                            <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label asp-for="@Model.Password" for="inputPassword" class="form-label">Mật khẩu</label>
-                                            <input asp-for="@Model.Password" type="password" class="form-control" id="inputPassword" placeholder="Nhập mật khẩu">
-                                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label asp-for="@Model.Staff_Phone" for="inputPhone" class="form-label">Số điện thoại</label>
-                                            <input asp-for="@Model.Staff_Phone" type="text" class="form-control" id="inputPhone" placeholder="Nhập số điện thoại">
-                                            <span asp-validation-for="@Model.Staff_Phone" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label asp-for="@Model.Staff_Dob" for="inputDob" class="form-label">Ngày sinh</label>
-                                            <input asp-for="@Model.Staff_Dob" id="datefield" type="date" class="form-control" id="inputDob">
-                                            <span asp-validation-for="@Model.Staff_Dob" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label asp-for="@Model.Staff_IsMale" for="inputCity" class="form-label">Giới tính</label>
-                                            <div class="input-group mt-1">
-                                                <div class="form-check-inline">
-                                                    <input asp-for="@Model.Staff_IsMale" value="true" class="form-check-input" type="radio">
-                                                    <label class="form-check-label" for="flexRadioDefault2">Nam</label>
-                                                </div>
-                                                <div class="form-check-inline">
-                                                <input asp-for="@Model.Staff_IsMale" value="false" class="form-check-input" type="radio">
-                                                    <label class="form-check-label" for="flexRadioDefault2">Nữ</label>
-                                                </div>
-                                            </div>
-                                        <span asp-validation-for="@Model.Staff_IsMale" class="text-danger"></span>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label asp-for="@Model.Staff_Address" class="form-label">Địa chỉ</label>
-                                            <textarea asp-for="@Model.Staff_Address" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
-                                        <span asp-validation-for="@Model.Staff_Address" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 text-center mt-0">
-                                        <h3>Ảnh đại diện</h3>
-                                        <div class="avatar-wrapper">
-                                            <img class="profile-pic" src="" />
-                                            <div class="upload-button">
-                                                <i class="bx bx-upload" aria-hidden="true"></i>
-                                            </div>
-                                            <input asp-for="@Model.Staff_ImageFile" class="file-upload" type="file" accept="image/*" />
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mt-3">
-                                        <button type="reset" class="btn btn-danger px-5 py-2">Hủy</button>
-                                        <button type="submit" class="btn btn-success px-5 py-2">Lưu</button>
-                                    </div>
-                                </form>
+                <div class="card border-top border-0 border-4 border-primary">
+                    <div class="card-body p-5">
+                        <div class="card-title d-flex align-items-center">
+                            <div><i class="bx bxs-user me-1 font-22 text-primary"></i>
                             </div>
+                            <h4 class="mb-0 text-primary">Thông tin cá nhân</h4>
                         </div>
+                        <hr>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <form class="row" enctype="multipart/form-data" asp-controller="User" asp-action="Create" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
+                            <div class="col-md-8 row g-3 mt-0">
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.Staff_FullName" for="inputName" class="form-label"></label>
+                                    <input asp-for="@Model.Staff_FullName" class="form-control" id="inputName" placeholder="Nhập tên">
+                                    <span asp-validation-for="@Model.Staff_FullName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="inputRole" class="form-label">Chức vụ</label>
+                                    <select asp-for="@Model.Role" asp-items="@Model.RoleList" id="inputRole" class="form-select">
+										<option disabled selected>-Select Role-</option>
+									</select> @if (@Model.RoleValidate != null) {
+                                    <span class="text-danger">@Model.RoleValidate </span> }
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.Staff_IdCard" for="inputIdNumber" class="form-label">Số CCCD/CMND</label>
+                                    <input asp-for="@Model.Staff_IdCard" asp-for="@Model.Staff_IdCard" class="form-control" id="inputFirstName" placeholder="Nhập số CCCD/CMND">
+                                    <span asp-validation-for="@Model.Staff_IdCard" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="@Model.Email" for="inputUserName" class="form-label">Tên đăng nhập</label>
+                                    <input asp-for="@Model.Email" type="text" class="form-control" id="inputUserName" placeholder="Nhập tên đăng nhập">
+                                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="@Model.Password" for="inputPassword" class="form-label">Mật khẩu</label>
+                                    <input asp-for="@Model.Password" type="password" class="form-control" id="inputPassword" placeholder="Nhập mật khẩu">
+                                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.Staff_Phone" for="inputPhone" class="form-label">Số điện thoại</label>
+                                    <input asp-for="@Model.Staff_Phone" type="text" class="form-control" id="inputPhone" placeholder="Nhập số điện thoại">
+                                    <span asp-validation-for="@Model.Staff_Phone" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.Staff_Dob" for="inputDob" class="form-label">Ngày sinh</label>
+                                    <input asp-for="@Model.Staff_Dob" id="datefield" type="date" class="form-control" id="inputDob">
+                                    <span asp-validation-for="@Model.Staff_Dob" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.Staff_IsMale" for="inputCity" class="form-label">Giới tính</label>
+                                    <div class="input-group mt-1">
+                                        <div class="form-check-inline">
+                                            <input asp-for="@Model.Staff_IsMale" value="true" class="form-check-input" type="radio">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nam</label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                        <input asp-for="@Model.Staff_IsMale" value="false" class="form-check-input" type="radio">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nữ</label>
+                                        </div>
+                                    </div>
+                                <span asp-validation-for="@Model.Staff_IsMale" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="@Model.Staff_Address" class="form-label">Địa chỉ</label>
+                                    <textarea asp-for="@Model.Staff_Address" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                <span asp-validation-for="@Model.Staff_Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center mt-0">
+                                <h3>Ảnh đại diện</h3>
+                                <div class="avatar-wrapper">
+                                    <img class="profile-pic" src="" />
+                                    <div class="upload-button">
+                                        <i class="bx bx-upload" aria-hidden="true"></i>
+                                    </div>
+                                    <input asp-for="@Model.Staff_ImageFile" class="file-upload" type="file" accept="image/*" />
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="reset" class="btn btn-danger px-5 py-2">Hủy</button>
+                                <button type="submit" class="btn btn-success px-5 py-2">Lưu</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!--end page-content-wrapper-->
         </div>
-        <!--end page-wrapper-->
-        <!--start overlay-->
-        <div class="overlay toggle-btn-mobile"></div>
-        <!--end overlay-->
-        <!--Start Back To Top Button--><a href="javaScript:;" class="back-to-top"><i
-				class='bx bxs-up-arrow-alt'></i></a>
-        <!--End Back To Top Button-->
-        <!--footer -->
-        <div class="footer">
-            <p class="mb-0">Syndash 2020 | Developed By : <a href="https://themeforest.net/user/codervent" target="_blank">codervent</a>
-            </p>
-        </div>
-        <!-- end footer -->
+    </div>
+    <!--end page-content-wrapper-->
 </div>
+<!--end page-wrapper-->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

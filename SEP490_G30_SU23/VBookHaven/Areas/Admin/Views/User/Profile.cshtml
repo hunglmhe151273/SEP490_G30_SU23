@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_LayoutProduct.cshtml";
 }
 @inject UserManager<IdentityUser> UserManager
+<!--page-wrapper-->
+<div class="page-wrapper">
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" enctype="multipart/form-data" asp-controller="User" asp-action="Profile" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
@@ -101,7 +103,7 @@
         </form>
         </div>
 </div>
-
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
