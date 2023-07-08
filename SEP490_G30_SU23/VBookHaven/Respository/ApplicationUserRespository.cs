@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VBookHaven.Models;
+using VBookHaven.ViewModels;
 
 namespace VBookHaven.Respository
 {
@@ -7,6 +8,7 @@ namespace VBookHaven.Respository
     public interface IApplicationUserRespository
     {
         Task<ApplicationUser?> GetStaffByUIdAsync(String userId);
+        Task<List<ApplicationUser?>> GetAllStaffAsync();
         Task UpdateStaffByAsync(ApplicationUser applicationUser);
     }
 
@@ -17,6 +19,11 @@ namespace VBookHaven.Respository
         public ApplicationUserRespository(VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<List<ApplicationUser?>> GetAllStaffAsync()
+        {
+            return await _dbContext.ApplicationUsers.Include(s => s.Staff).Where(s => s.Staff != null).ToListAsync();
         }
 
         public async Task<ApplicationUser?> GetStaffByUIdAsync(String userId)

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+        <div class="card-body p-4">
+            <table id="tblData" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>FullName</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Role</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+@section Scripts{
+    <script src="~/js/user.js"></script>
+}

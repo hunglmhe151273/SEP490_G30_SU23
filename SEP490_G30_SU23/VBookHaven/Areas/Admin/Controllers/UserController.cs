@@ -14,6 +14,9 @@ using VBookHaven.Respository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace VBookHaven.Areas.Admin.Controllers
 {
@@ -29,6 +32,7 @@ namespace VBookHaven.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IApplicationUserRespository _IApplicationUserRespository;
+        private readonly VBookHavenDBContext _dbContext;   
         public UserController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -37,7 +41,8 @@ namespace VBookHaven.Areas.Admin.Controllers
             //ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IApplicationUserRespository applicationUserRespository,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            VBookHavenDBContext dbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -48,7 +53,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             _emailSender = emailSender;
             _IApplicationUserRespository = applicationUserRespository;
             _webHostEnvironment = webHostEnvironment;
-
+            _dbContext = dbContext;
         }
         [HttpGet]
         public IActionResult Create()
@@ -147,7 +152,6 @@ namespace VBookHaven.Areas.Admin.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             //get application user by id
-
             ProfileVM profileVM = new ProfileVM();
             profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
             //view application user
@@ -267,6 +271,53 @@ namespace VBookHaven.Areas.Admin.Controllers
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
+
+        public async Task<IActionResult> Index()
+        {
+            return View();
+        }
+
+
+
+        #region API CALLS
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllStaff()
+        {
+            //respository
+            List<ApplicationUser> objUserList = await _IApplicationUserRespository.GetAllStaffAsync();
+            foreach (var user in objUserList)
+            {
+                user.Role = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
+            }
+            return Json(new { data = objUserList });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> LockUnlock([FromBody] string id)
+        {
+
+            var objFromDb = await _dbContext.ApplicationUsers.SingleOrDefaultAsync(a => a.Id.Equals(id));
+            if (objFromDb == null)
+            {
+                return Json(new { success = false, message = "Error while Locking/Unlocking" });
+            }
+
+            if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
+            {
+                //user is currently locked and we need to unlock them
+                objFromDb.LockoutEnd = DateTime.Now;
+            }
+            else
+            {
+                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+            }
+            _dbContext.SaveChanges();
+            return Json(new { success = true, message = "Operation Successful" });
+        }
+
+        #endregion
 
     }
 }

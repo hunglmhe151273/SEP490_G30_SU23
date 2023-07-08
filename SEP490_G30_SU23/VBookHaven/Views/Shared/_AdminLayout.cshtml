@@ -25,10 +25,15 @@
     <link rel="stylesheet" href="~/mgmt-lib/css/dark-sidebar.css" />
     <link rel="stylesheet" href="~/mgmt-lib/css/dark-theme.css" />
     <link rel="stylesheet" href="~/mgmt-lib/css/avatar.css" />
+    <!-- Datatable -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+    <!-- Toastr -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
 
 <body>
     <!-- wrapper -->
+    <partial name="_Notification" />
         @RenderBody()
     <!-- end wrapper -->
     <!--start switcher-->
@@ -74,8 +79,15 @@
     <script src="~/mgmt-lib/plugins/simplebar/js/simplebar.min.js"></script>
     <script src="~/mgmt-lib/plugins/metismenu/js/metisMenu.min.js"></script>
     <script src="~/mgmt-lib/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <!-- Datatable -->
+    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    </script>
+
     <!-- App JS -->
-    <script src="~/mgmt-lib/js/app.js"></script>
+   @* <script src="~/mgmt-lib/js/app.js"></script>
     <script>
         var today = new Date();
         var dd = today.getDate();
@@ -109,8 +121,10 @@
                 $(".file-upload").click();
             });
         });
-    </script>
+    </script>*@
     @await RenderSectionAsync("Scripts", required: false)
+   
+
 </body>
 
 </html>

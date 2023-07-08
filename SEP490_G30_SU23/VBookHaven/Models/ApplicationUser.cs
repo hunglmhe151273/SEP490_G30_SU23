@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VBookHaven.Models
 {
@@ -6,5 +7,7 @@ namespace VBookHaven.Models
     {
         public virtual Customer? Customer { get; set; }
         public virtual Staff? Staff { get; set; }
+        [NotMapped]
+        public string Role { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "okhr7Iwe5drqFlqi/JONNAeAKqLTTf0Gj23M84GYgDg=",
+  "Hash": "NmH0ToydMYpx298zI7UdrVSZV5VOqortNgcPvq/nEdg=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -9299,6 +9299,23 @@
       "OriginalItemSpec": "wwwroot\\images\\img\\image_6.jpg"
     },
     {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\6c124763-6f53-479d-beb0-e242d4ca24a8.jpg",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/Staff/6c124763-6f53-479d-beb0-e242d4ca24a8.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\6c124763-6f53-479d-beb0-e242d4ca24a8.jpg"
+    },
+    {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\719d29b2-48ca-4ff2-be24-a8248f9d884b.jpg",
       "SourceId": "VBookHaven",
       "SourceType": "Discovered",
@@ -9365,6 +9382,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\js\\user.js",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "js/user.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\user.js"
     },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
