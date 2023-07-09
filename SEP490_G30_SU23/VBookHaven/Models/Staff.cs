@@ -27,8 +27,8 @@ public partial class Staff
     public string? Address { get; set; }
     [Display(Name = "Số điện thoại nhân viên")]
     [Required(ErrorMessage = "Số điện thoại nhân viên là bắt buộc.")]
-    [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
     [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
+    [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
     public string? Phone { get; set; }
     public string? Image { get; set; }
     [Display(Name = "Giới tính")]

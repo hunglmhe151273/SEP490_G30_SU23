@@ -306,7 +306,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
                 .IsFixedLength();
             entity.Property(e => e.Image).HasMaxLength(100);
             entity.Property(e => e.Phone)
-                .HasMaxLength(15)
+                .HasMaxLength(10)
                 .IsFixedLength();
         });
 

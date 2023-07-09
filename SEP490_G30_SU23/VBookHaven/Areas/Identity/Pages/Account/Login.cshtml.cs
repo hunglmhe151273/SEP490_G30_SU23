@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using VBookHaven.Utility;
 
 namespace VBookHaven.Areas.Identity.Pages.Account
 {
@@ -120,12 +121,22 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     var roles = await _userManager.GetRolesAsync(user);
                     _logger.LogInformation("User logged in.");
 
-                    if (roles.Contains("Owner"))
+                    if (roles.Contains(SD.Role_Owner))
                     {
                         // Redirect to the admin page
-                        return RedirectToAction("Index", "Home", new { area = "Admin" });
+                        return RedirectToAction("Profile", "User", new { area = "Admin" });
                     }
-                    else if (!roles.Contains("Owner"))
+                    else if (roles.Contains(SD.Role_Seller))
+                    {
+                        // Redirect to the user page
+                        return RedirectToAction("Profile", "User", new { area = "Admin" });
+                    }
+                    else if (roles.Contains(SD.Role_Storekeeper))
+                    {
+                        // Redirect to the user page
+                        return RedirectToAction("Profile", "User", new { area = "Admin" });
+                    }
+                    else
                     {
                         // Redirect to the user page
                         return RedirectToAction("Index", "Home", new { area = "Customer" });

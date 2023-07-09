@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "NmH0ToydMYpx298zI7UdrVSZV5VOqortNgcPvq/nEdg=",
+  "Hash": "+ArvHiiJjzdw0T96RpDAH+Y0n3Dn0uGeUbt2tHCPuY0=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -9299,12 +9299,12 @@
       "OriginalItemSpec": "wwwroot\\images\\img\\image_6.jpg"
     },
     {
-      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\6c124763-6f53-479d-beb0-e242d4ca24a8.jpg",
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\9a45d4ca-3f53-4358-ba52-5336dd620d11.jpg",
       "SourceId": "VBookHaven",
       "SourceType": "Discovered",
       "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
       "BasePath": "_content/VBookHaven",
-      "RelativePath": "images/Staff/6c124763-6f53-479d-beb0-e242d4ca24a8.jpg",
+      "RelativePath": "images/Staff/9a45d4ca-3f53-4358-ba52-5336dd620d11.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -9313,15 +9313,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Staff\\6c124763-6f53-479d-beb0-e242d4ca24a8.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\9a45d4ca-3f53-4358-ba52-5336dd620d11.jpg"
     },
     {
-      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\719d29b2-48ca-4ff2-be24-a8248f9d884b.jpg",
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\a285a0ab-edeb-4eef-ae87-b5d7eb0a9f37.jpg",
       "SourceId": "VBookHaven",
       "SourceType": "Discovered",
       "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
       "BasePath": "_content/VBookHaven",
-      "RelativePath": "images/Staff/719d29b2-48ca-4ff2-be24-a8248f9d884b.jpg",
+      "RelativePath": "images/Staff/a285a0ab-edeb-4eef-ae87-b5d7eb0a9f37.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -9330,24 +9330,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Staff\\719d29b2-48ca-4ff2-be24-a8248f9d884b.jpg"
-    },
-    {
-      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\ad2d5f40-0fa1-4393-9f29-1cbe0d83db03.jpg",
-      "SourceId": "VBookHaven",
-      "SourceType": "Discovered",
-      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
-      "BasePath": "_content/VBookHaven",
-      "RelativePath": "images/Staff/ad2d5f40-0fa1-4393-9f29-1cbe0d83db03.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\Staff\\ad2d5f40-0fa1-4393-9f29-1cbe0d83db03.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\a285a0ab-edeb-4eef-ae87-b5d7eb0a9f37.jpg"
     },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\js\\custom.js",

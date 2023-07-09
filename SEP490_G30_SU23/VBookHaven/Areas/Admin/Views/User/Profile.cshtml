@@ -1,109 +1,176 @@
 ﻿@model ProfileVM
 @{
     ViewData["Title"] = "Profile";
-    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @inject UserManager<IdentityUser> UserManager
 <!--page-wrapper-->
 <div class="page-wrapper">
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" enctype="multipart/form-data" asp-controller="User" asp-action="Profile" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Id" hidden/>
-            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Image" hidden />
-                <div class="form-floating">
-                <input asp-for="@Model.StaffProfileVM.ApplicationUser.Email" class="form-control" autocomplete="username" aria-required="true" />
-                <label asp-for="@Model.StaffProfileVM.ApplicationUser.Email"></label>
-                <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Email" class="text-danger"></span>
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
+                        </ol>
+                    </nav>
                 </div>
-               
-                <div class="form-floating mb-3 col-md-6">
-                <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" class="form-control"/>
-                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" class="ms-2 text-muted"></label>
-                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="form-control" placeholder="" />
-                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="ms-2 text-muted"></label>
-                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Dob" class="form-control" placeholder="" />
-                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Dob" class="ms-2 text-muted"></label>
-                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.Dob" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3 col-md-6">
-                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" class="form-control"/>
-                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" class="ms-2 text-muted"></label>
-                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" class="text-danger"></span>
-                </div>
-            <div class="form-floating mb-3 col-md-6">
-                <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" placeholder="" />
-                <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" class="ms-2 text-muted"></label>
-                <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" class="text-danger"></span>
             </div>
-                <div class="form-floating mb-3 col-md-6">
-                <img src="@Model.StaffProfileVM.ApplicationUser.Staff.Image" width="100%"
-                     style="border-radius:5px; border:1px solid #bbb9b9" />
-                    <input asp-for="@Model.StaffProfileVM.Staff_ImageFile" class="form-control" placeholder="" />
-                    <label asp-for="@Model.StaffProfileVM.Staff_ImageFile" class="ms-2 text-muted"></label>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Sửa thông tin nhân viên</h3>
+                <hr>
+                <div class="card border-top border-0 border-4 border-primary">
+                    <div class="card-body p-5">
+                        <div class="card-title d-flex align-items-center">
+                            <div>
+                                <i class="bx bxs-user me-1 font-22 text-primary"></i>
+                            </div>
+                            <h4 class="mb-0 text-primary">Thông tin cá nhân</h4>
+                        </div>
+                        <hr>
+                        <form class="row" enctype="multipart/form-data" asp-controller="User" asp-action="Profile" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Id" hidden />
+                            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Image" hidden />
+                            <div class="col-md-8 row g-3 mt-0">
+                                <div class="col-md-6">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" for="inputName" class="form-label">Họ và tên</label>
+                                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" type="text" class="form-control" id="inputName" placeholder="Nhập tên">
+                                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.FullName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" for="inputIdNumber" class="form-label"></label>
+                                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" type="text" class="form-control" id="inputFirstName" placeholder="Nhập số CCCD/CMND">
+                                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.IdCard" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Email" for="inputUserName" class="form-label"></label>
+                                    <input disabled asp-for="@Model.StaffProfileVM.ApplicationUser.Email" type="text" class="form-control" id="inputUserName" placeholder="Nhập tên đăng nhập">
+                                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Email" class="text-danger"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="inputUserName" class="form-label">Chức vụ</label>
+                                    @if (User.IsInRole(SD.Role_Customer))
+                                    {
+                                        <input disabled value="@SD.Role_Customer" class="form-control" />
+                                    }
+                                    else if (User.IsInRole(SD.Role_Owner))
+                                    {
+                                        <input disabled value="@SD.Role_Owner" class="form-control" />
+                                    }
+                                    else if (User.IsInRole(SD.Role_Storekeeper))
+                                    {
+                                        <input disabled value="@SD.Role_Storekeeper" class="form-control" />
+                                    }
+                                    else if (User.IsInRole(SD.Role_Seller))
+                                    {
+                                        <input disabled value="@SD.Role_Seller" class="form-control" />
+                                    }
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" for="inputPhone" class="form-label"></label>
+                                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" type="text" class="form-control" id="inputPhone" placeholder="Nhập số điện thoại">
+                                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.Phone" class="text-danger"></span>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Dob" for="inputDob" class="form-label">Ngày sinh</label>
+                                    <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Dob" id="datefield" type="date" class="form-control" id="inputDob">
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" for="inputCity" class="form-label">Giới tính</label>
+                                    <div class="input-group mt-1">
+                                        <div class="form-check-inline">
+                                            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" class="form-check-input" type="radio" value="true">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nam</label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <input asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" class="form-check-input" type="radio" value="false">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nữ</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="form-label">Địa chỉ</label>
+                                    <textarea asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="form-control" placeholder="Nhập địa chỉ chi tiết">
+                                     </textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-center mt-0">
+                                <h3>Ảnh đại diện</h3>
+                                <div class="avatar-wrapper">
+                                    <img class="profile-pic" src="@Model.StaffProfileVM.ApplicationUser.Staff.Image" />
+                                    <div class="upload-button">
+                                        <i class="bx bx-upload" aria-hidden="true"></i>
+                                    </div>
+                                    <input asp-for="@Model.StaffProfileVM.Staff_ImageFile" class="file-upload" type="file" accept="image/*" />
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="reset" class="btn btn-danger px-5 py-2">Hủy</button>
+                                <button type="button" class="btn btn-info px-4 py-2" data-bs-toggle="modal" data-bs-target="#changePassword">Đổi mật khẩu</button>
+                                <button type="submit" class="btn btn-success px-5 py-2">Lưu</button>
+                            </div>
+                        </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Đổi mật khẩu</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form asp-controller="User" asp-action="ChangePassword" asp-area="Admin" method="post">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-4 col-form-label">Mật khẩu hiện tại</div>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@Model.ChangePwdVM.CurrentPwd" type="password" class="form-control" placeholder="Nhập mật khẩu hiện tại...">
+                                                    <span asp-validation-for="@Model.ChangePwdVM.CurrentPwd" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-4 col-form-label">Mật khẩu mới</div>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@Model.ChangePwdVM.NewPwd" type="password" class="form-control" placeholder="Nhập mật khẩu mới...">
+                                                    <span asp-validation-for="@Model.ChangePwdVM.NewPwd" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-4 col-form-label">Xác nhận mật khẩu</div>
+                                                <div class="col-sm-8">
+                                                    <input asp-for="@Model.ChangePwdVM.ConfirmNewPwd" type="password" class="form-control" placeholder="Nhập mật khẩu mới...">
+                                                    <span asp-validation-for="@Model.ChangePwdVM.ConfirmNewPwd" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-           
-                <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" class="ms-2 text-muted"></label>
-                <div class="form-check">
-                    <input type="radio" asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" value="true" class="form-check-input" />
-                    <label class="form-check-label">Nam</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" value="false" class="form-check-input" />
-                    <label class="form-check-label">Nữ</label>
-                </div>
-                <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.IsMale" class="text-danger"></span>
-             
-                    @if (User.IsInRole(SD.Role_Customer))
-                    {
-                        <input disabled value="@SD.Role_Customer" class="form-control" />
-                    }
-                    else if (User.IsInRole(SD.Role_Owner))
-                    {
-                        <input disabled value="@SD.Role_Owner" class="form-control" />
-                    }
-                    else if (User.IsInRole(SD.Role_Storekeeper))
-                    {
-                        <input disabled value="@SD.Role_Storekeeper" class="form-control" />
-                    }
-                    else if (User.IsInRole(SD.Role_Seller))
-                    {
-                    <input disabled value="@SD.Role_Seller" class="form-control" />
-                    }
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Lưu thông tin cá nhân</button>
-        </form>
-        <hr />
-        <form id="registerForm" enctype="multipart/form-data" asp-controller="User" asp-action="ChangePassword" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="@Model.ChangePwdVM.CurrentPwd" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="@Model.ChangePwdVM.CurrentPwd"></label>
-                <span asp-validation-for="@Model.ChangePwdVM.CurrentPwd" class="text-danger"></span>
             </div>
-            <div class="form-floating">
-                <input asp-for="@Model.ChangePwdVM.NewPwd" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="@Model.ChangePwdVM.NewPwd"></label>
-                <span asp-validation-for="@Model.ChangePwdVM.NewPwd" class="text-danger"></span>
-            </div>
-            <div class="form-floating">
-                <input asp-for="@Model.ChangePwdVM.ConfirmNewPwd" class="form-control" autocomplete="new-password" aria-required="true" />
-                <label asp-for="@Model.ChangePwdVM.ConfirmNewPwd"></label>
-                <span asp-validation-for="@Model.ChangePwdVM.ConfirmNewPwd" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Lưu thay đổi</button>
-        </form>
         </div>
+    </div>
+    <!--end page-content-wrapper-->
 </div>
-</div>
+<!--end page-wrapper-->
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

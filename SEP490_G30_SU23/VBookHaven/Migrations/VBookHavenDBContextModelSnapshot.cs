@@ -694,18 +694,22 @@ namespace VBookHaven.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("Dob")
+                        .IsRequired()
                         .HasColumnType("date")
                         .HasColumnName("DOB");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("IdCard")
+                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nchar(12)")
                         .IsFixedLength();
@@ -715,11 +719,13 @@ namespace VBookHaven.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<bool?>("IsMale")
+                        .IsRequired()
                         .HasColumnType("bit");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(15)
-                        .HasColumnType("nchar(15)")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
                         .IsFixedLength();
 
                     b.HasKey("StaffId");

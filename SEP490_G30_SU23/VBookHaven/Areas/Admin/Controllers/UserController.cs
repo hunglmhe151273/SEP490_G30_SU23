@@ -154,6 +154,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             //get application user by id
             ProfileVM profileVM = new ProfileVM();
             profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+            if (profileVM.StaffProfileVM.ApplicationUser == null) return NotFound();
             //view application user
             return View(profileVM);
         }
