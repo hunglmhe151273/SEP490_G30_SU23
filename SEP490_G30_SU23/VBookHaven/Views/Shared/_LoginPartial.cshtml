@@ -2,8 +2,12 @@
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
-<ul class="navbar-nav">
+@using System.Security.Claims
+@{
+    var user = Context.User as ClaimsPrincipal;
+    var role = user?.FindFirstValue(ClaimTypes.Role);
+}
+@*<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
@@ -24,4 +28,70 @@ else
         <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
-</ul>
+</ul>*@
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown dropdown-user-profile">
+        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+            <div class="d-flex user-box align-items-center">
+                <div class="user-info">
+                    <p class="user-name mb-0">@UserManager.GetUserName(User)</p>
+                    @if (role == SD.Role_Owner)
+                    {
+                        <p class="designattion mb-0">Chủ cửa hàng</p>
+                    }
+                    else if (role == SD.Role_Seller)
+                    {
+                        <p class="designattion mb-0">NV bán hàng</p>
+                    }
+                    else if (role == SD.Role_Storekeeper)
+                    {
+                        <p class="designattion mb-0">Thủ kho</p>
+                    }
+                    else
+                    {
+                        <p class="designattion mb-0">Khách hàng</p>
+                    }
+
+                </div>
+                <img src="~/mgmt-lib/images/avatars/default-avatar.jpg" class="user-img" alt="user avatar">
+            </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" asp-area="admin" asp-controller="user" asp-action="profile">
+                <i class="bx bx-user"></i><span>Hồ sơ</span>
+            </a>
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Login", "Account", new { area = "Identity" })">
+                <i class="bx bx-power-off"></i><span>Đăng xuất</span>
+            </a>
+
+            @*     <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>*@
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item dropdown dropdown-user-profile">
+        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+            <div class="d-flex user-box align-items-center">
+                <div class="user-info">
+                        <p class="designattion mb-0"></p>
+                </div>
+                <img src="~/mgmt-lib/images/avatars/default-avatar.jpg" class="user-img" alt="user avatar">
+            </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">
+                <i class="bx bx-user"></i><span>Đăng ký</span>
+            </a>
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">
+                <i class="bx bx-power-off"></i><span>Đăng nhập</span>
+            </a>
+        </div>
+    </li>
+}

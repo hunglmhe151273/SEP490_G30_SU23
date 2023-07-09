@@ -60,6 +60,7 @@ namespace VBookHaven.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["success"] = "Tạo loại sản phẩm thành công";
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -113,6 +114,7 @@ namespace VBookHaven.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Cập nhật thành công";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);

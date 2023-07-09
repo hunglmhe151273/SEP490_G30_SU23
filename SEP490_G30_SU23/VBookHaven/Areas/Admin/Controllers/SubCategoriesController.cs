@@ -62,6 +62,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             {
                 _context.Add(subCategory);
                 await _context.SaveChangesAsync();
+                TempData["success"] = "Tạo loại con thành công";
                 return RedirectToAction("Index", "Categories");
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subCategory.CategoryId);
@@ -114,6 +115,7 @@ namespace VBookHaven.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Cập nhật thành công";
                 return RedirectToAction("Index", "Categories");
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", subCategory.CategoryId);

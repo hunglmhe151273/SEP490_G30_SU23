@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
+@{
+    var user = Context.User as ClaimsPrincipal;
+    var role = user?.FindFirstValue(ClaimTypes.Role);
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -163,9 +172,9 @@
                 <div class="flex-grow-1 search-bar">
                     <form action="">
                         <div class="input-group">
-                            <button class="btn btn-search-back search-arrow-back" type="button"><i class="bx bx-arrow-back"></i></button>
-                            <input type="text" class="form-control" placeholder="Tìm kiếm" />
-                            <button class="btn btn-search" type="submit"><i class="lni lni-search-alt"></i></button>
+                            @*<button class="btn btn-search-back search-arrow-back" type="button"><i class="bx bx-arrow-back"></i></button>*@
+                         @*   <input type="text" class="form-control" placeholder="Tìm kiếm" />*@
+                           @* <button class="btn btn-search" type="submit"><i class="lni lni-search-alt"></i></button>*@
                         </div>
                     </form>
                 </div>
@@ -187,24 +196,7 @@
 										class="flag-icon flag-icon-um"></i><span>English</span></a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown dropdown-user-profile">
-                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                                <div class="d-flex user-box align-items-center">
-                                    <div class="user-info">
-                                        <p class="user-name mb-0">HungLM</p>
-                                        <p class="designattion mb-0">Owner</p>
-                                    </div>
-                                    <img src="~/mgmt-lib/images/avatars/avatar-1.png" class="user-img" alt="user avatar">
-                                </div>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i
-										class="bx bx-user"></i><span>Profile</span></a>
-                                <div class="dropdown-divider mb-0"></div>
-                                <a class="dropdown-item" href="#"><i
-										class="bx bx-power-off"></i><span>Logout</span></a>
-                            </div>
-                        </li>
+                        <partial name="_LoginPartial" />
                     </ul>
                 </div>
             </nav>

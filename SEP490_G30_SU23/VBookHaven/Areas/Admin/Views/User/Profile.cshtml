@@ -3,7 +3,13 @@
     ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
+@{
+    var user = Context.User as ClaimsPrincipal;
+    var role = user?.FindFirstValue(ClaimTypes.Role);
+}
 <!--page-wrapper-->
 <div class="page-wrapper">
     <!--page-content-wrapper-->
@@ -11,7 +17,23 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                @if (role == SD.Role_Owner)
+                {
+                    <div class="breadcrumb-title pe-3">Chủ cửa hàng</div>
+                }
+                else if (role == SD.Role_Seller)
+                {
+                    <div class="breadcrumb-title pe-3">Nhân viên bán hàng</div>
+                }
+                else if (role == SD.Role_Storekeeper)
+                {
+                    <div class="breadcrumb-title pe-3">Thủ kho</div>
+                }
+                else
+                {
+                    <div class="breadcrumb-title pe-3">Khách hàng</div>
+                }
+                
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
@@ -20,14 +42,14 @@
                                     <i class="bx bx-home-alt"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
+                            <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
             <div class="mx-auto">
-                <h3 class="mb-0 text-uppercase">Sửa thông tin nhân viên</h3>
+                <h3 class="mb-0 text-uppercase">Hồ sơ cá nhân</h3>
                 <hr>
                 <div class="card border-top border-0 border-4 border-primary">
                     <div class="card-body p-5">
@@ -106,7 +128,8 @@
                                     <label asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="form-label">Địa chỉ</label>
                                     <textarea asp-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="form-control" placeholder="Nhập địa chỉ chi tiết">
                                      </textarea>
-                                </div>
+                                    <span asp-validation-for="@Model.StaffProfileVM.ApplicationUser.Staff.Address" class="text-danger"></span>
+                                 </div>
                             </div>
                             <div class="col-md-4 text-center mt-0">
                                 <h3>Ảnh đại diện</h3>

@@ -149,14 +149,20 @@ namespace VBookHaven.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //get application user by id
-            ProfileVM profileVM = new ProfileVM();
-            profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
-            if (profileVM.StaffProfileVM.ApplicationUser == null) return NotFound();
-            //view application user
-            return View(profileVM);
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get application user by id
+                ProfileVM profileVM = new ProfileVM();
+                profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+                if (profileVM.StaffProfileVM.ApplicationUser.Staff == null) return NotFound();
+                //view application user
+                return View(profileVM);
+            }catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileVM profileVM)
@@ -169,9 +175,9 @@ namespace VBookHaven.Areas.Admin.Controllers
             ModelState.Clear();
 			if (!TryValidateModel(profileVM.StaffProfileVM))
             {
-
-				// view application user
-				return View(profileVM);
+                TempData["error"] = "Cập nhật hồ sơ thất bại";
+                // view application user
+                return View(profileVM);
             }
 
             string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -201,7 +207,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
             //update staff
             await _IApplicationUserRespository.UpdateStaffByAsync(profileVM.StaffProfileVM.ApplicationUser);
-
+            TempData["success"] = "Cập nhật hồ sơ thành công";
             ////- TO DO: Neu update khong thanh cong xoa anh vua add
             //foreach (var error in result.Errors)
             //{
@@ -230,6 +236,7 @@ namespace VBookHaven.Areas.Admin.Controllers
             if (changePasswordResult.Succeeded)
             {
                 // Xử lý thành công
+                TempData["success"] = "Thay đổi mật khẩu thành công";
                 return RedirectToAction(nameof(Profile));
             }
             else
