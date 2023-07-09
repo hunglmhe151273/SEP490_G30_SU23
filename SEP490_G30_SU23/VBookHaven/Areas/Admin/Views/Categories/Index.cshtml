@@ -31,14 +31,15 @@
                 <h3 class="mb-0 text-uppercase">Thêm loại sản phẩm</h3>
                 <hr>
                 <a asp-action="Create">Thêm loại sản phẩm</a>
+                <a asp-controller="SubCategories" asp-action="Create">Thêm loại con</a>
                 <table class="table bg-white">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.CategoryName)
+                                Loại sản phẩm
                             </th>
                             <th>
-                                @Html.DisplayNameFor(model => model.Status)
+                                Trạng Thái
                             </th>
                             <th></th>
                         </tr>
@@ -54,11 +55,27 @@
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Chỉnh sửa</a> |
-                                    <a asp-action="Details" asp-route-id="@item.CategoryId">Chi tiết</a>@* |
+                                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Chỉnh sửa</a>@* |
+                                    <a asp-action="Details" asp-route-id="@item.CategoryId">Chi tiết</a>*@@* |
                                     <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
                                 </td>
                             </tr>
+                            @foreach (var sub in item.SubCategories)
+                            {
+                                <tr class="table-secondary">
+                                    <td>
+                                        @Html.DisplayFor(modelItem => sub.SubCategoryName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => sub.Status)
+                                    </td>
+                                    <td>
+                                        <a asp-controller="SubCategories" asp-action="Edit" asp-route-id="@sub.SubCategoryId">Chỉnh sửa</a> @*|
+                                        <a asp-controller="SubCategories" asp-action="Details" asp-route-id="@sub.SubCategoryId">Chi tiết</a>*@@* |
+                                        <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
