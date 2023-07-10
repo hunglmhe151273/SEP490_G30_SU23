@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using VBookHaven.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VBookHaven.DbInitializer;
+using Microsoft.AspNetCore.Mvc;
+using VBookHaven.Areas.Customer.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,9 @@ service.AddScoped<IProductRespository, ProductRespository>();
 service.AddScoped<IAuthorRepository, AuthorRepository>();
 service.AddScoped<ICategoryRepository, CategoryRepository>();
 service.AddScoped<IImageRepository, ImageRepository>();
+service.AddScoped<ICartRepository, CartRepository>();
+
+service.AddHttpContextAccessor();
 
 var app = builder.Build();
 

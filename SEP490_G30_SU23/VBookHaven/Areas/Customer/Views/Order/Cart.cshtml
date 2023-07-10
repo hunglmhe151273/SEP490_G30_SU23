@@ -1,0 +1,42 @@
+﻿@using VBookHaven.Models
+@model List<CartDetail>
+
+<style>
+	table, th, td {
+		border: 1px solid;
+	}
+
+	th, td {
+		margin: 10px;
+	}
+
+	table {
+		margin: 50px;
+		border-collapse: collapse;
+	}
+</style>
+<table style="border: 1px solid; border-collapse: collapse; margin: 50px">
+	<tr>
+		<th>Sản phẩm</th>
+		<th>Số lượng</th>
+		<th>Giá thành</th>
+		<th>Giảm giá</th>
+		<th>Thành tiền</th>
+	</tr>
+	@foreach (CartDetail o in Model)
+	{
+		<tr steyl>
+			<td>@o.Product.Name</td>
+			<td>
+				<a href="/Customer/Order/MinusOneFromCart/@o.ProductId">-</a>
+				&emsp;
+				@o.Quantity
+				&emsp;
+				<a href="/Customer/Order/PlusOneToCart/@o.ProductId">+</a>
+				</td>
+			<td>@o.Product.RetailPrice</td>
+			<td>@o.Product.RetailDiscount%</td>
+			<td>@(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity)</td>
+		</tr>
+	}
+</table>

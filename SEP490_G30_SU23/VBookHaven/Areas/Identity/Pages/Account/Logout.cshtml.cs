@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using VBookHaven.Areas.Customer.Controllers;
+using VBookHaven.Respository;
 
 namespace VBookHaven.Areas.Identity.Pages.Account
 {
@@ -17,16 +19,26 @@ namespace VBookHaven.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger)
+		private readonly OrderFunctions functions;
+
+		public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger,
+			IProductRespository productRepository, IApplicationUserRespository userRepository,
+			ICartRepository cartRepository, IHttpContextAccessor httpContextAccessor)
         {
             _signInManager = signInManager;
             _logger = logger;
-        }
+
+			functions = new OrderFunctions(productRepository, userRepository, cartRepository, httpContextAccessor);
+		}
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            // Remove customer's cart at logout
+            functions.RemoveCartAtLogout();
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

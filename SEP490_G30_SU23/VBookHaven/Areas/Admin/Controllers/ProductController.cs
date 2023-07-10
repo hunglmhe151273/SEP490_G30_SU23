@@ -10,6 +10,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 {
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
+	//	-> HOAC dat san value cho input; nho chuyen gia tri null thanh empty
 
 	// Chua co add author view - Add author, category... la 1 pop up o add product
 	// Kiem tra xem paging front end hoat dong ko
@@ -19,6 +20,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 	// Khi de trong ten san pham -> Chua co warning
 	// Anh khi edit product chua dep lam -> Muon de 3 anh moi row, nhung lam vay lai qua nho
 	// Khi change status product - khong luu lai thong tin thay doi o tren
+	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)
 
 	// Authorize - lay user info tu session(?)
 	// Khi author bi disabled thi tinh sao?

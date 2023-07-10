@@ -19,3 +19,8 @@ function AddToCart() {
 	$("#add-to-cart").attr("action", "/Customer/Order/AddToCart");
 	$("#add-to-cart").submit();
 }
+
+function BuyNow() {
+	$("#add-to-cart").attr("action", "/Customer/Order/BuyNow");
+	$("#add-to-cart").submit();
+}
