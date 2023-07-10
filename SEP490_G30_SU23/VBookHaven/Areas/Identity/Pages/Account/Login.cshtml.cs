@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using VBookHaven.Utility;
+using VBookHaven.Areas.Customer.Controllers;
+using VBookHaven.Respository;
 
 namespace VBookHaven.Areas.Identity.Pages.Account
 {
@@ -24,18 +26,31 @@ namespace VBookHaven.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-            _userManager = userManager;
-        }
+        //private readonly OrderFunctions functions;
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
-        [BindProperty]
+        //public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager,
+        //    IProductRespository productRepository, IApplicationUserRespository userRepository, 
+        //    ICartRepository cartRepository, IHttpContextAccessor httpContextAccessor)
+        //{
+        //    _signInManager = signInManager;
+        //    _logger = logger;
+        //    _userManager = userManager;
+
+        //    functions = new OrderFunctions(productRepository, userRepository, cartRepository, httpContextAccessor);
+        //}
+
+		public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
+		{
+			_signInManager = signInManager;
+			_logger = logger;
+			_userManager = userManager;
+		}
+
+		/// <summary>
+		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+		///     directly from your code. This API may change or be removed in future releases.
+		/// </summary>
+		[BindProperty]
         public InputModel Input { get; set; }
 
         /// <summary>
@@ -138,9 +153,13 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        // Redirect to the user page
-                        return RedirectToAction("Index", "Home", new { area = "Customer" });
-                    }
+						//// Add customer's cart at login
+						//await functions.AddCartAtLoginAsync();
+
+						// Redirect to the user page
+						//return RedirectToAction("Index", "Home", new { area = "Customer" });
+						return RedirectToAction("IndexFromLogin", "Home", new { area = "Customer" });
+					}
                     //return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

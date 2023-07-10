@@ -1,8 +1,16 @@
-﻿.container {
+﻿.container-hover {
 	display: inline-block;
 	position: relative;
 	width: 49%;
 }
+
+	.container-hover:hover .image {
+		opacity: 0.3;
+	}
+
+	.container-hover:hover .middle {
+		opacity: 1;
+	}
 
 .image {
 	opacity: 1;
@@ -22,14 +30,6 @@
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
 	text-align: center;
-}
-
-.container:hover .image {
-	opacity: 0.3;
-}
-
-.container:hover .middle {
-	opacity: 1;
 }
 
 .deleteButton {
@@ -60,4 +60,24 @@
 		color: #ffffff;
 		background-color: #027d72;
 		border-color: #027d72;
+	}
+
+.logout-button {
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #999999;
+	
+	border-radius: 0px;
+	font-size: 14px;
+	padding: 0px 15px;
+	line-height: 30px;
+	
+	border: 1px solid transparent;
+	background: transparent;
+
+	cursor: pointer;
+}
+
+	.logout-button:hover {
+		color: #00245b;
 	}

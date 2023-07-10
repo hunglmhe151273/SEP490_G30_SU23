@@ -23,6 +23,8 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<Book> Books { get; set; }
 
+    public virtual DbSet<CartDetail> CartDetails { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
@@ -133,7 +135,24 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
                     });
         });
 
-        modelBuilder.Entity<Category>(entity =>
+		modelBuilder.Entity<CartDetail>(entity =>
+		{
+			entity.HasKey(e => new { e.CustomerId, e.ProductId });
+
+			entity.ToTable("CartDetail");
+
+			entity.HasOne(d => d.Customer).WithMany(p => p.CartDetails)
+				.HasForeignKey(d => d.CustomerId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("FK_CartDetail_Customer");
+
+			entity.HasOne(d => d.Product).WithMany(p => p.CartDetails)
+				.HasForeignKey(d => d.ProductId)
+				.OnDelete(DeleteBehavior.ClientSetNull)
+				.HasConstraintName("FK_CartDetail_Product");
+		});
+
+		modelBuilder.Entity<Category>(entity =>
         {
             entity.ToTable("Category");
 

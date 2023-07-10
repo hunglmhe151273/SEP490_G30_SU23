@@ -14,6 +14,8 @@ public partial class Customer
     public string? AccountId { get; set; }
     public virtual ApplicationUser? Account { get; set; }
 
+    public virtual ICollection<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<ShippingInfo> ShippingInfos { get; set; } = new List<ShippingInfo>();

@@ -39,6 +39,8 @@ public partial class Product
 
     public virtual Book? Book { get; set; }
 
+    public virtual ICollection<CartDetail> CartDetails { get; set; } = new List<CartDetail>();
+
     public virtual ICollection<Exchange> ExchangeBaseProducts { get; set; } = new List<Exchange>();
 
     public virtual ICollection<Exchange> ExchangeProducts { get; set; } = new List<Exchange>();

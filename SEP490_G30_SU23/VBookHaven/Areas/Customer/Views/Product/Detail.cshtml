@@ -1,0 +1,101 @@
+﻿@using VBookHaven.Models
+@using VBookHaven.Areas.Customer.Controllers
+@model ProductDetailViewModel
+
+@{
+	string authors = "";
+	foreach (Author a in Model.Book.Authors)
+	{
+		authors = authors + a.AuthorName + ", ";
+	}
+	if (authors.EndsWith(", "))
+		authors = authors.Substring(0, authors.Length - 2);
+}
+
+<div class="row">
+	<div class="col-6">
+		@if (Model.Images.Count > 0)
+		{
+			<img src="~/images/img/@Model.Images[0].ImageName" width="90%">
+		}
+		@foreach (Image i in Model.Images)
+		{
+			<img src="~/images/img/@i.ImageName" width="30%">
+		}
+	</div>
+	<div class="col-6">
+		<h3>@Model.Product.Name</h3>
+
+		@if (Model.Product.RetailDiscount != 0)
+		{
+			<h4><s>@Model.Product.RetailPrice</s></h4>
+			<h4>@(Model.Product.RetailPrice * (100 - Model.Product.RetailDiscount) / 100)</h4>
+		}
+		else
+		{
+			<h4>@Model.Product.RetailPrice</h4>
+			<h4></h4>
+		}
+
+		@if (Model.Product.IsBook == true)
+		{
+			@if (Model.Book.Publisher != null)
+			{
+				<div><b>Nhà xuất bản:</b> @Model.Book.Publisher</div>
+			}
+			@if (!authors.Equals(""))
+			{
+				<div><b>Tác giả:</b> @authors</div>
+			}
+			@if (Model.Book.Pages != null)
+			{
+				<div><b>Số trang:</b> @Model.Book.Pages</div>
+			}
+		}
+		else
+		{
+			@if (Model.Stationery.Brand != null)
+			{
+				<div><b>Thương hiệu:</b> @Model.Stationery.Brand</div>
+			}
+			@if (Model.Stationery.Origin != null)
+			{
+				<div><b>Xuất xứ:</b> @Model.Stationery.Origin</div>
+			}
+		}
+
+		<form id="add-to-cart" method="post">
+			<label>Số lượng</label>	
+			<input type="number" name="number" value="1" min="1"/>
+			<input hidden name="id" value="@Model.Product.ProductId" />
+		</form>
+		<button class="btn btn-secondary" onclick="AddToCart()">Thêm vào giỏ hàng</button>
+		<button class="btn btn-primary" onclick="BuyNow()">Mua ngay</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-4">
+		<h4>More information</h4>
+		@if (Model.Product.IsBook == true)
+		{
+			<div>Tác giả: @authors</div>
+			<div>Nhà xuất bản: @Model.Book.Publisher</div>
+			<div>Ngôn ngữ: @Model.Book.Language</div>
+			<div>Số trang: @Model.Book.Pages</div>
+		}
+		else
+		{
+			<div>Thương hiệu: @Model.Stationery.Brand</div>
+			<div>Xuất xứ: @Model.Stationery.Origin</div>
+			<div>Chất liệu: @Model.Stationery.Material</div>
+		}
+		<div>Kích thước: @Model.Product.Size</div>
+		<div>Khối lượng: @Model.Product.Weight</div>
+	</div>
+	<div class="col-8"></div>
+</div>
+<div class="row">
+	<h3>Description</h3>
+	<div>@Model.Product.Description</div>
+</div>
+

@@ -14,7 +14,7 @@ namespace VBookHaven.Respository
         Task<Product?> GetProductMoreInfoByIdAsync(int id);
 		Task<Book?> GetBookMoreInfoByIdAsync(int id);
 
-        Task<bool> IsBarcodeExistAsync(string barcode);
+        Task<Product?> GetProductByBarcodeAsync(string barcode);
 
 		Task AddBookAsync(Product product, Book book);
         Task AddAuthorsToBookAsync(int productId, List<int> AuthorIdList);
@@ -144,14 +144,11 @@ namespace VBookHaven.Respository
             }
         }
 
-        public async Task<bool> IsBarcodeExistAsync(string barcode)
+        public async Task<Product?> GetProductByBarcodeAsync(string barcode)
         {
             using (var dbContext = new VBookHavenDBContext())
             {
-                var product = await dbContext.Products.FirstOrDefaultAsync(p => p.Barcode.Equals(barcode));
-                if (product != null)
-                    return true;
-                else return false;
+                return await dbContext.Products.FirstOrDefaultAsync(p => p.Barcode.Equals(barcode));
             }
         }
 

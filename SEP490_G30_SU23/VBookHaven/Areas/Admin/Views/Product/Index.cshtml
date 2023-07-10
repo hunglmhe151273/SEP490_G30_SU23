@@ -44,24 +44,23 @@
 								<div class="col-md-12 mb-2">
 									<label class="form-label">Tìm kiếm</label>
 									<input type="text" class="form-control filter" id="search"
-										   placeholder="Nhập từ khóa vào đây..." 
-										   name="searchModel.Search" value="@ViewBag.search.Search">
+										   placeholder="Nhập từ khóa vào đây...">
 								</div>
 								<div class="col-md-6 mb-2">
 									<label class="form-label">Loại sản phẩm</label>
 									<select class="form-select filter" id="category"
-										name="searchModel.SubCategoryId" asp-items="@ViewBag.subCategories">
+										asp-items="@ViewBag.subCategories">
 									</select>
 								</div>
 								<div class="col-md-6 mb-2">
 									<label class="form-label">Trạng thái</label>
 									<select class="form-select filter" id="status"
-										name="searchModel.Status" asp-items="@ViewBag.statusList">
+										asp-items="@ViewBag.statusList">
 									</select>
 								</div>
-								<div class="col-md-4"></div>
+								@*<div class="col-md-4"></div>
 								<input type="submit" class="btn btn-primary mt-3 col-md-4" value="Lọc">
-								<div class="col-md-4"></div>
+								<div class="col-md-4"></div>*@
 							</form>
 						</div>
 					</div>
@@ -110,7 +109,7 @@
 								</td>
 								<td>@p.Barcode</td>
 								<td>@p.Name</td>
-								<td hidden>@p.SubCategory</td>
+								<td hidden>@p.SubCategoryId</td>
 								<td>@p.UnitInStock</td>
 								<td>@p.PurchasePrice VNĐ</td>
 								<td>@p.RetailPrice VNĐ</td>
@@ -133,10 +132,12 @@
 									@if (p.Status == true)
 									{
 										<span class="badge bg-success">Hoạt động</span>
+										<span hidden>1</span>
 									}
 									else
 									{
 										<span class="badge bg-danger">Đình chỉ</span>
+										<span hidden>0</span>
 									}
 								</td>
 								<td>

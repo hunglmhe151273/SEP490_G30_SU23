@@ -7,6 +7,8 @@ using VBookHaven.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using VBookHaven.DbInitializer;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using VBookHaven.Areas.Customer.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,12 +38,17 @@ builder.Services.AddScoped<IProductRespository, ProductRespository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
+
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,7 +67,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Admin}/{controller=User}/{action=Create}/{id?}");
+    pattern: "{area=Customer}/{controller=Product}/{action=Index}/{id?}");
 
 app.Run();
 
