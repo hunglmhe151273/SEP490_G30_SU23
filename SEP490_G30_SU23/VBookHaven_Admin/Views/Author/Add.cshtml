@@ -1,0 +1,10 @@
+﻿@model VBookHaven_Admin.Controllers.AuthorController
+
+<form method="post">
+	<label>Author Name</label>
+	<input asp-for="Author.AuthorName" /><br />
+	<label>Author Description</label>
+	<input asp-for="Author.Description" /><br />
+	<input type="submit" value="Submit" />
+	<a href="/author/index">Cancel</a>
+</form>

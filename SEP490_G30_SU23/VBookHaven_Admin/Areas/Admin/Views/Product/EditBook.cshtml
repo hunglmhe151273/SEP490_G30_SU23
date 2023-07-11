@@ -1,0 +1,214 @@
+﻿@model VBookHaven_Admin.Areas.Admin.Controllers.ProductManagementViewModel
+@using VBookHaven.Models
+
+@{
+	List<int> bookAuthorsId = (List<int>)ViewBag.bookAuthorsId;
+}
+
+<!--breadcrumb-->
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+	<div class="breadcrumb-title pe-3">Sản phẩm</div>
+	<div class="ps-3">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb mb-0 p-0">
+				<li class="breadcrumb-item">
+					<a href="/admin/product/index"><i class="bx bx-home-alt"></i></a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Sửa sản phẩm</li>
+			</ol>
+		</nav>
+	</div>
+</div>
+<!--end breadcrumb-->
+<form action="" method="post" enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="row">
+		<div class="col-5 mx-auto h6">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Ảnh</h3>
+					</div>
+					<hr>
+					@foreach (Image i in ViewBag.images)
+					{
+						<div class="container-hover">
+							<div hidden>@i.ImageId</div>
+							<img class="image" src="~/images/img/@i.ImageName">
+							<div class="middle">
+								<button class="deleteButton" onclick="DeleteImage(this)">Xóa</button>
+							</div>
+						</div>
+					}
+					<div hidden id="DeleteImageList"></div>
+					<input id="image-uploadify" asp-for="AddImageList" accept=".jpg, .png, image/jpeg, image/png" multiple="" style="display: inline;">
+				</div>
+			</div>
+		</div>
+		<div class="col-7 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Thông tin chung</h3>
+					</div>
+				<hr>
+					<div class="row g-3">
+						<div class="col-md-4">
+							<label class="form-label">Mã vạch</label>
+							<input class="form-control" asp-for="Product.Barcode" placeholder="Để trống để tự sinh">
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Tên sản phẩm *</label>
+							<input type="text" class="form-control" asp-for="Product.Name" placeholder="VD: Sách a, Bút bi xyz, v.v.." required>
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Mô tả</label>
+							<textarea class="form-control" asp-for="Product.Description" placeholder="Mô tả về sản phẩm..."></textarea>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Đơn vị</label>
+							<input class="form-control" asp-for="Product.Unit" placeholder="VD: Quyển, Bộ, v.v..">
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Kích thước</label>
+							<input class="form-control" asp-for="Product.Size" placeholder="VD: 30 x 40 cm">
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Trọng lượng</label>
+							<input class="form-control" asp-for="Product.Weight" placeholder="VD: 500 g">
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Loại sản phẩm</label>
+							<div class="input-group">
+								<span class="input-group-text">Chọn</span>
+								<select class="form-control" asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Thông tin sách</h3>
+					</div>
+					<hr>
+					<div class="row g-3">
+						<div class="col-md-6">
+							<label class="form-label">Số trang</label>
+							<div class="input-group">
+								<input asp-for="Book.Pages" class="form-control">
+								<span class="input-group-text">Trang</span>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="form-label">Ngôn ngữ</label>
+							<input asp-for="Book.Language" class="form-control" placeholder="VD: Tiếng Việt, Tiếng Anh, v.v.."/>
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Tác giả</label>
+							<div class="input-group">
+								<span class="input-group-text">Chọn</span>
+								
+								@* Khong lay duoc selected items tu Multi Select List *@
+								@*<select class="multiple-select" data-placeholder="Choose anything" multiple="multiple"
+									asp-for="AuthorIdList" asp-items="ViewBag.authors">
+								</select>*@
+
+								<select class="multiple-select" data-placeholder="Choose anything" multiple="multiple"
+										asp-for="AuthorIdList">
+										@foreach (Author a in ViewBag.authors)
+										{
+											if (bookAuthorsId.Contains(a.AuthorId))
+											{
+												<option value="@a.AuthorId" selected>@a.AuthorName</option>
+											}
+											else
+											{
+												<option value="@a.AuthorId">@a.AuthorName</option>
+											}
+										}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Giá sản phẩm</h3>
+					</div>
+					<hr>
+					<div class="row g-3">
+						<div class="col-md-8">
+							<label class="form-label">Giá nhập *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.PurchasePrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Giá lẻ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.RetailPrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Chiết khấu lẻ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.RetailDiscount" required min="0" step="0.1">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Giá sỉ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.WholesalePrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Chiết khấu sỉ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.WholesaleDiscount" required min="0" step="0.1">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary" style="justify-content: left;">
+				<div class="card-body p-5">
+					<input type="submit" class="btn btn-primary" value="Lưu">
+					<input type="button" class="btn btn-secondary" value="Hủy" onclick="window.location.href='/admin/product/index'">
+					@if (Model.Product.Status == true)
+					{
+						<a href="/admin/product/changestatusproduct/@Model.Product.ProductId" class="btn btn-danger">
+							Ngừng kinh doanh
+						</a>
+					}
+					else
+					{
+						<a href="/admin/product/changestatusproduct/@Model.Product.ProductId" class="btn btn-not-danger" >
+							Tiếp tục kinh doanh
+						</a>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<input hidden asp-for="Product.ProductId" />
+	<input hidden asp-for="Product.UnitInStock"/>
+	<input hidden asp-for="Product.IsBook" />
+	<input hidden asp-for="Product.Status" />
+	<input hidden asp-for="Book.ProductId" />
+</form>

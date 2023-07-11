@@ -1,0 +1,155 @@
+﻿@model VBookHaven_Admin.Areas.Admin.Controllers.ProductManagementViewModel
+
+<!--breadcrumb-->
+<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+	<div class="breadcrumb-title pe-3">Sản phẩm</div>
+	<div class="ps-3">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb mb-0 p-0">
+				<li class="breadcrumb-item">
+					<a href="/admin/product/index"><i class="bx bx-home-alt"></i></a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Thêm sản phẩm</li>
+			</ol>
+		</nav>
+	</div>
+</div>
+<!--end breadcrumb-->
+<form action="" method="post" enctype="multipart/form-data">
+	@Html.AntiForgeryToken()
+	<div class="row">
+		<div class="col-5 mx-auto h6">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Ảnh</h3>
+					</div>
+					<hr>
+					<input id="image-uploadify" asp-for="AddImageList" accept=".jpg, .png, image/jpeg, image/png" multiple="" style="display: inline;">
+				</div>
+			</div>
+		</div>
+		<div class="col-7 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Thông tin chung</h3>
+					</div>
+					<hr>
+					<div class="row g-3">
+						<div class="col-md-4">
+							<label class="form-label">Mã vạch</label>
+							<input class="form-control" asp-for="Product.Barcode" placeholder="Để trống để tự sinh">
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Tên sản phẩm *</label>
+							<input type="text" class="form-control" asp-for="Product.Name" placeholder="VD: Sách a, Bút bi xyz, v.v.." required>
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Mô tả</label>
+							<textarea class="form-control" asp-for="Product.Description" placeholder="Mô tả về sản phẩm..."></textarea>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Đơn vị</label>
+							<input class="form-control" asp-for="Product.Unit" placeholder="VD: Quyển, Bộ, v.v..">
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Kích thước</label>
+							<input class="form-control" asp-for="Product.Size" placeholder="VD: 30 x 40 cm">
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Trọng lượng</label>
+							<input class="form-control" asp-for="Product.Weight" placeholder="VD: 500 g">
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Loại sản phẩm</label>
+							<div class="input-group">
+								<span class="input-group-text">Chọn</span>
+								<select class="form-control" asp-for="Product.SubCategoryId" asp-items="ViewBag.subCategories"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Thông tin văn phòng phẩm</h3>
+					</div>
+					<hr>
+					<div class="row g-3">
+						<div class="col-md-12">
+							<label class="form-label">Chất liệu</label>
+							<input class="form-control" asp-for="Stationery.Material" placeholder="VD: Nhựa, Nhôm, Giấy, v.v..">
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Xuất xứ</label>
+							<input class="form-control" asp-for="Stationery.Origin" placeholder="Việt Nam, Trung Quốc, Mỹ, v.v..">
+						</div>
+						<div class="col-md-12">
+							<label class="form-label">Thương hiệu</label>
+							<input class="form-control" asp-for="Stationery.Brand" placeholder="VD: Thiên Long, Hồng Hà, v.v..">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary">
+				<div class="card-body p-5">
+					<div class="card-title d-flex align-items-center">
+						<h3 class="mb-0 text-primary">Giá sản phẩm</h3>
+					</div>
+					<hr>
+					<div class="row g-3">
+						<div class="col-md-8">
+							<label class="form-label">Giá nhập *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.PurchasePrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Giá lẻ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.RetailPrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Chiết khấu lẻ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.RetailDiscount" required min="0" step="0.1">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<label class="form-label">Giá sỉ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.WholesalePrice" required min="0">
+								<span class="input-group-text">VNĐ</span>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<label class="form-label">Chiết khấu sỉ *</label>
+							<div class="input-group">
+								<input type="number" class="form-control" asp-for="Product.WholesaleDiscount" required min="0" step="0.1">
+								<span class="input-group-text">%</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 mx-auto">
+			<div class="card border-top border-0 border-4 border-primary" style="justify-content: left;">
+				<div class="card-body p-5">
+					<input type="submit" class="btn btn-primary" value="Lưu">
+					<input type="button" class="btn btn-secondary" value="Hủy" onclick="window.location.href='/admin/product/index'">
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HKxqkDZ5PweSa5Qraqehg0c+Qggp6lFFD1NIcLkq19E=",
+  "Hash": "WD5f/Rl4VcLEjSSmD7KoRZKBB9XBGLI70oJGggsfWUw=",
   "Source": "VBookHaven",
   "BasePath": "_content/VBookHaven",
   "Mode": "Default",
@@ -9382,6 +9382,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\Staff\\a285a0ab-edeb-4eef-ae87-b5d7eb0a9f37.jpg"
+    },
+    {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\b8a033b7-ddec-467b-9c0f-64b30a869d81.png",
+      "SourceId": "VBookHaven",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\",
+      "BasePath": "_content/VBookHaven",
+      "RelativePath": "images/Staff/b8a033b7-ddec-467b-9c0f-64b30a869d81.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Staff\\b8a033b7-ddec-467b-9c0f-64b30a869d81.png"
     },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\wwwroot\\images\\Staff\\cff19503-10ab-4769-af41-159007c0bd93.jpg",

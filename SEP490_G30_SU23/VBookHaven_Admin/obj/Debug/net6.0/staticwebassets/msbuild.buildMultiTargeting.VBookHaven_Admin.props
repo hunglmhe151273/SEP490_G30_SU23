@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\VBookHaven_Admin.props" />
+</Project>
