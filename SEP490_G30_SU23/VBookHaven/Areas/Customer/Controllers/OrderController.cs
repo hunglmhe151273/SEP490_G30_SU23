@@ -7,30 +7,47 @@ using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {		
-	// TODO: Khach dat hang (hien tai da co cart). Co chia xem cart va dat hang thanh 2 man hinh
-	//		khac nhau ko? Man hinh them dia chi
+	// Chua co man hinh them dia chi
+	// Chua co man hinh chon dia chi
 	
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout -> HOW?
-	// Khong ref duoc AddCartAtLogin, RemoveCartAtLogout o Login, Logout controller
+	// Khong dat duoc qua so luong hang trong kho
+	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
+	public class OrderPurchaseModel
+	{
+		public List<CartDetail> Cart { get; set; }
+		public ShippingInfo Address { get; set; }
+		public int AddressId { get; set; }
+
+		public OrderPurchaseModel()
+		{
+			Cart = new List<CartDetail>();
+			Address = new ShippingInfo();
+			AddressId = 0;
+		}
+	}
+	
 	[Area("Customer")]
 	public class OrderController : Controller
 	{
 		//private readonly IProductRespository productRespository;
 		//private readonly IApplicationUserRespository userRepository;
 		//private readonly ICartRepository cartRepository;
+		private readonly IShippingInfoRepository shippingInfoRepository;
 
 		private readonly OrderFunctions functions;
 
 		public OrderController(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository,
-			IHttpContextAccessor httpContextAccessor)
+			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository)
 		{
 			//this.productRespository = productRespository;
 			//this.userRepository = userRepository;
 			//this.cartRepository = cartRepository;
 
 			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor);
+			this.shippingInfoRepository = shippingInfoRepository;
 		}
 
 		[HttpPost]
@@ -87,6 +104,65 @@ namespace VBookHaven.Areas.Customer.Controllers
 				return NotFound();
 
 			return RedirectToAction("Cart");
+		}
+
+		public async Task<IActionResult> RemoveItemFromCart(int id)
+		{
+			var cart = functions.GetCartFromCookies();
+			var detail = cart.SingleOrDefault(d => d.ProductId == id);
+			if (detail == null)
+				return NotFound();
+
+			await functions.AddToCartFunctionAsync(-(int)detail.Quantity, id);
+			return RedirectToAction("Cart");
+
+		}
+
+		public async Task<IActionResult> Purchase()
+		{
+			var customerId = await functions.GetLoginCustomerIdAsync();
+			if (customerId == null)
+				return Unauthorized();
+
+			var model = new OrderPurchaseModel();
+			model.Cart = functions.GetCartFromCookies();
+			if (model.Cart.Count <= 0)
+				return BadRequest();
+
+			model.AddressId = 0;
+			var shipInfoList = await shippingInfoRepository.GetAllShippingInfosByCustomerIdAsync((int)customerId);
+			if (shipInfoList.Count > 0)
+			{
+				model.Address = shipInfoList[0];
+				model.AddressId = shipInfoList[0].ShipInfoId;
+			}
+
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Purchase(int shipInfoId)
+		{
+			var model = new OrderPurchaseModel();
+			model.Cart = functions.GetCartFromCookies();
+			if (model.Cart.Count <= 0)
+				return BadRequest();
+
+			var shipInfo = await shippingInfoRepository.GetShippingInfoByIdAsync(shipInfoId);
+			if (shipInfo == null)
+				return NotFound();
+			model.Address = shipInfo;
+
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> PurchaseFinalize(int shipInfoId)
+		{
+			// TBD
+			return RedirectToAction("Index", "Home");
 		}
 
 		//---------- Other functions ----------
@@ -291,7 +367,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			User = httpContextAccessor.HttpContext.User;
 		}
 
-		async Task<int?> GetLoginCustomerIdAsync()
+		public async Task<int?> GetLoginCustomerIdAsync()
 		{
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			if (claimsIdentity.FindFirst(ClaimTypes.NameIdentifier) == null)
@@ -433,7 +509,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			var customerCart = await cartRepository.GetCartByCustomerIdAsync((int)customerId);
 
 			// Add cart from cookie to DB;
-			var updateDbTask = cartRepository.AddOrUpdateMultipleItemsToCartAsync(cartInCookie);
+			var updateDbTask = cartRepository.AddCartFromCookieToDbAsync(cartInCookie);
 
 			// Add cart from DB to cookie
 			foreach (var cartItem in customerCart)

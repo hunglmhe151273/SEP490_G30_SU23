@@ -628,3 +628,9 @@ F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\VBookHaven.pdb
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\VBookHaven.genruntimeconfig.cache
 F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\obj\Debug\net6.0\ref\VBookHaven.dll
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.DataAccess.dll
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.Models.dll
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.Utility.dll
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.DataAccess.pdb
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.Models.pdb
+D:\Tai_lieu_hoc_tap\Đồ án\SEP490_G30_SU23\SEP490_G30_SU23\VBookHaven\bin\Debug\net6.0\VBookHaven.Utility.pdb

@@ -11844,19 +11844,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PCDELL\\.nuget\\packages\\": {}
+    "C:\\Users\\kienq\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
+      "projectUniqueName": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
       "projectName": "VBookHaven",
-      "projectPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
-      "packagesPath": "C:\\Users\\PCDELL\\.nuget\\packages\\",
-      "outputPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\",
+      "projectPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\VBookHaven.csproj",
+      "packagesPath": "C:\\Users\\kienq\\.nuget\\packages\\",
+      "outputPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\PCDELL\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kienq\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11870,14 +11870,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.DataAccess\\VBookHaven.DataAccess.csproj": {
-              "projectPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.DataAccess\\VBookHaven.DataAccess.csproj"
+            "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.DataAccess\\VBookHaven.DataAccess.csproj": {
+              "projectPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.DataAccess\\VBookHaven.DataAccess.csproj"
             },
-            "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Models\\VBookHaven.Models.csproj": {
-              "projectPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Models\\VBookHaven.Models.csproj"
+            "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Models\\VBookHaven.Models.csproj": {
+              "projectPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Models\\VBookHaven.Models.csproj"
             },
-            "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Utility\\VBookHaven.Utility.csproj": {
-              "projectPath": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Utility\\VBookHaven.Utility.csproj"
+            "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Utility\\VBookHaven.Utility.csproj": {
+              "projectPath": "D:\\Tai_lieu_hoc_tap\\Đồ án\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven.Utility\\VBookHaven.Utility.csproj"
             }
           }
         }
@@ -11944,7 +11944,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

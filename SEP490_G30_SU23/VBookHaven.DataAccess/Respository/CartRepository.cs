@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VBookHaven.DataAccess.Data;
 using VBookHaven.Models;
+using VBookHaven.DataAccess.Data;
 
 namespace VBookHaven.DataAccess.Respository
 {
@@ -9,7 +9,7 @@ namespace VBookHaven.DataAccess.Respository
 		Task<List<CartDetail>> GetCartByCustomerIdAsync(int customerId);
 
 		Task AddItemToCartAsync(CartDetail item);
-		Task AddOrUpdateMultipleItemsToCartAsync(List<CartDetail> items);
+		Task AddCartFromCookieToDbAsync(List<CartDetail> items);
 
 		Task UpdateCartAsync(CartDetail item);
 		Task UpdateCartMultipleAsync(List<CartDetail> items);
@@ -28,16 +28,18 @@ namespace VBookHaven.DataAccess.Respository
 			}
 		}
 
-		public async Task AddOrUpdateMultipleItemsToCartAsync(List<CartDetail> items)
+		public async Task AddCartFromCookieToDbAsync(List<CartDetail> items)
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
 				foreach (var item in items)
 				{
-					dbContext.Entry(item).State = 
-						await dbContext.CartDetails.FindAsync(item.ProductId, item.CustomerId) == null 
-						? EntityState.Added
-						: EntityState.Modified;
+					var existedItem = await dbContext.CartDetails.FindAsync(item.CustomerId, item.ProductId);
+					if (existedItem != null)
+					{
+						existedItem.Quantity += item.Quantity;
+					}
+					else dbContext.CartDetails.Add(item);
 				}
 				await dbContext.SaveChangesAsync();
 			}

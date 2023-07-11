@@ -41,6 +41,8 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IShippingInfoRepository, ShippingInfoRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>

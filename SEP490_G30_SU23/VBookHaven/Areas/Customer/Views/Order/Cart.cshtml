@@ -1,5 +1,19 @@
 ﻿@using VBookHaven.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 @model List<CartDetail>
+
+@{
+	double total = 0;
+	foreach (CartDetail item in Model)
+	{
+		var p = item.Product;
+		total += (int)p.RetailPrice * (1 - (double)p.RetailDiscount / 100) * (int)item.Quantity;
+	}
+}
 
 <style>
 	table, th, td {
@@ -22,10 +36,11 @@
 		<th>Giá thành</th>
 		<th>Giảm giá</th>
 		<th>Thành tiền</th>
+		<th></th>
 	</tr>
 	@foreach (CartDetail o in Model)
 	{
-		<tr steyl>
+		<tr>
 			<td>@o.Product.Name</td>
 			<td>
 				<a href="/Customer/Order/MinusOneFromCart/@o.ProductId">-</a>
@@ -37,6 +52,27 @@
 			<td>@o.Product.RetailPrice</td>
 			<td>@o.Product.RetailDiscount%</td>
 			<td>@(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity)</td>
+			<td><button onclick="window.location.replace('/Customer/Order/RemoveItemFromCart/@o.ProductId')">
+				Delete	
+			</button></td>
 		</tr>
 	}
 </table>
+<div style="font-weight: bold">Tổng cộng: @total</div>
+@if (SignInManager.IsSignedIn(User))
+{
+	if (Model.Count > 0)
+	{
+		<button class='btn btn-primary' onclick="window.location.replace('/Customer/Order/Purchase')">
+			Thanh toán
+		</button>
+	}
+	else
+	{
+		<button class="btn btn-primary" disabled>Thanh toán</button>
+	}
+}
+else
+{
+	<div style="color: red; font-weight: bold">Đăng nhập để thanh toán</div>
+}
