@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VBookHaven.Models;
-using VBookHaven.Respository;
+using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {

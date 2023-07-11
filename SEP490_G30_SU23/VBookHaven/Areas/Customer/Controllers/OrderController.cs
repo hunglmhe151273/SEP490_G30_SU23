@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Json;
 using VBookHaven.Models;
-using VBookHaven.Respository;
+using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {		

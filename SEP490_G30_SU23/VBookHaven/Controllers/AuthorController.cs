@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VBookHaven.Models;
-using VBookHaven.Common;
+using VBookHaven.DataAccess.Common;
+using VBookHaven.DataAccess.Data;
 
 namespace VBookHaven.Controllers
 {

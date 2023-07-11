@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VBookHaven.Respository;
+using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {

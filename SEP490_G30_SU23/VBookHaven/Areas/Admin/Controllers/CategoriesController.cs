@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using VBookHaven.DataAccess.Data;
 using VBookHaven.Models;
 
 namespace VBookHaven.Areas.Admin.Controllers

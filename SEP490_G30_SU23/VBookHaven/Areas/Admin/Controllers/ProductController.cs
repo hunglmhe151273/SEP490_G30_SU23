@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using VBookHaven.Common;
-using VBookHaven.Respository;
+using VBookHaven.DataAccess.Common;
+using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -48,7 +48,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 	[Area("Admin")]
 	public class ProductController : Controller
 	{
-		private readonly IProductRespository productRespository;
+		private readonly IProductRespository _productRespository;
 		private readonly IAuthorRepository authorRepository;
 		private readonly ICategoryRepository categoryRepository;
 		private readonly IImageRepository imageRepository;
@@ -56,7 +56,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 		public ProductController(IProductRespository productRespository, IAuthorRepository authorRepository, 
 			ICategoryRepository categoryRepository, IImageRepository imageRepository)
 		{
-			this.productRespository = productRespository;
+			_productRespository = productRespository;
 			this.authorRepository = authorRepository;
 			this.categoryRepository = categoryRepository;
 			this.imageRepository = imageRepository;
@@ -65,8 +65,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
-			
-			var products = await productRespository.GetAllProductsAsync();
+
+            List<Product> products = await _productRespository.GetAllProductsAsync();
 
 			var thumbnails = new Dictionary<int, string?>();
 			foreach (Product p in products)
@@ -149,9 +149,9 @@ namespace VBookHaven.Areas.Admin.Controllers
 			model.Product.IsBook = true;
 			model.Product.Status = true;
 
-			await productRespository.AddBookAsync(model.Product, model.Book);
+			await _productRespository.AddBookAsync(model.Product, model.Book);
 
-			var addAuthorTask = productRespository.AddAuthorsToBookAsync(model.Product.ProductId, model.AuthorIdList);
+			var addAuthorTask = _productRespository.AddAuthorsToBookAsync(model.Product.ProductId, model.AuthorIdList);
 			var uploadImageTask = imageRepository.UploadImagesAsync(model.Product.ProductId, model.AddImageList);
 
 			Task.WaitAll(addAuthorTask, uploadImageTask);
@@ -203,7 +203,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			model.Product.IsBook = false;
 			model.Product.Status = true;
 
-			await productRespository.AddStationeryAsync(model.Product, model.Stationery);
+			await _productRespository.AddStationeryAsync(model.Product, model.Stationery);
 
 			await imageRepository.UploadImagesAsync(model.Product.ProductId, model.AddImageList);
 
@@ -212,8 +212,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		public async Task<IActionResult> EditBook(int id)
 		{
-			var product = await productRespository.GetProductByIdAsync(id);
-			var book = await productRespository.GetBookByIdAsync(id);
+			var product = await _productRespository.GetProductByIdAsync(id);
+			var book = await _productRespository.GetBookByIdAsync(id);
 
 			if (product == null || book == null)
 				return NotFound();
@@ -292,10 +292,10 @@ namespace VBookHaven.Areas.Admin.Controllers
 			var deleteImageTask = imageRepository.DeleteImageListAsync(model.DeleteImageIdList);
 			var uploadImageTask = imageRepository.UploadImagesAsync(id, model.AddImageList);
 
-			var updateProductTask = productRespository.UpdateProductAsync(model.Product);
+			var updateProductTask = _productRespository.UpdateProductAsync(model.Product);
 
-			await productRespository.UpdateBookAsync(model.Book);
-			await productRespository.UpdateBookAuthorsAsync(id, model.AuthorIdList);
+			await _productRespository.UpdateBookAsync(model.Book);
+			await _productRespository.UpdateBookAuthorsAsync(id, model.AuthorIdList);
 
 			Task.WaitAll(deleteImageTask, uploadImageTask, updateProductTask);
 
@@ -304,8 +304,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		public async Task<IActionResult> EditStationery(int id)
 		{
-			var product = await productRespository.GetProductByIdAsync(id);
-			var stationery = await productRespository.GetStationeryByIdAsync(id);
+			var product = await _productRespository.GetProductByIdAsync(id);
+			var stationery = await _productRespository.GetStationeryByIdAsync(id);
 
 			if (product == null || stationery == null)
 				return NotFound();
@@ -366,8 +366,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 			var deleteImageTask = imageRepository.DeleteImageListAsync(model.DeleteImageIdList);
 			var uploadImageTask = imageRepository.UploadImagesAsync(id, model.AddImageList);
 
-			var updateProductTask = productRespository.UpdateProductAsync(model.Product);
-			var updateStationeryTask = productRespository.UpdateStationeryAsync(model.Stationery);
+			var updateProductTask = _productRespository.UpdateProductAsync(model.Product);
+			var updateStationeryTask = _productRespository.UpdateStationeryAsync(model.Stationery);
 
 			Task.WaitAll(deleteImageTask, uploadImageTask, updateProductTask, updateStationeryTask);
 
@@ -376,8 +376,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		public async Task<IActionResult> ViewBook(int id)
 		{
-			var productTask = productRespository.GetProductMoreInfoByIdAsync(id);
-			var bookTask = productRespository.GetBookMoreInfoByIdAsync(id);
+			var productTask = _productRespository.GetProductMoreInfoByIdAsync(id);
+			var bookTask = _productRespository.GetBookMoreInfoByIdAsync(id);
 
 			var product = await productTask;
 			var book = await bookTask;
@@ -396,8 +396,8 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		public async Task<IActionResult> ViewStationery(int id)
 		{
-			var productTask = productRespository.GetProductMoreInfoByIdAsync(id);
-			var stationeryTask = productRespository.GetStationeryByIdAsync(id);
+			var productTask = _productRespository.GetProductMoreInfoByIdAsync(id);
+			var stationeryTask = _productRespository.GetStationeryByIdAsync(id);
 
 			var product = await productTask;
 			var stationery = await stationeryTask;
@@ -416,7 +416,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 
 		public async Task<IActionResult> ChangeStatusProduct(int id)
 		{
-			var success = await productRespository.ChangeStatusProductAsync(id);
+			var success = await _productRespository.ChangeStatusProductAsync(id);
 			if (!success)
 				return NotFound();
 			else
@@ -433,7 +433,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (barcode.StartsWith("PVN"))
 					return "Mã vạch không được có tiền tố PVN của hệ thống";
 
-			var product = await productRespository.GetProductByBarcodeAsync(barcode);
+			var product = await _productRespository.GetProductByBarcodeAsync(barcode);
 			if (product != null)
 				return "Mã vạch đã tồn tại";
 
@@ -448,7 +448,7 @@ namespace VBookHaven.Areas.Admin.Controllers
 			if (barcode.StartsWith("PVN") && !barcode.Equals("PVN" + id))
 				return "Mã vạch không được có tiền tố PVN của hệ thống";
 
-			var product = await productRespository.GetProductByBarcodeAsync(barcode);
+			var product = await _productRespository.GetProductByBarcodeAsync(barcode);
 			if (product != null)
 			{
 				if (product.ProductId != id)

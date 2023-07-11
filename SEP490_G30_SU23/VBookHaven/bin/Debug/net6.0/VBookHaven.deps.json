@@ -14,7 +14,10 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.7",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.7",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.7",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.14"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.14",
+          "VBookHaven.DataAccess": "1.0.0",
+          "VBookHaven.Models": "1.0.0",
+          "VBookHaven.Utility": "1.0.0"
         },
         "runtime": {
           "VBookHaven.dll": {}
@@ -2790,6 +2793,38 @@
           "System.Threading": "4.3.0",
           "System.Xml.ReaderWriter": "4.3.0"
         }
+      },
+      "VBookHaven.DataAccess/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.19",
+          "Microsoft.AspNetCore.Identity.UI": "6.0.18",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.7",
+          "VBookHaven.Models": "1.0.0",
+          "VBookHaven.Utility": "1.0.0"
+        },
+        "runtime": {
+          "VBookHaven.DataAccess.dll": {}
+        }
+      },
+      "VBookHaven.Models/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.19",
+          "Microsoft.AspNetCore.Identity.UI": "6.0.18",
+          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.7",
+          "VBookHaven.Utility": "1.0.0"
+        },
+        "runtime": {
+          "VBookHaven.Models.dll": {}
+        }
+      },
+      "VBookHaven.Utility/1.0.0": {
+        "dependencies": {
+          "MailKit": "4.1.0",
+          "Microsoft.AspNetCore.Identity.UI": "6.0.18"
+        },
+        "runtime": {
+          "VBookHaven.Utility.dll": {}
+        }
       }
     }
   },
@@ -4450,6 +4485,21 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
+    },
+    "VBookHaven.DataAccess/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "VBookHaven.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "VBookHaven.Utility/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

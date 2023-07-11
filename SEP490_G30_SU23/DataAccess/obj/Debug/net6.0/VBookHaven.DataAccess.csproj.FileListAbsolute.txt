@@ -1,0 +1,5 @@
+F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\DataAccess\obj\Debug\net6.0\VBookHaven.DataAccess.csproj.AssemblyReference.cache
+F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\DataAccess\obj\Debug\net6.0\VBookHaven.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\DataAccess\obj\Debug\net6.0\VBookHaven.DataAccess.AssemblyInfoInputs.cache
+F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\DataAccess\obj\Debug\net6.0\VBookHaven.DataAccess.AssemblyInfo.cs
+F:\Semester 9\SEP490\SEP490_G30_SU23\SEP490_G30_SU23\DataAccess\obj\Debug\net6.0\VBookHaven.DataAccess.csproj.CoreCompileInputs.cache

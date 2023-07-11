@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using VBookHaven.Utility;
 using VBookHaven.Areas.Customer.Controllers;
-using VBookHaven.Respository;
+using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Identity.Pages.Account
 {

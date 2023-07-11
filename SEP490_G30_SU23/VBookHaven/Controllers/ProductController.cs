@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using VBookHaven.Common;
+using VBookHaven.DataAccess.Common;
 using VBookHaven.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using VBookHaven.DataAccess.Data;
 
 namespace VBookHaven.Controllers
 {

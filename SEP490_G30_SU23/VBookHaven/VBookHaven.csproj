@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -18,10 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
-    <Folder Include="Models\" />
     <Folder Include="wwwroot\cust-lib\template\" />
   </ItemGroup>
 
@@ -39,6 +37,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VBookHaven.DataAccess\VBookHaven.DataAccess.csproj" />
+    <ProjectReference Include="..\VBookHaven.Models\VBookHaven.Models.csproj" />
+    <ProjectReference Include="..\VBookHaven.Utility\VBookHaven.Utility.csproj" />
   </ItemGroup>
 
 </Project>
