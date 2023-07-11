@@ -1929,6 +1929,10 @@
       "PackagePath": "staticwebassets\\images\\Staff\\cff19503-10ab-4769-af41-159007c0bd93.jpg"
     },
     {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_1.jpg",
+      "PackagePath": "staticwebassets\\images\\img\\image_1.jpg"
+    },
+    {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_1002.jpg",
       "PackagePath": "staticwebassets\\images\\img\\image_1002.jpg"
     },
@@ -1947,6 +1951,10 @@
     {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_1006.jpg",
       "PackagePath": "staticwebassets\\images\\img\\image_1006.jpg"
+    },
+    {
+      "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_2.jpg",
+      "PackagePath": "staticwebassets\\images\\img\\image_2.jpg"
     },
     {
       "Id": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_2002.jpg",

@@ -2798,6 +2798,7 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.19",
           "Microsoft.AspNetCore.Identity.UI": "6.0.18",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.7",
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "6.0.14",
           "VBookHaven.Models": "1.0.0",
           "VBookHaven.Utility": "1.0.0"
         },

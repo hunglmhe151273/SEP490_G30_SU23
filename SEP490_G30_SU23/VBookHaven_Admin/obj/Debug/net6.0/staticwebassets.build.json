@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TyoI1PaAy1laIyCQ6wy28+jytSe0FWa6xLq3qWnkzcU=",
+  "Hash": "PBttkfoVV6oap3AbRSyqPunS/WYRJyNGWXvyBfoM5Vo=",
   "Source": "VBookHaven_Admin",
   "BasePath": "_content/VBookHaven_Admin",
   "Mode": "Default",
@@ -9129,6 +9129,23 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_1.jpg",
+      "SourceId": "VBookHaven_Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\",
+      "BasePath": "_content/VBookHaven_Admin",
+      "RelativePath": "images/img/image_1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\img\\image_1.jpg"
+    },
+    {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_1002.jpg",
       "SourceId": "VBookHaven_Admin",
       "SourceType": "Discovered",
@@ -9212,6 +9229,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\img\\image_1006.jpg"
+    },
+    {
+      "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_2.jpg",
+      "SourceId": "VBookHaven_Admin",
+      "SourceType": "Discovered",
+      "ContentRoot": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\",
+      "BasePath": "_content/VBookHaven_Admin",
+      "RelativePath": "images/img/image_2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\img\\image_2.jpg"
     },
     {
       "Identity": "F:\\Semester 9\\SEP490\\SEP490_G30_SU23\\SEP490_G30_SU23\\VBookHaven_Admin\\wwwroot\\images\\img\\image_2002.jpg",
