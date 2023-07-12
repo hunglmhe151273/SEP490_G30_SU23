@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Security.Claims;
 using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
+using VBookHaven.Models.ViewModels;
 using VBookHaven.ViewModels;
 
 namespace VBookHaven.Areas.Customer.Controllers
@@ -10,12 +12,16 @@ namespace VBookHaven.Areas.Customer.Controllers
     [Area("Customer")]
     public class AccountController : Controller
     {
-        private readonly IShippingInfoRespository _shippingInfoRespository;
+        private readonly IShippingInfoRepository _shippingInfoRepository;
+        private readonly ICustomerRespository _customerRespository;
         private readonly IApplicationUserRespository _applicationUserRespository;
-        public AccountController(IShippingInfoRespository shippingInfoRespository, IApplicationUserRespository applicationUserRespository)
+        public AccountController(IShippingInfoRepository shippingInfoRespository,
+            IApplicationUserRespository applicationUserRespository,
+            ICustomerRespository customerRespository)
         {
-            _shippingInfoRespository = shippingInfoRespository;
+            _shippingInfoRepository = shippingInfoRespository;
             _applicationUserRespository = applicationUserRespository;
+            _customerRespository = customerRespository;
         }
         public async Task<IActionResult> ShipInfo()
         {
@@ -26,7 +32,7 @@ namespace VBookHaven.Areas.Customer.Controllers
                 //get customer by uid
                 ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
                 int cid = applicationUser.Customer.CustomerId;
-                var shippingInfos = await _shippingInfoRespository.GetAllShipInfoByUIDAsync(cid);
+                var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByUIDAsync(cid);
                 //view application user
                 return View(shippingInfos);
             }
@@ -35,7 +41,8 @@ namespace VBookHaven.Areas.Customer.Controllers
                 return NotFound();
             }
         }
-        public async Task<IActionResult> EditShipInfo(int shipInfoId, int customerID)
+        [HttpGet]
+        public async Task<IActionResult> CreateShipInfo()
         {
             try
             {
@@ -44,19 +51,60 @@ namespace VBookHaven.Areas.Customer.Controllers
                 //get customer by uid
                 ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
                 int cid = applicationUser.Customer.CustomerId;
-                if(customerID != cid)
-                {
-                    return NotFound();
-                }
-                //lấy thông tin lên form theo shipinfoId
-                var shippingInfo = await _shippingInfoRespository.GetShipInfoByIdAsync(shipInfoId);
+                ShippingInfoVM model = new ShippingInfoVM();
+                model.CustomerId = cid;
                 //view application user
-                return View(shippingInfo);
+                return View(model);
             }
             catch (Exception ex)
             {
                 return NotFound();
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditShipInfo(int shipInfoId)
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get customer by uid
+                ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
+                int cid = applicationUser.Customer.CustomerId;
+                ShippingInfoVM model = new ShippingInfoVM();
+                //lấy thông tin lên form theo shipinfoId và customerID
+                model.ShippingInfo = await _shippingInfoRepository.GetShipInfoByIdAsync(cid, shipInfoId);
+                //set IsDefault hay không
+                if(applicationUser.Customer.DefaultShippingInfoId == model.ShippingInfo.ShipInfoId)
+                {
+                    model.IsDefault = true;
+                }
+                model.CustomerId = cid;
+                //view application user
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditShipInfo(ShippingInfoVM shippingInfoVM, string? returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(shippingInfoVM);
+            }
+            // update shipinfo
+            await _shippingInfoRepository.UpdateShipInfoAsync(shippingInfoVM.ShippingInfo);
+
+            if (shippingInfoVM.IsDefault)
+            {
+                //update customer default address id
+                await _customerRespository.UpdateCustomerDefaultShipInfoAsync(shippingInfoVM.CustomerId, shippingInfoVM.ShippingInfo.ShipInfoId);
+            }
+
+            return LocalRedirect(returnUrl);
         }
     }
 }

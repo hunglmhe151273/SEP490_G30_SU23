@@ -10,7 +10,11 @@ namespace VBookHaven.DataAccess.Respository
 		Task<ShippingInfo?> GetShippingInfoByIdAsync(int id);
 
 		Task AddShippingInfoAsync(ShippingInfo shippingInfo);
-	}
+		//HungLM
+        Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID);
+        Task<ShippingInfo> GetShipInfoByIdAsync(int customerId, int Id);
+        Task UpdateShipInfoAsync(ShippingInfo shippingInfo);
+    }
 
 	public class ShippingInfoRepository : IShippingInfoRepository
 	{
@@ -38,5 +42,34 @@ namespace VBookHaven.DataAccess.Respository
 				return await dbContext.ShippingInfos.FindAsync(id);
 			}
 		}
-	}
+        //HungLM
+        private readonly VBookHavenDBContext _dbContext;
+
+        public ShippingInfoRepository(VBookHavenDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        public async Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID)
+        {
+            return await _dbContext.ShippingInfos.Where(s => s.CustomerId == userID).ToListAsync();
+        }
+
+        public async Task<ShippingInfo> GetShipInfoByIdAsync(int customerId, int Id)
+        {
+            return await _dbContext.ShippingInfos.Include(c => c.Customer).SingleOrDefaultAsync(x => x.ShipInfoId == Id && x.Customer.CustomerId == customerId);
+        }
+
+        public async Task UpdateShipInfoAsync(ShippingInfo obj)
+        {
+            var objFromDb = _dbContext.ShippingInfos.FirstOrDefault(u => u.ShipInfoId == obj.ShipInfoId);
+            if (objFromDb != null)
+            {
+                objFromDb.CustomerName = obj.CustomerName;
+				objFromDb.Phone = obj.Phone;
+                objFromDb.ShipAddress = obj.ShipAddress;
+            }
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }

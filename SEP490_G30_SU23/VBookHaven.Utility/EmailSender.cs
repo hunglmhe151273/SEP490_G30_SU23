@@ -16,7 +16,6 @@ namespace VBookHaven.Utility
             //message.Body = new TextPart("html")
             //{
             //    Text = $"{htmlMessage}",
-
             //};
             //using (var client = new MailKit.Net.Smtp.SmtpClient())
             //{
