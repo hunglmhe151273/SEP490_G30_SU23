@@ -1,0 +1,36 @@
+﻿@model VBookHaven.Models.ShippingInfo
+@{
+    ViewData["Title"] = "EditShipInfo";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h1>EditShipInfo</h1>
+<div class="mx-auto">
+    <h3 class="mb-0 text-uppercase">Sửa loại sản phẩm</h3>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ShipInfoId" />
+                <div class="form-group">
+                    <label asp-for="CustomerName" class="control-label"></label>
+                    <input asp-for="CustomerName" class="form-control" />
+                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="ShipInfo">Quay lại danh sách</a>
+    </div>
+</div>

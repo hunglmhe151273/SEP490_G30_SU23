@@ -35,5 +35,28 @@ namespace VBookHaven.Areas.Customer.Controllers
                 return NotFound();
             }
         }
+        public async Task<IActionResult> EditShipInfo(int shipInfoId, int customerID)
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get customer by uid
+                ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
+                int cid = applicationUser.Customer.CustomerId;
+                if(customerID != cid)
+                {
+                    return NotFound();
+                }
+                //lấy thông tin lên form theo shipinfoId
+                var shippingInfo = await _shippingInfoRespository.GetShipInfoByIdAsync(shipInfoId);
+                //view application user
+                return View(shippingInfo);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace VBookHaven.DataAccess.Respository
     public interface IShippingInfoRespository
     {
         Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID);
+        Task<ShippingInfo> GetShipInfoByIdAsync(int Id);
     }
 
     public class ShippingInfoRespository : IShippingInfoRespository
@@ -23,6 +24,11 @@ namespace VBookHaven.DataAccess.Respository
         public async Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID)
         {
             return await _dbContext.ShippingInfos.Where(s => s.CustomerId== userID).ToListAsync();
+        }
+
+        public async Task<ShippingInfo> GetShipInfoByIdAsync(int Id)
+        {
+            return await _dbContext.ShippingInfos.SingleOrDefaultAsync(x => x.ShipInfoId == Id);
         }
     }
 }
