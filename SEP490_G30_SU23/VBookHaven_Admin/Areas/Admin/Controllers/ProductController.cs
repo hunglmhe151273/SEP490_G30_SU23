@@ -12,9 +12,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
 	//	-> HOAC dat san value cho input; nho chuyen gia tri null thanh empty
 
-	// Chua co add author view - Add author, category... la 1 pop up o add product
+	// Sua, bo sung Layout front end cho product management
 	// Kiem tra xem paging front end hoat dong ko
 
+	// Add author, category... la 1 pop up o add product
 	// Cho subcategories vao select list group
 	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi de trong ten san pham -> Chua co warning

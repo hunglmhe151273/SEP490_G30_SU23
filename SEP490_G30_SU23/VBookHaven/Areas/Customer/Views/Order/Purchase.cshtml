@@ -58,7 +58,10 @@
 
 <h1>Địa chỉ giao hàng</h1>
 <div>@address</div>
-<button class="btn btn-secondary">Thay đổi</button>
+<form action="ChangeAddress" method="post">
+	<input hidden name="shipInfoId" value="@Model.AddressId" />
+	<input type="submit" value="Thay đổi" class="btn btn-secondary" />
+</form>
 
 <br /><br /><br />
 

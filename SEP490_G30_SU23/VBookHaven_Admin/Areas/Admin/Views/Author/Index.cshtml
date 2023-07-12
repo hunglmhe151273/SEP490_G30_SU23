@@ -1,0 +1,49 @@
+﻿@using VBookHaven.Models
+@model List<Author>
+
+<style>
+	table, th, td {
+		border: 1px solid;
+	}
+	table {
+		border-collapse: collapse;
+	}
+</style>
+
+<a href="/admin/author/add">Add author</a>
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Tên</th>
+		<th>Trạng thái</th>
+		<th>Sửa</th>
+		<th>Đổi trạng thái</th>
+	</tr>
+	@foreach (Author a in Model)
+	{
+		<tr>
+			<td>@a.AuthorId</td>
+			<td>@a.AuthorName</td>
+
+			@if (a.Status == true)
+			{
+				<td><span class="text-success">Hoạt động</span></td>
+			}
+			else
+			{
+				<td><span class="text-danger">Đình chỉ</span></td>
+			}
+
+			<td><a href="/admin/author/edit/@a.AuthorId">Edit</a></td>
+			
+			@if (a.Status == true)
+			{
+				<td><a href="/admin/author/changestatus/@a.AuthorId" class="text-danger">Inactivate</a></td>
+			}
+			else
+			{
+				<td><a href="/admin/author/changestatus/@a.AuthorId" class="text-success">Activate</a></td>
+			}
+		</tr>
+	}
+</table>

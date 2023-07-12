@@ -1,0 +1,46 @@
+﻿@using VBookHaven.Models
+@model List<ShippingInfo>
+
+@{
+	int selectedId = (int)ViewData["selectedAddress"];
+}
+
+<form action="Purchase" method="post">
+	@if (selectedId == 0)
+	{
+		<input type="radio" hidden name="shipInfoId" value="0" checked />
+	}
+	else
+	{
+		<input type="radio" hidden name="shipInfoId" value="0" />
+	}
+	@foreach (ShippingInfo info in Model)
+	{
+		<div>
+			@if (selectedId == info.ShipInfoId)
+			{
+				<input type="radio" name="shipInfoId" value="@info.ShipInfoId" checked></input>
+
+				<br />
+			}
+			else
+			{
+				<input type="radio" name="shipInfoId" value="@info.ShipInfoId"></input>
+
+				<br />
+			}
+			<p>@info.CustomerName</p>
+			<p>@info.ShipAddress</p>
+			<p>@info.Phone</p>
+		</div>
+	}
+	
+	@if (Model.Count <= 0)
+	{
+		<input type="submit" value="Quay lại" />
+	}
+	else
+	{
+		<input type="submit" value="Chọn" />
+	}
+</form>

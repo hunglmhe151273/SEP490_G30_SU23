@@ -1,0 +1,19 @@
+﻿@using VBookHaven.Models;
+@using VBookHaven_Admin.Areas.Admin.Controllers;
+@model AuthorViewModel;
+
+<form method="post">
+	<label>Author ID</label>
+	<input readonly asp-for="Author.AuthorId" /><br />
+	
+	<label>Author Name</label>
+	<input asp-for="Author.AuthorName" required/><br />
+	
+	<label>Author Description</label>
+	<input asp-for="Author.Description" /><br />
+	
+	<input hidden asp-for="Author.Status" />
+
+	<input type="submit" value="Submit" />
+	<a href="/admin/author/index">Cancel</a>
+</form>

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBookHaven.Utility", "VBook
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBookHaven.DataAccess", "VBookHaven.DataAccess\VBookHaven.DataAccess.csproj", "{D73B4347-4AA8-46A0-B886-BBD1AAC9BD85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VBookHaven_Admin", "VBookHaven_Admin\VBookHaven_Admin.csproj", "{9677AAD3-8464-4228-9DFB-15441ABAD181}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VBookHaven_Admin", "VBookHaven_Admin\VBookHaven_Admin.csproj", "{9677AAD3-8464-4228-9DFB-15441ABAD181}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

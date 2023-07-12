@@ -35,12 +35,14 @@ namespace VBookHaven.Areas.Customer.Controllers
 		//private readonly IApplicationUserRespository userRepository;
 		//private readonly ICartRepository cartRepository;
 		private readonly IShippingInfoRepository shippingInfoRepository;
+		private readonly IOrderRepository orderRepository;
 
 		private readonly OrderFunctions functions;
 
 		public OrderController(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository,
-			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository)
+			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository,
+			IOrderRepository orderRepository)
 		{
 			//this.productRespository = productRespository;
 			//this.userRepository = userRepository;
@@ -48,6 +50,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor);
 			this.shippingInfoRepository = shippingInfoRepository;
+			this.orderRepository = orderRepository;
 		}
 
 		[HttpPost]
@@ -129,6 +132,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (model.Cart.Count <= 0)
 				return BadRequest();
 
+			// TODO: Lay default shipping info tu DB
 			model.AddressId = 0;
 			var shipInfoList = await shippingInfoRepository.GetAllShippingInfosByCustomerIdAsync((int)customerId);
 			if (shipInfoList.Count > 0)
@@ -141,7 +145,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Purchase(int shipInfoId)
 		{
 			var model = new OrderPurchaseModel();
@@ -158,195 +161,65 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ChangeAddress(int shipInfoId)
+		{
+			var custId = await functions.GetLoginCustomerIdAsync();
+			if (custId == null)
+				return Unauthorized();
+
+			var shipInfoList = await shippingInfoRepository.GetAllShippingInfosByCustomerIdAsync((int)custId);
+
+			ViewData["selectedAddress"] = shipInfoId;
+
+			return View(shipInfoList);
+		}
+
+		[HttpPost]
 		public async Task<IActionResult> PurchaseFinalize(int shipInfoId)
 		{
 			// Neu front end thuan loi thi khong can cai nay, nhung cu them vao cho an toan :v
 			if (shipInfoId == 0)
 				return await Purchase(shipInfoId);
 
+			var order = new Order();
+			var details = new List<OrderDetail>();
 
+			var shipInfo = await shippingInfoRepository.GetShippingInfoByIdAsync(shipInfoId);
+			if (shipInfo == null)
+				return BadRequest();
+
+			var custId = await functions.GetLoginCustomerIdAsync();
+			if (custId == null)
+				return Unauthorized();
+
+			var cart = functions.GetCartFromCookies();
+			if (cart.Count <= 0)
+				return BadRequest();
+
+			order.OrderDate = DateTime.Now;
+			order.ShippingInfo = shipInfo.CustomerName + ", " + shipInfo.Phone + ", " + shipInfo.ShipAddress;
+			order.Status = "Chờ xác nhận";
+			order.CustomerId = custId;
+
+			foreach (var item in cart)
+			{
+				var detail = new OrderDetail();
+				detail.ProductId = item.ProductId;
+				detail.Quantity = item.Quantity;
+				detail.UnitPrice = item.Product.RetailPrice;
+				detail.Discount = item.Product.RetailDiscount;
+
+				details.Add(detail);
+			}
+
+			var addOrderTask = orderRepository.AddOrderAsync(order, details);
+			var clearCartTask = functions.ClearCartAsync();
+
+			Task.WaitAll(addOrderTask, clearCartTask);
 
 			return RedirectToAction("Index", "Home");
 		}
 
-		//---------- Other functions ----------
-
-		//async Task<int?> GetLoginCustomerIdAsync()
-		//{
-		//	var claimsIdentity = (ClaimsIdentity)User.Identity;
-		//	if (claimsIdentity.FindFirst(ClaimTypes.NameIdentifier) == null)
-		//		return null;
-		//	var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-		//	var user = await userRepository.GetCustomerByUIdAsync(userId);
-		//	if (user == null) return null;
-
-		//	var customer = user.Customer;
-		//	if (customer == null) return null;
-
-		//	return customer.CustomerId;
-		//}
-
-		//async Task<bool> AddToCartFunctionAsync(int number, int id)
-		//{
-		//	var cart = GetCartFromCookies();
-		//	var customerIdTask = GetLoginCustomerIdAsync();
-
-		//	var detail = cart.SingleOrDefault(c => c.ProductId == id);
-		//	if (detail != null)
-		//	{
-		//		var customerId = await customerIdTask;
-
-		//		// Update cart in cookie
-		//		detail.Quantity += number;
-
-		//		if (detail.Quantity == 0)
-		//		{
-		//			// Remove item from cart in cookie
-		//			cart.Remove(detail);
-
-		//			// Remove item from cart in DB
-		//			if (customerId != null)
-		//			{
-		//				await cartRepository.DeleteItemFromCartAsync((int)customerId, id);
-		//			}
-		//		}
-		//		else
-		//		{
-		//			// Update cart in DB
-		//			if (customerId != null)
-		//			{
-		//				await cartRepository.UpdateCartAsync(new CartDetail
-		//				{
-		//					CustomerId = (int)customerId,
-		//					ProductId = id,
-		//					Quantity = detail.Quantity
-		//				});
-		//			}
-		//		}
-		//	}
-		//	else
-		//	{
-		//		if (number < 0)
-		//			return false;
-
-		//		var product = await productRespository.GetProductByIdAsync(id);
-		//		if (product == null)
-		//			return false;
-
-		//		// Add to cart in cookie
-		//		cart.Add(new CartDetail
-		//		{
-		//			ProductId = id,
-		//			Quantity = number,
-
-		//			Product = product
-		//		});
-
-		//		// Add to cart in DB
-		//		var customerId = await customerIdTask;
-		//		if (customerId != null)
-		//		{
-		//			await cartRepository.AddItemToCartAsync(new CartDetail
-		//			{
-		//				ProductId = id,
-		//				CustomerId = (int)customerId,
-		//				Quantity = number
-		//			});
-		//		}
-		//	}
-
-		//	AddCartToCookies(cart);
-		//	return true;
-		//}
-
-		//List<CartDetail> GetCartFromCookies()
-		//{
-		//	if (Request.Cookies["Cart"] == null)
-		//	{
-		//		return new List<CartDetail>();
-		//	}
-		//	else
-		//	{
-		//		string cartJson = Request.Cookies["Cart"];
-		//		List<CartDetail> cart = JsonSerializer.Deserialize<List<CartDetail>>(cartJson);
-		//		return cart;
-		//	}
-		//}
-
-		//void AddCartToCookies(List<CartDetail> cart)
-		//{
-		//	string cartJson = JsonSerializer.Serialize(cart);
-		//	var options = new CookieOptions();
-		//	if (GetLoginCustomerIdAsync().GetAwaiter().GetResult() != null)
-		//	{
-		//		// Never expires, only remove when logout
-		//		options.Expires = DateTime.Now.AddYears(50);
-		//	}
-		//	else
-		//	{
-		//		// Expires after 1 month if not login
-		//		options.Expires = DateTime.Now.AddMonths(1);
-		//	}
-		//	Response.Cookies.Append("Cart", cartJson, options);
-		//}
-
-		//public async Task AddCartAtLoginAsync()
-		//{
-		//	var customerId = await GetLoginCustomerIdAsync();
-		//	if (customerId == null) return;
-
-		//	// Get current cart in cookie
-		//	var cart = GetCartFromCookies();
-		//	var cartInCookie = new List<CartDetail>();
-		//	foreach (var item in cart)
-		//	{
-		//		cartInCookie.Add(new CartDetail
-		//		{
-		//			ProductId = item.ProductId,
-		//			CustomerId = (int)customerId,
-		//			Quantity = item.Quantity
-		//		});
-		//	}
-
-		//	// Get current cart in DB
-		//	var customerCart = await cartRepository.GetCartByCustomerIdAsync((int)customerId);
-
-		//	// Add cart from cookie to DB;
-		//	var updateDbTask = cartRepository.AddOrUpdateMultipleItemsToCartAsync(cartInCookie);
-
-		//	// Add cart from DB to cookie
-		//	foreach (var cartItem in customerCart)
-		//	{
-		//		var detail = cart.SingleOrDefault(c => c.ProductId == cartItem.ProductId);
-		//		if (detail != null)
-		//		{
-		//			detail.Quantity += cartItem.Quantity;
-		//		}
-		//		else
-		//		{
-		//			var product = await productRespository.GetProductByIdAsync(cartItem.ProductId);
-		//			if (product == null) return;
-
-		//			cart.Add(new CartDetail
-		//			{
-		//				ProductId = cartItem.ProductId,
-		//				Quantity = cartItem.Quantity,
-
-		//				Product = product
-		//			});
-		//		}
-		//	}
-		//	AddCartToCookies(cart);
-
-		//	await updateDbTask;
-		//}
-
-		//public void RemoveCartAtLogout()
-		//{
-		//	Response.Cookies.Delete("Cart");
-		//}
 	}
 
 	public class OrderFunctions
@@ -490,6 +363,16 @@ namespace VBookHaven.Areas.Customer.Controllers
 				options.Expires = DateTime.Now.AddMonths(1);
 			}
 			Response.Cookies.Append("Cart", cartJson, options);
+		}
+
+		public async Task ClearCartAsync()
+		{
+			var custId = await GetLoginCustomerIdAsync();
+			if (custId != null)
+			{
+				await cartRepository.ClearCartByCustomerIdAsync((int)custId);
+			}
+			Response.Cookies.Delete("Cart");
 		}
 
 		public async Task AddCartAtLoginAsync()

@@ -15,6 +15,7 @@ namespace VBookHaven.DataAccess.Respository
 		Task UpdateCartMultipleAsync(List<CartDetail> items);
 
 		Task DeleteItemFromCartAsync(int customerId, int productId);
+		Task ClearCartByCustomerIdAsync(int customerId);
 	}
 
 	public class CartRepository : ICartRepository
@@ -80,6 +81,16 @@ namespace VBookHaven.DataAccess.Respository
 		public Task UpdateCartMultipleAsync(List<CartDetail> items)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task ClearCartByCustomerIdAsync(int customerId)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				var cart = await dbContext.CartDetails.Where(c => c.CustomerId == customerId).ToListAsync();
+				dbContext.CartDetails.RemoveRange(cart);
+				await dbContext.SaveChangesAsync();
+			}
 		}
 	}
 }

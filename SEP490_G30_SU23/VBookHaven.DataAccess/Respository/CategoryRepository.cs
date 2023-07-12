@@ -12,11 +12,6 @@ namespace VBookHaven.DataAccess.Respository
 
 	public class CategoryRepository : ICategoryRepository
     {
-        private readonly VBookHavenDBContext dbContext;
-        public CategoryRepository(VBookHavenDBContext _dbContext)
-        {
-            dbContext = _dbContext;
-        }
         public Task<List<Category>> GetAllCategoriesAsync()
 		{
 			throw new NotImplementedException();
@@ -24,7 +19,10 @@ namespace VBookHaven.DataAccess.Respository
 
 		public async Task<List<SubCategory>> GetAllSubCategoriesAsync()
 		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
 				return await dbContext.SubCategories.ToListAsync();
+			}
 		}
 	}
 }
