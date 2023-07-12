@@ -60,14 +60,14 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseSqlServer("name=DefaultConnection");
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    var builder = new ConfigurationBuilder()
-    //        .SetBasePath(Directory.GetCurrentDirectory())
-    //        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-    //    IConfigurationRoot configuration = builder.Build();
-    //    optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-    //}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        IConfigurationRoot configuration = builder.Build();
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -171,6 +171,10 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsFixedLength();
+            entity.HasOne(d => d.DefaultShippingInfo).WithMany(p => p.Customers)
+               .HasForeignKey(d => d.DefaultShippingInfoId)
+               .HasConstraintName("FK_Customer_ShippingInfo");
+
         });
 
         modelBuilder.Entity<Exchange>(entity =>
@@ -207,14 +211,11 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(50);
-
+            entity.Property(e => e.ShippingInfo).HasMaxLength(300);
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Order_Customer");
 
-            entity.HasOne(d => d.ShippingInfo).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ShippingInfoId)
-                .HasConstraintName("FK_Order_ShippingInfo");
         });
 
         modelBuilder.Entity<OrderDetail>(entity =>
@@ -301,6 +302,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.HasKey(e => e.ShipInfoId);
 
             entity.ToTable("ShippingInfo");
+            entity.HasIndex(e => e.CustomerId, "IX_ShippingInfo_CustomerId");
 
             entity.Property(e => e.CustomerName).HasMaxLength(50);
             entity.Property(e => e.Phone)

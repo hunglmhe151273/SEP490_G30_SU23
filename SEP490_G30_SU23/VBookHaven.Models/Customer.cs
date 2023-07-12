@@ -19,7 +19,8 @@ public partial class Customer
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<ShippingInfo> ShippingInfos { get; set; } = new List<ShippingInfo>();
-    ////foreign key to default address
-    //public string? DefaultShippingInfoId { get; set; }
-    //public virtual ShippingInfo? DefaultShippingInfo { get; set; }
+    //new
+    public int? DefaultShippingInfoId { get; set; }
+
+    public virtual ShippingInfo? DefaultShippingInfo { get; set; }
 }
