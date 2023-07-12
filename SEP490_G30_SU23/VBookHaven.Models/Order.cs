@@ -11,13 +11,16 @@ public partial class Order
 
     public string? Status { get; set; }
 
-    public int? ShippingInfoId { get; set; }
-
     public int? CustomerId { get; set; }
 
     public virtual Customer? Customer { get; set; }
 
     public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
-    public virtual ShippingInfo? ShippingInfo { get; set; }
+    //public int? ShippingInfoId { get; set; }
+
+    //public virtual ShippingInfo? ShippingInfo { get; set; }
+
+    //new
+    public string? ShippingInfo { get; set; }
 }

@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using VBookHaven.DataAccess.Data;
 using VBookHaven.DataAccess.DbInitializer;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<VBookHavenDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()//options => options.SignIn.RequireConfirmedAccount = true
     .AddEntityFrameworkStores<VBookHavenDBContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options => {
