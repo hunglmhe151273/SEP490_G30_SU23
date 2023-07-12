@@ -161,7 +161,12 @@ namespace VBookHaven.Areas.Customer.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> PurchaseFinalize(int shipInfoId)
 		{
-			// TBD
+			// Neu front end thuan loi thi khong can cai nay, nhung cu them vao cho an toan :v
+			if (shipInfoId == 0)
+				return await Purchase(shipInfoId);
+
+
+
 			return RedirectToAction("Index", "Home");
 		}
 
