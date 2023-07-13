@@ -203,26 +203,6 @@ namespace VBookHaven.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Phone = table.Column<string>(type: "nchar(15)", fixedLength: true, maxLength: 15, nullable: true),
-                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customer_AspNetUsers_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Staff",
                 columns: table => new
                 {
@@ -265,28 +245,6 @@ namespace VBookHaven.DataAccess.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "CategoryId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ShippingInfo",
-                columns: table => new
-                {
-                    ShipInfoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Phone = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
-                    ShipAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true),
-                    CustomerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShippingInfo", x => x.ShipInfoId);
-                    table.ForeignKey(
-                        name: "FK_ShippingInfo_Customer",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId");
                 });
 
             migrationBuilder.CreateTable(
@@ -372,32 +330,6 @@ namespace VBookHaven.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Order",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ShippingInfoId = table.Column<int>(type: "int", nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Order_Customer",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId");
-                    table.ForeignKey(
-                        name: "FK_Order_ShippingInfo",
-                        column: x => x.ShippingInfoId,
-                        principalTable: "ShippingInfo",
-                        principalColumn: "ShipInfoId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Book",
                 columns: table => new
                 {
@@ -411,29 +343,6 @@ namespace VBookHaven.DataAccess.Migrations
                     table.PrimaryKey("PK_Book", x => x.ProductId);
                     table.ForeignKey(
                         name: "FK_Book_Product",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "ProductId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CartDetail",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CartDetail", x => new { x.CustomerId, x.ProductId });
-                    table.ForeignKey(
-                        name: "FK_CartDetail_Customer",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "CustomerId");
-                    table.ForeignKey(
-                        name: "FK_CartDetail_Product",
                         column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "ProductId");
@@ -553,6 +462,110 @@ namespace VBookHaven.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Book_Author",
+                columns: table => new
+                {
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Book_Author", x => new { x.BookId, x.AuthorId });
+                    table.ForeignKey(
+                        name: "FK_Book_Author_Author",
+                        column: x => x.AuthorId,
+                        principalTable: "Author",
+                        principalColumn: "AuthorId");
+                    table.ForeignKey(
+                        name: "FK_Book_Author_Book",
+                        column: x => x.BookId,
+                        principalTable: "Book",
+                        principalColumn: "ProductId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartDetail",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartDetail", x => new { x.CustomerId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_CartDetail_Product",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customer",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Phone = table.Column<string>(type: "nchar(15)", fixedLength: true, maxLength: 15, nullable: true),
+                    AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DefaultShippingInfoId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_Customer_AspNetUsers_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Order",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    ShippingInfo = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Order", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Order_Customer",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShippingInfo",
+                columns: table => new
+                {
+                    ShipInfoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Phone = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
+                    ShipAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    CustomerId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    CustomerName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShippingInfo", x => x.ShipInfoId);
+                    table.ForeignKey(
+                        name: "FK_ShippingInfo_Customer",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderDetail",
                 columns: table => new
                 {
@@ -574,28 +587,6 @@ namespace VBookHaven.DataAccess.Migrations
                         name: "FK_OrderDetail_Product",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "ProductId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Book_Author",
-                columns: table => new
-                {
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Book_Author", x => new { x.BookId, x.AuthorId });
-                    table.ForeignKey(
-                        name: "FK_Book_Author_Author",
-                        column: x => x.AuthorId,
-                        principalTable: "Author",
-                        principalColumn: "AuthorId");
-                    table.ForeignKey(
-                        name: "FK_Book_Author_Book",
-                        column: x => x.BookId,
-                        principalTable: "Book",
                         principalColumn: "ProductId");
                 });
 
@@ -661,6 +652,11 @@ namespace VBookHaven.DataAccess.Migrations
                 filter: "[AccountId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customer_DefaultShippingInfoId",
+                table: "Customer",
+                column: "DefaultShippingInfoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exchange_BaseProductId",
                 table: "Exchange",
                 column: "BaseProductId");
@@ -681,11 +677,6 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "IX_Order_CustomerId",
                 table: "Order",
                 column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_ShippingInfoId",
-                table: "Order",
-                column: "ShippingInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetail_ProductId",
@@ -740,11 +731,33 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "IX_SubCategory_CategoryId",
                 table: "SubCategory",
                 column: "CategoryId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CartDetail_Customer",
+                table: "CartDetail",
+                column: "CustomerId",
+                principalTable: "Customer",
+                principalColumn: "CustomerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Customer_ShippingInfo",
+                table: "Customer",
+                column: "DefaultShippingInfoId",
+                principalTable: "ShippingInfo",
+                principalColumn: "ShipInfoId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Customer_AspNetUsers_AccountId",
+                table: "Customer");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_ShippingInfo_Customer",
+                table: "ShippingInfo");
+
             migrationBuilder.DropTable(
                 name: "ActivityLog");
 
@@ -806,9 +819,6 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "ShippingInfo");
-
-            migrationBuilder.DropTable(
                 name: "Staff");
 
             migrationBuilder.DropTable(
@@ -818,13 +828,16 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "SubCategory");
 
             migrationBuilder.DropTable(
-                name: "Customer");
-
-            migrationBuilder.DropTable(
                 name: "Category");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
+
+            migrationBuilder.DropTable(
+                name: "ShippingInfo");
         }
     }
 }

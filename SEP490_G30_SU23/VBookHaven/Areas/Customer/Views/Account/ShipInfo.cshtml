@@ -1,0 +1,63 @@
+﻿@model VBookHaven.Models.ViewModels.ShippingInfoVM
+@{
+    ViewData["Title"] = "ShipInfo";
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+}
+
+<h1>ShipInfo</h1>
+<a asp-action="CreateShipInfo">Tạo địa chỉ mới</a>
+<table class="table bg-white">
+    @foreach (var item in Model.ShippingInfos)
+    {
+        @if (item.Customers.Count > 0)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+
+                <td>
+                    Default
+                </td>
+                <td>
+                    <a asp-action="EditShipInfo" asp-route-shipInfoId="@item.ShipInfoId">Chỉnh sửa</a>@* |
+            <a asp-action="Details" asp-route-id="@item.CategoryId">Chi tiết</a>*@@* |
+            <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
+                </td>
+            </tr>
+            break;
+        }
+    }
+    @foreach (var item in Model.ShippingInfos)
+    { 
+        @if (item.Customers.Count == 0)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShipAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+
+                <td>
+                </td>
+                <td>
+                    <a asp-action="EditShipInfo" asp-route-shipInfoId="@item.ShipInfoId">Chỉnh sửa</a>@* |
+            <a asp-action="Details" asp-route-id="@item.CategoryId">Chi tiết</a>*@ |
+                    <a asp-action="DeleteShipInfo" asp-route-shipInfoId="@item.ShipInfoId">Delete</a>
+                </td>
+            </tr>
+        }
+
+    }
+</table>

@@ -12,7 +12,7 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230711105908_initDB")]
+    [Migration("20230712123817_initDB")]
     partial class initDB
     {
         /// <inheritdoc />
@@ -384,6 +384,9 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<string>("AccountId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("DefaultShippingInfoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Phone")
                         .HasMaxLength(15)
                         .HasColumnType("nchar(15)")
@@ -394,6 +397,8 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CustomerId");
+
+                    b.HasIndex("DefaultShippingInfoId");
 
                     b.HasIndex(new[] { "AccountId" }, "IX_Customer")
                         .IsUnique()
@@ -470,8 +475,9 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("ShippingInfoId")
-                        .HasColumnType("int");
+                    b.Property<string>("ShippingInfo")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Status")
                         .HasMaxLength(50)
@@ -480,8 +486,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("ShippingInfoId");
 
                     b.ToTable("Order", (string)null);
                 });
@@ -698,7 +702,7 @@ namespace VBookHaven.DataAccess.Migrations
 
                     b.HasKey("ShipInfoId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex(new[] { "CustomerId" }, "IX_ShippingInfo_CustomerId");
 
                     b.ToTable("ShippingInfo", (string)null);
                 });
@@ -955,7 +959,14 @@ namespace VBookHaven.DataAccess.Migrations
                         .WithOne("Customer")
                         .HasForeignKey("VBookHaven.Models.Customer", "AccountId");
 
+                    b.HasOne("VBookHaven.Models.ShippingInfo", "DefaultShippingInfo")
+                        .WithMany("Customers")
+                        .HasForeignKey("DefaultShippingInfoId")
+                        .HasConstraintName("FK_Customer_ShippingInfo");
+
                     b.Navigation("Account");
+
+                    b.Navigation("DefaultShippingInfo");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Exchange", b =>
@@ -992,14 +1003,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_Order_Customer");
 
-                    b.HasOne("VBookHaven.Models.ShippingInfo", "ShippingInfo")
-                        .WithMany("Orders")
-                        .HasForeignKey("ShippingInfoId")
-                        .HasConstraintName("FK_Order_ShippingInfo");
-
                     b.Navigation("Customer");
-
-                    b.Navigation("ShippingInfo");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.OrderDetail", b =>
@@ -1164,7 +1168,7 @@ namespace VBookHaven.DataAccess.Migrations
 
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>

@@ -13,11 +13,10 @@ using VBookHaven.DataAccess.DbInitializer;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<VBookHavenDBContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))/*, ServiceLifetime.Scoped*/);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()//options => options.SignIn.RequireConfirmedAccount = true
     .AddEntityFrameworkStores<VBookHavenDBContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options => {
@@ -42,8 +41,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IShippingInfoRepository, ShippingInfoRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
+builder.Services.AddScoped<ICustomerRespository, CustomerRespository>();
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
