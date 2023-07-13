@@ -7,10 +7,10 @@ using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {		
+	// Lay default shipping info khi vao trang Purchase lan dau (chua chon dia chi khac)
 	// Chua co man hinh them dia chi
-	// Chua co man hinh chon dia chi
 	
-	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout -> HOW?
+	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
@@ -31,9 +31,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 	[Area("Customer")]
 	public class OrderController : Controller
 	{
-		//private readonly IProductRespository productRespository;
-		//private readonly IApplicationUserRespository userRepository;
-		//private readonly ICartRepository cartRepository;
 		private readonly IShippingInfoRepository shippingInfoRepository;
 		private readonly IOrderRepository orderRepository;
 
@@ -44,10 +41,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository,
 			IOrderRepository orderRepository)
 		{
-			//this.productRespository = productRespository;
-			//this.userRepository = userRepository;
-			//this.cartRepository = cartRepository;
-
 			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor);
 			this.shippingInfoRepository = shippingInfoRepository;
 			this.orderRepository = orderRepository;
@@ -57,7 +50,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddToCart(int number, int id)
 		{
-			//bool success = await AddToCartFunctionAsync(number, id);
 			bool success = await functions.AddToCartFunctionAsync(number, id);
 
 			if (!success)
@@ -70,7 +62,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> BuyNow(int number, int id)
 		{
-			//bool success = await AddToCartFunctionAsync(number, id);
 			bool success = await functions.AddToCartFunctionAsync(number, id);
 
 			if (!success)
@@ -81,7 +72,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public IActionResult Cart()
 		{
-			//var cart = GetCartFromCookies();
 			var cart = functions.GetCartFromCookies();
 			
 			return View(cart);
@@ -89,7 +79,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public async Task<IActionResult> PlusOneToCart(int id)
 		{
-			//bool success = await AddToCartFunctionAsync(1, id);
 			bool success = await functions.AddToCartFunctionAsync(1, id);
 
 			if (!success)
@@ -100,7 +89,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public async Task<IActionResult> MinusOneFromCart(int id)
 		{
-			//bool success = await AddToCartFunctionAsync(-1, id);
 			bool success = await functions.AddToCartFunctionAsync(-1, id);
 
 			if (!success)
