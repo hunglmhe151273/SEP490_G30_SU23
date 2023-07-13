@@ -11,8 +11,8 @@ namespace VBookHaven.DataAccess.Respository
 
 		Task AddShippingInfoAsync(ShippingInfo shippingInfo);
 		//HungLM
-        Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID);
-        Task<ShippingInfo> GetShipInfoByIdAsync(int customerId, int Id);
+        Task<List<ShippingInfo>?> GetAllShipInfoByCusIDAsync(int cusID);
+        Task<ShippingInfo?> GetShipInfoByIdAsync(int customerId, int Id);
         Task UpdateShipInfoAsync(ShippingInfo shippingInfo);
     }
 
@@ -50,12 +50,12 @@ namespace VBookHaven.DataAccess.Respository
             _dbContext = dbContext;
         }
 
-        public async Task<List<ShippingInfo?>> GetAllShipInfoByUIDAsync(int userID)
+        public async Task<List<ShippingInfo>?> GetAllShipInfoByCusIDAsync(int cusID)
         {
-            return await _dbContext.ShippingInfos.Where(s => s.CustomerId == userID).ToListAsync();
+            return await _dbContext.ShippingInfos.Include(x => x.Customers).Where(s => s.CustomerId == cusID).ToListAsync();
         }
 
-        public async Task<ShippingInfo> GetShipInfoByIdAsync(int customerId, int Id)
+        public async Task<ShippingInfo?> GetShipInfoByIdAsync(int customerId, int Id)
         {
             return await _dbContext.ShippingInfos.Include(c => c.Customer).SingleOrDefaultAsync(x => x.ShipInfoId == Id && x.Customer.CustomerId == customerId);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +7,7 @@ namespace VBookHaven.Models;
 
 public partial class ShippingInfo
 {
+    [ValidateNever]
     public int ShipInfoId { get; set; }
     [Display(Name = "Số điện thoại")]
     [Required(ErrorMessage = "Số điện thoại là bắt buộc.")]

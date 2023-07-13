@@ -12,8 +12,8 @@
         <div class="col-md-4">
             <form asp-action="EditShipInfo" asp-route-returnUrl="~/customer/account/ShipInfo" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="@Model.ShippingInfo.ShipInfoId" />
                 <input type="hidden" asp-for="@Model.CustomerId" />
+                <input type="hidden" asp-for="@Model.ShippingInfo.ShipInfoId" />
                 <div class="form-group">
                     <label asp-for="@Model.ShippingInfo.CustomerName" class="control-label"></label>
                     <input asp-for="@Model.ShippingInfo.CustomerName" class="form-control" />
@@ -29,11 +29,15 @@
                     <input asp-for="@Model.ShippingInfo.ShipAddress" class="form-control" />
                     <span asp-validation-for="@Model.ShippingInfo.ShipAddress" class="text-danger"></span>
                 </div>
+                @if(@Model.IsDefault){
                 <div class="form-group">
-                    <label asp-for="@Model.IsDefault" class="control-label"></label>
-                    <input asp-for="@Model.IsDefault" class="form-control" />
-                    <span asp-validation-for="@Model.IsDefault" class="text-danger"></span>
+                    <input asp-for="@Model.IsDefault" class="form-control" hidden />
                 </div>
+                }else{
+                <label asp-for="@Model.IsDefault" class="control-label"></label>
+                <input asp-for="@Model.IsDefault" class="form-control" />
+                <span asp-validation-for="@Model.IsDefault" class="text-danger"></span>
+                }
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>

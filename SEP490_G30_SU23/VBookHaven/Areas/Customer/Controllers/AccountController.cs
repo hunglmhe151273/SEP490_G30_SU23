@@ -29,12 +29,14 @@ namespace VBookHaven.Areas.Customer.Controllers
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                //get customer by uid
+                //lấy customerId
                 ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
                 int cid = applicationUser.Customer.CustomerId;
-                var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByUIDAsync(cid);
+                var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByCusIDAsync(cid);
+                ShippingInfoVM model = new ShippingInfoVM();
+                model.ShippingInfos = shippingInfos;
                 //view application user
-                return View(shippingInfos);
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -52,8 +54,15 @@ namespace VBookHaven.Areas.Customer.Controllers
                 ApplicationUser applicationUser = await _applicationUserRespository.GetCustomerByUIdAsync(userId);
                 int cid = applicationUser.Customer.CustomerId;
                 ShippingInfoVM model = new ShippingInfoVM();
-                model.CustomerId = cid;
-                //view application user
+                model.CustomerId = cid;// lên view sau đó đẩy post sẽ biết customer nào
+                //neu khong có địa chỉ nào. Mặc định là default là true
+                 var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByCusIDAsync(cid);
+                if(shippingInfos.Count() == 0)
+                {
+                    model.IsDefault = true;
+                    model.shippingInfosIsNull = true;
+                }
+                //lay dia chi theo cid
                 return View(model);
             }
             catch (Exception ex)
@@ -102,6 +111,28 @@ namespace VBookHaven.Areas.Customer.Controllers
             {
                 //update customer default address id
                 await _customerRespository.UpdateCustomerDefaultShipInfoAsync(shippingInfoVM.CustomerId, shippingInfoVM.ShippingInfo.ShipInfoId);
+            }
+
+            return LocalRedirect(returnUrl);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateShipInfo(ShippingInfoVM shippingInfoVM, string? returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(shippingInfoVM);
+            }
+           
+            if (shippingInfoVM.IsDefault)
+            {
+                //create new and update cutomer default address id
+                await _customerRespository.UpdateCustomerDefaultShipInfoOnCreateAsync(shippingInfoVM);
+            }
+            else
+            {
+                shippingInfoVM.ShippingInfo.CustomerId = shippingInfoVM.CustomerId;
+                // add shipinfo that have customer id
+                await _shippingInfoRepository.AddShippingInfoAsync(shippingInfoVM.ShippingInfo);
             }
 
             return LocalRedirect(returnUrl);
