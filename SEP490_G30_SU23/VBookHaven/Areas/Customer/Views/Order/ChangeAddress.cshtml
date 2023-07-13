@@ -5,6 +5,12 @@
 	int selectedId = (int)ViewData["selectedAddress"];
 }
 
+<form action="AddAddress" method="post">
+	<input hidden name="model.Method" value="get" />
+	<input hidden name="model.CurrentShipInfoId" value="@selectedId" />
+	<input type="submit" value="Thêm địa chỉ" />
+</form>
+
 <form action="Purchase" method="post">
 	@if (selectedId == 0)
 	{

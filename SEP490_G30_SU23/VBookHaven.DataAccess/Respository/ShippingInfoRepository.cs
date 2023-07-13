@@ -9,17 +9,19 @@ namespace VBookHaven.DataAccess.Respository
 		Task<List<ShippingInfo>> GetAllShippingInfosByCustomerIdAsync(int customerId);
 		Task<ShippingInfo?> GetShippingInfoByIdAsync(int id);
 
-		Task AddShippingInfoAsync(ShippingInfo shippingInfo);
+		Task<int> AddShippingInfoAsync(ShippingInfo shippingInfo);
 	}
 
 	public class ShippingInfoRepository : IShippingInfoRepository
 	{
-		public async Task AddShippingInfoAsync(ShippingInfo shippingInfo)
+		public async Task<int> AddShippingInfoAsync(ShippingInfo shippingInfo)
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
 				dbContext.ShippingInfos.Add(shippingInfo);
 				await dbContext.SaveChangesAsync();
+
+				return shippingInfo.ShipInfoId;
 			}
 		}
 

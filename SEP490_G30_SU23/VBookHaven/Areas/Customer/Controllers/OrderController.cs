@@ -27,6 +27,20 @@ namespace VBookHaven.Areas.Customer.Controllers
 			AddressId = 0;
 		}
 	}
+
+	public class AddAddressModel
+	{
+		public string Method { get; set; }
+		public ShippingInfo ShipInfo { get; set; }
+		public int CurrentShipInfoId { get; set; }
+
+		public AddAddressModel()
+		{
+			Method = "";
+			ShipInfo = new ShippingInfo();
+			CurrentShipInfoId = 0;
+		}
+	}
 	
 	[Area("Customer")]
 	public class OrderController : Controller
@@ -140,12 +154,16 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (model.Cart.Count <= 0)
 				return BadRequest();
 
-			var shipInfo = await shippingInfoRepository.GetShippingInfoByIdAsync(shipInfoId);
-			if (shipInfo == null)
-				return NotFound();
-			model.Address = shipInfo;
-
-			return View(model);
+			if (shipInfoId != 0)
+			{
+				var shipInfo = await shippingInfoRepository.GetShippingInfoByIdAsync(shipInfoId);
+				if (shipInfo == null)
+					return NotFound();
+				model.Address = shipInfo;
+				model.AddressId = shipInfoId;
+			}
+			
+			return View("Purchase", model);
 		}
 
 		[HttpPost]
@@ -159,7 +177,31 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			ViewData["selectedAddress"] = shipInfoId;
 
-			return View(shipInfoList);
+			return View("ChangeAddress", shipInfoList);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddAddress(AddAddressModel model)
+		{
+			var custId = await functions.GetLoginCustomerIdAsync();
+			if (custId == null)
+				return Unauthorized();
+
+			if (model.Method.Equals("get"))
+			{
+				return View(model);
+			}
+			else if (model.Method.Equals("post"))
+			{
+				model.ShipInfo.CustomerId = custId;
+				model.ShipInfo.Status = true;
+
+				int latestShipInfoId = await shippingInfoRepository.AddShippingInfoAsync(model.ShipInfo);
+				
+				// Khong phai cach lam tot nhat, nhung tam the vay :v
+				return await ChangeAddress(latestShipInfoId);
+			}
+			else return BadRequest();
 		}
 
 		[HttpPost]

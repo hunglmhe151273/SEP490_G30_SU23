@@ -1,0 +1,25 @@
+﻿@using VBookHaven.Models
+@using VBookHaven.Areas.Customer.Controllers
+
+@model AddAddressModel
+
+<form method="post">
+	<input hidden asp-for="Method" value="post" />
+	<input hidden asp-for="CurrentShipInfoId" />
+
+	<label>Tên khách hàng *</label><br />
+	<input type="text" asp-for="ShipInfo.CustomerName" required /><br />
+	<lable>Địa chỉ *</lable><br />
+	<input type="text" asp-for="ShipInfo.ShipAddress" required /><br />
+	<label>Số điện thoại *</label><br />
+	<input type="tel" asp-for="ShipInfo.Phone" pattern="[0-9]{10}" required /><br />
+	
+	<input type="submit" value="Thêm địa chỉ" />
+</form>
+
+<br />
+
+<form action="ChangeAddress" method="post">
+	<input hidden name="shipInfoId" value="@Model.CurrentShipInfoId" />
+	<input type="submit" value="Quay lại" />
+</form>
