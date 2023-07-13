@@ -8,12 +8,12 @@ namespace VBookHaven.DataAccess.Respository
 	{
 		Task<List<ShippingInfo>> GetAllShippingInfosByCustomerIdAsync(int customerId);
 		Task<ShippingInfo?> GetShippingInfoByIdAsync(int id);
-
 		Task AddShippingInfoAsync(ShippingInfo shippingInfo);
 		//HungLM
         Task<List<ShippingInfo>?> GetAllShipInfoByCusIDAsync(int cusID);
-        Task<ShippingInfo?> GetShipInfoByIdAsync(int customerId, int Id);
+        Task<ShippingInfo?> GetShipInfoByCusIdAndShipInfoIdAsync(int customerId, int Id);
         Task UpdateShipInfoAsync(ShippingInfo shippingInfo);
+        Task DeleteShipInfoAsync(ShippingInfo shippingInfo);
     }
 
 	public class ShippingInfoRepository : IShippingInfoRepository
@@ -55,20 +55,26 @@ namespace VBookHaven.DataAccess.Respository
             return await _dbContext.ShippingInfos.Include(x => x.Customers).Where(s => s.CustomerId == cusID).ToListAsync();
         }
 
-        public async Task<ShippingInfo?> GetShipInfoByIdAsync(int customerId, int Id)
+        public async Task<ShippingInfo?> GetShipInfoByCusIdAndShipInfoIdAsync(int customerId, int Id)
         {
-            return await _dbContext.ShippingInfos.Include(c => c.Customer).SingleOrDefaultAsync(x => x.ShipInfoId == Id && x.Customer.CustomerId == customerId);
+            return await _dbContext.ShippingInfos.Include(c => c.Customers).SingleOrDefaultAsync(x => x.ShipInfoId == Id && x.Customer.CustomerId == customerId);
         }
 
         public async Task UpdateShipInfoAsync(ShippingInfo obj)
         {
-            var objFromDb = _dbContext.ShippingInfos.FirstOrDefault(u => u.ShipInfoId == obj.ShipInfoId);
+            var objFromDb = await _dbContext.ShippingInfos.FirstOrDefaultAsync(u => u.ShipInfoId == obj.ShipInfoId);
             if (objFromDb != null)
             {
                 objFromDb.CustomerName = obj.CustomerName;
 				objFromDb.Phone = obj.Phone;
                 objFromDb.ShipAddress = obj.ShipAddress;
             }
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteShipInfoAsync(ShippingInfo shippingInfo)
+        {
+            _dbContext.ShippingInfos.Remove(shippingInfo);
             await _dbContext.SaveChangesAsync();
         }
     }

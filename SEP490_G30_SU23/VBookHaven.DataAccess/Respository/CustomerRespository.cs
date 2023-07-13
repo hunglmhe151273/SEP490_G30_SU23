@@ -10,6 +10,7 @@ namespace VBookHaven.DataAccess.Respository
 
     public interface ICustomerRespository
     {
+        Task<Customer?> GetCustomerByIdAsync(int customerId);
         Task UpdateCustomerDefaultShipInfoAsync(int customerId, int defaultShippingInfoId);
         Task UpdateCustomerDefaultShipInfoOnCreateAsync(ShippingInfoVM model);
     }
@@ -20,6 +21,11 @@ namespace VBookHaven.DataAccess.Respository
         public CustomerRespository(VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<Customer?> GetCustomerByIdAsync(int customerId)
+        {
+            return await _dbContext.Customers.SingleOrDefaultAsync(x => x.CustomerId == customerId);
         }
 
         public async Task UpdateCustomerDefaultShipInfoAsync(int customerId, int defaultShippingInfoId)
