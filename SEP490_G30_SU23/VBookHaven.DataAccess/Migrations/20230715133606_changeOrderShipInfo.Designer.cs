@@ -12,8 +12,8 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230712123817_initDB")]
-    partial class initDB
+    [Migration("20230715133606_changeOrderShipInfo")]
+    partial class changeOrderShipInfo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -472,10 +472,19 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CustomerName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("ShippingInfo")
+                    b.Property<string>("Phone")
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength();
+
+                    b.Property<string>("ShipAddress")
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -685,15 +694,18 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
 
                     b.Property<string>("ShipAddress")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 

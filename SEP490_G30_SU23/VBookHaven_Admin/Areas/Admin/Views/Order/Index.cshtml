@@ -1,0 +1,51 @@
+﻿@using VBookHaven.Models
+@using VBookHaven_Admin.Areas.Admin.Controllers
+
+@model ViewOrderManagementModel
+
+<style>
+	table, th, td {
+		border: 1px solid;
+	}
+
+	th, td {
+		margin: 10px;
+	}
+
+	table {
+		margin: 50px;
+		border-collapse: collapse;
+	}
+</style>
+
+<div><a href="/admin/order/add">Tạo đơn hàng mới</a></div>
+
+<table>
+	<tr>
+		<th>ID</th>
+		<th>Ngày tạo đơn</th>
+		<th>Tên khách hàng</th>
+		<th>Trạng thái đơn hàng</th>
+		<th>Khách phải trả</th>
+		<th>Chi tiết</th>
+	</tr>
+	@foreach (Order o in Model.Orders)
+	{
+		@*var customer = o.ShippingInfo.Split(',')[0];*@
+		var customer = o.CustomerName;
+		double total = 0;
+		foreach (OrderDetail d in o.OrderDetails)
+		{
+			total += d.UnitPrice.Value * (1 - d.Discount.Value/ 100) * d.Quantity.Value;
+		}
+
+		<tr>
+			<td>@o.OrderId</td>
+			<td>@o.OrderDate</td>
+			<td>@customer</td>
+			<td>@o.Status</td>
+			<td>@total</td>
+			<td><a href="#">Xem</a></td>
+		</tr>
+	}
+</table>

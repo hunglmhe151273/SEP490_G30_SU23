@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230715133342_InitialDbChange")]
+    partial class InitialDbChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -469,19 +472,10 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Phone")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength();
-
-                    b.Property<string>("ShipAddress")
+                    b.Property<string>("ShippingInfo")
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 

@@ -227,7 +227,13 @@ namespace VBookHaven.Areas.Customer.Controllers
 				return BadRequest();
 
 			order.OrderDate = DateTime.Now;
-			order.ShippingInfo = shipInfo.CustomerName + ", " + shipInfo.Phone + ", " + shipInfo.ShipAddress;
+
+			//order.ShippingInfo = shipInfo.CustomerName + ", " + shipInfo.Phone + ", " + shipInfo.ShipAddress;
+
+			order.CustomerName = shipInfo.CustomerName;
+			order.Phone = shipInfo.Phone;
+			order.ShipAddress = shipInfo.ShipAddress;
+
 			order.Status = "Chờ xác nhận";
 			order.CustomerId = custId;
 

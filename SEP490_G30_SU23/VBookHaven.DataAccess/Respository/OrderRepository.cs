@@ -1,4 +1,5 @@
-﻿using VBookHaven.DataAccess.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using VBookHaven.DataAccess.Data;
 using VBookHaven.Models;
 
 namespace VBookHaven.DataAccess.Respository
@@ -6,6 +7,10 @@ namespace VBookHaven.DataAccess.Respository
 	public interface IOrderRepository
 	{
 		Task AddOrderAsync(Order order, List<OrderDetail> details);
+
+		Task<List<Order>> GetAllOrdersFullInfoAsync();
+		Task<Order?> GetOrderByIdFullInfoAsync(int id);
+		Task<List<OrderDetail>> GetOrderDetailByIdFullInfoAsync(int id);
 	}
 
 	public class OrderRepository : IOrderRepository
@@ -22,6 +27,33 @@ namespace VBookHaven.DataAccess.Respository
 
 				dbContext.OrderDetails.AddRange(details);
 				await dbContext.SaveChangesAsync();
+			}
+		}
+
+		public async Task<List<Order>> GetAllOrdersFullInfoAsync()
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
+					.ToListAsync();
+			}
+		}
+
+		public async Task<Order?> GetOrderByIdFullInfoAsync(int id)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
+					.SingleOrDefaultAsync(o => o.OrderId == id);
+			}
+		}
+
+		public async Task<List<OrderDetail>> GetOrderDetailByIdFullInfoAsync(int id)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.OrderDetails.Include(o => o.Product)
+					.Where(o => o.OrderId == id).ToListAsync();
 			}
 		}
 	}

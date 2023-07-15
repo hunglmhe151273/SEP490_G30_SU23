@@ -22,5 +22,11 @@ public partial class Order
     //public virtual ShippingInfo? ShippingInfo { get; set; }
 
     //new
-    public string? ShippingInfo { get; set; }
+    //public string? ShippingInfo { get; set; }
+
+    public string? CustomerName { get; set; }
+
+    public string? ShipAddress { get; set; }
+
+    public string? Phone { get; set; }
 }

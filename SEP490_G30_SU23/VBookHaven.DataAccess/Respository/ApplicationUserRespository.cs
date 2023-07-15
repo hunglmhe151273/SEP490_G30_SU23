@@ -13,6 +13,8 @@ namespace VBookHaven.DataAccess.Respository
         Task UpdateStaffByAsync(ApplicationUser applicationUser);
 
         Task<ApplicationUser?> GetCustomerByUIdAsync(String userId);
+
+        Task<List<Customer>> GetAllCustomersAsync();
     }
 
     public class ApplicationUserRespository : IApplicationUserRespository
@@ -22,6 +24,14 @@ namespace VBookHaven.DataAccess.Respository
         public ApplicationUserRespository(VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<List<Customer>> GetAllCustomersAsync()
+        {
+            using (var dbContext = new VBookHavenDBContext())
+            {
+                return await dbContext.Customers.ToListAsync();
+            }
         }
 
         public async Task<List<ApplicationUser?>> GetAllStaffAsync()
