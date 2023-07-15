@@ -41,6 +41,7 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -69,7 +70,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Admin}/{controller=Product}/{action=Index}/{id?}");
+    pattern: "{area=Admin}/{controller=Order}/{action=Index}/{id?}");
 
 app.Run();
 

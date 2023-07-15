@@ -211,7 +211,10 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(50);
-            entity.Property(e => e.ShippingInfo).HasMaxLength(300);
+            //entity.Property(e => e.ShippingInfo).HasMaxLength(300);
+            entity.Property(e => e.CustomerName).HasMaxLength(100);
+            entity.Property(e => e.ShipAddress).HasMaxLength(300);
+            entity.Property(e => e.Phone).HasMaxLength(10).IsFixedLength();
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Order_Customer");
