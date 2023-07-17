@@ -86,10 +86,17 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Address = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: true),
+                    Address = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
                     SupplierName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Phone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ProvinceCode = table.Column<int>(type: "int", nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    DistrictCode = table.Column<int>(type: "int", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    WardCode = table.Column<int>(type: "int", nullable: true),
+                    Ward = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
