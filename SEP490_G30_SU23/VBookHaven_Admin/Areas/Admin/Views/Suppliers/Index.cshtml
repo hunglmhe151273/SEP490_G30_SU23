@@ -1,0 +1,124 @@
+﻿@model IEnumerable<VBookHaven.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Quản lý nhà cung cấp</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Quản lý nhà cung cấp</h3>
+                <hr>
+                <p>
+                    <a asp-action="Create">Tạo mới nhà cung cấp</a>
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.SupplierName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Address)
+                            </th>
+                          
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Province)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.District)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Ward)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SupplierName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Address)
+                                </td>
+                             
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Province)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.District)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Ward)
+                                </td>
+                                @* <td>
+                            @Html.DisplayFor(modelItem => item.DistrictCode)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Ward)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.WardCode)
+                            </td>*@
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.SupplierId">Edit</a>@* |
+                                    <a asp-action="Details" asp-route-id="@item.SupplierId">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.SupplierId">Delete</a>*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--end page-content-wrapper-->
+</div>
+
+<!--end page-wrapper-->

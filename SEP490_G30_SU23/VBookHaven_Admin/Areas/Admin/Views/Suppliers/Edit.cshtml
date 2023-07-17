@@ -1,0 +1,125 @@
+﻿@model VBookHaven.Models.Supplier
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Quản lý sản phẩm</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Sửa nhà cung cấp</h3>
+                <hr>
+                <div class="card border-top border-0 border-4 border-primary">
+                    <div class="card-body p-5">
+                        <div class="card-title d-flex align-items-center">
+                            <div>
+                                <i class="bx bxs-user me-1 font-22 text-primary"></i>
+                            </div>
+                            <h4 class="mb-0 text-primary">Thông tin nhà cung cấp</h4>
+                        </div>
+                        <hr>
+                        <form class="row" asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input asp-for="SupplierId" class="form-control" hidden>
+                            <div class="col-md-12 row g-3 mt-0">
+                                <div class="col-md-8">
+                                    <label asp-for="SupplierName" for="inputName" class="form-label ">Tên Nhà Cung Cấp</label>
+                                    <input asp-for="SupplierName" class="form-control" id="inputName" placeholder="Nhập tên">
+                                    <span asp-validation-for="SupplierName" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-switch ps-5 mt-auto mb-auto row">
+                                        <div class="form-switch col-md-12 ps-0">
+                                            <label for="inputName" class="form-label">Trạng thái</label>
+                                        </div>
+                                        <div class="form-switch col-md-12 ps-0">
+                                            <input asp-for="Status" class="form-check-input  ms-0 " type="checkbox" id="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" for="inputIdNumber" class="form-label">Số điện thoại</label>
+                                    <input asp-for="Phone" type="text" class="form-control" placeholder="Số điện thoại">
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control" id="inputUserName" placeholder="Nhập email ">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Tỉnh/Thành Phố</label>
+                                    <select asp-for="ProvinceCode" class="single-select" id="province">
+                                        <option value="">Chọn Tỉnh/Thành Phố</option>
+                                        <option hidden selected value="@Model.ProvinceCode"></option>
+                                    </select>
+                                    <span asp-validation-for="ProvinceCode" class="text-danger"></span>
+                                    <input id="provinceString" hidden asp-for="Province" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
+                                    <select asp-for="DistrictCode" class="single-select" id="district">
+                                        <option value="">Chọn Quận/Huyện</option>
+                                        <option hidden selected value="@Model.DistrictCode"></option>
+                                    </select>
+                                    <span asp-validation-for="DistrictCode" class="text-danger"></span>
+                                    <input id="districtString" hidden asp-for="District" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="WardCode" for="inputCity" class="form-label">Phường/Xã</label>
+                                    <select asp-for="WardCode" class="single-select" id="ward">
+                                        <option value="">Chọn Phường/Xã</option>
+                                        <option hidden selected value="@Model.WardCode"></option>
+                                    </select>
+                                    <span asp-validation-for="WardCode" class="text-danger"></span>
+
+                                    <input id="wardString" hidden asp-for="Ward" class="form-control" />
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Address" class="form-label">Địa chỉ chi tiết</label>
+                                    <textarea asp-for="Address" id="result" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label asp-for="Description" class="form-label">Ghi Chú</label>
+                                    <textarea asp-for="Description" class="form-control" rows="5" placeholder="Nhập ghi chú"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button onclick="goBack()" class="btn btn-danger px-5 py-2">Trở lại</button>
+                                <button type="submit" class="btn btn-success px-5 py-2">Tạo</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end page-content-wrapper-->
+</div>
+
+<!--end page-wrapper-->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

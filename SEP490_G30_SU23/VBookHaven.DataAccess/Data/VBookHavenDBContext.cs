@@ -330,7 +330,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.IdCard)
                 .HasMaxLength(12)
                 .IsFixedLength();
-            entity.Property(e => e.Image).HasMaxLength(100);
+            entity.Property(e => e.Image).HasMaxLength(150);
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsFixedLength();
@@ -369,12 +369,17 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.ToTable("Supplier");
 
             entity.Property(e => e.Address)
-                .HasMaxLength(20)
-                .IsUnicode(false);
+                .HasMaxLength(150);
+               
             entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
-            entity.Property(e => e.SupplierName).HasMaxLength(100);
+            entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.Province).HasMaxLength(50);
+            entity.Property(e => e.District).HasMaxLength(50);
+            entity.Property(e => e.Ward).HasMaxLength(50);
+            entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.SupplierName).HasMaxLength(300);
         });
 
         OnModelCreatingPartial(modelBuilder);
