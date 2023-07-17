@@ -14,6 +14,7 @@ namespace VBookHaven.DataAccess.Respository
 
         Task<ApplicationUser?> GetCustomerByUIdAsync(String userId);
 
+        // Quoc add
         Task<List<Customer>> GetAllCustomersAsync();
     }
 

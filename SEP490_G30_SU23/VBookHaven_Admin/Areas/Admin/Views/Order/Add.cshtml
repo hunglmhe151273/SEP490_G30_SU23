@@ -1,0 +1,167 @@
+﻿@using VBookHaven.Models
+@using VBookHaven_Admin.Areas.Admin.Controllers
+@using System.Text.Json
+
+@model AddOrderManagementModel
+
+<style>
+	table, th, td {
+		border: 1px solid;
+	}
+
+	th, td {
+		margin: 10px;
+	}
+
+	table {
+		margin: 50px;
+		border-collapse: collapse;
+	}
+</style>
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+	<!--page-content-wrapper-->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			<form method="post">
+				<select onchange="ChangeShipInfo(this)">
+					<option value="" selected>--- Chọn khách hàng ---</option>
+					@foreach (ShippingInfo s in Model.AllShipInfo)
+					{
+						string shipJson = JsonSerializer.Serialize(s);
+
+						string name = s.CustomerName;
+						if (s.Phone != null)
+							name += ", " + s.Phone;
+						<option value="@shipJson">@name</option>
+					}
+				</select>
+
+				<input asp-for="Order.CustomerName" hidden />
+				<input asp-for="Order.Phone" hidden />
+				<input asp-for="Order.ShipAddress" hidden />
+
+				<div id="show-customer-name"></div>
+				<div id="show-phone"></div>
+				<div id="show-ship-address"></div>
+
+				<select onchange="ChangeProduct(this)">
+					<option value="" selected>-- Thêm sản phẩm --</option>
+					@foreach (Product p in Model.AllProducts)
+					{
+						string productJson = JsonSerializer.Serialize(p);
+						<option id="product-@p.ProductId" value="@productJson">@p.Barcode - @p.Name</option>
+					}
+				</select>
+
+				<table id="show-product-table">
+					<tr>
+						<th>Mã vạch</th>
+						<th>Tên sản phẩm</th>
+						<th>Số lượng</th>
+						<th>Đơn giá</th>
+						<th>Chiết khấu</th>
+						<th>Thành tiền</th>
+						<th></th>
+						<th hidden>Product ID</th>
+					</tr>
+				</table>
+
+				<input type="submit" value="Thêm đơn hàng" />
+			</form>
+		</div>
+	</div>
+	<!--end page-content-wrapper-->
+</div>
+<!--end page-wrapper-->
+
+<script type="text/javascript">
+	function ChangeShipInfo(selectObject)
+	{
+		var value = selectObject.value;
+
+		if (value != "")
+		{
+			var shipInfo = JSON.parse(value);
+
+			$("#show-customer-name").text(shipInfo.CustomerName);
+			$("#show-phone").text(shipInfo.Phone);
+			$("#show-ship-address").text(shipInfo.ShipAddress);
+
+			$("#Order_CustomerName").val(shipInfo.CustomerName);
+			$("#Order_Phone").val(shipInfo.Phone);
+			$("#Order_ShipAddress").val(shipInfo.ShipAddress);
+		}
+		else
+		{
+			$("#show-customer-name").text("");
+			$("#show-phone").text("");
+			$("#show-ship-address").text("");
+
+			$("#Order_CustomerName").val("");
+			$("#Order_Phone").val("");
+			$("#Order_ShipAddress").val("");
+		}
+	}
+
+	function ChangeProduct(selectObject)
+	{
+		var value = selectObject.value;
+		if (value != "")
+		{
+			var productInfo = JSON.parse(value);
+
+			var barcode = productInfo.Barcode;
+			var name = productInfo.Name;
+			var quantity = 1;
+			var price = productInfo.RetailPrice;
+			var discount = productInfo.RetailDiscount;
+			var total = price * (1 - discount / 100) * quantity;
+			var id = productInfo.ProductId;
+
+			var addRow = 
+				`<tr>
+					<td>${barcode}</td>
+					<td>${name}</td>
+					<td><input type='number' name='QuantityList' value='${quantity}' 
+						min='1' required onchange='ChangeTotal(this)' /></td>
+					<td><input type='number' name='PriceList' value='${price}'
+						min='0' required onchange='ChangeTotal(this)' /></td>
+					<td><input type='number' name='DiscountList' value='${discount}'
+						min='0' max='100' step='0.1' required onchange='ChangeTotal(this)' /></td>
+					<td>${total}</td>
+					<td><button onclick='RemoveProduct(this)'>X</button></td>
+					<td hidden><input hidden name='ProductIdList' value='${id}' /></td>
+				</tr>`
+
+			$("#show-product-table").append(addRow);
+
+			$(selectObject).find(":selected").hide();
+			selectObject.value = "";
+		}
+	}
+
+	function RemoveProduct(element)
+	{
+		var row = $(element).parent().parent();
+		var id = $(row).children(":nth-child(8)").children(":first-child").val();
+
+		var productOptionId = "#product-" + id;
+
+		$(row).remove();
+		$(productOptionId).show();
+	}
+
+	function ChangeTotal(element)
+	{
+		var row = $(element).parent().parent();
+		var quantity = $(row).children(":nth-child(3)").children(":first-child").val();
+		var price = $(row).children(":nth-child(4)").children(":first-child").val();
+		var discount = $(row).children(":nth-child(5)").children(":first-child").val();
+
+		var total = price * (1 - discount / 100) * quantity;
+
+		$(row).children(":nth-child(6)").text(total);
+	}
+</script>

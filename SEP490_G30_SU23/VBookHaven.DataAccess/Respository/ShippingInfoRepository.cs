@@ -6,6 +6,7 @@ namespace VBookHaven.DataAccess.Respository
 {
 	public interface IShippingInfoRepository
 	{
+        Task<List<ShippingInfo>> GetAllShipInfoAsync();
 		Task<List<ShippingInfo>> GetAllShippingInfosByCustomerIdAsync(int customerId);
 		Task<ShippingInfo?> GetShippingInfoByIdAsync(int id);
 
@@ -80,6 +81,14 @@ namespace VBookHaven.DataAccess.Respository
         {
             _dbContext.ShippingInfos.Remove(shippingInfo);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<ShippingInfo>> GetAllShipInfoAsync()
+        {
+            using (var dbContext = new VBookHavenDBContext())
+            {
+                return await dbContext.ShippingInfos.ToListAsync();
+            }
         }
     }
 }

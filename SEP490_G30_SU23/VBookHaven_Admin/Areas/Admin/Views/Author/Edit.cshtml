@@ -2,18 +2,28 @@
 @using VBookHaven_Admin.Areas.Admin.Controllers;
 @model AuthorViewModel;
 
-<form method="post">
-	<label>Author ID</label>
-	<input readonly asp-for="Author.AuthorId" /><br />
-	
-	<label>Author Name</label>
-	<input asp-for="Author.AuthorName" required/><br />
-	
-	<label>Author Description</label>
-	<input asp-for="Author.Description" /><br />
-	
-	<input hidden asp-for="Author.Status" />
+<!--page-wrapper-->
+<div class="page-wrapper">
+	<!--page-content-wrapper-->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			<form method="post">
+				<label>Author ID</label>
+				<input readonly asp-for="Author.AuthorId" /><br />
 
-	<input type="submit" value="Submit" />
-	<a href="/admin/author/index">Cancel</a>
-</form>
+				<label>Author Name</label>
+				<input asp-for="Author.AuthorName" required /><br />
+
+				<label>Author Description</label>
+				<input asp-for="Author.Description" /><br />
+
+				<input hidden asp-for="Author.Status" />
+
+				<input type="submit" value="Submit" />
+				<a href="/admin/author/index">Cancel</a>
+			</form>
+		</div>
+	</div>
+	<!--end page-content-wrapper-->
+</div>
+<!--end page-wrapper-->
