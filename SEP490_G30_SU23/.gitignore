@@ -6,6 +6,9 @@
 # ignore json file
 *.json
 
+# ignore Migrations folder
+Migrations/
+
 # User-specific files
 *.rsuser
 *.suo
