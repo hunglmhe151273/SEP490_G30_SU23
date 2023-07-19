@@ -135,12 +135,19 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                         protocol: Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
                         $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
-                    return RedirectToAction(nameof(Create));
+                    TempData["success"] = "Thêm nhân viên thành công";
+                    return RedirectToAction("Index","User");
                 }
 
                 //- TO DO: Neu add khong thanh cong xoa anh vua add
                 foreach (var error in result.Errors)
                 {
+                    if (error.Code == "DuplicateUserName")
+                    {
+                        // Customize the error message for duplicate username
+                        error.Description = "Email đã tồn tại. Hãy nhập email khác.";
+                        TempData["error"] = "Thêm nhân viên thất bại";
+                    }
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }

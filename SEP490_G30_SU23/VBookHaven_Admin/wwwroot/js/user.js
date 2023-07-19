@@ -81,3 +81,20 @@ function LockUnlock(id) {
         }
     });
 }
+
+$(document).ready(function () {
+    $(".filter").on("input", function () {
+        var search = $("#search").val().toLowerCase();
+        var role = $("#role").val().toLowerCase();
+        var status = $("#status").val();
+        $("#myTable tr").filter(function () {
+            $(this).toggle(
+                status == "1" ? $(this).find('td:eq(5)').val().is(":checked") : $(this).find('td:eq(5)').val() &&
+                    $(this).find('td:eq(4)').text().toLowerCase().indexOf(role) > -1 &&
+                    ($(this).find('td:eq(0)').text().toLowerCase().indexOf(search) > -1 ||
+                        $(this).find('td:eq(2)').text().toLowerCase().indexOf(search) > -1 ||
+                        $(this).find('td:eq(3)').text().toLowerCase().indexOf(search) > -1)
+            );
+        })
+    });
+});
