@@ -11,7 +11,7 @@ public partial class SubCategory
 
     public int? CategoryId { get; set; }
 
-    public bool? Status { get; set; }
+    public bool Status { get; set; }
 
     public virtual Category? Category { get; set; }
 

@@ -10,7 +10,7 @@ public partial class Category
     [Display(Name = "Tên loại sản phẩm")]
     public string? CategoryName { get; set; }
     [Display(Name = "Trạng thái")]
-    public bool? Status { get; set; }
+    public bool Status { get; set; }
 
     public virtual ICollection<SubCategory> SubCategories { get; set; } = new List<SubCategory>();
 }

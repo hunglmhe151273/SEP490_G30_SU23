@@ -4,7 +4,6 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <!--page-wrapper-->
 <div class="page-wrapper">
     <!--page-content-wrapper-->
@@ -12,56 +11,67 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="breadcrumb-title pe-3">Loại sản phẩm</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item">
-                                <a href="javascript:;">
-                                    <i class="bx bx-home-alt"></i>
-                                </a>
+                                <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Quản lý sản phẩm</li>
+                            <li class="breadcrumb-item active" aria-current="page">Loại</li>
+                            <li class="breadcrumb-item active" aria-current="page">Thêm loại</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
-            <div class="mx-auto">
-                <h3 class="mb-0 text-uppercase">Thêm loại con</h3>
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <form asp-action="Create">
+            <div class="card radius-15">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h4 class="mb-0">Sửa thể loại</h4>
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                        <form class="row g-3" asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
-                                <label asp-for="SubCategoryName" class="control-label"></label>
-                                <input asp-for="SubCategoryName" class="form-control" />
+                            <div class="col-md-6">
+                                <label asp-for="SubCategoryName" for="inputName" class="form-label"></label>
+                                <input asp-for="SubCategoryName" type="text" class="form-control">
                                 <span asp-validation-for="SubCategoryName" class="text-danger"></span>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="CategoryId" class="control-label"></label>
-                                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <label asp-for="CategoryId" for="inputCate" class="form-label mt-1">Thể loại</label>
+                                <select asp-for="CategoryId" asp-items="ViewBag.CategoryId" class="form-select">
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label asp-for="Status" class="control-label"></label>
-                                <input asp-for="Status" class="form-control" />
-                                <span asp-validation-for="Status" class="text-danger"></span>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <label for="inputStatus" class="form-label" asp-for="Status"></label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Status" class="form-check-input" type="radio" value="true" checked>
+                                        <label class="form-check-label" for="inlineRadio1">Hoạt động</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input asp-for="Status" class="form-check-input" type="radio" value="false">
+                                        <label class="form-check-label" for="inlineRadio1">Đình chỉ</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="submit" value="Create" class="btn btn-primary" />
+                            <div class="col-md-6"></div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary px-5">Lưu</button>
                             </div>
                         </form>
+                        <div class="mt-3">
+                            <a asp-controller="Categories" asp-action="Index">Back to List</a>
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <a asp-controller="Categories" asp-action="Index">Back to List</a>
                 </div>
             </div>
         </div>
     </div>
     <!--end page-content-wrapper-->
 </div>
-
 <!--end page-wrapper-->

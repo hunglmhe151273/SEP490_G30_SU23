@@ -4,6 +4,16 @@
     ViewData["Title"] = "Danh sách sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .sub-category {
+        display: none;
+    }
+
+    h6 {
+        margin: 0;
+    }
+</style>
+
 
 <!--page-wrapper-->
 <div class="page-wrapper">
@@ -12,77 +22,140 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Quản trị viên</div>
+                <div class="breadcrumb-title pe-3">Loại sản phẩm</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item">
-                                <a href="javascript:;">
-                                    <i class="bx bx-home-alt"></i>
-                                </a>
+                                <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Quản lý sản phẩm</li>
+                            <li class="breadcrumb-item active" aria-current="page">Loại</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
-            <div class="mx-auto">
-                <h3 class="mb-0 text-uppercase">Thêm loại sản phẩm</h3>
-                <hr>
-                <a asp-action="Create">Thêm loại sản phẩm</a>
-                <a asp-controller="SubCategories" asp-action="Create">Thêm loại con</a>
-                <table class="table bg-white">
-                    <thead>
-                        <tr>
-                            <th>
-                                Loại sản phẩm
-                            </th>
-                            <th>
-                                Trạng Thái
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.CategoryName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Chỉnh sửa</a>@* |
-                                    <a asp-action="Details" asp-route-id="@item.CategoryId">Chi tiết</a>*@@* |
-                                    <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
-                                </td>
-                            </tr>
-                            @foreach (var sub in item.SubCategories)
-                            {
-                                <tr class="table-secondary">
-                                    <td>
-                                        @Html.DisplayFor(modelItem => sub.SubCategoryName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => sub.Status)
-                                    </td>
-                                    <td>
-                                        <a asp-controller="SubCategories" asp-action="Edit" asp-route-id="@sub.SubCategoryId">Chỉnh sửa</a> @*|
-                                        <a asp-controller="SubCategories" asp-action="Details" asp-route-id="@sub.SubCategoryId">Chi tiết</a>*@@* |
-                                        <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>*@
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+            <div class="card radius-15">
+                <div class="card-body">
+                    <div class="card-title">
+                        <h6 class="mb-0">Danh sách các loại</h6>
+                    </div>
+                    <hr />
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h3 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filler" aria-expanded="false" aria-controls="filler">
+                                            BỘ LỌC
+                                        </button>
+                                    </h3>
+                                    <div id="filler" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <form class="row" action="">
+                                                <div class="col-md-12 mb-2">
+                                                    <label class="form-label">Tìm kiếm</label>
+                                                    <input type="text" class="form-control filter" id="search" placeholder="Nhập từ khóa vào đây...">
+                                                </div>
+                                                <div class="col-md-12 mb-2">
+                                                    <label class="form-label">Trạng thái</label>
+                                                    <select class="form-select filter" id="status">
+                                                        <option value="" selected>--Không--</option>
+                                                        <option value="Hoạt động">Hoạt động</option>
+                                                        <option value="Đình chỉ">Đình chỉ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4"></div>
+                                                <input type="submit" class="btn btn-primary mt-3 col-md-4" value="Lọc">
+                                                <div class="col-md-4"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-controller="categories" asp-action="create" class="btn btn-primary"> Tạo phân loại mới</a>
+                            <a asp-controller="SubCategories" asp-action="create" class="btn btn-primary" >Tạo phân loại con mới</a>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Start -->
+                        <div class="table-responsive">
+                            <table id="example" class="table table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Phân loại</th>
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr class="category">
+                                            <td>
+                                                <h6><bold>@item.CategoryName</bold></h6>
+                                            </td>
+                                            <td>
+                                                @if (@item.Status)
+                                                {
+                                                    <span class="badge bg-success">Hoạt động</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Đình chỉ</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                <!-- Button trigger modal -->
+                                                <a  asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-default">
+                                                    <i class="lni lni-pencil-alt"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-default show-sub">
+                                                    <i class="lni lni-eye"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @foreach (var sub in item.SubCategories)
+                                        {
+                                            <tr class="sub-category">
+                                                <td>
+                                                    <h6><span class="badge rounded-pill bg-info">@sub.SubCategoryName</span></h6>
+                                                </td>
+                                                <td>
+                                                    @if (@sub.Status)
+                                                    {
+                                                        <span class="badge bg-success">Hoạt động</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-danger">Đình chỉ</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <!-- Button trigger modal -->
+                                                    <a asp-controller="SubCategories" asp-action="Edit" asp-route-id="@sub.SubCategoryId" class="btn btn-sm btn-default">
+                                                        <i class="lni lni-pencil-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        } }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <!--end page-content-wrapper-->
 </div>
-
 <!--end page-wrapper-->
+@section Scripts {
+    <script type="text/javascript" src="~/js/category.js"></script>
+}
