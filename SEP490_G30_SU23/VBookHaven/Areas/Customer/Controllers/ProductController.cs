@@ -6,6 +6,9 @@ namespace VBookHaven.Areas.Customer.Controllers
 {
 	// Giau inactivated product
 	// Khi dat hang -> Chi cho max la so luong con lai
+
+	// Trang detail product - Khi chuyen anh khac va zoom - bi cat mat mot it ben phai?
+	// Chua co list view cua trang product list
 	
 	public class ProductBuyingViewModel
 	{

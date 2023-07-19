@@ -61,7 +61,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddToCart(int number, int id)
 		{
 			bool success = await functions.AddToCartFunctionAsync(number, id);
@@ -73,7 +72,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> BuyNow(int number, int id)
 		{
 			bool success = await functions.AddToCartFunctionAsync(number, id);

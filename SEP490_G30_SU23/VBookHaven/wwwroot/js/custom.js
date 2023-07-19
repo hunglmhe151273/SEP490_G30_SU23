@@ -18,6 +18,7 @@ function DeleteImage(element) {
 function AddToCart() {
 	$("#add-to-cart").attr("action", "/Customer/Order/AddToCart");
 	$("#add-to-cart").submit();
+	//alert("Sản phẩm đã được thêm vào giỏ hàng.");
 }
 
 function BuyNow() {
