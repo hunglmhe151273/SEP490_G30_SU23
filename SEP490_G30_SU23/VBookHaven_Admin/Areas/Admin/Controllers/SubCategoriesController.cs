@@ -21,11 +21,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
 
         //// GET: Admin/SubCategories
-        //public async Task<IActionResult> Index()
-        //{
-        //    var vBookHavenDBContext = _context.SubCategories.Include(s => s.Category);
-        //    return View(await vBookHavenDBContext.ToListAsync());
-        //}
+        public async Task<IActionResult> Index()
+        {
+            var vBookHavenDBContext = _context.SubCategories.Include(s => s.Category);
+            return View(await vBookHavenDBContext.ToListAsync());
+        }
 
         //// GET: Admin/SubCategories/Details/5 -- done
         //public async Task<IActionResult> Details(int? id)
@@ -124,42 +124,42 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
 
         //// GET: Admin/SubCategories/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.SubCategories == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.SubCategories == null)
+            {
+                return NotFound();
+            }
 
-        //    var subCategory = await _context.SubCategories
-        //        .Include(s => s.Category)
-        //        .FirstOrDefaultAsync(m => m.SubCategoryId == id);
-        //    if (subCategory == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var subCategory = await _context.SubCategories
+                .Include(s => s.Category)
+                .FirstOrDefaultAsync(m => m.SubCategoryId == id);
+            if (subCategory == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(subCategory);
-        //}
+            return View(subCategory);
+        }
 
         //// POST: Admin/SubCategories/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.SubCategories == null)
-        //    {
-        //        return Problem("Entity set 'VBookHavenDBContext.SubCategories'  is null.");
-        //    }
-        //    var subCategory = await _context.SubCategories.FindAsync(id);
-        //    if (subCategory != null)
-        //    {
-        //        _context.SubCategories.Remove(subCategory);
-        //    }
-            
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.SubCategories == null)
+            {
+                return Problem("Entity set 'VBookHavenDBContext.SubCategories'  is null.");
+            }
+            var subCategory = await _context.SubCategories.FindAsync(id);
+            if (subCategory != null)
+            {
+                _context.SubCategories.Remove(subCategory);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Categories");
+        }
 
         private bool SubCategoryExists(int id)
         {
