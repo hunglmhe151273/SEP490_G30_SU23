@@ -36,8 +36,11 @@
     <link rel="stylesheet" href="~/mgmt-lib/css/dark-sidebar.css" />
     <link rel="stylesheet" href="~/mgmt-lib/css/dark-theme.css" />
     <link rel="stylesheet" href="~/mgmt-lib/css/avatar.css" />
-    <!-- Datatable -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />
+   @* <!-- Datatable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />*@
+    <!--Data Tables -->
+    <link href="~/mgmt-lib/plugins/datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/mgmt-lib/plugins/datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 </head>
@@ -269,9 +272,10 @@
     <script src="~/mgmt-lib/js/app.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <!-- Datatable -->
-    <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>
+   @* <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin">
-    </script>
+    </script>*@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script>
         var today = new Date();

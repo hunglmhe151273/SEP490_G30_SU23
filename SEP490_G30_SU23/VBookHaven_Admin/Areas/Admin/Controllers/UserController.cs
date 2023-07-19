@@ -22,6 +22,7 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
+  
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -280,7 +281,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
-
         public async Task<IActionResult> Index()
         {
             return View();
@@ -289,7 +289,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 
         #region API CALLS
-
         [HttpGet]
         public async Task<IActionResult> GetAllStaff()
         {
@@ -301,7 +300,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return Json(new { data = objUserList });
         }
-
 
         [HttpPost]
         public async Task<IActionResult> LockUnlock([FromBody] string id)
