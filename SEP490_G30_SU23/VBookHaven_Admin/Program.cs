@@ -49,9 +49,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
-
+builder.Services.AddAutoMapper(typeof(VBookHaven.Models.DTO.MapperProfile));
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,7 +71,12 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Admin}/{controller=Order}/{action=Index}/{id?}");
-
+//add cors
+app.UseCors(builder =>
+builder.AllowAnyOrigin()
+.AllowAnyMethod()
+.AllowAnyHeader()
+);
 app.Run();
 
 void SeedDatabase()
