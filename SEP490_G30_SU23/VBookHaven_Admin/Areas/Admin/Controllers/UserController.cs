@@ -315,7 +315,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var objFromDb = await _dbContext.ApplicationUsers.SingleOrDefaultAsync(a => a.Id.Equals(id));
             if (objFromDb == null)
             {
-                return Json(new { success = false, message = "Error while Locking/Unlocking" });
+                return Json(new { success = false, message = "Lỗi cập nhật" });
             }
 
             if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
@@ -328,7 +328,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
             _dbContext.SaveChanges();
-            return Json(new { success = true, message = "Operation Successful" });
+            return Json(new { success = true, message = "Cập nhật thành công" });
         }
 
         #endregion
