@@ -8,7 +8,6 @@ using VBookHaven.DataAccess.Respository;
 namespace VBookHaven.Areas.Customer.Controllers
 {		
 	// Lay default shipping info khi vao trang Purchase lan dau (chua chon dia chi khac)
-	// Chua co man hinh them dia chi
 	
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
 	// Khong dat duoc qua so luong hang trong kho

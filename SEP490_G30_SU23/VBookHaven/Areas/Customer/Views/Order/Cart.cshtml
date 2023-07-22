@@ -15,7 +15,8 @@
 	}
 }
 
-<style>
+<!-- Old code -->
+@*<style>
 	table, th, td {
 		border: 1px solid;
 	}
@@ -75,4 +76,134 @@
 else
 {
 	<div style="color: red; font-weight: bold">Đăng nhập để thanh toán</div>
-}
+}*@
+
+<!-- BREADCRUMBS SETCTION START -->
+<div class="breadcrumbs-section plr-200 mb-80 section">
+    <div class="breadcrumbs overlay-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumbs-inner">
+                        <h1 class="breadcrumbs-title">Shopping Cart</h1>
+                        <ul class="breadcrumb-list">
+                            <li><a href="/Customer/Home">Trang chủ</a></li>
+                            <li>Giỏ hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMBS SETCTION END -->
+
+<!-- Start page content -->
+<section id="page-content" class="page-wrapper section">
+
+    <!-- SHOP SECTION START -->
+    <div class="shop-section mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <!-- shopping-cart start -->
+                        <div class="tab-pane active" id="shopping-cart">
+                            <div class="shopping-cart-content">
+                                <div class="table-content table-responsive mb-50">
+                                    <table class="text-center">
+                                        <thead>
+                                            <tr>
+                                                <th class="product-thumbnail">sản phẩm</th>
+                                                <th class="product-price">giá thành</th>
+                                                <th class="product-discount">Khuyến mại</th>
+                                                <th class="product-quantity">Số lượng</th>
+                                                <th class="product-subtotal">thành tiền</th>
+                                                <th class="product-remove">Xóa</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- tr -->
+                                            @foreach (CartDetail o in Model)
+                                            {
+                                                <tr>
+                                                    <td class="product-thumbnail">
+                                                        <div class="pro-thumbnail-img">
+                                                            <img src="~/cust-lib/subas/img/cart/1.jpg" alt="">
+                                                        </div>
+                                                        <div class="pro-thumbnail-info text-start">
+                                                            <h6 class="product-title-2">
+                                                                <a href="~/Customer/Product/Detail/@o.ProductId">
+                                                                    @o.Product.Name
+                                                                </a>
+                                                            </h6>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-price">@o.Product.RetailPrice VNĐ</td>
+                                                    <td class="product-discount">@o.Product.RetailDiscount%</td>
+                                                    <td class="product-quantity">
+                                                        <div class="cart-plus-minus-2 f-left">
+                                                            <div class="dec qtybutton" onclick="window.location.replace('/Customer/Order/MinusOneFromCart/@o.ProductId')">-</div>
+                                                            <input readonly value="@o.Quantity" class="cart-plus-minus-box">
+                                                            <div class="inc qtybutton" onclick="window.location.replace('/Customer/Order/PlusOneToCart/@o.ProductId')">+</div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-subtotal">
+                                                        @(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity) VNĐ
+                                                    </td>
+                                                    <td class="product-remove">
+                                                        <a href="javascript:void(0);" onclick="window.location.replace('/Customer/Order/RemoveItemFromCart/@o.ProductId')">
+                                                            <i class="zmdi zmdi-close"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8"></div>
+                                    <div class="col-md-4">
+                                        <div class="payment-details box-shadow p-30 mb-50">
+                                            <h6 class="widget-title border-left mb-20">Tổng cộng</h6>
+                                            <table>
+                                                <tr>
+                                                    <td class="order-total"></td>
+                                                    <td class="order-total-price" style="font-size: x-large">@total VNĐ</td>
+                                                </tr>
+                                            </table>
+                                            @if (SignInManager.IsSignedIn(User))
+                                            {
+                                                if (Model.Count > 0)
+                                                {
+                                                    <button class="submit-btn-1 orange-bg btn-hover-1" onclick="window.location.replace('/Customer/Order/Purchase')">
+                                                        Thanh toán
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="submit-btn-1 gray-bg text-muted" disabled>
+                                                        Thanh toán
+                                                    </button>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="text-danger font-w-7">Đăng nhập để thanh toán</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- shopping-cart end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SHOP SECTION END -->             
+
+</section>
+<!-- End page content -->

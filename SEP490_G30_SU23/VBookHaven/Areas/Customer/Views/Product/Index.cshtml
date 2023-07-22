@@ -2,6 +2,7 @@
 @using VBookHaven.Areas.Customer.Controllers
 @model ProductBuyingViewModel
 
+@* Old code *@
 @*<table>
 	<tr>
 		<th>Thumbnail</th>
@@ -81,17 +82,17 @@
                             </ul>
                             <!-- short-by -->
                             <div class="short-by f-left text-center">
-                                <span>Sort by :</span>
-                                <select>
-                                    <option value="volvo">Newest items</option>
-                                    <option value="saab">Saab</option>
-                                    <option value="mercedes">Mercedes</option>
-                                    <option value="audi">Audi</option>
+                                <span>Sắp xếp theo :</span>
+                                <select onchange="ChangeSortingProductCust(this)" asp-items="@Model.SortList">
+                                    @*<option value="newest">Sản phẩm mới nhất</option>
+                                    <option value="oldest">Sản phẩm cũ nhất</option>
+                                    <option value="price-asc">Giá thấp -> cao</option>
+                                    <option value="price-desc">Giá cao -> thấp</option>*@
                                 </select>
                             </div>
                             <!-- showing -->
                             <div class="showing f-right text-end">
-                                <span>Showing : 01-09 of 17.</span>
+                                <span>Sản phẩm @Model.First-@Model.Last trên tổng cộng @Model.Total.</span>
                             </div>
                         </div>
                         <!-- shop-option end -->
@@ -378,7 +379,7 @@
                         </div>
                         <!-- Tab Content end -->
                         <!-- shop-pagination start -->
-                        <ul class="shop-pagination box-shadow text-center ptblr-10-30">
+                        @*<ul class="shop-pagination box-shadow text-center ptblr-10-30">
                             <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
                             <li><a href="#">01</a></li>
                             <li><a href="#">02</a></li>
@@ -386,159 +387,171 @@
                             <li><a href="#">...</a></li>
                             <li><a href="#">05</a></li>
                             <li class="active"><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                        </ul>*@
+                        <ul class="dynamic-pagination shop-pagination box-shadow text-center ptblr-10-30"
+                            data-current="@Model.Page"
+                            data-total="@Model.TotalPage"
+                            data-delta="1"
+                            data-form-id="cust-product-search-form">
                         </ul>
                         <!-- shop-pagination end -->
                     </div>
                 </div>
                 <div class="col-lg-3 order-lg-1 order-2">
-                    <!-- widget-search -->
-                    <aside class="widget-search mb-30">
-                        <form action="#">
-                            <input type="text" placeholder="Search here...">
+                    <form id="cust-product-search-form" method="get">
+                        <!-- widget-search -->
+                        <aside class="widget-search mb-30">
+                            <input type="text" name="search" placeholder="Tìm kiếm..." value="@Model.SearchText">
                             <button type="submit"><i class="zmdi zmdi-search"></i></button>
-                        </form>
-                    </aside>
-                    <!-- widget-categories -->
-                    <aside class="widget widget-categories box-shadow mb-30">
-                        <h6 class="widget-title border-left mb-20">Categories</h6>
-                        <div id="cat-treeview" class="product-cat">
-                            <ul>
-                                <li class="closed">
-                                    <a href="#">Brand One</a>
-                                    <ul>
-                                        <li><a href="#">Mobile</a></li>
-                                        <li><a href="#">Tab</a></li>
-                                        <li><a href="#">Watch</a></li>
-                                        <li><a href="#">Head Phone</a></li>
-                                        <li><a href="#">Memory</a></li>
-                                    </ul>
-                                </li>
-                                <li class="open">
-                                    <a href="#">Brand Two</a>
-                                    <ul>
-                                        <li><a href="#">Mobile</a></li>
-                                        <li><a href="#">Tab</a></li>
-                                        <li><a href="#">Watch</a></li>
-                                        <li><a href="#">Head Phone</a></li>
-                                        <li><a href="#">Memory</a></li>
-                                    </ul>
-                                </li>
-                                <li class="closed">
-                                    <a href="#">Accessories</a>
-                                    <ul>
-                                        <li><a href="#">Footwear</a></li>
-                                        <li><a href="#">Sunglasses</a></li>
-                                        <li><a href="#">Watches</a></li>
-                                        <li><a href="#">Utilities</a></li>
-                                    </ul>
-                                </li>
-                                <li class="closed">
-                                    <a href="#">Top Brands</a>
-                                    <ul>
-                                        <li><a href="#">Mobile</a></li>
-                                        <li><a href="#">Tab</a></li>
-                                        <li><a href="#">Watch</a></li>
-                                        <li><a href="#">Head Phone</a></li>
-                                        <li><a href="#">Memory</a></li>
-                                    </ul>
-                                </li>
-                                <li class="closed">
-                                    <a href="#">Jewelry</a>
-                                    <ul>
-                                        <li><a href="#">Footwear</a></li>
-                                        <li><a href="#">Sunglasses</a></li>
-                                        <li><a href="#">Watches</a></li>
-                                        <li><a href="#">Utilities</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </aside>
-                    <!-- shop-filter -->
-                    <aside class="widget shop-filter box-shadow mb-30">
-                        <h6 class="widget-title border-left mb-20">Price</h6>
-                        <div class="price_filter">
-                            <div class="price_slider_amount">
-                                <input type="submit" value="You range :" />
-                                <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                        </aside>
+                        <!-- widget-categories -->
+                        <aside class="widget widget-categories box-shadow mb-30">
+                            <h6 class="widget-title border-left mb-20">Loại sản phẩm</h6>
+                            <div id="cat-treeview" class="product-cat">
+                                <ul>
+                                    @*<li class="closed">
+                                        <a href="#">Brand One</a>
+                                        <ul>
+                                            <li><a href="#">Mobile</a></li>
+                                            <li><a href="#">Tab</a></li>
+                                            <li><a href="#">Watch</a></li>
+                                            <li><a href="#">Head Phone</a></li>
+                                            <li><a href="#">Memory</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="open">
+                                        <a href="#">Brand Two</a>
+                                        <ul>
+                                            <li><a href="#">Mobile</a></li>
+                                            <li><a href="#">Tab</a></li>
+                                            <li><a href="#">Watch</a></li>
+                                            <li><a href="#">Head Phone</a></li>
+                                            <li><a href="#">Memory</a></li>
+                                        </ul>
+                                    </li>*@
+                                    @foreach (Category c in Model.Categories)
+                                    {
+                                        string isOpen;
+                                        if (Model.SelectedCategories.Contains(c.CategoryId))
+                                        {
+                                            isOpen = "open";
+                                        }
+                                        else
+                                        {
+                                            isOpen = "closed";
+                                        }
+                                        <li class="@isOpen">
+                                            <label>@c.CategoryName</label>
+                                            <ul>
+                                                @foreach (SubCategory s in c.SubCategories)
+                                                {
+                                                    if (Model.SelectedSubCategories.Contains(s.SubCategoryId))
+                                                    {
+                                                        <li><label><input type="checkbox" checked name="subCat" value="@s.SubCategoryId">@s.SubCategoryName</label></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><label><input type="checkbox" name="subCat" value="@s.SubCategoryId">@s.SubCategoryName</label></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
                             </div>
-                            <div id="slider-range"></div>
-                        </div>
-                    </aside>
-                    <!-- widget-color -->
-                    <aside class="widget widget-color box-shadow mb-30">
+                        </aside>
+                        <!-- shop-filter -->
+                        <aside class="widget shop-filter box-shadow mb-30">
+                            <h6 class="widget-title border-left mb-20">Giá</h6>
+                            <div class="price_filter">
+                                <div class="price_slider_amount">
+                                    @*<input type="submit" value="You range :" />
+                                    <input type="text" id="amount" name="price" placeholder="Add Your Price" readonly/>*@
+                                    <label for="min-price" style="width: 20%"><b>Từ: </b></label>
+                                    <input type="number" id="min-price" name="minPrice" min="0" 
+                                        value="@Model.MinPrice" style="float: none" /> VNĐ<br />
+                                    <label for="max-price" style="width: 20%"><b>Đến: </b></label>
+                                    <input type="number" id="max-price" name="maxPrice" min="0" 
+                                        value="@Model.MaxPrice" style="float: none; margin-bottom: 20px" /> VNĐ<br />
+                                </div>
+                                <div id="slider-range"></div>
+                            </div>
+                        </aside>
+                        <!-- widget-color -->
+                        @*<aside class="widget widget-color box-shadow mb-30">
                         <h6 class="widget-title border-left mb-20">color</h6>
                         <ul>
-                            <li class="color-1"><a href="#">LightSalmon</a></li>
-                            <li class="color-2"><a href="#">Dark Salmon</a></li>
-                            <li class="color-3"><a href="#">Tomato</a></li>
-                            <li class="color-4"><a href="#">Deep Sky Blue</a></li>
-                            <li class="color-5"><a href="#">Electric Purple</a></li>
-                            <li class="color-6"><a href="#">Atlantis</a></li>
+                        <li class="color-1"><a href="#">LightSalmon</a></li>
+                        <li class="color-2"><a href="#">Dark Salmon</a></li>
+                        <li class="color-3"><a href="#">Tomato</a></li>
+                        <li class="color-4"><a href="#">Deep Sky Blue</a></li>
+                        <li class="color-5"><a href="#">Electric Purple</a></li>
+                        <li class="color-6"><a href="#">Atlantis</a></li>
                         </ul>
-                    </aside>
-                    <!-- operating-system -->
-                    <aside class="widget operating-system box-shadow mb-30">
+                        </aside>*@
+                        <!-- operating-system -->
+                        @*<aside class="widget operating-system box-shadow mb-30">
                         <h6 class="widget-title border-left mb-20">operating system</h6>
                         <form action="action_page.php">
-                            <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
-                            <label><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry ios</label><br>
-                            <label><input type="checkbox" name="operating-1" value="phone-1">Android</label><br>
-                            <label><input type="checkbox" name="operating-1" value="phone-1">ios</label><br>
-                            <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
-                            <label><input type="checkbox" name="operating-1" value="phone-1">Symban</label><br>
-                            <label class="mb-0"><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry os</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry ios</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Android</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">ios</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Symban</label><br>
+                        <label class="mb-0"><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry os</label><br>
                         </form>
-                    </aside>
-                    <!-- widget-product -->
-                    <aside class="widget widget-product box-shadow">
-                        <h6 class="widget-title border-left mb-20">recent products</h6>
-                        <!-- product-item start -->
-                        <div class="product-item">
-                            <div class="product-img">
-                                <a href="single-product.html">
-                                    <img src="~/cust-lib/subas/img/product/4.jpg" alt="" />
-                                </a>
+                        </aside>*@
+                        <!-- widget-product -->
+                        <aside class="widget widget-product box-shadow">
+                            <h6 class="widget-title border-left mb-20">recent products</h6>
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/4.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
                             </div>
-                            <div class="product-info">
-                                <h6 class="product-title">
-                                    <a href="single-product.html">Product Name</a>
-                                </h6>
-                                <h3 class="pro-price">$ 869.00</h3>
+                            <!-- product-item end -->
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/8.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
                             </div>
-                        </div>
-                        <!-- product-item end -->
-                        <!-- product-item start -->
-                        <div class="product-item">
-                            <div class="product-img">
-                                <a href="single-product.html">
-                                    <img src="~/cust-lib/subas/img/product/8.jpg" alt="" />
-                                </a>
+                            <!-- product-item end -->
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/12.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
                             </div>
-                            <div class="product-info">
-                                <h6 class="product-title">
-                                    <a href="single-product.html">Product Name</a>
-                                </h6>
-                                <h3 class="pro-price">$ 869.00</h3>
-                            </div>
-                        </div>
-                        <!-- product-item end -->
-                        <!-- product-item start -->
-                        <div class="product-item">
-                            <div class="product-img">
-                                <a href="single-product.html">
-                                    <img src="~/cust-lib/subas/img/product/12.jpg" alt="" />
-                                </a>
-                            </div>
-                            <div class="product-info">
-                                <h6 class="product-title">
-                                    <a href="single-product.html">Product Name</a>
-                                </h6>
-                                <h3 class="pro-price">$ 869.00</h3>
-                            </div>
-                        </div>
-                        <!-- product-item end -->
-                    </aside>
+                            <!-- product-item end -->
+                        </aside>
+                    </form>
                 </div>
             </div>
         </div>

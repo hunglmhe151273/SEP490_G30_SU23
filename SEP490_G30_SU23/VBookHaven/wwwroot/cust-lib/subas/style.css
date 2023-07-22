@@ -1180,7 +1180,7 @@ transform: scale(1);
 /* -------------------------------------
     10.5 Product Cart plus minus
 ------------------------------------- */
-.cart-plus-minus {
+.cart-plus-minus, .cart-plus-minus-2 {
   border: 1px solid #cccccc;
   height: 25px;
   text-align: center;
@@ -1325,7 +1325,8 @@ table {width: 100%}
 .pro-thumbnail-info > p {
   margin-bottom: 0;
 }
-.product-price, .product-subtotal {
+.product-price, .product-subtotal,
+/* Custom */ .product-discount {
   font-family: roboto;
   font-size: 16px;
   font-weight: 700;
