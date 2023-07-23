@@ -8,6 +8,7 @@ public partial class Supplier
 {
     public int SupplierId { get; set; }
     [Display(Name = "Địa chỉ chi tiết")]
+    [Required(ErrorMessage = "Địa chỉ chi tiết là bắt buộc")]
     [StringLength(100, ErrorMessage = "Địa chỉ không được vượt quá 100 kí tự")]
     public string? Address { get; set; }
     [Required(ErrorMessage = "Tên nhà cung cấp là bắt buộc")]

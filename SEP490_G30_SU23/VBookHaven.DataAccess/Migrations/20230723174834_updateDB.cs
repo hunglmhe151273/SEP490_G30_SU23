@@ -5,7 +5,7 @@
 namespace VBookHaven.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class updateAddressSupplier : Migration
+    public partial class updateDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,8 @@ namespace VBookHaven.DataAccess.Migrations
                 maxLength: 150,
                 nullable: true,
                 oldClrType: typeof(string),
-                oldType: "varchar(50)",
-                oldUnicode: false,
-                oldMaxLength: 50,
-                oldNullable: true);
+                oldType: "nvarchar(150)",
+                oldMaxLength: 150);
         }
 
         /// <inheritdoc />
@@ -29,10 +27,10 @@ namespace VBookHaven.DataAccess.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "Address",
                 table: "Supplier",
-                type: "varchar(50)",
-                unicode: false,
-                maxLength: 50,
-                nullable: true,
+                type: "nvarchar(150)",
+                maxLength: 150,
+                nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "nvarchar(150)",
                 oldMaxLength: 150,

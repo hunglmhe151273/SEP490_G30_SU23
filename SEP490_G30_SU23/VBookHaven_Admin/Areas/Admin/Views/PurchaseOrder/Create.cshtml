@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "Danh sách đơn nhập hàng";
+﻿@model VBookHaven.Models.ViewModels.CreatePurchaseOrderVM
+@{
+    ViewData["Title"] = "Tạo đơn nhập hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -65,7 +66,32 @@
                         <h6 class="mb-0">Danh sách các loại</h6>
                     </div>
                     <hr />
-                    <h1>Danh sách đơn nhập hàng</h1>
+                    <form id="orderForm" action="Create" method="Post">
+                        <div class="card-body" id="supplierContainer">
+                            <label for="supplierSelect" class="form-label">Select Supplier</label>
+                            <select asp-for="SupplierID" class="form-control" id="supplierSelect">
+                                <option value="">Select...</option>
+                            </select>
+                        </div>
+                        <div id="supplierInfoContainer"></div>
+                        <div class="card-body" id="productContainer">
+                            <label for="productSelect" class="form-label">Select Product</label>
+                            <select class="form-control" id="productSelect">
+                                <option value="">Select product...</option>
+                            </select>
+                        </div>
+
+                        <div id="orderContainer"></div>
+                        <label asp-for="Note" for="inputName" class="form-label"></label>
+                        <input asp-for="Note" class="form-control" id="inputName">
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                        <label asp-for="AmountPaid" for="inputName" class="form-label"></label>
+                        <input asp-for="AmountPaid" class="form-control" id="inputName">
+                        <span asp-validation-for="AmountPaid" class="text-danger"></span>
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+
+
                 </div>
             </div>
         </div>
@@ -74,5 +100,5 @@
 </div>
 <!--end page-wrapper-->
 @section Scripts {
-    <script type="text/javascript" src="~/js/category.js"></script>
+    <script type="text/javascript" src="~/js/addPurchaseOrder.js"></script>
 }

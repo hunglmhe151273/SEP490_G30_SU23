@@ -72,8 +72,8 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true)
+                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,17 +86,18 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Address = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    SupplierName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    Phone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    SupplierName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Phone = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ProvinceCode = table.Column<int>(type: "int", nullable: true),
-                    Province = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DistrictCode = table.Column<int>(type: "int", nullable: true),
-                    District = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    District = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     WardCode = table.Column<int>(type: "int", nullable: true),
-                    Ward = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
+                    Ward = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,7 +221,7 @@ namespace VBookHaven.DataAccess.Migrations
                     IdCard = table.Column<string>(type: "nchar(12)", fixedLength: true, maxLength: 12, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Phone = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
                     IsMale = table.Column<bool>(type: "bit", nullable: false),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
@@ -240,9 +241,9 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     SubCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SubCategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    SubCategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,7 +288,10 @@ namespace VBookHaven.DataAccess.Migrations
                     Date = table.Column<DateTime>(type: "datetime", nullable: true),
                     StaffId = table.Column<int>(type: "int", nullable: true),
                     SupplierId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AmountPaid = table.Column<double>(type: "float", nullable: true),
+                    VAT = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {

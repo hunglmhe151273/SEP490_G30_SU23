@@ -13,7 +13,10 @@ public partial class PurchaseOrder
 
     public int? SupplierId { get; set; }
 
-    public bool? Status { get; set; }
+    public String? Status { get; set; }
+    public String? Description { get; set; }
+    public Double? AmountPaid { get; set; }
+    public double ? VAT { get; set; }
 
     public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = new List<PurchaseOrderDetail>();
 

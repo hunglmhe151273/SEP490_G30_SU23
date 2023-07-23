@@ -261,7 +261,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.ToTable("PurchaseOrder");
 
             entity.Property(e => e.Date).HasColumnType("datetime");
-
+            entity.Property(e => e.Status).HasMaxLength(30);
             entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("FK_PurchaseOrder_Staff");
@@ -369,9 +369,11 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.ToTable("Supplier");
 
             entity.Property(e => e.Address)
-                .HasMaxLength(150);
-               
-            entity.Property(e => e.Phone)
+                .HasMaxLength(150).IsRequired(false);
+			entity.Property(e => e.ProvinceCode).IsRequired(false);
+			entity.Property(e => e.DistrictCode).IsRequired(false);
+            entity.Property(e => e.WardCode).IsRequired(false);
+			entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
             entity.Property(e => e.Email).HasMaxLength(100);
