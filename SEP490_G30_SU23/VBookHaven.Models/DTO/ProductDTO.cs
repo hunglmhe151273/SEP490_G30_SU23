@@ -16,7 +16,7 @@ namespace VBookHaven.Models.DTO
         [StringLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]
 
         public string? Barcode { get; set; }
-        [StringLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]
+        [StringLength(100, ErrorMessage = "Đơn vị không được vượt quá 100 kí tự.")]
         [Required]
         public string? Unit { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Giá trị phải là số nguyên không nhỏ hơn 0.")]

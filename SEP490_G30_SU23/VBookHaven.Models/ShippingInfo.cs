@@ -15,17 +15,15 @@ public partial class ShippingInfo
     [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
     public string? Phone { get; set; }
     [Display(Name = "Địa chỉ nhận hàng")]
-    [Required(ErrorMessage = "Địa chỉ nhận hàng")]
+    [Required(ErrorMessage = "Địa chỉ nhận hàng là bắt buộc")]
     [StringLength(100, ErrorMessage = "Địa chỉ nhận hàng không được vượt quá 100 kí tự.")]
     public string? ShipAddress { get; set; }
     public int? CustomerId { get; set; }
-
     public bool? Status { get; set; }
-    [Display(Name = "Tên người nhận")]
-    [Required(ErrorMessage = "Tên người nhận")]
+    [Display(Name = "Tên người nhận ")]
+    [Required(ErrorMessage = "Tên người nhận là bắt buộc")]
     [StringLength(50, ErrorMessage = "Tên người nhận không được vượt quá 50 kí tự.")]
     public string? CustomerName { get; set; }
-
     public virtual Customer? Customer { get; set; }
 
     //new

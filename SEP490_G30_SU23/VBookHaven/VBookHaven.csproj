@@ -32,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\cust-lib\subas\lib\select2\js\select2.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.19" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.18" />

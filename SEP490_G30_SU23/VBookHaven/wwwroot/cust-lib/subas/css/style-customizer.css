@@ -10,6 +10,66 @@ NOTE: This is Style customizer stylesheet of template.
 
 */
 
+/*Chính */
+
+.widget-filter {
+    position: relative;
+}
+
+    .widget-filter input {
+        height: 30px;
+        margin-bottom: 0;
+        padding-right: 20px;
+    }
+
+.list-group-item {
+    border: 0;
+    padding: 8px 15px;
+}
+
+.address .card-title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+    .address .card-title span {
+        font-weight: normal;
+        text-transform: none;
+        font-size: small;
+        color: limegreen;
+        margin-left: 3%;
+    }
+
+.address .card-text {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.address {
+    border: 0;
+    margin-bottom: 10px;
+}
+
+a .btn-address {
+    background-color: orange;
+}
+
+#add-address a {
+    text-align: center;
+}
+
+label {
+    color: black;
+}
+
+    .form-check-input,
+    label .form-check-input {
+        font-size: large;
+    }
+
+
+/* Chính */
+
 div.style-customizer {
     background-color: #fff;
     color: #262626;
