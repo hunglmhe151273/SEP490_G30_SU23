@@ -107,7 +107,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var listProducts = new List<Product>();
             try
             {
-                listProducts = await _dbContext.Products.ToListAsync();
+                listProducts = await _dbContext.Products.Include(x => x.Images).ToListAsync();
             }
             catch (Exception ex)
             {

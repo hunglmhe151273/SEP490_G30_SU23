@@ -15,7 +15,7 @@ namespace VBookHaven.Models.DTO
             CreateMap<Supplier, SupplierDTO>();
             CreateMap<SupplierDTO, Supplier>();
             CreateMap<Product, ProductDTO>()
-             .ForMember(dest => dest.PresentImage, opt => opt.MapFrom(src => "\\images\\img\\" + src.Images.FirstOrDefault().ImageName));
+             .ForMember(dest => dest.PresentImage, opt => opt.MapFrom(src => "assets/images/img/" + src.Images.FirstOrDefault().ImageName));
             CreateMap<ProductDTO, Product>();
         }
     }
