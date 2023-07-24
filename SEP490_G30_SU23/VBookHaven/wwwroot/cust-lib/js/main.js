@@ -1,626 +1,301 @@
+/*
+
+  Template Name: Subas Ecommerce Responsive Bootstrap Template
+  Description: This is html5 template
+  Author: codecarnival
+  Version: 1.0
+  Design and Developed by: codecarnival
+  NOTE: If you have any note put here. 
+
+*/
+/*================================================
+[  Table of contents  ]
+================================================
+
+    1. jQuery MeanMenu
+    2. wow js active
+    3. jQuery Nivo Slider (home-2)
+    4. Slick Carousel 
+        4.1 Active Slider - 1 (home-1)
+        4.2 Active By Brand
+        4.3 Active Featured Product
+        4.4 Active Blog
+        4.5 Active Blog 2
+        4.6 Active Related Product
+		4.7 Active Team Member
+    5. Countdown
+    6. ScrollUp
+    7. Treeview active
+    8. Price Slider
+    9. Fancybox active
+    10. Elevate Zoom active 
+    11. single-product-zoom-image carousel
+    12. Cart Plus Minus Button
+    13. bootstrap accordion one open at a time
+    14. Cart tab menu active
+    15. Blog page manu dropdown 
+    16. Background Toutube Video 
+    17. STICKY sticky-header
+
+======================================
+[ End table content ]
+======================================*/
+
 (function($) {
     "use strict";
-    
-    
-    /* jQuery MeanMenu */
-    $('#mobile-menu-active').meanmenu({
-        meanScreenWidth: "991",
-        meanMenuContainer: ".mobile-menu-area .mobile-menu",
+
+	/* ********************************************
+		1. jQuery MeanMenu
+	******************************************** */
+    jQuery('nav#dropdown').meanmenu();
+
+	/* ********************************************
+		2. wow js active
+	******************************************** */
+    new WOW().init();
+
+	/* ********************************************
+		3. jQuery Nivo Slider (home-2)
+	******************************************** */
+    $('#nivoslider-2').nivoSlider({
+        directionNav: true,
+        animSpeed: 1000,
+        effect: 'random',
+        slices: 18,
+        pauseTime: 8000,
+        pauseOnHover: true,
+        controlNav: true,
+        prevText: '<i class="zmdi zmdi-long-arrow-up"></i>',
+        nextText: '<i class="zmdi zmdi-long-arrow-down"></i>'
     });
     
-    /*--
-    One Page Nav
-    -----------------------------------*/
-    var top_offset = $('.header-area').height() - -60;
-    $('.hamburger-menu nav ul').onePageNav({
-        currentClass: 'active',
-        scrollOffset: top_offset,
-    });
-    
-    
-    /*--- clickable menu active ----*/
-    const slinky = $('#menu').slinky()
-    /*====== sidebarmenu ======*/
-    function sidebarMainmenu() {
-        var menuTrigger = $('.clickable-mainmenu-active'),
-            endTrigger = $('button.clickable-mainmenu-close'),
-            container = $('.clickable-mainmenu');
-        menuTrigger.on('click', function(e) {
-            e.preventDefault();
-            container.addClass('inside');
-        });
-        endTrigger.on('click', function() {
-            container.removeClass('inside');
-        });
-    };
-    sidebarMainmenu();
-    
-    
-    /* slider active */
-    $('.slider-active').owlCarousel({
-        loop: true,
-        nav: false,
+	/* ********************************************
+		4. Slick Carousel 
+	******************************************** */
+
+	/* -------------------------------------
+			4.1 Active Slider - 1 (home-1)
+	------------------------------------- */
+    $('.active-slider-1').slick({
         autoplay: true,
-        autoplayTimeout: 5000,
-        animateOut: 'fadeOut',
-        animateIn: 'fadeIn',
-        item: 1,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            }
-        }
-    })
-    
-    
-    $('.slider-active-2').owlCarousel({
-        loop: true,
-        nav: true,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        animateOut: 'fadeOut',
-        animateIn: 'fadeIn',
-        navText: ['<img src="assets/img/icon-img/57.png"> next', 'prev <img src="assets/img/icon-img/58.png">'],
-        item: 1,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            }
-        }
-    })
-    
-    
-    /* arrival active */
-    $('.arrival-active').owlCarousel({
-        loop: true,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        nav: false,
-        margin: 40,
-        item: 5,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1367: {
-                items: 5
-            }
-        }
-    })
-    
-    
-    /* brand logo active */
-    $('.brand-logo-active').owlCarousel({
-        loop: true,
-        nav: false,
-        item: 6,
-        responsive: {
-            0: {
-                items: 2
-            },
-            480: {
-                items: 2
-            },
-            768: {
-                items: 3
-            },
-            1000: {
-                items: 4
-            },
-            1200: {
-                items: 6
-            }
-        }
-    })
-    
-    
-    /* brand logo active */
-    $('.brand-logo-active2').owlCarousel({
-        loop: true,
-        nav: false,
-        item: 7,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 3
-            },
-            1000: {
-                items: 4
-            },
-            1200: {
-                items: 7
-            }
-        }
-    })
-    
-    
-    /* book list active */
-    $('.book-list-active').owlCarousel({
-        loop: true,
-        nav: true,
-        item: 2,
-        margin: 40,
-        navText: ['<i class="ti-angle-left"></i>', '<i class="ti-angle-right"></i>'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            },
-            1200: {
-                items: 2
-            }
-        }
-    })
-    
-    
-    /* testimonials active */
-    $('.testimonials-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: true,
-        autoplayTimeout: 5000,
-        item: 1,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            },
-            1200: {
-                items: 1
-            }
-        }
-    })
-    
-    
-    /* testimonials active */
-    $('.brand-logo-active3').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 6,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 3
-            },
-            1000: {
-                items: 4
-            },
-            1200: {
-                items: 6
-            }
-        }
-    })
-    /* testimonials active */
-    $('.product-fruit-slider').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
+        autoplaySpeed: 8000,
+        speed: 1000,
+        dots: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        prevArrow: '<button type="button" class="arrow-prev"><i class="zmdi zmdi-long-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="arrow-next"><i class="zmdi zmdi-long-arrow-right"></i></button>',
+    });
+
+	/*----------------------------
+			4.2 Active By Brand
+	------------------------------ */  
+    $('.active-by-brand').slick({
+        speed: 700,
+        arrows: true,
         margin: 30,
-        item: 5,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            },
-            1400: {
-                items: 5
-            }
-        }
-    })
-    
-    /* instafeed active */
-    $('.instafeed-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 5,
-        margin: 17,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 3
-            },
-            1000: {
-                items: 4
-            },
-            1200: {
-                items: 5
-            }
-        }
-    })
-    
-    
-    /* testimonials active */
-    $('.special-food-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 4,
-        margin: 30,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    })
-    
-    
-    /* testimonials active */
-    $('.smart-watch-product-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 3,
-        margin: 75,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 3
-            }
-        }
-    })
-    
-    
-    /* testimonials active */
-    $('.related-product-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 3,
-        margin: 30,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 3
-            }
-        }
-    })
-    
-    
-    /* popular-product-active active */
-    $('.popular-product-active').owlCarousel({
-        loop: true,
-        nav: true,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 4,
-        margin: 57,
-        navText: ['<img src="assets/img/icon-img/left.png">', '<img src="assets/img/icon-img/right.png">'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    })
-    
-    
-    /* popular-product-active-2 active */
-    $('.popular-product-active-2').owlCarousel({
-        loop: true,
-        nav: true,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 4,
-        margin: 22,
-        navText: ['<img src="assets/img/icon-img/left.png">', '<img src="assets/img/icon-img/right.png">'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    })
-    
-    
-    /* trandy-product-active active */
-    $('.trandy-product-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 4,
-        margin: 30,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 4
-            }
-        }
-    })
-    
-    
-    /* feadback-silder-active active */
-    $('.feadback-silder-active').owlCarousel({
-        loop: true,
-        nav: false,
-        autoplay: false,
-        autoplayTimeout: 5000,
-        item: 3,
-        margin: 50,
-        responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            1000: {
-                items: 3
-            },
-            1200: {
-                items: 3
-            }
-        }
-    })
-    
-    
-    /*category left menu*/
-    $('.category-heading-2').on('click', function() {
-        $('.category-menu-list').slideToggle(300);
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        prevArrow: '<button type="button" class="arrow-prev"><i class="zmdi zmdi-long-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="arrow-next"><i class="zmdi zmdi-long-arrow-right"></i></button>',
+        responsive: [
+            { breakpoint: 991, settings: { slidesToShow: 3 }  },
+            { breakpoint: 767, settings: { slidesToShow: 1 }  },
+            { breakpoint: 479, settings: { slidesToShow: 1 }  }
+        ]
     });
     
-    
-    /*--
-    menu-toggle
-    ------------------------*/
-    $('.menu-toggle').on('click', function() {
-        if ($('.menu-toggle').hasClass('is-active')) {
-            $('.hamburger-menu nav').removeClass('menu-open');
-        } else {
-            $('.hamburger-menu nav').addClass('menu-open');
+	/*------------------------------------
+			4.3 Active Featured Product
+	----------------------------------- */  
+    $('.active-featured-product').slick({
+        speed: 700,
+        arrows: true,
+        dots: false,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        prevArrow: '<button type="button" class="arrow-prev"><i class="zmdi zmdi-long-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="arrow-next"><i class="zmdi zmdi-long-arrow-right"></i></button>',
+        responsive: [
+            {  breakpoint: 992,   settings: { slidesToShow: 3,  }  },
+            {  breakpoint: 768,   settings: { slidesToShow: 1, }   },
+            {  breakpoint: 480,   settings: { slidesToShow: 1, }   },
+        ]
+    });    
+
+	/*----------------------------
+			4.4 Active Blog
+	------------------------------ */  
+    $('.active-blog').slick({
+        speed: 700,
+        arrows: false,
+        dots: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [
+            {  breakpoint: 992,   settings: { slidesToShow: 2,  }  },
+            {  breakpoint: 768,   settings: { slidesToShow: 1, }   },
+        ]
+    });
+
+	/*----------------------------
+			4.5 Active Blog 2
+	------------------------------ */ 
+    $('.active-blog-2').slick({
+        speed: 700,
+        arrows: false,
+        dots: false,
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        responsive: [
+            {  breakpoint: 991,   settings: { slidesToShow: 2,  }  },
+            {  breakpoint: 767,   settings: { slidesToShow: 1, }   },
+            {  breakpoint: 479,   settings: { slidesToShow: 1, }   },
+        ]
+    });
+
+	/*------------------------------------
+			4.6 Active Related Product
+	-------------------------------------- */
+    $('.active-related-product').slick({
+        speed: 700,
+        arrows: false,
+        dots: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [
+            {  breakpoint: 991,   settings: { slidesToShow: 2,  }  },
+            {  breakpoint: 767,   settings: { slidesToShow: 1, }   },
+            {  breakpoint: 479,   settings: { slidesToShow: 1, }   },
+        ]
+    });
+
+	/*----------------------------
+			4.7 Active Team Member
+	------------------------------ */
+    $('.active-team-member').slick({
+        speed: 700,
+        arrows: false,
+        dots: false,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        responsive: [
+            {  breakpoint: 992,   settings: { slidesToShow: 2,  }  },
+            {  breakpoint: 768,   settings: { slidesToShow: 1, }   },
+        ]
+    });
+
+	/* ********************************************
+		5. Countdown
+	******************************************** */
+    $('[data-countdown]').countdown('2022/12/20', function(event) {
+        $(this).html(
+			event.strftime(
+				'<span class="cdown days"><span class="time-count">%-D</span> <p>Days</p></span> <span class="cdown hour"><span class="time-count">%-H</span> <p>Hour</p></span> <span class="cdown minutes"><span class="time-count">%M</span> <p>Mint</p></span> <span class="cdown second"> <span><span class="time-count">%S</span> <p>Sec</p></span>'
+			)
+		);
+    }); 
+
+	/* ********************************************
+		6. ScrollUp
+	******************************************** */
+	$.scrollUp({
+		scrollText: '<i class="zmdi zmdi-chevron-up"></i>',
+		easingType: 'linear',
+		scrollSpeed: 900,
+		animation: 'fade'
+	});
+
+	/* ********************************************
+		7. Treeview active
+	******************************************** */
+    $("#cat-treeview ul").treeview({
+        animated: "normal",
+        persist: "location",
+        collapsed: true,
+        unique: true,
+    });
+
+    $("#cat-treeview-2 ul").treeview({
+        animated: "normal",
+        persist: "location",
+        collapsed: true,
+        unique: true,
+    });
+
+	/* ********************************************
+		8. Price Slider
+	******************************************** */
+    $( "#slider-range" ).slider({
+        range: true,
+        min: 0,
+        max: 1000000,
+        step: 10000,
+        values: [ 0, 1000000 ],
+        slide: function( event, ui ) {
+            $( "#amount" ).val( ui.values[ 0 ] + " VNĐ - " + ui.values[ 1 ] + " VNĐ");
         }
     });
-    
-    
-    /*--
-    	Hamburger js
-    -----------------------------------*/
-    var forEach = function(t, o, r) {
-        if ("[object Object]" === Object.prototype.toString.call(t))
-            for (var c in t) Object.prototype.hasOwnProperty.call(t, c) && o.call(r, t[c], c, t);
-        else
-            for (var e = 0, l = t.length; l > e; e++) o.call(r, t[e], e, t)
-    };
-    
-    var hamburgers = document.querySelectorAll(".hamburger");
-    if (hamburgers.length > 0) {
-        forEach(hamburgers, function(hamburger) {
-            hamburger.addEventListener("click", function() {
-                this.classList.toggle("is-active");
-            }, false);
-        });
-    }
-    
-    
-    /* magnificPopup video popup */
-    $('.video-popup').magnificPopup({
-        type: 'iframe'
+    $( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) + " VNĐ - " + $( "#slider-range" ).slider( "values", 1 ) + "VNĐ" ); 
+
+	/* ********************************************
+		9. Fancybox active
+	******************************************** */
+    $(document).ready(function() {
+        $('.fancybox').fancybox();
     });
-    
-    
-    /*----------------------------
-        text-animation
-    ------------------------------ */
-    $('.tlt1').textillate({
-        loop: true,
-        in: {
-            effect: 'fadeInDown',
-        },
-        out: {
-            effect: 'flip',
-        },
+
+	/* ********************************************
+		10. Elevate Zoom active 
+	******************************************** */    
+    $("#zoom_03").elevateZoom({
+        constrainType: "height",
+        zoomType: "lens",
+        containLensZoom: true,
+        gallery: 'gallery_01',
+        cursor: 'pointer',
+        galleryActiveClass: "active"
     });
-    
-    /*--
-    Menu Stick
-    -----------------------------------*/
-    $(window).on('scroll', function() {
-        var scroll = $(window).scrollTop();
-        if (scroll < 1) {
-            $('.sticker').removeClass('stick');
-        } else {
-            $('.sticker').addClass('stick');
-        }
+	$(window).resize(function(e){
+		$('.zoomContainer').remove();
+		$("#zoom_03").elevateZoom({
+			constrainType: "height",
+			zoomType: "lens",
+			containLensZoom: true,
+			gallery: 'gallery_01',
+			cursor: 'pointer',
+			galleryActiveClass: "active"
+		});
     });
-    
-    /* hover 3d init for tilt */
-    if ($('.tilter').length > 0) {
-        $('.tilter').tilt({
-            maxTilt: 40,
-            perspective: 800,
-            easing: "cubic-bezier(.03,.98,.52,.99)",
-            scale: 1,
-            speed: 800,
-            transition: true,
-        });
-    }
-    
-    /* hover 3d init for tilt */
-    if ($('.tilter-2').length > 0) {
-        $('.tilter-2').tilt({
-            maxTilt: 20,
-            perspective: 700,
-            easing: "cubic-bezier(.03,.98,.52,.99)",
-            scale: 1,
-            speed: 500,
-            transition: true,
-        });
-    }
-    
-    /* hover 3d init for tilt */
-    if ($('.tilter-3').length > 0) {
-        $('.tilter-3').tilt({
-            maxTilt: 20,
-            perspective: 800,
-            easing: "cubic-bezier(.03,.2,.5,.4)",
-            scale: 1,
-            speed: 500,
-            transition: true,
-        });
-    }
-    
-    
-    /*--- showlogin toggle function ----*/
-    $('#showlogin').on('click', function() {
-        $('#checkout-login').slideToggle(900);
+
+    //pass the images to Fancybox
+    $("#zoom_03").on("click", function(e) {
+        var ez = $('#zoom_03').data('elevateZoom');
+        $.fancybox(ez.getGalleryList());
+        return false;
     });
-    
-    /*--- showlogin toggle function ----*/
-    $('#showcoupon').on('click', function() {
-        $('#checkout_coupon').slideToggle(900);
+
+	/* ********************************************
+		11. single-product-zoom-image carousel
+	******************************************** */ 
+    $('.carousel-btn').slick({
+        speed: 700,
+        arrows: true,
+        dots: false,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        prevArrow: '<button type="button" class="arrow-prev"><i class="zmdi zmdi-long-arrow-left"></i></button>',
+        nextArrow: '<button type="button" class="arrow-next"><i class="zmdi zmdi-long-arrow-right"></i></button>',
+        responsive: [
+            { breakpoint: 991, settings: { slidesToShow: 3 }  },
+            { breakpoint: 767, settings: { slidesToShow: 3 }  },
+            { breakpoint: 479, settings: { slidesToShow: 3 }  }
+        ]
     });
-    
-    /*--- showlogin toggle function ----*/
-    $('#ship-box').on('click', function() {
-        $('#ship-box-info').slideToggle(1000);
-    });
-    
-    // Instantiate EasyZoom instances
-    var $easyzoom = $('.easyzoom').easyZoom();
-    
-    
-    /*---------------------
-    sidebar sticky
-    --------------------- */
-    $('.sidebar-active').stickySidebar({
-        topSpacing: 80,
-        bottomSpacing: 30,
-        minWidth: 991,
-    });
-    
-    $('.sidebar-active1').stickySidebar({
-        topSpacing: 80,
-        bottomSpacing: 30,
-        minWidth: 991,
-    });
-    
-    $('.sidebar-active3').stickySidebar({
-        topSpacing: 80,
-        bottomSpacing: 30,
-        minWidth: 991,
-    });
-    
-    /* isotop active */
-    // filter items on button click
-    $('.blog-mesonry').imagesLoaded(function() {
-        // init Isotope
-        var $grid = $('.grid').isotope({
-            itemSelector: '.grid-item',
-            percentPosition: true,
-            masonry: {
-                // use outer width of grid-sizer for columnWidth
-                columnWidth: '.grid-item',
-            }
-        });
-    });
-    
-    $('.notification-close button').on('click', function() {
-        $('.notification-section').slideUp();
-    });
-    
-    
-    /*----------------------------
-    	Cart Plus Minus Button
-    ------------------------------ */
+
+	/* ********************************************
+		12. Cart Plus Minus Button
+	******************************************** */
     $(".cart-plus-minus").prepend('<div class="dec qtybutton">-</div>');
     $(".cart-plus-minus").append('<div class="inc qtybutton">+</div>');
     $(".qtybutton").on("click", function() {
@@ -628,77 +303,82 @@
         var oldValue = $button.parent().find("input").val();
         if ($button.text() == "+") {
             var newVal = parseFloat(oldValue) + 1;
-        } else {
+        } 
+        else {
             // Don't allow decrementing below zero
             if (oldValue > 0) {
                 var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 1;
+            } 
+            else {
+                newVal = 0;
             }
         }
         $button.parent().find("input").val(newVal);
     });
-    
-    /*---------------------
-    price slider
-    --------------------- */
-    var sliderrange = $('#slider-range');
-    var amountprice = $('#amount');
-    $(function() {
-        sliderrange.slider({
-            range: true,
-            min: 20,
-            max: 100,
-            values: [0, 100],
-            slide: function(event, ui) {
-                amountprice.val("$" + ui.values[0] + " - $" + ui.values[1]);
-            }
-        });
-        amountprice.val("$" + sliderrange.slider("values", 0) +
-            " - $" + sliderrange.slider("values", 1));
-    });
-    
-    /*--------------------------
-        09. ScrollUp
-    ---------------------------- */
-    $.scrollUp({
-        scrollText: '<i class="ti-arrow-up"></i>',
-        easingType: 'linear',
-        scrollSpeed: 900,
-        animation: 'fade'
-    });
-    
-    
-    
-    /*---------------------
-    countdown
-  --------------------- */
-    $('[data-countdown]').each(function() {
-		var $this = $(this), finalDate = $(this).data('countdown');
-		$this.countdown(finalDate, function(event) {
-		$this.html(event.strftime('<span class="cdown day">%-D <p>Days</p></span> <span class="cdown hour">%-H <p>Hour</p></span> <span class="cdown minutes">%M <p>Min</p></span class="cdown second"> <span>%S <p>Sec</p></span>'));
-		});
-    });
-    
-    /*------ Wow Active ----*/
-    new WOW().init();
-    
-    /*--
-	Header Search Toggle
-    -----------------------------------*/
-    var searchToggle = $('.search-toggle');
-    searchToggle.on('click', function(){
-        if($(this).hasClass('open')){
-           $(this).removeClass('open');
-           $(this).siblings('.handicraft-content').removeClass('open');
-        }else{
-           $(this).addClass('open');
-           $(this).siblings('.handicraft-content').addClass('open');
+
+	/* ********************************************
+		13. bootstrap accordion one open at a time
+	******************************************** */ 
+    $('.payment-title a').on('click',function(e){
+        if($(this).parents('.panel').children('.panel-collapse').hasClass('in')){
+            e.stopPropagation();
         }
-    })
-    
-    
+        // You can also add preventDefault to remove the anchor behavior that makes
+        // the page jump
+        e.preventDefault();
+    });
+
+	/* ********************************************
+		14. Cart tab menu active
+	******************************************** */  
+    $('.cart-tab li a').on("click", function(){
+        $(this).addClass("active");
+        $(this).parent('li').prevAll('li').find('a').addClass("active");
+        $(this).parent('li').nextAll('li').find('a').removeClass("active");
+    });
+
+	/* ********************************************
+		15. Blog page manu dropdown 
+	******************************************** */
+    $('.dropdown .option-btn').on('click', function(){
+        if($(this).siblings('.dropdown-menu').hasClass('active')){
+            $(this).siblings('.dropdown-menu').removeClass('active').slideUp();
+            $(this).removeClass('active');
+        }
+        else{
+            $('.dropdown .dropdown-menu').removeClass('active').slideUp();
+            $('.dropdown .option-btn').removeClass('active');
+            $(this).addClass('active');
+            $(this).siblings('.dropdown-menu').addClass('active').slideDown();
+        }
+    });
+
+	/* ********************************************
+		16. Background Toutube Video 
+	******************************************** */
+    $(".youtube-bg").YTPlayer({
+		videoURL:"9No-FiEInLA",
+		containment:'.youtube-bg',
+		mute:true,
+		loop:true,
+	});
 
 
 
 })(jQuery);
+
+
+
+
+/* ********************************************
+    17. STICKY sticky-header
+******************************************** */
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 1){  
+            $('#sticky-header').addClass("sticky");
+        }
+        else{
+            $('#sticky-header').removeClass("sticky");
+        }
+    });
+/* ********************************************************* */
