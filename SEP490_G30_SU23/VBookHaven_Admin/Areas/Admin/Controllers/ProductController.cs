@@ -14,6 +14,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 	// Sua, bo sung Layout front end cho product management
 	// Kiem tra xem paging front end hoat dong ko
+	// Front end add product - add anh, author dang loi css
 
 	// Add author, category... la 1 pop up o add product
 	// Cho subcategories vao select list group

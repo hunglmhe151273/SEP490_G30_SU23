@@ -2,7 +2,8 @@
 @using VBookHaven.Areas.Customer.Controllers
 @model ProductBuyingViewModel
 
-<table>
+@* Old code *@
+@*<table>
 	<tr>
 		<th>Thumbnail</th>
 		<th>Name</th>
@@ -37,498 +38,525 @@
 			}
 		</tr>
 	}
-</table>
+</table>*@
 
-@*<div class="shop-page-wrapper ptb-100">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="shop-sidebar">
-                    <div class="sidebar-widget mb-50">
-                        <h3 class="sidebar-title">Search Products</h3>
-                        <div class="sidebar-search">
-                            <form action="#">
-                                <input placeholder="Search Products..." type="text">
-                                <button><i class="ti-search"></i></button>
-                            </form>
-                        </div>
+<!-- BREADCRUMBS SETCTION START -->
+<div class="breadcrumbs-section plr-200 mb-80 section">
+    <div class="breadcrumbs overlay-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumbs-inner">
+                        <h1 class="breadcrumbs-title">product grid view</h1>
+                        <ul class="breadcrumb-list">
+                            <li><a href="/Customer/Home">Trang chủ</a></li>
+                            <li>Sản phẩm</li>
+                        </ul>
                     </div>
-                    <div class="sidebar-widget mb-40">
-                        <h3 class="sidebar-title">Filter by Price</h3>
-                        <div class="price_filter">
-                            <div id="slider-range"></div>
-                            <div class="price_slider_amount">
-                                <div class="label-input">
-                                    <label>price : </label>
-                                    <input type="text" id="amount" name="price" placeholder="Add Your Price" />
-                                </div>
-                                <button type="button">Filter</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mb-45">
-                        <h3 class="sidebar-title">Categories</h3>
-                        <div class="sidebar-categories">
-                            <ul>
-                                <li><a href="#">Accessories <span>4</span></a></li>
-                                <li><a href="#">Book <span>9</span></a></li>
-                                <li><a href="#">Clothing <span>5</span> </a></li>
-                                <li><a href="#">Homelife <span>3</span></a></li>
-                                <li><a href="#">Kids & Baby <span>4</span></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="sidebar-widget mb-50">
-                        <h3 class="sidebar-title">Top rated products</h3>
-                        <div class="sidebar-top-rated-all">
-                            <div class="sidebar-top-rated mb-30">
-                                <div class="single-top-rated">
-                                    <div class="top-rated-img">
-                                        <a href="#"><img src="~/cust-lib/img/product/sidebar-product/1.jpg" alt=""></a>
-                                    </div>
-                                    <div class="top-rated-text">
-                                        <h4><a href="#">Flying Drone</a></h4>
-                                        <div class="top-rated-rating">
-                                            <ul>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <span>$140.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-top-rated mb-30">
-                                <div class="single-top-rated">
-                                    <div class="top-rated-img">
-                                        <a href="#"><img src="~/cust-lib/img/product/sidebar-product/2.jpg" alt=""></a>
-                                    </div>
-                                    <div class="top-rated-text">
-                                        <h4><a href="#">Flying Drone</a></h4>
-                                        <div class="top-rated-rating">
-                                            <ul>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <span>$140.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-top-rated mb-30">
-                                <div class="single-top-rated">
-                                    <div class="top-rated-img">
-                                        <a href="#"><img src="~/cust-lib/img/product/sidebar-product/3.jpg" alt=""></a>
-                                    </div>
-                                    <div class="top-rated-text">
-                                        <h4><a href="#">Flying Drone</a></h4>
-                                        <div class="top-rated-rating">
-                                            <ul>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <span>$140.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-top-rated mb-30">
-                                <div class="single-top-rated">
-                                    <div class="top-rated-img">
-                                        <a href="#"><img src="~/cust-lib/img/product/sidebar-product/4.jpg" alt=""></a>
-                                    </div>
-                                    <div class="top-rated-text">
-                                        <h4><a href="#">Flying Drone</a></h4>
-                                        <div class="top-rated-rating">
-                                            <ul>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                                <li><i class="pe-7s-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <span>$140.00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="shop-product-wrapper">
-                    <div class="shop-bar-area">
-                        <div class="shop-bar pb-60">
-                            <div class="shop-found-selector">
-                                <div class="shop-selector">
-                                    <label>Sort By : </label>
-                                    <select name="select">
-                                        <option value="">Default</option>
-                                        <option value="">A to Z</option>
-                                        <option value="">Z to A</option>
-                                        <option value="">In stock</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="shop-filter-tab">
-                                <div class="shop-tab nav" role=tablist>
-                                    <a class="active" href="#grid-sidebar7" data-toggle="tab" role="tab" aria-selected="false">
-                                        <i class="ti-layout-grid4-alt"></i>
-                                    </a>
-                                    <a href="#grid-sidebar8" data-toggle="tab" role="tab" aria-selected="true">
-                                        <i class="ti-menu"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="shop-product-content tab-content">
-                            <div id="grid-sidebar7" class="tab-pane fade active show">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/1.jpg" alt="">
-                                                </a>
-                                                <span>hot</span>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Homme Tapered Smart </a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/2.jpg" alt="">
-                                                </a>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Denim Stonewash</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/3.jpg" alt="">
-                                                </a>
-                                                <span>new</span>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Mini Waffle 5 Pack</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/4.jpg" alt="">
-                                                </a>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Dagger Smart Trousers</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/5.jpg" alt="">
-                                                </a>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Homme Tapered Smart</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/1.jpg" alt="">
-                                                </a>
-                                                <span>sell</span>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Skinny Jeans Terry</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/2.jpg" alt="">
-                                                </a>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Navy Bird Print</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/3.jpg" alt="">
-                                                </a>
-                                                <span>hot</span>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Leg Smart Trousers </a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-                                        <div class="product-wrapper product-box-style mb-30">
-                                            <div class="product-img">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/4.jpg" alt="">
-                                                </a>
-                                                <span>hot</span>
-                                                <div class="product-action">
-                                                    <a class="animate-left" title="Wishlist" href="#">
-                                                        <i class="pe-7s-like"></i>
-                                                    </a>
-                                                    <a class="animate-top" title="Add To Cart" href="#">
-                                                        <i class="pe-7s-cart"></i>
-                                                    </a>
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content">
-                                                <h4><a href="#">Black Faux Suede</a></h4>
-                                                <span>$115.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="grid-sidebar8" class="tab-pane fade">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="product-wrapper mb-30 single-product-list product-list-right-pr mb-60">
-                                            <div class="product-img list-img-width">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/1.jpg" alt="">
-                                                </a>
-                                                <span>hot</span>
-                                                <div class="product-action-list-style">
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content-list">
-                                                <div class="product-list-info">
-                                                    <h4><a href="#">Homme Tapered Smart </a></h4>
-                                                    <span>$150.00</span>
-                                                    <p>Lorem ipsum dolor sit amet, mana consectetur adipisicing elit, sed do eiusmod tempor labore. </p>
-                                                </div>
-                                                <div class="product-list-cart-wishlist">
-                                                    <div class="product-list-cart">
-                                                        <a class="btn-hover list-btn-style" href="#">add to cart</a>
-                                                    </div>
-                                                    <div class="product-list-wishlist">
-                                                        <a class="btn-hover list-btn-wishlist" href="#">
-                                                            <i class="pe-7s-like"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="product-wrapper mb-30 single-product-list product-list-right-pr mb-60">
-                                            <div class="product-img list-img-width">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/2.jpg" alt="">
-                                                </a>
-                                                <div class="product-action-list-style">
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content-list">
-                                                <div class="product-list-info">
-                                                    <h4><a href="#">Denim Stonewash</a></h4>
-                                                    <span>$180.00</span>
-                                                    <p>Lorem ipsum dolor sit amet, mana consectetur adipisicing elit, sed do eiusmod tempor labore. </p>
-                                                </div>
-                                                <div class="product-list-cart-wishlist">
-                                                    <div class="product-list-cart">
-                                                        <a class="btn-hover list-btn-style" href="#">add to cart</a>
-                                                    </div>
-                                                    <div class="product-list-wishlist">
-                                                        <a class="btn-hover list-btn-wishlist" href="#">
-                                                            <i class="pe-7s-like"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="product-wrapper mb-30 single-product-list product-list-right-pr mb-60">
-                                            <div class="product-img list-img-width">
-                                                <a href="#">
-                                                    <img src="~/cust-lib/img/product/fashion-colorful/3.jpg" alt="">
-                                                </a>
-                                                <div class="product-action-list-style">
-                                                    <a class="animate-right" title="Quick View" data-toggle="modal" data-target="#exampleModal" href="#">
-                                                        <i class="pe-7s-look"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="product-content-list">
-                                                <div class="product-list-info">
-                                                    <h4><a href="#">Mini Waffle 5 Pack</a></h4>
-                                                    <span>$130.00</span>
-                                                    <p>Lorem ipsum dolor sit amet, mana consectetur adipisicing elit, sed do eiusmod tempor labore. </p>
-                                                </div>
-                                                <div class="product-list-cart-wishlist">
-                                                    <div class="product-list-cart">
-                                                        <a class="btn-hover list-btn-style" href="#">add to cart</a>
-                                                    </div>
-                                                    <div class="product-list-wishlist">
-                                                        <a class="btn-hover list-btn-wishlist" href="#">
-                                                            <i class="pe-7s-like"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="pagination-style mt-10 text-center">
-                    <ul>
-                        <li><a href="#"><i class="ti-angle-left"></i></a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">...</a></li>
-                        <li><a href="#">19</a></li>
-                        <li class="active"><a href="#"><i class="ti-angle-right"></i></a></li>
-                    </ul>
                 </div>
             </div>
         </div>
     </div>
-</div>*@
+</div>
+<!-- BREADCRUMBS SETCTION END -->
+
+<!-- Start page content -->
+<div id="page-content" class="page-wrapper section">
+
+    <!-- SHOP SECTION START -->
+    <div class="shop-section mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 order-lg-2 order-1">
+                    <div class="shop-content">
+                        <!-- shop-option start -->
+                        <div class="shop-option box-shadow mb-30 clearfix">
+                            <!-- Nav tabs -->
+                            <ul class="nav shop-tab f-left" role="tablist">
+                                <li>
+                                    <a class="active" href="#grid-view" data-bs-toggle="tab"><i class="zmdi zmdi-view-module"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#list-view" data-bs-toggle="tab"><i class="zmdi zmdi-view-list-alt"></i></a>
+                                </li>
+                            </ul>
+                            <!-- short-by -->
+                            <div class="short-by f-left text-center">
+                                <span>Sắp xếp theo :</span>
+                                <select onchange="ChangeSortingProductCust(this)" asp-items="@Model.SortList">
+                                    @*<option value="newest">Sản phẩm mới nhất</option>
+                                    <option value="oldest">Sản phẩm cũ nhất</option>
+                                    <option value="price-asc">Giá thấp -> cao</option>
+                                    <option value="price-desc">Giá cao -> thấp</option>*@
+                                </select>
+                            </div>
+                            <!-- showing -->
+                            <div class="showing f-right text-end">
+                                <span>Sản phẩm @Model.First-@Model.Last trên tổng cộng @Model.Total.</span>
+                            </div>
+                        </div>
+                        <!-- shop-option end -->
+                        <!-- Tab Content start -->
+                        <div class="tab-content">
+                            <!-- grid-view -->
+                            <div id="grid-view" class="tab-pane active show" role="tabpanel">
+                                <div class="row">
+                                    @foreach (Product p in Model.Products)
+                                    {
+                                        int id = p.ProductId;
+                                        <!-- product-item start -->
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="product-item">
+                                                <div class="product-img">
+                                                    <a href="/customer/product/detail/@id">
+                                                        @if (Model.Thumbnails[id] != null)
+                                                        {
+                                                            <img src="~/images/img/@Model.Thumbnails[id]" alt="" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/cust-lib/subas/img/product/7.jpg" alt="" />
+                                                        }
+                                                    </a>
+                                                </div>
+                                                <div class="product-info">
+                                                    <h6 class="product-title">
+                                                        <a href="/customer/product/detail/@id">@p.Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                    @if (p.RetailDiscount != 0)
+                                                    {
+                                                        <h5 class="pro-price" style="margin-bottom: 10px; color: #bbbbbb"><s>@p.RetailPrice VNĐ</s></h5>
+                                                        <h3 class="pro-price">@(p.RetailPrice * (100 - p.RetailDiscount) / 100) VNĐ</h3>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h5 class="pro-price" style="margin-bottom: 0px;">&nbsp;</h5>
+                                                        <h3 class="pro-price" style="margin-bottom: 30px;">@p.RetailPrice VNĐ</h3>
+                                                    }
+                                                    <ul class="action-button">
+                                                        <li>
+                                                            <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- product-item end -->
+                                    }
+                                </div>
+                            </div>
+                            <!-- list-view -->
+                            <div id="list-view" class="tab-pane" role="tabpanel">
+                                <div class="row">
+                                    <!-- product-item start -->
+                                    <div class="col-lg-12">
+                                        <div class="shop-list product-item">
+                                            <div class="product-img">
+                                                <a href="single-product.html">
+                                                    <img src="~/cust-lib/subas/img/product/7.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="clearfix">
+                                                    <h6 class="product-title f-left">
+                                                        <a href="single-product.html">Dummy Product Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating f-right">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="brand-name mb-30">Brand Name</h6>
+                                                <h3 class="pro-price">$ 869.00</h3>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                                <ul class="action-button">
+                                                    <li>
+                                                        <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-item end -->
+                                    <!-- product-item start -->
+                                    <div class="col-lg-12">
+                                        <div class="shop-list product-item">
+                                            <div class="product-img">
+                                                <a href="single-product.html">
+                                                    <img src="~/cust-lib/subas/img/product/10.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="clearfix">
+                                                    <h6 class="product-title f-left">
+                                                        <a href="single-product.html">Dummy Product Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating f-right">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="brand-name mb-30">Brand Name</h6>
+                                                <h3 class="pro-price">$ 869.00</h3>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                                <ul class="action-button">
+                                                    <li>
+                                                        <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-item end -->
+                                    <!-- product-item start -->
+                                    <div class="col-lg-12">
+                                        <div class="shop-list product-item">
+                                            <div class="product-img">
+                                                <a href="single-product.html">
+                                                    <img src="~/cust-lib/subas/img/product/4.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="clearfix">
+                                                    <h6 class="product-title f-left">
+                                                        <a href="single-product.html">Dummy Product Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating f-right">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="brand-name mb-30">Brand Name</h6>
+                                                <h3 class="pro-price">$ 869.00</h3>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                                <ul class="action-button">
+                                                    <li>
+                                                        <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-item end -->
+                                    <!-- product-item start -->
+                                    <div class="col-lg-12">
+                                        <div class="shop-list product-item">
+                                            <div class="product-img">
+                                                <a href="single-product.html">
+                                                    <img src="~/cust-lib/subas/img/product/8.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="clearfix">
+                                                    <h6 class="product-title f-left">
+                                                        <a href="single-product.html">Dummy Product Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating f-right">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="brand-name mb-30">Brand Name</h6>
+                                                <h3 class="pro-price">$ 869.00</h3>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                                <ul class="action-button">
+                                                    <li>
+                                                        <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-item end -->
+                                    <!-- product-item start -->
+                                    <div class="col-lg-12">
+                                        <div class="shop-list product-item">
+                                            <div class="product-img">
+                                                <a href="single-product.html">
+                                                    <img src="~/cust-lib/subas/img/product/2.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="clearfix">
+                                                    <h6 class="product-title f-left">
+                                                        <a href="single-product.html">Dummy Product Name </a>
+                                                    </h6>
+                                                    <div class="pro-rating f-right">
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-half"></i></a>
+                                                        <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
+                                                    </div>
+                                                </div>
+                                                <h6 class="brand-name mb-30">Brand Name</h6>
+                                                <h3 class="pro-price">$ 869.00</h3>
+                                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
+                                                <ul class="action-button">
+                                                    <li>
+                                                        <a href="#" title="Wishlist"><i class="zmdi zmdi-favorite"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quickview"><i class="zmdi zmdi-zoom-in"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#" title="Add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- product-item end -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tab Content end -->
+                        <!-- shop-pagination start -->
+                        @*<ul class="shop-pagination box-shadow text-center ptblr-10-30">
+                            <li><a href="#"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            <li><a href="#">01</a></li>
+                            <li><a href="#">02</a></li>
+                            <li><a href="#">03</a></li>
+                            <li><a href="#">...</a></li>
+                            <li><a href="#">05</a></li>
+                            <li class="active"><a href="#"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                        </ul>*@
+                        <ul class="dynamic-pagination shop-pagination box-shadow text-center ptblr-10-30"
+                            data-current="@Model.Page"
+                            data-total="@Model.TotalPage"
+                            data-delta="1"
+                            data-form-id="cust-product-search-form">
+                        </ul>
+                        <!-- shop-pagination end -->
+                    </div>
+                </div>
+                <div class="col-lg-3 order-lg-1 order-2">
+                    <form id="cust-product-search-form" method="get">
+                        <!-- widget-search -->
+                        <aside class="widget-search mb-30">
+                            <input type="text" name="search" placeholder="Tìm kiếm..." value="@Model.SearchText">
+                            <button type="submit"><i class="zmdi zmdi-search"></i></button>
+                        </aside>
+                        <!-- widget-categories -->
+                        <aside class="widget widget-categories box-shadow mb-30">
+                            <h6 class="widget-title border-left mb-20">Loại sản phẩm</h6>
+                            <div id="cat-treeview" class="product-cat">
+                                <ul>
+                                    @*<li class="closed">
+                                        <a href="#">Brand One</a>
+                                        <ul>
+                                            <li><a href="#">Mobile</a></li>
+                                            <li><a href="#">Tab</a></li>
+                                            <li><a href="#">Watch</a></li>
+                                            <li><a href="#">Head Phone</a></li>
+                                            <li><a href="#">Memory</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="open">
+                                        <a href="#">Brand Two</a>
+                                        <ul>
+                                            <li><a href="#">Mobile</a></li>
+                                            <li><a href="#">Tab</a></li>
+                                            <li><a href="#">Watch</a></li>
+                                            <li><a href="#">Head Phone</a></li>
+                                            <li><a href="#">Memory</a></li>
+                                        </ul>
+                                    </li>*@
+                                    @foreach (Category c in Model.Categories)
+                                    {
+                                        string isOpen;
+                                        if (Model.SelectedCategories.Contains(c.CategoryId))
+                                        {
+                                            isOpen = "open";
+                                        }
+                                        else
+                                        {
+                                            isOpen = "closed";
+                                        }
+                                        <li class="@isOpen">
+                                            <label>@c.CategoryName</label>
+                                            <ul>
+                                                @foreach (SubCategory s in c.SubCategories)
+                                                {
+                                                    if (Model.SelectedSubCategories.Contains(s.SubCategoryId))
+                                                    {
+                                                        <li><label><input type="checkbox" checked name="subCat" value="@s.SubCategoryId">@s.SubCategoryName</label></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li><label><input type="checkbox" name="subCat" value="@s.SubCategoryId">@s.SubCategoryName</label></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </aside>
+                        <!-- shop-filter -->
+                        <aside class="widget shop-filter box-shadow mb-30">
+                            <h6 class="widget-title border-left mb-20">Giá</h6>
+                            <div class="price_filter">
+                                <div class="price_slider_amount">
+                                    @*<input type="submit" value="You range :" />
+                                    <input type="text" id="amount" name="price" placeholder="Add Your Price" readonly/>*@
+                                    <label for="min-price" style="width: 20%"><b>Từ: </b></label>
+                                    <input type="number" id="min-price" name="minPrice" min="0" 
+                                        value="@Model.MinPrice" style="float: none" /> VNĐ<br />
+                                    <label for="max-price" style="width: 20%"><b>Đến: </b></label>
+                                    <input type="number" id="max-price" name="maxPrice" min="0" 
+                                        value="@Model.MaxPrice" style="float: none; margin-bottom: 20px" /> VNĐ<br />
+                                </div>
+                                <div id="slider-range"></div>
+                            </div>
+                        </aside>
+                        <!-- widget-color -->
+                        @*<aside class="widget widget-color box-shadow mb-30">
+                        <h6 class="widget-title border-left mb-20">color</h6>
+                        <ul>
+                        <li class="color-1"><a href="#">LightSalmon</a></li>
+                        <li class="color-2"><a href="#">Dark Salmon</a></li>
+                        <li class="color-3"><a href="#">Tomato</a></li>
+                        <li class="color-4"><a href="#">Deep Sky Blue</a></li>
+                        <li class="color-5"><a href="#">Electric Purple</a></li>
+                        <li class="color-6"><a href="#">Atlantis</a></li>
+                        </ul>
+                        </aside>*@
+                        <!-- operating-system -->
+                        @*<aside class="widget operating-system box-shadow mb-30">
+                        <h6 class="widget-title border-left mb-20">operating system</h6>
+                        <form action="action_page.php">
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry ios</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Android</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">ios</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Windows Phone</label><br>
+                        <label><input type="checkbox" name="operating-1" value="phone-1">Symban</label><br>
+                        <label class="mb-0"><input type="checkbox" name="operating-1" value="phone-1">Bleckgerry os</label><br>
+                        </form>
+                        </aside>*@
+                        <!-- widget-product -->
+                        <aside class="widget widget-product box-shadow">
+                            <h6 class="widget-title border-left mb-20">recent products</h6>
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/4.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
+                            </div>
+                            <!-- product-item end -->
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/8.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
+                            </div>
+                            <!-- product-item end -->
+                            <!-- product-item start -->
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="single-product.html">
+                                        <img src="~/cust-lib/subas/img/product/12.jpg" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-info">
+                                    <h6 class="product-title">
+                                        <a href="single-product.html">Product Name</a>
+                                    </h6>
+                                    <h3 class="pro-price">$ 869.00</h3>
+                                </div>
+                            </div>
+                            <!-- product-item end -->
+                        </aside>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SHOP SECTION END -->
+
+</div>
+<!-- End page content -->

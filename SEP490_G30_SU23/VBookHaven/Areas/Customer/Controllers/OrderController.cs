@@ -8,11 +8,12 @@ using VBookHaven.DataAccess.Respository;
 namespace VBookHaven.Areas.Customer.Controllers
 {		
 	// Lay default shipping info khi vao trang Purchase lan dau (chua chon dia chi khac)
-	// Chua co man hinh them dia chi
 	
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
+
+	// Chua co thumbnail trong gio hang
 
 	public class OrderPurchaseModel
 	{
@@ -61,7 +62,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddToCart(int number, int id)
 		{
 			bool success = await functions.AddToCartFunctionAsync(number, id);
@@ -73,7 +73,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> BuyNow(int number, int id)
 		{
 			bool success = await functions.AddToCartFunctionAsync(number, id);

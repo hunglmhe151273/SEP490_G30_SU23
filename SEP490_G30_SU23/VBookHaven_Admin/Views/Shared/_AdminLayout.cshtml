@@ -43,6 +43,11 @@
     <link href="~/mgmt-lib/plugins/datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    
+    <!--Quoc add-->
+    <!-- Custom files -->
+	<link rel="stylesheet" href="~/css/custom.css" />
+	<script src="~/js/custom.js"></script>
 </head>
 
 <body>
@@ -85,9 +90,9 @@
                         <div class="menu-title">Nhân viên</div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Danh sách nhân viên</a>
+                        <li> <a href="/admin/user/index"><i class="bx bx-right-arrow-alt"></i>Danh sách nhân viên</a>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Thêm nhân viên</a>
+                        <li> <a href="/admin/user/create"><i class="bx bx-right-arrow-alt"></i>Thêm nhân viên</a>
                         </li>
                     </ul>
                 </li>
@@ -106,19 +111,19 @@
                         <div class="menu-title">Sản phẩm</div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Danh sách sản phẩm</a>
+                        <li> <a href="/admin/product/index"><i class="bx bx-right-arrow-alt"></i>Danh sách sản phẩm</a>
                         </li>
                         <li> <a class="has-arrow" href="#"><i class="bx bx-right-arrow-alt"></i>Tạo sản phẩm mới</a>
                             <ul>
-                                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Sách</a>
+                                <li> <a href="/admin/product/addbook"><i class="bx bx-right-arrow-alt"></i>Sách</a>
                                 </li>
-                                <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Văn phòng phẩm</a>
+                                <li> <a href="/admin/product/addstationery"><i class="bx bx-right-arrow-alt"></i>Văn phòng phẩm</a>
                                 </li>
                             </ul>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Quản lí kho</a>
+                        <li> <a href="/admin/categories/index"><i class="bx bx-right-arrow-alt"></i>Loại sản phẩm</a>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Loại sản phẩm</a>
+                        <li> <a href="/admin/author/index"><i class="bx bx-right-arrow-alt"></i>Tác giả sách</a>
                         </li>
                     </ul>
                 </li>
@@ -142,9 +147,9 @@
                         <div class="menu-title">Đơn hàng</div>
                     </a>
                     <ul>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Danh sách đơn hàng</a>
+                        <li> <a href="/admin/order/index"><i class="bx bx-right-arrow-alt"></i>Danh sách đơn hàng</a>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
+                        <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
                         </li>
                     </ul>
                 </li>
@@ -159,7 +164,7 @@
                         </li>
                         <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Nhà cung cấp</a>
+                        <li> <a href="/admin/suppliers/index"><i class="bx bx-right-arrow-alt"></i>Nhà cung cấp</a>
                         </li>
                     </ul>
                 </li>
@@ -265,9 +270,73 @@
     <script src="~/mgmt-lib/js/jquery.min.js"></script>
     <script src="~/mgmt-lib/plugins/simplebar/js/simplebar.min.js"></script>
     <script src="~/mgmt-lib/plugins/metismenu/js/metisMenu.min.js"></script>
+
+   @* <script src="~/mgmt-lib/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>*@
+
+    <!--Quoc add-->
+    <!--Select2 plugins-->
+    <script src="~/mgmt-lib/plugins/select2/js/select2.min.js"></script>
+    <!--File-Uploader plugins-->
+    <script src="~/mgmt-lib/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+    <script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $('.multiple-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $(document).ready(function () {
+            $('#image-uploadify').imageuploadify();
+        });
+        $(function () {
+            $("input[type = 'submit']").click(function () {
+                var $fileUpload = $("input[type='file']");
+                if (parseInt($fileUpload.get(0).files.length) > 4) {
+                    alert("You are only allowed to upload a maximum of 4 files");
+                }
+            });
+        });
+    </script>
+
+    <!--Data Tables js-->
+    <script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/mgmt-lib/plugins/datatable/js/natural.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#example2').DataTable({
+                //columnDefs: [
+                //    { type: 'natural', targets: [4, 5, 6, 7] }
+                //]
+            });
+            table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+    
+    <!-- Vector map JavaScript -->
+   @* <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-in-mill.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-us-aea-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-uk-mill-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-au-mill.js"></script>
+    <script src="~/mgmt-lib/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+    <script src="~/mgmt-lib/js/index.js"></script>*@
+  @*  <script>
+        new PerfectScrollbar('.dashboard-social-list');
+        new PerfectScrollbar('.dashboard-top-countries');
+    </script>*@
+
     <!-- VietNam Address lib -->
     <script src="~/mgmt-lib/plugins/select2/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/address.js"></script>
     <!-- App JS -->
     <script src="~/mgmt-lib/js/app.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -308,6 +377,43 @@
             });
             $(".upload-button").on('click', function () {
                 $(".file-upload").click();
+            });
+        });
+    </script>
+
+    <!--Quoc add-->
+    <script>
+        $(document).ready(function () {
+            $(".filter").on("input", function () {
+                var search = $("#search").val().toLowerCase();
+                var category = $("#category").val();
+                var status = $("#status").val();
+                //console.log(search, category, status);
+
+                $("#myTable tr").filter(function () {
+                    var catSearch;
+                    if (category == 0) {
+                        catSearch = true;
+                    }
+                    else {
+                        catSearch = $(this).find('td:eq(3)').text() == category;
+                    }
+
+                    var statusSearch
+                    if (status == -1) {
+                        statusSearch = true;
+                    }
+                    else {
+                        statusSearch = $(this).find('td:eq(9) > span:eq(1)').text() == status;
+                    }
+
+                    $(this).toggle(
+                        statusSearch
+                        && catSearch
+                        && ($(this).find('td:eq(1)').text().toLowerCase().indexOf(search) > -1
+                            || $(this).find('td:eq(2)').text().toLowerCase().indexOf(search) > -1)
+                    );
+                })
             });
         });
     </script>
