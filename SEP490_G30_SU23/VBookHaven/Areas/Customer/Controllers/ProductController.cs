@@ -98,7 +98,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			List<int> subCat, string? sort, int? page)
 		{
 			var model = new ProductBuyingViewModel();
-			int productPerPage = 1;
+			int productPerPage = 9;
 
 			var productsTask = productRespository.GetAllProductsAsync();
 			var categoriesTask = categoryRepository.GetAllCategoriesAllInfoAsync();

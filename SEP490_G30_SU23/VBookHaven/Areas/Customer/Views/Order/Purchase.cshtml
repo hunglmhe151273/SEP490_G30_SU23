@@ -4,22 +4,16 @@
 @model OrderPurchaseModel
 
 @{
-	double total = 0;
-	foreach (CartDetail item in Model.Cart)
-	{
-		var p = item.Product;
-		total += (int)p.RetailPrice * (1 - (double)p.RetailDiscount / 100) * (int)item.Quantity;
-	}
-
-	string address = "Chưa có địa chỉ giao hàng";
-	if (Model.Address.ShipInfoId != 0)
-	{
-		var shipInfo = Model.Address;
-		address = shipInfo.CustomerName + ", " + shipInfo.Phone + ", " + shipInfo.ShipAddress;
-	}
+    double total = 0;
+    foreach (CartDetail item in Model.Cart)
+    {
+        var p = item.Product;
+        total += (int)p.RetailPrice * (1 - (double)p.RetailDiscount / 100) * (int)item.Quantity;
+    }
 }
 
-<style>
+<!-- Old code -->
+@*<style>
 	table, th, td {
 		border: 1px solid;
 	}
@@ -77,4 +71,104 @@ else
 {
 	<div class="text-danger">Chưa chọn địa chỉ giao hàng</div>
 	<button class="btn btn-primary" style="font: 20px; font-weight: bold" disabled>Thanh toán</button>
-}
+}*@
+
+<!-- BREADCRUMBS SETCTION START -->
+<div class="breadcrumbs-section plr-200 mb-80 section">
+    <div class="breadcrumbs overlay-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumbs-inner">
+                        <h1 class="breadcrumbs-title">Checkout</h1>
+                        <ul class="breadcrumb-list">
+                            <li><a href="/Customer/Home">Trang chủ</a></li>
+                            <li>Thanh toán</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMBS SETCTION END -->
+
+<!-- Start page content -->
+<section id="page-content" class="page-wrapper section">
+
+    <!-- SHOP SECTION START -->
+    <div class="shop-section mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <!-- billing details -->
+                    <div class="checkout-content box-shadow p-30">
+                        <div class="billing-details pr-10">
+                            <h6 class="widget-title border-left mb-20">Địa chỉ giao hàng</h6>
+                            @if (Model.AddressId == 0)
+                            {
+                                <div class="address-info font-w-7">Chưa chọn địa chỉ giao hàng</div>
+                            }
+                            else
+                            {
+                                var shipInfo = Model.Address;
+                                <div class="address-info">@shipInfo.CustomerName</div>
+                                <div class="address-info">@shipInfo.ShipAddress</div>
+                                <div class="address-info">@shipInfo.Phone</div>
+                            }
+                            <form action="ChangeAddress" method="post">
+                                <input hidden name="shipInfoId" value="@Model.AddressId" />
+                                <button class="submit-btn-1 mt-30 btn-hover-1" type="submit">Thay đổi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <!-- checkout start -->
+                        <div class="tab-pane active" id="checkout">
+                            <div class="checkout-content box-shadow p-30">
+                                <!-- our order -->
+                                <div class="payment-details pl-10 mb-50">
+                                    <h6 class="widget-title border-left mb-20">Đơn hàng</h6>
+                                    <table>
+                                        @foreach (CartDetail o in Model.Cart)
+                                        {
+                                            <tr>
+                                                <td class="td-title-1">@o.Product.Name x @o.Quantity</td>
+                                                <td class="td-title-2">@(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity) VNĐ</td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td class="order-total">Tổng cộng</td>
+                                            <td class="order-total-price">@total VNĐ</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                @if (Model.AddressId != 0)
+                                {
+                                    <form action="PurchaseFinalize" method="post">
+                                        <input hidden name="shipInfoId" value="@Model.AddressId" />
+                                        <button class="submit-btn-1 mt-30 btn-hover-1" type="submit">Thanh toán</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div class="text-danger font-w-7">Chưa chọn địa chỉ giao hàng</div>
+                                    <button class="submit-btn-1 mt-30 gray-bg text-muted" disabled>
+                                        Thanh toán
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <!-- checkout end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- SHOP SECTION END -->
+
+</section>
+<!-- End page content -->

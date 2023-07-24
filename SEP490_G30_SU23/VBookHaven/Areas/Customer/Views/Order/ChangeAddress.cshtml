@@ -5,7 +5,8 @@
 	int selectedId = (int)ViewData["selectedAddress"];
 }
 
-<form action="AddAddress" method="post">
+<!-- Old code -->
+@*<form action="AddAddress" method="post">
 	<input hidden name="model.Method" value="get" />
 	<input hidden name="model.CurrentShipInfoId" value="@selectedId" />
 	<input type="submit" value="Thêm địa chỉ" />
@@ -49,4 +50,120 @@
 	{
 		<input type="submit" value="Chọn" />
 	}
-</form>
+</form>*@
+
+<!-- BREADCRUMBS SETCTION START -->
+<div class="breadcrumbs-section plr-200 mb-80 section">
+    <div class="breadcrumbs overlay-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumbs-inner">
+                        <h1 class="breadcrumbs-title">My Account</h1>
+                        <ul class="breadcrumb-list">
+                            <li><a href="/Customer/Home">Trang chủ</a></li>
+                            <li>
+                                <a href="#" onclick="document.getElementById('back-to-purchase-form').submit(); return false;">
+                                    Thanh toán
+                                </a>
+                            </li>
+                            <form id="back-to-purchase-form" hidden action="Purchase" method="post">
+                                <input name="shipInfoId" value="@selectedId" />
+                            </form>
+                            <li>Chọn thông tin giao hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMBS SETCTION END -->
+<!-- Start page content -->
+<div id="page-content" class="page-wrapper section">
+
+    <!-- LOGIN SECTION START -->
+    <div class="login-section mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content" id="accordion">
+                        <!-- My shipping address -->
+                        <div class="card mb-15">
+                            <div class="card-header" id="headingTwo">
+                                <h4 class="card-title">
+                                    Thông tin giao hàng
+                                </h4>
+                            </div>
+                            <div id="collapseTwo">
+                                <div class="card-body">
+                                    <form action="Purchase" method="post">
+                                        @if (selectedId == 0)
+                                        {
+                                            <input type="radio" hidden name="shipInfoId" value="0" checked />
+                                        }
+                                        else
+                                        {
+                                            <input type="radio" hidden name="shipInfoId" value="0" />
+                                        }
+
+                                        <div class="new-customers p-30">
+                                            <div class="row">
+                                                @foreach (ShippingInfo info in Model)
+                                                {
+                                                    <div class="col-sm-2">
+                                                        @if (selectedId == info.ShipInfoId)
+                                                        {
+                                                            <input type="radio" name="shipInfoId" value="@info.ShipInfoId" checked />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="radio" name="shipInfoId" value="@info.ShipInfoId" />
+                                                        }
+                                                    </div>
+                                                    <div class="col-sm-10">
+                                                        <div class="address-info">@info.CustomerName</div>
+                                                        <div class="address-info">@info.ShipAddress</div>
+                                                        <div class="address-info">@info.Phone</div>
+                                                    </div>
+                                                    <hr />
+                                                }
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button class="submit-btn-1 mt-20 btn-hover-2 black-bg" type="submit"
+                                                            value="register">
+                                                        @if (Model.Count <= 0)
+                                                        {
+                                                            <span>Quay lại</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>Chọn</span>
+                                                        }
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button class="submit-btn-1 mt-20 btn-hover-1 f-right"
+                                                            onclick="document.getElementById('add-address-form').submit(); return false;">
+                                                        Thêm địa chỉ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form id="add-address-form" action="AddAddress" method="post" hidden>
+                                        <input name="model.Method" value="get" />
+                                        <input name="model.CurrentShipInfoId" value="@selectedId" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN SECTION END -->
+</div>
+<!-- End page content -->

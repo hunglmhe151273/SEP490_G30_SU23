@@ -13,6 +13,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
+	// Chua co thumbnail trong gio hang
+
 	public class OrderPurchaseModel
 	{
 		public List<CartDetail> Cart { get; set; }

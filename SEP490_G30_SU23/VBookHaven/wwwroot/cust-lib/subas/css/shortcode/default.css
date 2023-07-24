@@ -612,7 +612,9 @@ a.button.extra-small i { padding: 11px; width: 38px; font-size: 13px; }
   6. Input 
 *************************/
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+/* Custom */
+input[type="tel"] {
   background: #fff none repeat scroll 0 0;
   border: 1px solid transparent;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
@@ -643,7 +645,9 @@ option {
   padding-left: 10px;
 }
 input[type="text"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+/* Custom */
+input[type="tel"]:focus {
     border: 1px solid #FFBF7F;
 }
 textarea {

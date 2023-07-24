@@ -3,7 +3,8 @@
 
 @model AddAddressModel
 
-<form method="post">
+<!-- Old code -->
+@*<form method="post">
 	<input hidden asp-for="Method" value="post" />
 	<input hidden asp-for="CurrentShipInfoId" />
 
@@ -22,4 +23,129 @@
 <form action="ChangeAddress" method="post">
 	<input hidden name="shipInfoId" value="@Model.CurrentShipInfoId" />
 	<input type="submit" value="Quay lại" />
-</form>
+</form>*@
+
+<!-- BREADCRUMBS SETCTION START -->
+<div class="breadcrumbs-section plr-200 mb-80 section">
+    <div class="breadcrumbs overlay-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumbs-inner">
+                        <h1 class="breadcrumbs-title">My Account</h1>
+                        <ul class="breadcrumb-list">
+                            <li><a href="/Customer/Home">Trang chủ</a></li>
+                            <li>
+                                <a href="#" onclick="document.getElementById('back-to-purchase-form').submit(); return false;">
+                                    Thanh toán
+                                </a>
+                            </li>
+                            <form id="back-to-purchase-form" hidden action="Purchase" method="post">
+                                <input name="shipInfoId" value="@Model.CurrentShipInfoId" />
+                            </form>
+                            <li>Thêm thông tin giao hàng</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BREADCRUMBS SETCTION END -->
+<!-- Start page content -->
+<div id="page-content" class="page-wrapper section">
+
+    <!-- LOGIN SECTION START -->
+    <div class="login-section mb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content" id="accordion">
+                        <!-- My shipping address -->
+                        <div class="card mb-15">
+                            <div class="card-header" id="headingTwo">
+                                <h4 class="card-title">
+                                    Thông tin giao hàng
+                                </h4>
+                            </div>
+                            <div id="collapseTwo">
+                                <div class="card-body">
+                                    <form method="post">
+                                        <input hidden asp-for="Method" value="post" />
+                                        <input hidden asp-for="CurrentShipInfoId" />
+
+                                        <div class="new-customers p-30">
+                                            <!-- May need later -->
+                                            @*<div class="row">
+                                                <div class="col-sm-6">
+                                                    <input type="text" placeholder="First Name">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" placeholder="last Name">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <select class="custom-select">
+                                                        <option value="defalt">country</option>
+                                                        <option value="c-1">Australia</option>
+                                                        <option value="c-2">Bangladesh</option>
+                                                        <option value="c-3">Unitd States</option>
+                                                        <option value="c-4">Unitd Kingdom</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <select class="custom-select">
+                                                        <option value="defalt">State</option>
+                                                        <option value="c-1">Melbourne</option>
+                                                        <option value="c-2">Dhaka</option>
+                                                        <option value="c-3">New York</option>
+                                                        <option value="c-4">London</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <select class="custom-select">
+                                                        <option value="defalt">Town/City</option>
+                                                        <option value="c-1">Victoria</option>
+                                                        <option value="c-2">Chittagong</option>
+                                                        <option value="c-3">Boston</option>
+                                                        <option value="c-4">Cambridge</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="text" placeholder="Phone here...">
+                                                </div>
+                                            </div>*@
+                                            <input type="text" asp-for="ShipInfo.CustomerName" required placeholder="Tên khách hàng (*)">
+                                            <input type="text" asp-for="ShipInfo.ShipAddress" required placeholder="Địa chỉ giao hàng (*)">
+                                            <input type="tel" asp-for="ShipInfo.Phone" pattern="[0-9]{10}" placeholder="Số điện thoại (*)">
+                                            @*<textarea class="custom-textarea"
+                                                      placeholder="Additional information..."></textarea>*@
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button class="submit-btn-1 mt-20 btn-hover-1" type="submit"
+                                                            value="register">
+                                                        Thêm địa chỉ
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button class="submit-btn-1 mt-20 btn-hover-2 f-right black-bg"
+                                                            onclick="document.getElementById('return-form').submit(); return false;">
+                                                        Quay lại
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form id="return-form" action="ChangeAddress" method="post" hidden>
+                                        <input name="shipInfoId" value="@Model.CurrentShipInfoId" />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN SECTION END -->
+</div>
+<!-- End page content -->
