@@ -28,6 +28,23 @@ function resetForm(button) {
         $(this).removeClass("is-invalid");
     })
 }
+
+// Submit button enabled when all input valid
+function validateSubmit(form) {
+    var input = 0;
+    var valid = 0;
+    $(form).find('.validate').each(function () {
+        input++;
+    })
+    $(form).find('.is-valid').each(function () {
+        valid++;
+    })
+    if (input == valid) {
+        $(form).find('.submit').removeAttr('disabled');
+    } else {
+        $(form).find('.submit').attr('disabled','disabled');
+    }
+}
 //-----------------------------------------------------------------------------------------------------------------
 
 //Add product
@@ -109,21 +126,9 @@ $(document).on('click', '.reset', function () {
     resetForm(this);
 });
 
-// Submit button enabled when all input valid
-$(document).on('keyup', '.addForm', function () {
-    var input = 0;
-    var valid = 0;
-    $(this).find('.validate').each(function () {
-        input++;
-    })
-    $(this).find('.is-valid').each(function () {
-        valid++;
-    })
-    if (input == valid) {
-        $(this).find('.submit').removeAttr('disabled');
-    } else {
-        $(this).find('.submit').attr('disabled','disabled');
-    }
+// Validate form
+$(document).on('keyup click', '.addForm', function () {
+    validateSubmit(this);
 })
 
 // Set submit button disable
