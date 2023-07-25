@@ -9,6 +9,15 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url: '/admin/user/GetAllStaff' },
         "columns": [
+            {
+                "data": "staff.image",
+                "render": function (data) {
+                    console.log("image: "+ data);
+                    var fixedImageUrl = data.replace(/\\/g, "/");
+                    console.log("fixedImageUrl: "+ fixedImageUrl);
+                    return `<img src="${fixedImageUrl}" alt="" style="max-width: 100px; max-height: 100px;">`;//
+                },
+                "width": "5%" },
             { "data": "staff.fullName", "width": "15%" },
             { "data": "email", "width": "15%" },
             { "data": "staff.phone", "width": "15%" },
@@ -22,23 +31,36 @@ function loadDataTable() {
 
                     if (lockout > today) {
                         return `
-                        <div class="text-center">
-                             <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-lock-fill"></i>  Lock
-                                </a> 
-                        </div>
+                         <td>
+                                        <div class="form-check form-switch">
+                                            <input onclick=LockUnlock('${data.id}') class="form-check-input text-center fs-5 m-0" type="checkbox" >
+                                        </div>
+                                    </td>
                     `
                     }
                     else {
                         return `
-                        <div class="text-center">
-                              <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-unlock-fill"></i>  UnLock
-                                </a>
-                        </div>
+                        <td>
+                                        <div class="form-check form-switch">
+                                            <input onclick=LockUnlock('${data.id}') class="form-check-input text-center fs-5 m-0" type="checkbox" checked>
+                                        </div>
+                                    </td>
                     `
                     }
 
+                },
+                "width": "20%"
+            },
+            // Additional column with the desired content
+            {
+                "render": function () {
+                    return `
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-default">
+                                <i class="lni lni-eye"></i>
+                            </button>
+                        </td>
+                    `;
                 },
                 "width": "20%"
             }
@@ -59,3 +81,20 @@ function LockUnlock(id) {
         }
     });
 }
+
+$(document).ready(function () {
+    $(".filter").on("input", function () {
+        var search = $("#search").val().toLowerCase();
+        var role = $("#role").val().toLowerCase();
+        var status = $("#status").val();
+        $("#myTable tr").filter(function () {
+            $(this).toggle(
+                status == "1" ? $(this).find('td:eq(5)').val().is(":checked") : $(this).find('td:eq(5)').val() &&
+                    $(this).find('td:eq(4)').text().toLowerCase().indexOf(role) > -1 &&
+                    ($(this).find('td:eq(0)').text().toLowerCase().indexOf(search) > -1 ||
+                        $(this).find('td:eq(2)').text().toLowerCase().indexOf(search) > -1 ||
+                        $(this).find('td:eq(3)').text().toLowerCase().indexOf(search) > -1)
+            );
+        })
+    });
+});

@@ -43,16 +43,15 @@ builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IShippingInfoRepository, ShippingInfoRepository>();
-
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
-
+builder.Services.AddAutoMapper(typeof(VBookHaven.Models.DTO.MapperProfile));
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddCors();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,8 +70,13 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Admin}/{controller=Product}/{action=Index}/{id?}");
-
+    pattern: "{area=Admin}/{controller=PurchaseOrder}/{action=Create}/{id?}");
+//add cors
+app.UseCors(builder =>
+builder.AllowAnyOrigin()
+.AllowAnyMethod()
+.AllowAnyHeader()
+);
 app.Run();
 
 void SeedDatabase()

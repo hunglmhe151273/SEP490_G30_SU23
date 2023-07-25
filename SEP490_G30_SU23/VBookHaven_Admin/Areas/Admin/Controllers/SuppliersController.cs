@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VBookHaven.DataAccess.Data;
+using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
+using VBookHaven.Models.DTO;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+	[Area("Admin")]
     public class SuppliersController : Controller
     {
         private readonly VBookHavenDBContext _context;
 
-        public SuppliersController(VBookHavenDBContext context)
+        IMapper _mapper;
+		public SuppliersController(VBookHavenDBContext context, IMapper mapper)
         {
+           
             _context = context;
-        }
+			_mapper = mapper;
+		}
 
         // GET: Admin/Suppliers
         public async Task<IActionResult> Index()
@@ -160,5 +166,32 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
           return (_context.Suppliers?.Any(e => e.SupplierId == id)).GetValueOrDefault();
         }
+		
+		#region CallAPI
+		[HttpPost]
+		public async Task<IActionResult> AddSupplier([FromBody] SupplierDTO suppilerDTO)
+		{
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(404, "Lỗi xảy ra! Vui lòng thử lại sau.");
+            }
+            try
+			{
+                Supplier? supplier = _mapper.Map<SupplierDTO, Supplier>(suppilerDTO);
+                supplier.Status = true;
+				 _context.Suppliers.Add(supplier);
+				await _context.SaveChangesAsync();
+				return Ok(supplier);
+			}
+			catch (Exception ex)
+			{
+                //throw new Exception(ex.Message);
+                return StatusCode(404, "Có lỗi xảy ra...");
+			}
+		}
+
+        #endregion
+
+      
     }
 }

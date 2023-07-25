@@ -1,6 +1,9 @@
 ﻿@model VBookHaven_Admin.Areas.Admin.Controllers.ProductManagementViewModel
 @using VBookHaven.Models
 @{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
 	string authors = "";
 	foreach (Author a in Model.Book.Authors)
 	{

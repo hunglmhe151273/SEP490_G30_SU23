@@ -250,6 +250,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Size).HasMaxLength(50);
             entity.Property(e => e.Unit).HasMaxLength(50);
             entity.Property(e => e.Weight).HasMaxLength(50);
+            entity.Property(e => e.PurchasePrice).HasColumnType("decimal(7, 0)");
 
             entity.HasOne(d => d.SubCategory).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SubCategoryId)
@@ -261,11 +262,11 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.ToTable("PurchaseOrder");
 
             entity.Property(e => e.Date).HasColumnType("datetime");
-
+            entity.Property(e => e.Status).HasMaxLength(30);
             entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("FK_PurchaseOrder_Staff");
-
+            entity.Property(e => e.AmountPaid).HasColumnType("decimal(15, 0)");
             entity.HasOne(d => d.Supplier).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.SupplierId)
                 .HasConstraintName("FK_PurchaseOrder_Supplier");
@@ -277,6 +278,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.ToTable("PurchaseOrderDetail");
 
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(7, 0)");
             entity.HasOne(d => d.Product).WithMany(p => p.PurchaseOrderDetails)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -369,9 +371,11 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.ToTable("Supplier");
 
             entity.Property(e => e.Address)
-                .HasMaxLength(150);
-               
-            entity.Property(e => e.Phone)
+                .HasMaxLength(150).IsRequired(false);
+			entity.Property(e => e.ProvinceCode).IsRequired(false);
+			entity.Property(e => e.DistrictCode).IsRequired(false);
+            entity.Property(e => e.WardCode).IsRequired(false);
+			entity.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
             entity.Property(e => e.Email).HasMaxLength(100);

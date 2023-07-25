@@ -20,29 +20,12 @@
                 @Html.DisplayNameFor(model => model.Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                <a asp-controller="categories" asp-action="index">Go to categorylist</a>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubCategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.SubCategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SubCategoryId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SubCategoryId">Delete</a>
-            </td>
-        </tr>
-}
+
     </tbody>
 </table>

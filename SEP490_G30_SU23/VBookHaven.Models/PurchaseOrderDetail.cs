@@ -11,7 +11,7 @@ public partial class PurchaseOrderDetail
 
     public int? Quantity { get; set; }
 
-    public int? UnitPrice { get; set; }
+    public decimal? UnitPrice { get; set; }
 
     public double? Discount { get; set; }
 

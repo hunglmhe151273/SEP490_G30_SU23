@@ -22,6 +22,7 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
+  
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -134,12 +135,19 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                         protocol: Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
                         $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
-                    return RedirectToAction(nameof(Create));
+                    TempData["success"] = "Thêm nhân viên thành công";
+                    return RedirectToAction("Index","User");
                 }
 
                 //- TO DO: Neu add khong thanh cong xoa anh vua add
                 foreach (var error in result.Errors)
                 {
+                    if (error.Code == "DuplicateUserName")
+                    {
+                        // Customize the error message for duplicate username
+                        error.Description = "Email đã tồn tại. Hãy nhập email khác.";
+                        TempData["error"] = "Thêm nhân viên thất bại";
+                    }
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
@@ -280,7 +288,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
-
         public async Task<IActionResult> Index()
         {
             return View();
@@ -289,7 +296,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 
         #region API CALLS
-
         [HttpGet]
         public async Task<IActionResult> GetAllStaff()
         {
@@ -302,7 +308,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return Json(new { data = objUserList });
         }
 
-
         [HttpPost]
         public async Task<IActionResult> LockUnlock([FromBody] string id)
         {
@@ -310,7 +315,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var objFromDb = await _dbContext.ApplicationUsers.SingleOrDefaultAsync(a => a.Id.Equals(id));
             if (objFromDb == null)
             {
-                return Json(new { success = false, message = "Error while Locking/Unlocking" });
+                return Json(new { success = false, message = "Lỗi cập nhật" });
             }
 
             if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
@@ -323,7 +328,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
             _dbContext.SaveChanges();
-            return Json(new { success = true, message = "Operation Successful" });
+            return Json(new { success = true, message = "Cập nhật thành công" });
         }
 
         #endregion

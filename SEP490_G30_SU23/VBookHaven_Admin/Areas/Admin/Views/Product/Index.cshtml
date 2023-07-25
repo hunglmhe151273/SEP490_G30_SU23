@@ -54,13 +54,13 @@
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Loại sản phẩm</label>
 												<select class="form-select filter" id="category"
-													asp-items="@ViewBag.subCategories">
+														asp-items="@ViewBag.subCategories">
 												</select>
 											</div>
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="status"
-													asp-items="@ViewBag.statusList">
+														asp-items="@ViewBag.statusList">
 												</select>
 											</div>
 											@*<div class="col-md-4"></div>
@@ -109,7 +109,7 @@
 												@if (thumbnails[p.ProductId] != null)
 												{
 													<img src="~/images/img/@thumbnails[p.ProductId]"
-													width="105px" height="70px" alt="">
+					 width="105px" height="70px" alt="">
 												}
 											</td>
 											<td>@p.Barcode</td>
@@ -149,14 +149,14 @@
 												@if (p.IsBook == true)
 												{
 													<button type="button" class="btn btn-sm btn-default"
-														onclick="window.location.href='/admin/product/editbook/@p.ProductId'">
+															onclick="window.location.href='/admin/product/editbook/@p.ProductId'">
 														<i class="lni lni-pencil-alt"></i>
 													</button>
 												}
 												else
 												{
 													<button type="button" class="btn btn-sm btn-default"
-														onclick="window.location.href='/admin/product/editstationery/@p.ProductId'">
+															onclick="window.location.href='/admin/product/editstationery/@p.ProductId'">
 														<i class="lni lni-pencil-alt"></i>
 													</button>
 												}

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.ViewModels;
@@ -123,6 +124,13 @@ namespace VBookHaven.Areas.Customer.Controllers
         {
             if (!ModelState.IsValid)
             {
+                //neu khong có địa chỉ nào. Mặc định là default là true
+                var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByCusIDAsync(shippingInfoVM.CustomerId);
+                if (shippingInfos.Count() == 0)
+                {
+                    shippingInfoVM.IsDefault = true;
+                    shippingInfoVM.shippingInfosIsNull = true;
+                }
                 return View(shippingInfoVM);
             }
            
