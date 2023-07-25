@@ -12,8 +12,8 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230725061841_initDB")]
-    partial class initDB
+    [Migration("20230718090238_editSupplier")]
+    partial class editSupplier
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -362,11 +362,10 @@ namespace VBookHaven.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
@@ -546,8 +545,8 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal?>("PurchasePrice")
-                        .HasColumnType("decimal(7, 0)");
+                    b.Property<int?>("PurchasePrice")
+                        .HasColumnType("int");
 
                     b.Property<double?>("RetailDiscount")
                         .HasColumnType("float");
@@ -601,27 +600,17 @@ namespace VBookHaven.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseOrderId"));
 
-                    b.Property<decimal?>("AmountPaid")
-                        .HasColumnType("decimal(15, 0)");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("StaffId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                    b.Property<bool?>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("SupplierId")
                         .HasColumnType("int");
-
-                    b.Property<double?>("VAT")
-                        .HasColumnType("float");
 
                     b.HasKey("PurchaseOrderId");
 
@@ -646,8 +635,8 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("UnitPrice")
-                        .HasColumnType("decimal(7, 0)");
+                    b.Property<int?>("UnitPrice")
+                        .HasColumnType("int");
 
                     b.HasKey("PurchaseOrderId", "ProductId")
                         .HasName("PK_PurchaseOrderDetail_1");
@@ -819,11 +808,10 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("SubCategoryName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -855,6 +843,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("DistrictCode")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -872,6 +861,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("ProvinceCode")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<bool>("Status")
@@ -887,6 +877,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("WardCode")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("SupplierId");
