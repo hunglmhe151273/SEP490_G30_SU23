@@ -6,14 +6,13 @@ using VBookHaven.Models;
 using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
-{		
-	// Lay default shipping info khi vao trang Purchase lan dau (chua chon dia chi khac)
-	
-	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
+{
+	// Neu ko co default shipping info -> Chon dia chi dau tien?
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
 	// Chua co thumbnail trong gio hang
+	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
 
 	public class OrderPurchaseModel
 	{
@@ -124,8 +123,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public async Task<IActionResult> Purchase()
 		{
-			var customerId = await functions.GetLoginCustomerIdAsync();
-			if (customerId == null)
+			var customer = await functions.GetLoginCustomerAsync();
+			if (customer == null)
 				return Unauthorized();
 
 			var model = new OrderPurchaseModel();
@@ -133,13 +132,11 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (model.Cart.Count <= 0)
 				return BadRequest();
 
-			// TODO: Lay default shipping info tu DB
 			model.AddressId = 0;
-			var shipInfoList = await shippingInfoRepository.GetAllShippingInfosByCustomerIdAsync((int)customerId);
-			if (shipInfoList.Count > 0)
+			if (customer.DefaultShippingInfoId != null)
 			{
-				model.Address = shipInfoList[0];
-				model.AddressId = shipInfoList[0].ShipInfoId;
+				model.AddressId = customer.DefaultShippingInfoId.Value;
+				model.Address = await shippingInfoRepository.GetShippingInfoByIdAsync(model.AddressId);
 			}
 
 			return View(model);
@@ -280,7 +277,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			User = httpContextAccessor.HttpContext.User;
 		}
 
-		public async Task<int?> GetLoginCustomerIdAsync()
+		public async Task<Models.Customer?> GetLoginCustomerAsync()
 		{
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			if (claimsIdentity.FindFirst(ClaimTypes.NameIdentifier) == null)
@@ -292,6 +289,16 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			var customer = user.Customer;
 			if (customer == null) return null;
+
+			return customer;
+		}
+
+		public async Task<int?> GetLoginCustomerIdAsync()
+		{
+			var customer = await GetLoginCustomerAsync();
+			
+			if (customer == null)
+				return null;
 
 			return customer.CustomerId;
 		}
