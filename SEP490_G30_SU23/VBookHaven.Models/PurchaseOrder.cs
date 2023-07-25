@@ -15,7 +15,7 @@ public partial class PurchaseOrder
 
     public String? Status { get; set; }
     public String? Description { get; set; }
-    public Double? AmountPaid { get; set; }
+    public decimal? AmountPaid { get; set; }
     public double ? VAT { get; set; }
 
     public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = new List<PurchaseOrderDetail>();

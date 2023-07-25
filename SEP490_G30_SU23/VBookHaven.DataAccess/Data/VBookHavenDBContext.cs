@@ -250,6 +250,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.Property(e => e.Size).HasMaxLength(50);
             entity.Property(e => e.Unit).HasMaxLength(50);
             entity.Property(e => e.Weight).HasMaxLength(50);
+            entity.Property(e => e.PurchasePrice).HasColumnType("decimal(7, 0)");
 
             entity.HasOne(d => d.SubCategory).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SubCategoryId)
@@ -265,7 +266,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("FK_PurchaseOrder_Staff");
-
+            entity.Property(e => e.AmountPaid).HasColumnType("decimal(15, 0)");
             entity.HasOne(d => d.Supplier).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.SupplierId)
                 .HasConstraintName("FK_PurchaseOrder_Supplier");
@@ -277,6 +278,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.ToTable("PurchaseOrderDetail");
 
+            entity.Property(e => e.UnitPrice).HasColumnType("decimal(7, 0)");
             entity.HasOne(d => d.Product).WithMany(p => p.PurchaseOrderDetails)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)

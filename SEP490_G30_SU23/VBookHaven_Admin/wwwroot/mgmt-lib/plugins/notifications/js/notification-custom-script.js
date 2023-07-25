@@ -86,7 +86,7 @@ function round_warning_noti() {
 	});
 }
 
-function round_error_noti() {
+function round_error_noti(errorMsg) {
 	Lobibox.notify('error', {
 		pauseDelayOnHover: true,
 		size: 'mini',
@@ -95,11 +95,11 @@ function round_error_noti() {
 		icon: 'bx bx-x-circle',
 		continueDelayOnInactiveTab: false,
 		position: 'top right',
-		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+		msg: errorMsg
 	});
 }
 
-function round_success_noti() {
+function round_success_noti(successMsg) {
 	Lobibox.notify('success', {
 		pauseDelayOnHover: true,
 		size: 'mini',
@@ -108,7 +108,7 @@ function round_success_noti() {
 		delayIndicator: false,
 		continueDelayOnInactiveTab: false,
 		position: 'top right',
-		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+		msg: successMsg
 	});
 }
 /* Notifications With Images*/

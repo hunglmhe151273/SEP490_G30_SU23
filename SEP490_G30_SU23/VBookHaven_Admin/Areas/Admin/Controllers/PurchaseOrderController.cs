@@ -50,15 +50,18 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             pO.Status = "Tạo đơn hàng";
             pO.Description = model.Note;
             pO.SupplierId = model.SupplierID;
-            pO.AmountPaid = model.AmountPaid;
-            //pO.Staff = staffCreate;
+            //thêm VAT
+            pO.VAT = model.VAT;
+            pO.Staff = staffCreate;
+            //pO.AmountPaid = model.AmountPaid;
             for (int i = 0; i < model.ProductIdList.Count; ++i)
             {
                 var detail = new PurchaseOrderDetail
                 {
                     ProductId = model.ProductIdList[i],
                     Quantity = model.QuantityList[i],
-                    UnitPrice = model.UnitPriceList[i]
+                    UnitPrice = model.UnitPriceList[i],
+                    Discount = model.DiscountList[i],
                 };
                 pO.PurchaseOrderDetails.Add(detail);
             }
