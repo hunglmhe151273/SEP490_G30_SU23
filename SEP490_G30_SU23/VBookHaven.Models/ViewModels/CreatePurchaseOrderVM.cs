@@ -15,7 +15,7 @@ namespace VBookHaven.Models.ViewModels
             UnitPriceList = new List<int>();
             DiscountList = new List<double>();
         }
-        public int? SupplierID { get; set; }
+        public int SupplierID { get; set; }
         public string? Note { get; set; }
         public List<int> ProductIdList { get; set; }
         public List<int> QuantityList { get; set; }

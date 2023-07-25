@@ -41,9 +41,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         public async Task<IActionResult> Create(CreatePurchaseOrderVM model)
         {
             var staffCreate = await GetStaffByUserID();
-            if (!ModelState.IsValid || staffCreate == null)
+            if (!ModelState.IsValid || staffCreate == null || model.ProductIdList.Count == 0)
             {
-                TempData["error"] = "Thêm thất bại";
+                TempData["error"] = "Thêm đơn nhập thất bại";
                 return View();
             }
             PurchaseOrder pO = new PurchaseOrder();
@@ -67,8 +67,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             await _dbContext.PurchaseOrders.AddAsync(pO);
             _dbContext.SaveChanges();
-            TempData["Sucess"] = "Thêm thành công";
-            return View();
+            TempData["success"] = "Thêm đơn nhập thành công";
+            return RedirectToAction(nameof(Create));
         }
 
         private async Task<Staff> GetStaffByUserID()

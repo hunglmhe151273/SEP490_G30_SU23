@@ -21,7 +21,18 @@
             "hideMethod": "fadeOut"
         }
         toastr.success('@TempData["success"]');
+        //new
+
     </script>
+@*
+    <!--notification js -->
+    <script src="~/mgmt-lib/plugins/notifications/js/lobibox.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
+    <script>
+        round_success_noti('@TempData["success"]');
+    </script>*@
+    
 }
 @if (TempData["error"] != null)
 {
@@ -46,5 +57,12 @@
             "hideMethod": "fadeOut"
         }
         toastr.error('@TempData["error"]');
+    </script>
+    <!--notification js -->
+    <script src="~/mgmt-lib/plugins/notifications/js/lobibox.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
+    <script>
+        //round_error_noti('@TempData["error"]');
     </script>
 }

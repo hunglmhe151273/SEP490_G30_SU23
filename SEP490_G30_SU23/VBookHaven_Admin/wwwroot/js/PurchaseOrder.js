@@ -312,7 +312,7 @@ function populateProductsSelect() {
                                         <div class="col-6 d-flex align-items-center">
                                             <div class="flex-shrink-0 cover">
                                                 <div class="hidden-content">${product.productId}</div>
-                                                <img src="${product.presentImage}" class="productImg">
+                                               <img src="${product.presentImage}" class="productImg" >
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <p class="m-0 search-info fs-6 productName">${product.name}</p>
