@@ -12,10 +12,12 @@ function loadDataTable() {
             {
                 "data": "staff.image",
                 "render": function (data) {
-                    console.log("image: "+ data);
+                    console.log("image: " + data);
+                    if (data !== null){
                     var fixedImageUrl = data.replace(/\\/g, "/");
                     console.log("fixedImageUrl: "+ fixedImageUrl);
-                    return `<img src="${fixedImageUrl}" alt="" style="max-width: 100px; max-height: 100px;">`;//
+                        return `<img src="${fixedImageUrl}" alt="" style="max-width: 100px; max-height: 100px;">`;
+                    }//
                 },
                 "width": "5%" },
             { "data": "staff.fullName", "width": "15%" },
