@@ -5,9 +5,16 @@
     allowClear: Boolean($(this).data('allow-clear')),
 });
 
+// prevent: "e", "=", ",", "-", "." 
+$(document).on('keydown', 'input[type=number]', function (e) {
+    if ([69, 187, 188, 189, 190].includes(e.keyCode)) {
+        e.preventDefault();
+    }
+})
+
 // Update invoice function
 var updateInvoice = function () {
-    var num, discount, price, sum;
+    var num, discount, price, sum, markup;
     let totalPrice = 0,
         totalPay = 0,
         count = 0
@@ -17,9 +24,14 @@ var updateInvoice = function () {
     //default values
     $('#totalPrice').text('0');
     $('#totalPay').text('0');
-    if (isNotNullOrEmpty($('#totalVat').val()))
-        vat = $('#totalVat').val();
 
+    // check valid VAT
+    var vatValue = $('#totalVat').val();
+    if (isNaN(vatValue) || vatValue >= 100 || !isNotNullOrEmpty(vatValue)) {
+        $('#totalVat').val(0);
+        vatValue = 0;
+    }
+    vat = vatValue;
     console.log('vat là: ' + vat);
 
     $('#myTable tr').each(function () {
@@ -27,9 +39,29 @@ var updateInvoice = function () {
     });
     $('#orderContainer tr').each(function () {
         $(this).find($('.sum')).text(0);
-        num = $(this).find($(".num")).val();
-        discount = $(this).find($(".discount")).val();
-        price = $(this).find($(".price")).val();
+
+        // check quantity validation
+        var numValue = $(this).find($(".num")).val();
+        if (isNaN(numValue) || !isNotNullOrEmpty(numValue)) {
+            $(this).find($(".num")).val(1);
+            numValue = 1;
+        }
+        num = numValue;
+
+        // check discount validation
+        var discountValue = $(this).find($(".discount")).val();
+        if (isNaN(discountValue) || discountValue >= 100 || !isNotNullOrEmpty(discountValue)) {
+            $(this).find($(".discount")).val(0);
+            discountValue = 0;
+        }
+        discount = discountValue;
+
+        priceValue = $(this).find($(".price")).val();
+        if (isNaN(priceValue) || !isNotNullOrEmpty(priceValue)) {
+            $(this).find($(".price")).val(0);
+            priceValue = 0;
+        }
+        price = priceValue;
 
         if (isNotNullOrEmpty(num) &&
             isNotNullOrEmpty(discount) &&

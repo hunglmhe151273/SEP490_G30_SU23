@@ -30,7 +30,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View();
+            var vBookHavenDBContext = _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier);
+            return View(await vBookHavenDBContext.ToListAsync());
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -50,6 +51,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             pO.Status = "Tạo đơn hàng";
             pO.Description = model.Note;
             pO.SupplierId = model.SupplierID;
+            pO.Date = DateTime.Now;
             //thêm VAT
             pO.VAT = model.VAT;
             pO.Staff = staffCreate;
@@ -129,6 +131,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 var product = _mapper.Map<ProductDTO, Product>(productDTO);
                 product.Status = true;
+                product.RetailPrice = 0;
+                product.WholesalePrice = 0;
+                product.WholesaleDiscount = 0;
+                product.RetailDiscount = 0;
                 _dbContext.Products.Add(product);
                 
                 await _dbContext.SaveChangesAsync();

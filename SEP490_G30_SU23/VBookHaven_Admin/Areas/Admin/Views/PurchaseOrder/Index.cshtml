@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<VBookHaven.Models.PurchaseOrder>
+@{
     ViewData["Title"] = "Danh sách đơn nhập hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -65,7 +66,67 @@
                         <h6 class="mb-0">Danh sách các loại</h6>
                     </div>
                     <hr />
-                    <h1>Danh sách đơn nhập hàng</h1>
+                    <h3>Danh sách đơn nhập hàng</h3>
+                    <p>
+                        <a asp-action="Create">Thêm đơn nhập hàng</a>
+                    </p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.VAT)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Staff)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Supplier)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AmountPaid)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.VAT)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Staff.FullName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AmountPaid)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>
