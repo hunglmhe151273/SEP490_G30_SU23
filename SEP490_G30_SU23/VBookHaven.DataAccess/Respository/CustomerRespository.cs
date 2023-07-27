@@ -61,7 +61,7 @@ namespace VBookHaven.DataAccess.Respository
                     }
                     catch (Exception ex)
                     {
-                        // Không cần gọi transaction.Rollback() ở đây, vì transaction sẽ được rollback tự động khi thoát khỏi using scope
+                    
                     }
                 }
         }

@@ -28,6 +28,8 @@ public partial class Supplier
     [EmailAddress(ErrorMessage = "Không đúng định dạng email")]
     [StringLength(100, ErrorMessage = "Email không được vượt quá 100 kí tự")]
     public string? Email { get; set; }
+
+    //Address ----------------------------------------------------------------------
     [Required(ErrorMessage = "Tỉnh/thành là bắt buộc")]
     public int? ProvinceCode { get; set; }
     public string? Province { get; set; }
@@ -37,6 +39,7 @@ public partial class Supplier
     [Required(ErrorMessage = "Phường xã là bắt buộc")]
     public int? WardCode { get; set; }
     public string? Ward { get; set; }
+    //Address -----------------------------------------------------------------------
 
     public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
 }

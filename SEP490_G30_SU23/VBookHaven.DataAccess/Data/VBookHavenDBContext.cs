@@ -308,13 +308,18 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.ToTable("ShippingInfo");
             entity.HasIndex(e => e.CustomerId, "IX_ShippingInfo_CustomerId");
-
+            entity.Property(e => e.CustomerName).IsRequired(false);
             entity.Property(e => e.CustomerName).HasMaxLength(50);
             entity.Property(e => e.Phone)
                 .HasMaxLength(10)
                 .IsFixedLength();
             entity.Property(e => e.ShipAddress).HasMaxLength(200);
-
+            entity.Property(e => e.ProvinceCode).IsRequired(false);
+            entity.Property(e => e.DistrictCode).IsRequired(false);
+            entity.Property(e => e.WardCode).IsRequired(false);
+            entity.Property(e => e.Province).HasMaxLength(50);
+            entity.Property(e => e.District).HasMaxLength(50);
+            entity.Property(e => e.Ward).HasMaxLength(50);
             entity.HasOne(d => d.Customer).WithMany(p => p.ShippingInfos)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_ShippingInfo_Customer");

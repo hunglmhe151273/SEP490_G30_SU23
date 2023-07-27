@@ -14,7 +14,7 @@ public partial class ShippingInfo
     [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
     [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
     public string? Phone { get; set; }
-    [Display(Name = "Địa chỉ nhận hàng")]
+    [Display(Name = "Địa chỉ nhận hàng  *")]
     [Required(ErrorMessage = "Địa chỉ nhận hàng là bắt buộc")]
     [StringLength(100, ErrorMessage = "Địa chỉ nhận hàng không được vượt quá 100 kí tự.")]
     public string? ShipAddress { get; set; }
@@ -26,6 +26,17 @@ public partial class ShippingInfo
     public string? CustomerName { get; set; }
     public virtual Customer? Customer { get; set; }
 
-    //new
     public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+    //Address ----------------------------------------------------------------------
+    [Required(ErrorMessage = "Tỉnh/thành là bắt buộc")]
+    public int? ProvinceCode { get; set; }
+    public string? Province { get; set; }
+    [Required(ErrorMessage = "Quận/Huyện là bắt buộc")]
+    public int? DistrictCode { get; set; }
+    public string? District { get; set; }
+    [Required(ErrorMessage = "Phường xã là bắt buộc")]
+    public int? WardCode { get; set; }
+    public string? Ward { get; set; }
+    //Address -----------------------------------------------------------------------
+
 }
