@@ -106,7 +106,8 @@
                                     <li class="breadcrumb-item"><a href="javascript:;"><i
                                                 class="bx bx-home-alt"></i></a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn nhập hàng</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Nhập hàng</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Tạo đơn đơn nhập hàng</li>
                                 </ol>
                             </nav>
                         </div>
@@ -119,11 +120,11 @@
                                     <div class="card-body d-flex justify-content-center">
                                         <!-- Status progress bar -->
                                         <div class="wizard-progress">
-                                            <div class="step complete">
+                                            <div class="step in-progress">
                                                 <span class="title">Tạo Đơn</span>
                                                 <div class="node"></div>
                                             </div>
-                                            <div class="step in-progress">
+                                            <div class="step">
                                                 <span class="title">Nhập hàng</span>
                                                 <div class="node"></div>
                                             </div>
@@ -296,9 +297,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div class="col-7 d-flex justify-content-start align-items-end">
-                                                <input type="submit" class="btn btn-success px-4" value="Lưu">
-                                            </div>
+                                            <div class="col-7"></div>
                                             <div class="col-5">
                                                 <table class="table fs-6" id="countTable">
                                                     <tr>
@@ -323,7 +322,7 @@
 
                                                     <!-- NEW CODE HERE -->
                                                     <tr>
-                                                        <td>Số tiền khách đã trả</td>
+                                                        <td>Số tiền đã trả</td>
                                                         <td class="w-50">
                                                             <div class="input-group">
                                                                 <input id="paid" type="number" value="0" min="0"
@@ -341,6 +340,14 @@
                                                 </table>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 pe-0 mx-auto" style="position: sticky; bottom: 0;">
+                                <div class="card border-top border-0 border-4 border-primary py-2">
+                                    <div class="card-body text-end">
+                                        <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
+                                        <input type="submit" class="btn btn-success px-5 mx-3" value="Tạo đơn">
                                     </div>
                                 </div>
                             </div>
