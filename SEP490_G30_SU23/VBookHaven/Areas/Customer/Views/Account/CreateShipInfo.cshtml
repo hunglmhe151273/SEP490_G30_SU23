@@ -24,12 +24,44 @@
             </div>
         </div>
         <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Tỉnh/Thành phố</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.ProvinceCode" class="single-select" id="province">
+                <option value="" selected>Chọn Tỉnh/Thành Phố</option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.ProvinceCode" class="text-danger"></span>
+                <input id="provinceString" asp-for="@Model.ShippingInfo.Province" hidden class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Quận huyện</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.DistrictCode" class="single-select" id="district">
+                    <option selected value="">Chọn Quận/Huyện</option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.DistrictCode" class="text-danger"></span>
+                <input hidden id="districtString" asp-for="@Model.ShippingInfo.District" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Phường xã</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.WardCode" class="single-select" id="ward">
+                    <option selected value="">Chọn Phường/Xã</option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.WardCode" class="text-danger"></span>
+
+                <input hidden id="wardString" asp-for="@Model.ShippingInfo.Ward" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
             <label asp-for="@Model.ShippingInfo.ShipAddress" class="col-sm-2 col-form-label ">Địa chỉ</label>
             <div class="col-sm-10 ">
                 <textarea asp-for="@Model.ShippingInfo.ShipAddress" class="form-control " rows="10 "></textarea>
                 <span asp-validation-for="@Model.ShippingInfo.ShipAddress" class="text-danger"></span>
             </div>
         </div>
+
         @if (@Model.shippingInfosIsNull)
         {
             <div class="mb-5 row ">
@@ -99,3 +131,11 @@
                 </select>
             </div>
         </div>*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/address.js"></script>
+}
+
+

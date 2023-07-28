@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
+    <Folder Include="wwwroot\images\img\" />
     <Folder Include="wwwroot\images\Staff\" />
     <Compile Remove="wwwroot\template\**" />
     <Content Remove="wwwroot\template\**" />

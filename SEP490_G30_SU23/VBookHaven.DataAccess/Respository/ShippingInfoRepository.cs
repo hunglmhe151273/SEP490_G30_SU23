@@ -73,6 +73,12 @@ namespace VBookHaven.DataAccess.Respository
                 objFromDb.CustomerName = obj.CustomerName;
 				objFromDb.Phone = obj.Phone;
                 objFromDb.ShipAddress = obj.ShipAddress;
+                objFromDb.ProvinceCode = obj.ProvinceCode;
+                objFromDb.DistrictCode = obj.DistrictCode;
+                objFromDb.WardCode = obj.WardCode;
+                objFromDb.Province = obj.Province;
+                objFromDb.District = obj.District;
+                objFromDb.Ward = obj.Ward;
             }
             await _dbContext.SaveChangesAsync();
         }

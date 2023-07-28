@@ -25,6 +25,39 @@
             </div>
         </div>
         <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Tỉnh/Thành phố</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.ProvinceCode" class="single-select " id="province">
+                    <option hidden selected value="@Model.ShippingInfo.ProvinceCode"></option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.ProvinceCode" class="text-danger"></span>
+                <input hidden id="provinceString" asp-for="@Model.ShippingInfo.Province" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Quận/Huyện</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.DistrictCode" class="single-select" id="district">
+                    <option value="">Chọn Quận/Huyện</option>
+                    <option hidden selected value="@Model.ShippingInfo.DistrictCode"></option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.DistrictCode" class="text-danger"></span>
+                <input hidden id="districtString" asp-for="@Model.ShippingInfo.District" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
+            <label class="col-sm-2 col-form-label ">Phường/Xã</label>
+            <div class="col-sm-10 ">
+                <select asp-for="@Model.ShippingInfo.WardCode" class="single-select" id="ward">
+                    <option value="">Chọn Phường/Xã</option>
+                    <option hidden selected value="@Model.ShippingInfo.WardCode"></option>
+                </select>
+                <span asp-validation-for="@Model.ShippingInfo.WardCode" class="text-danger"></span>
+
+                <input hidden id="wardString" asp-for="@Model.ShippingInfo.Ward" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-5 row ">
             <label asp-for="@Model.ShippingInfo.ShipAddress" class="col-sm-2 col-form-label ">Địa chỉ</label>
             <div class="col-sm-10 ">
                 <textarea asp-for="@Model.ShippingInfo.ShipAddress" class="form-control " rows="10 "></textarea>
@@ -48,8 +81,8 @@
                 <label class="col-sm-2 col-form-label "></label>
                 <div class="col-sm-10 ">
                     <div class="form-check form-check-inline ms-4 ">
-                        <input class="form-check-input " asp-for="@Model.IsDefault">
-                        <label class="form-check-label ">Đặt làm địa chỉ mặc định</label>
+                        <input class="form-check-input" asp-for="@Model.IsDefault">
+                        <label class="form-check-label">Đặt làm địa chỉ mặc định</label>
                     </div>
                 </div>
             </div>
@@ -97,3 +130,11 @@
         </select>
     </div>
 </div>*@
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/address.js"></script>
+}
+
+
