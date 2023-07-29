@@ -12,6 +12,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
 	// Chua co thumbnail trong gio hang
+	// Chua co thumbnail tren cart o header
+
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
 
 	public class OrderPurchaseModel

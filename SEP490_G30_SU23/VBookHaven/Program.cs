@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using VBookHaven.Areas.Customer.Controllers;
 using VBookHaven.DataAccess.Data;
 using VBookHaven.DataAccess.DbInitializer;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,7 +62,9 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
+
 app.UseSession();
 SeedDatabase();
 app.UseRouting();
