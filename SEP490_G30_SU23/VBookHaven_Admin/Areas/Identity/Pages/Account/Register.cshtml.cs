@@ -145,7 +145,7 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                 if (Input.Role == null || Input.Role.Equals("Customer")) {
                     //add customer info
                     VBookHaven.Models.Customer c = new VBookHaven.Models.Customer();
-                    c.UserName = Input.Email;
+                    //c.UserName = Input.Email;
                     user.Customer = c;
                 }
                 

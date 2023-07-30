@@ -1,0 +1,77 @@
+﻿@model CustomerProfileVM
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerManageLayout.cshtml";
+}
+
+<h2>Thông tin tài khoản</h2>
+<div class="bg-light p-5 mt-2">
+    <form asp-action="Edit" asp-route-returnUrl="~/Customer/Account/Edit" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Customer.CustomerId" />
+        <div class="mb-3 row ">
+            <label asp-for="Email" class="col-sm-2 col-form-label ">Email</label>
+            <div class="col-sm-10 ">
+                <input asp-for="Email" class="form-control ">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class=" mb-3 row ">
+            <label asp-for="Customer.FullName" class="col-sm-2 col-form-label ">Họ và tên: </label>
+            <div class="col-sm-10 ">
+                <input type="text " class="form-control " asp-for="Customer.FullName">
+                <span asp-validation-for="Customer.FullName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row ">
+            <label asp-for="Customer.Phone" class="col-sm-2 col-form-label ">Số điện thoại</label>
+            <div class="col-sm-10 ">
+                <input asp-for="Customer.Phone" class="form-control ">
+                <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="mb-3 row ">
+            <label for="inputCity" class="form-label">Giới tính</label>
+            <div class="input-group mt-1">
+                <div class="form-check-inline">
+                    <input class="form-check-input" asp-for="Customer.IsMale" type="radio" value="true">
+                    <label class="form-check-label" for="flexRadioDefault2">Nam</label>
+                </div>
+                <div class="form-check-inline">
+                    <input class="form-check-input" asp-for="Customer.IsMale" type="radio" value="false">
+                    <label class="form-check-label" for="flexRadioDefault2">Nữ</label>
+                </div>
+            </div>
+            <span asp-validation-for="Customer.IsMale" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row ">
+            <label asp-for="Customer.DOB" class="col-sm-2 col-form-label ">Số điện thoại</label>
+            <div class="col-sm-10 ">
+                <input asp-for="Customer.DOB" type="date" class="form-control ">
+                <span asp-validation-for="Customer.DOB" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4 text-center mt-0">
+            <label asp-for="Customer_ImageFile"></label>
+            <input asp-for="Customer_ImageFile"/>
+        </div>
+        <div class="mb-5 row ">
+            <div class="col-4 "></div>
+            <div class="col-2 text-center "><button class="submit-btn-1 ">Lưu</button></div>
+            <div class="col-4 "></div>
+        </div>
+    </form>
+    <div>
+        <a asp-action="ShipInfo">Quay lại danh sách</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+

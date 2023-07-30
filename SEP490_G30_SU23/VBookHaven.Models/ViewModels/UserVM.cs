@@ -28,7 +28,7 @@ namespace VBookHaven.ViewModels
 
         [Display(Name = "Họ và Tên")]
         [Required(ErrorMessage = "Họ và tên là bắt buộc.")]
-        [StringLength(20, ErrorMessage = "Họ và Tên không được vượt quá 20 kí tự.")]
+        [StringLength(50, ErrorMessage = "Họ và Tên không được vượt quá 50 kí tự.")]
         public string? Staff_FullName { get; set; }
         [Display(Name = "Ngày sinh")]
         [Required(ErrorMessage = "Ngày sinh là bắt buộc.")]

@@ -43,14 +43,14 @@ builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IShippingInfoRepository, ShippingInfoRepository>();
 builder.Services.AddScoped<ICustomerRespository, CustomerRespository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
+builder.Services.AddScoped<ICustomerRespository, CustomerRespository>();
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     options.JsonSerializerOptions.WriteIndented = true;
 });
-
+builder.Services.AddAutoMapper(typeof(VBookHaven.Models.DTO.MapperProfile));
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();

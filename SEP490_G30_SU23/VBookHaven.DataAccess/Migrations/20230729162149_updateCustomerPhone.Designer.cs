@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230729162149_updateCustomerPhone")]
+    partial class updateCustomerPhone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,10 +396,6 @@ namespace VBookHaven.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Image")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
 
                     b.Property<bool?>("IsMale")
                         .HasColumnType("bit");

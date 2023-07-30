@@ -83,7 +83,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
+            [EmailAddress(ErrorMessage = "Chưa đúng định dạng Email")]
             public string Email { get; set; }
 
             /// <summary>
@@ -92,6 +92,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Mật khẩu")]
             public string Password { get; set; }
 
             /// <summary>

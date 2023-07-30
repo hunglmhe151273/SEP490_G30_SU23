@@ -84,20 +84,20 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
-            [Display(Name = "Email")]
+            [EmailAddress(ErrorMessage = "Chưa đúng định dạng Email")]
+            [Display(Name = "Email *")]
+            [Required(ErrorMessage = "Email là bắt buộc.")]
             public string Email { get; set; }
 
 			/// <summary>
 			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
 			///     directly from your code. This API may change or be removed in future releases.
 			/// </summary>
-			[Required(ErrorMessage = "Password là bắt buộc.")]
+			[Required(ErrorMessage = "Mật khẩu là bắt buộc.")]
 			[StringLength(20, ErrorMessage = "{0} phải ít nhất {2} kí tự và nhiều nhất {1} kí tự.", MinimumLength = 6)]
 			[DataType(DataType.Password)]
 			[RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*$", ErrorMessage = "Mật khẩu phải có ít nhất một ký tự đặc biệt, một chữ số và một chữ cái in hoa.")]
-			[Display(Name = "Password")]
+			[Display(Name = "Password *")]
 			public string Password { get; set; }
 
             /// <summary>
@@ -108,7 +108,14 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             [Display(Name = "Xác nhận mật khẩu")]
             [Compare("Password", ErrorMessage = "Nhập khẩu và xác nhận mật khẩu không khớp")]
             public string ConfirmPassword { get; set; }
-
+            [Display(Name = "Ngày sinh")]
+            public DateTime? DOB {  get; set; }
+            [Display(Name = "Giới tính")]
+            public bool? IsMale { get; set; }
+            [Display(Name = "Họ và Tên *")]
+            [Required(ErrorMessage = "Họ và tên là bắt buộc.")]
+            [StringLength(100, ErrorMessage = "Họ và Tên không được vượt quá 100 kí tự.")]
+            public string? FullName { get; set; }
             public string? Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
@@ -145,7 +152,9 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                 if (Input.Role == null || Input.Role.Equals("Customer")) {
                     //add customer info
                     VBookHaven.Models.Customer c = new VBookHaven.Models.Customer();
-                    c.UserName = Input.Email;
+                    c.FullName = Input.FullName;
+                    c.DOB = Input.DOB;
+                    c.IsMale = Input.IsMale;
                     user.Customer = c;
                 }
                 

@@ -164,12 +164,14 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Customer>(entity =>
         {
             entity.ToTable("Customer");
-
+            entity.Property(e => e.Image).HasMaxLength(150);
             entity.HasIndex(e => e.AccountId, "IX_Customer").IsUnique();
-
-            entity.Property(e => e.UserName).HasMaxLength(50);
+            entity.Property(e => e.DOB)
+               .HasColumnType("date")
+               .HasColumnName("DOB");
+            entity.Property(e => e.FullName).HasMaxLength(100);
             entity.Property(e => e.Phone)
-                .HasMaxLength(15)
+                .HasMaxLength(10)
                 .IsFixedLength();
             entity.HasOne(d => d.DefaultShippingInfo).WithMany(p => p.Customers)
                .HasForeignKey(d => d.DefaultShippingInfoId)

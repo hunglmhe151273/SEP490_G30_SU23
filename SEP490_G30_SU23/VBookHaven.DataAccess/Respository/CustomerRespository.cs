@@ -13,6 +13,7 @@ namespace VBookHaven.DataAccess.Respository
         Task<Customer?> GetCustomerByIdAsync(int customerId);
         Task UpdateCustomerDefaultShipInfoAsync(int customerId, int defaultShippingInfoId);
         Task UpdateCustomerDefaultShipInfoOnCreateAsync(ShippingInfoVM model);
+        Task UpdateCustomerProfile(Customer c);
     }
 
     public class CustomerRespository : ICustomerRespository
@@ -64,6 +65,20 @@ namespace VBookHaven.DataAccess.Respository
                     
                     }
                 }
+        }
+
+        public async Task UpdateCustomerProfile(Customer obj)
+        {
+            var objFromDb = await _dbContext.Customers.FirstOrDefaultAsync(u => u.CustomerId == obj.CustomerId);
+            if (objFromDb != null)
+            {
+                objFromDb.Phone = obj.Phone;
+                objFromDb.DOB = obj.DOB;
+                objFromDb.IsMale = obj.IsMale;
+                objFromDb.FullName = obj.FullName;
+                objFromDb.Image = obj.Image;
+            }
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
