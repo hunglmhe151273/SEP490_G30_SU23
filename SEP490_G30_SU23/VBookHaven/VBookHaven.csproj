@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
     <Folder Include="wwwroot\images\img\" />
     <Folder Include="wwwroot\images\Staff\" />
@@ -26,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Entities\" />
     <Folder Include="wwwroot\cust-lib\template\" />
   </ItemGroup>

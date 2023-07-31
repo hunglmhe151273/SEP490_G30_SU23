@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using VBookHaven.Areas.Customer.Controllers;
 using VBookHaven.DataAccess.Data;
 using VBookHaven.DataAccess.DbInitializer;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,8 @@ builder.Services.AddScoped<IShippingInfoRepository, ShippingInfoRepository>();
 builder.Services.AddScoped<ICustomerRespository, CustomerRespository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICustomerRespository, CustomerRespository>();
+builder.Services.AddScoped<OrderFunctions>();
+
 //ignore circle
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
@@ -60,7 +63,9 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
+
 app.UseSession();
 SeedDatabase();
 app.UseRouting();

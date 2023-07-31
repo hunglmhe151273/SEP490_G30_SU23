@@ -328,6 +328,12 @@ NOTE: This is Header style file. All Header related style included in this file.
   transition: all 0.3s ease 0s;
   visibility: hidden;
   width: 0;
+
+  /* Custom */
+  /*opacity: 1;
+  right: 20px;
+  visibility: visible;
+  width: 500px;*/
 }
 .sticky .top-search-box {
   height: 40px;

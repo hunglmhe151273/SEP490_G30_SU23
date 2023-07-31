@@ -16,9 +16,10 @@
 	opacity: 1;
 	display: block;
 	width: 100%;
-	height: auto;
+	aspect-ratio: 3/4;
 	transition: .5s ease;
 	backface-visibility: hidden;
+	object-fit: contain;
 }
 
 .middle {
@@ -46,7 +47,7 @@
 }
 
 .view-detail-table img {
-	width: 177px;
+	width: auto;
 	height: 100px;
 }
 

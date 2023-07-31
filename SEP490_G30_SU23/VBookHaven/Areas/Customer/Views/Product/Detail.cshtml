@@ -10,9 +10,9 @@
 	}
 	if (authors.EndsWith(", "))
 		authors = authors.Substring(0, authors.Length - 2);
+
+    string imageRoot = VBookHaven.Config.ImageRoot;
 }
-
-
 
 <!-- Old code -->
 @*<div class="row">
@@ -152,7 +152,7 @@
                                 <div class="imgs-zoom-area">
                                     @if (Model.Images.Count > 0)
 		                            {
-                                        <img id="zoom_03" src="~/images/img/@Model.Images[0].ImageName" data-zoom-image="/images/img/@Model.Images[0].ImageName"
+                                        <img id="zoom_03" src="@imageRoot/images/img/@Model.Images[0].ImageName" data-zoom-image="@imageRoot/images/img/@Model.Images[0].ImageName"
                                          alt="">
 		                            }
                                     else
@@ -172,9 +172,9 @@
                                                 @foreach (Image i in Model.Images)
                                                 {
                                                     <div class="p-c">
-                                                        <a href="#" data-image="/images/img/@i.ImageName"
-                                                       data-zoom-image="/images/img/@i.ImageName">
-                                                            <img class="zoom_03" src="~/images/img/@i.ImageName" alt="">
+                                                        <a href="#" data-image="@imageRoot/images/img/@i.ImageName"
+                                                       data-zoom-image="@imageRoot/images/img/@i.ImageName">
+                                                            <img class="zoom_03" src="@imageRoot/images/img/@i.ImageName" alt="">
                                                         </a>
                                                     </div>
                                                 }
