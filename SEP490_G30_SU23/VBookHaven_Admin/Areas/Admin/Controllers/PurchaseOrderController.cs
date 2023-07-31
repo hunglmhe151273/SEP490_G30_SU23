@@ -52,7 +52,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             pO.Description = model.Note;
             pO.SupplierId = model.SupplierID;
             pO.Date = DateTime.Now;
-            //thêm VAT
             pO.VAT = model.VAT;
             pO.Staff = staffCreate;
             //pO.AmountPaid = model.AmountPaid;
@@ -89,6 +88,27 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 return null;
             }
         }
+        // GET: Admin/TestPO/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _dbContext.PurchaseOrders == null)
+            {
+                return NotFound();
+            }
+
+            var purchaseOrder = await _dbContext.PurchaseOrders
+                .Include(p => p.Staff)
+                .Include(p => p.Supplier)
+                .Include(p => p.PurchasePaymentHistories)
+                .FirstOrDefaultAsync(m => m.PurchaseOrderId == id);
+            if (purchaseOrder == null)
+            {
+                return NotFound();
+            }
+
+            return View(purchaseOrder);
+        }
+
         #region CallAPI
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetAllSuppliers()

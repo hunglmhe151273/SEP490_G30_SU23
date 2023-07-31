@@ -265,10 +265,12 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.Date).HasColumnType("datetime");
             entity.Property(e => e.Status).HasMaxLength(30);
+            entity.Property(e => e.AmountPaid).HasColumnType("decimal(15, 0)");
+
             entity.HasOne(d => d.Staff).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("FK_PurchaseOrder_Staff");
-            entity.Property(e => e.AmountPaid).HasColumnType("decimal(15, 0)");
+           
             entity.HasOne(d => d.Supplier).WithMany(p => p.PurchaseOrders)
                 .HasForeignKey(d => d.SupplierId)
                 .HasConstraintName("FK_PurchaseOrder_Supplier");
@@ -290,6 +292,21 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
                 .HasForeignKey(d => d.PurchaseOrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PurchaseOrderDetail_PurchaseOrder");
+        });
+        modelBuilder.Entity<PurchasePaymentHistory>(entity =>
+        {
+            entity.HasKey(e => e.PaymentId);
+
+            entity.ToTable("PurchasePaymentHistory");
+
+            entity.Property(e => e.PaymentId).HasColumnName("Payment_ID");
+            entity.Property(e => e.PaymentAmount).HasColumnType("decimal(15, 0)");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.PurchaseId).HasColumnName("Purchase_ID");
+
+            entity.HasOne(d => d.Purchase).WithMany(p => p.PurchasePaymentHistories)
+                .HasForeignKey(d => d.PurchaseId)
+                .HasConstraintName("FK_PurchasePaymentHistory_PurchaseOrder");
         });
 
         modelBuilder.Entity<Review>(entity =>

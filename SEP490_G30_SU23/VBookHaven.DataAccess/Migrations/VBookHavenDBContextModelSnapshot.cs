@@ -666,6 +666,32 @@ namespace VBookHaven.DataAccess.Migrations
                     b.ToTable("PurchaseOrderDetail", (string)null);
                 });
 
+            modelBuilder.Entity("VBookHaven.Models.PurchasePaymentHistory", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Payment_ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<decimal?>("PaymentAmount")
+                        .HasColumnType("decimal(15, 0)");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("PurchaseId")
+                        .HasColumnType("int")
+                        .HasColumnName("Purchase_ID");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("PurchaseId");
+
+                    b.ToTable("PurchasePaymentHistory", (string)null);
+                });
+
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
                 {
                     b.Property<int>("ReviewId")
@@ -1154,6 +1180,16 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
+            modelBuilder.Entity("VBookHaven.Models.PurchasePaymentHistory", b =>
+                {
+                    b.HasOne("VBookHaven.Models.PurchaseOrder", "Purchase")
+                        .WithMany("PurchasePaymentHistories")
+                        .HasForeignKey("PurchaseId")
+                        .HasConstraintName("FK_PurchasePaymentHistory_PurchaseOrder");
+
+                    b.Navigation("Purchase");
+                });
+
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
                 {
                     b.HasOne("VBookHaven.Models.Product", "Product")
@@ -1247,6 +1283,8 @@ namespace VBookHaven.DataAccess.Migrations
             modelBuilder.Entity("VBookHaven.Models.PurchaseOrder", b =>
                 {
                     b.Navigation("PurchaseOrderDetails");
+
+                    b.Navigation("PurchasePaymentHistories");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
