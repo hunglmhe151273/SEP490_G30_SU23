@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
-	//	-> Possible solution: form submission with jquery AJAX - no need to reload page?
-	//	-> HOAC dat san value cho input; nho chuyen gia tri null thanh empty
+	//	-> Do sau khi POST return View, tu dong redirect lai GET action???
 
 	// Kiem tra xem paging front end hoat dong ko
 	// Khi de trong ten san pham -> Chua co warning
@@ -141,6 +140,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				ViewData["authors"] = new MultiSelectList(authors, "AuthorId", "AuthorName");
 				var subCategories = await subCategoriesTask;
 				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
+
+				// For testing
+				ViewData["barcodeError"] = validatebarCode;
 
 				return View(model);
 			}
