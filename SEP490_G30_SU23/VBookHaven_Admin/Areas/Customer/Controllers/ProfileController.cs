@@ -37,7 +37,7 @@ namespace VBookHaven_Admin.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Update([FromForm] IFormFile avatarFile, [FromForm] string customerDTOJson)
         {
-           //to do JWT
+            //to do JWT
 
             // Deserialize the JSON data to the Customer object
             var customerDTO = JsonSerializer.Deserialize<CustomerDTO>(customerDTOJson);
@@ -88,21 +88,6 @@ namespace VBookHaven_Admin.Areas.Customer.Controllers
             {
                 return null;
             }
-        }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetAllSuppliers()
-        {
-            //get list supplier and return list
-            var listSuppliers = new List<Supplier>();
-            try
-            {
-                listSuppliers = await _dbContext.Suppliers.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return listSuppliers.Select(_mapper.Map<Supplier, SupplierDTO>).ToList();
         }
 
     }
