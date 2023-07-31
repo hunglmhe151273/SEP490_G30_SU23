@@ -3,7 +3,8 @@
 
 @model ViewOrderManagementModel
 
-<style>
+<!-- Old code -->
+@*<style>
 	table, th, td {
 		border: 1px solid;
 	}
@@ -34,9 +35,9 @@
 					<th>Khách phải trả</th>
 					<th>Chi tiết</th>
 				</tr>
-				@foreach (Order o in Model.Orders)
+				foreach (Order o in Model.Orders)
 				{
-					@*var customer = o.ShippingInfo.Split(',')[0];*@
+					//var customer = o.ShippingInfo.Split(',')[0];
 					var customer = o.CustomerName;
 					double total = 0;
 					foreach (OrderDetail d in o.OrderDetails)
@@ -58,4 +59,242 @@
 	</div>
 	<!--end page-content-wrapper-->
 </div>
-<!--end page-wrapper-->
+<!--end page-wrapper-->*@
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+	<!--page-content-wrapper-->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			<!--breadcrumb-->
+			<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+				<div class="breadcrumb-title pe-3">Đơn hàng</div>
+				<div class="ps-3">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb mb-0 p-0">
+							<li class="breadcrumb-item"><a href="javascript:;"><i
+										class="bx bx-home-alt"></i></a>
+							</li>
+							<li class="breadcrumb-item active" aria-current="page">Số liệu đơn hàng</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+			<!--end breadcrumb-->
+			<div class="card">
+				<div class="card-body">
+					<div class="card-title">
+						<h4 class="mb-0">Bảng quản lí đơn hàng</h4>
+					</div>
+					<hr />
+					<div class="mb-3 row">
+						<div class="accordion col-8" id="accordionExample">
+							<div class="accordion-item">
+								<h3 class="accordion-header" id="headingOne">
+									<button class="accordion-button collapsed" type="button"
+										data-bs-toggle="collapse" data-bs-target="#filler" aria-expanded="false"
+										aria-controls="filler">
+										BỘ LỌC
+									</button>
+								</h3>
+								<div id="filler" class="accordion-collapse collapse"
+									aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+										<form class="row" action="">
+											<div class="col-md-12 mb-2">
+												<label class="form-label">Tìm kiếm</label>
+												<input type="text" class="form-control filter" id="search"
+													placeholder="Tìm theo tên khách hàng hoặc ID đơn hàng...">
+											</div>
+											<div class="col-md-6 mb-2">
+												<label class="form-label">Từ ngày</label>
+												<input type="date" class="form-control filter" id="from">
+											</div>
+											<div class="col-md-6 mb-2">
+												<label class="form-label">Đến ngày</label>
+												<input type="date" class="form-control filter" id="to">
+											</div>
+											<div class="col-md-12 mb-2">
+												<label class="form-label">Trạng thái</label>
+												<select class="form-select filter" id="status">
+													<option value="" selected>--Không--</option>
+													<option value="Đang xử lí">Đang xử lí</option>
+													<option value="Chờ thanh toán">Chờ thanh toán</option>
+													<option value="Đang vận chuyển">Đang vận chuyển</option>
+													<option value="Đã giao">Đã giao</option>
+													<option value="Đã hủy">Đã hủy</option>
+												</select>
+											</div>
+											<!-- <div class="col-md-4"></div>
+											<input type="submit" class="btn btn-primary mt-3 col-md-4" value="Lọc">
+											<div class="col-md-4"></div> -->
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<button type="button" class="btn btn-success">Nhập file</button>
+							<button type="button" class="btn btn-success">Xuất file</button>
+							<a type="button" href="/Admin/Order/Add" class="btn btn-primary">Tạo đơn hàng mới</a>
+						</div>
+						<div class="table-responsive mt-3">
+							<table id="example2" class="table table-striped table-bordered" style="width:100%">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Khách hàng</th>
+										<th>Ngày tạo</th>
+										<th>Trạng thái</th>
+										<th>Tổng tiền</th>
+										<th>Chi tiết đơn hàng</th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									@foreach (Order o in Model.Orders)
+									{
+										double total = 0;
+										foreach (OrderDetail d in o.OrderDetails)
+										{
+											total += d.UnitPrice.Value * (1 - d.Discount.Value / 100) * d.Quantity.Value;
+										}
+										
+										<tr>
+											<td>@o.OrderId</td>
+											<td>@o.CustomerName</td>
+											<td>@o.OrderDate.Value.ToString("yyyy-MM-dd")</td>
+											<td>
+												@switch (o.Status)
+												{
+													case "Đang xử lí":
+														@:<span class="badge bg-warning">Đang xử lí</span>
+														break;
+													case "Chờ thanh toán":
+														@:<span class="badge bg-info">Chờ thanh toán</span>
+														break;
+													case "Đang vận chuyển":
+														@:<span class="badge bg-info">Đang vận chuyển</span>
+														break;
+													case "Đã giao":
+														@:<span class="badge bg-success">Đã giao</span>
+														break;
+													case "Đã hủy":
+														@:<span class="badge bg-danger">Đã hủy</span>
+														break;
+												}
+											</td>
+											<td>@total VNĐ</td>
+											<td>
+												<a href="/Admin/Order/Detail/@o.OrderId" class="btn btn-sm btn-default">
+													<i class="lni lni-eye"></i>
+												</a>
+											</td>
+										</tr>
+									}
+									@*<tr>
+										<td>ABC123</td>
+										<td>Cust1</td>
+										<td>2023-06-18</td>
+										<td>
+											<span class="badge bg-success">Đang đóng gói</span>
+										</td>
+										<td>100.000 VNĐ</td>
+										<td>
+											<a href="" class="btn btn-sm btn-default">
+												<i class="lni lni-eye"></i>
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td>XYZ456</td>
+										<td>Cust2</td>
+										<td>2023-06-20</td>
+										<td>
+											<span class="badge bg-info">Đang xử lí</span>
+										</td>
+										<td>100.000.000 VNĐ</td>
+										<td>
+											<a href="" class="btn btn-sm btn-default">
+												<i class="lni lni-eye"></i>
+											</a>
+										</td>
+									</tr>*@
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end page-content-wrapper-->
+	</div>
+	<!--end page-wrapper-->
+	<!--start overlay-->
+	<div class="overlay toggle-btn-mobile"></div>
+	<!--end overlay-->
+	<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i
+			class='bx bxs-up-arrow-alt'></i></a>
+	<!--End Back To Top Button-->
+</div>
+<!-- end wrapper -->
+
+@section Scripts
+{
+	<!--DatePicker-->
+	<script>
+		$(document).ready(function () {
+			var table = $('#example2').DataTable({});
+			table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+		});
+		var fromDate;
+		var toDate;
+
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0');
+		var yyyy = today.getFullYear();
+		toDate = yyyy + '-' + mm + '-' + dd;
+		document.getElementById("to").value = toDate;
+
+		document.getElementById("from").addEventListener("change", function () {
+			fromDate = this.value;
+			toDate = document.getElementById("to").value;
+			if (toDate != "" && fromDate > toDate) {
+				document.getElementById("to").value = fromDate;
+				document.getElementById("from").value = toDate;
+			}
+		});
+		document.getElementById("to").addEventListener("change", function () {
+			toDate = this.value;
+			fromDate = document.getElementById("from").value;
+			if (fromDate != "" && fromDate > toDate) {
+				document.getElementById("from").value = toDate;
+				document.getElementById("to").value = fromDate;
+			}
+		});
+		
+		$(document).ready(function () {
+			$(".filter").on("input", function () {
+				var search = $("#search").val().toLowerCase();
+				var from = $("#from").val();
+				var to = $("#to").val();
+				var status = $("#status").val();
+				if (from > to) {
+					var temp = from
+					from = to
+					to = temp
+				}
+				console.log(search, "3) From: " + from + " To: " + to, status)
+				$("#myTable tr").filter(function () {
+					$(this).toggle(
+						($(this).find('td:eq(0)').text().toLowerCase().indexOf(search) > -1
+							|| $(this).find('td:eq(1)').text().toLowerCase().indexOf(search) > -1)
+						&& $(this).find('td:eq(3) > span').text().indexOf(status) > -1
+						&& $(this).find('td:eq(2)').text() <= to
+						&& $(this).find('td:eq(2)').text() >= from
+					);
+				})
+			});
+		});
+	</script>
+}

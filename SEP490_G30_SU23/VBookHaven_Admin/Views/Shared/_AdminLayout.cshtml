@@ -312,16 +312,7 @@
     <!--Data Tables js-->
     <script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>
     <script src="~/mgmt-lib/plugins/datatable/js/natural.js"></script>
-    <script>
-        $(document).ready(function () {
-            var table = $('#example2').DataTable({
-                //columnDefs: [
-                //    { type: 'natural', targets: [4, 5, 6, 7] }
-                //]
-            });
-            table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+    <!-- Da chuyen sang section Scripts o Product index -->
     
     <!-- Vector map JavaScript -->
    @* <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
@@ -344,8 +335,8 @@
     <!-- App JS -->
     <script src="~/mgmt-lib/js/app.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
-    <!-- Datatable -->
-    <script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <!-- Datatable --> <!-- Da import datatable js o tren -->
+    @*<script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>*@
    @* <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin">
     </script>*@
@@ -392,41 +383,8 @@
     </script>
 
     <!--Quoc add-->
-    <script>
-        $(document).ready(function () {
-            $(".filter").on("input", function () {
-                var search = $("#search").val().toLowerCase();
-                var category = $("#category").val();
-                var status = $("#status").val();
-                //console.log(search, category, status);
+    <!-- Da chuyen sang section Scripts o Product index -->
 
-                $("#myTable tr").filter(function () {
-                    var catSearch;
-                    if (category == 0) {
-                        catSearch = true;
-                    }
-                    else {
-                        catSearch = $(this).find('td:eq(3)').text() == category;
-                    }
-
-                    var statusSearch
-                    if (status == -1) {
-                        statusSearch = true;
-                    }
-                    else {
-                        statusSearch = $(this).find('td:eq(9) > span:eq(1)').text() == status;
-                    }
-
-                    $(this).toggle(
-                        statusSearch
-                        && catSearch
-                        && ($(this).find('td:eq(1)').text().toLowerCase().indexOf(search) > -1
-                            || $(this).find('td:eq(2)').text().toLowerCase().indexOf(search) > -1)
-                    );
-                })
-            });
-        });
-    </script>
 </body>
 
 </html>

@@ -232,7 +232,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			order.Phone = shipInfo.Phone;
 			order.ShipAddress = shipInfo.ShipAddress;
 
-			order.Status = "Chờ xác nhận";
+			order.Status = "Đang xử lí";
 			order.CustomerId = custId;
 
 			foreach (var item in cart)
