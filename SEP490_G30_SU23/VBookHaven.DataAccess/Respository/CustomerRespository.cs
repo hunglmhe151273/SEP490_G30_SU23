@@ -76,7 +76,10 @@ namespace VBookHaven.DataAccess.Respository
                 objFromDb.DOB = obj.DOB;
                 objFromDb.IsMale = obj.IsMale;
                 objFromDb.FullName = obj.FullName;
-                objFromDb.Image = obj.Image;
+                if(obj.Image != null)
+                {
+                    objFromDb.Image = obj.Image;
+                }
             }
             await _dbContext.SaveChangesAsync();
         }

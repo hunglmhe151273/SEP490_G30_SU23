@@ -7,12 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="wwwroot\images\img\" />
-    <Folder Include="wwwroot\images\Staff\" />
+    <Compile Remove="Entities\**" />
+    <Compile Remove="wwwroot\images\Staff\**" />
     <Compile Remove="wwwroot\template\**" />
+    <Content Remove="Entities\**" />
+    <Content Remove="wwwroot\images\Staff\**" />
     <Content Remove="wwwroot\template\**" />
+    <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="wwwroot\images\Staff\**" />
     <EmbeddedResource Remove="wwwroot\template\**" />
+    <None Remove="Entities\**" />
+    <None Remove="wwwroot\images\Staff\**" />
     <None Remove="wwwroot\template\**" />
   </ItemGroup>
 
@@ -25,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="wwwroot\cust-lib\template\" />
   </ItemGroup>
 
