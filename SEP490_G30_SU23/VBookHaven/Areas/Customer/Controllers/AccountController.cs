@@ -241,7 +241,7 @@ namespace VBookHaven.Areas.Customer.Controllers
                     return RedirectToAction("ErrorCode", "Home", new { statusCodes = postTask.StatusCode });
                 }
             }
-            return LocalRedirect(returnUrl);
+            return RedirectToAction(nameof(Edit));
         }
         [HttpGet]
         public async Task<IActionResult> ChangePassword()

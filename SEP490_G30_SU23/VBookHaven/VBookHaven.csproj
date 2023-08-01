@@ -7,17 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\img\" />
     <Compile Remove="Entities\**" />
+    <Compile Remove="wwwroot\cust-lib\template\**" />
     <Compile Remove="wwwroot\images\Staff\**" />
     <Compile Remove="wwwroot\template\**" />
     <Content Remove="Entities\**" />
+    <Content Remove="wwwroot\cust-lib\template\**" />
     <Content Remove="wwwroot\images\Staff\**" />
     <Content Remove="wwwroot\template\**" />
     <EmbeddedResource Remove="Entities\**" />
+    <EmbeddedResource Remove="wwwroot\cust-lib\template\**" />
     <EmbeddedResource Remove="wwwroot\images\Staff\**" />
     <EmbeddedResource Remove="wwwroot\template\**" />
     <None Remove="Entities\**" />
+    <None Remove="wwwroot\cust-lib\template\**" />
     <None Remove="wwwroot\images\Staff\**" />
     <None Remove="wwwroot\template\**" />
   </ItemGroup>
@@ -28,10 +31,6 @@
 
   <ItemGroup>
     <Content Include="Properties\launchSettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\cust-lib\template\" />
   </ItemGroup>
 
   <ItemGroup>
