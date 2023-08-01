@@ -7,6 +7,7 @@
     {
         displayImage = "/images/default-avatar.jpg";
     }
+    displayImage += "?v=" + new Random().Next();
 }
 
 <h1>Thông tin tài khoản</h1>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="col-7 mb-5 ">
                         <div class="row d-flex align-items-center ">
-                            <label class="label-control col-3 pe-0 ">Họ và tên</label>
+                            <label asp-for="Customer.FullName" class="label-control col-3 pe-0 ">Họ và tên</label>
                             <div class="col-7 ps-0 ">
                                 <input asp-for="Customer.FullName" class="form-control mb-0 " placeholder="Thêm họ và tên ">
                                 <span asp-validation-for="@Model.Customer.FullName" class="text-danger "></span>

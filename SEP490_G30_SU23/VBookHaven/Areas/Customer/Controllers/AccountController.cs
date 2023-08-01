@@ -37,7 +37,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             _applicationUserRespository = applicationUserRespository;
             _customerRespository = customerRespository;
             client = new HttpClient();
-            profileApiUrl = "https://localhost:7123/customer/profile/update";
+            profileApiUrl = "https://localhost:7123/api/customer/profile/update";
         }
         public async Task<IActionResult> ShipInfo()
         {

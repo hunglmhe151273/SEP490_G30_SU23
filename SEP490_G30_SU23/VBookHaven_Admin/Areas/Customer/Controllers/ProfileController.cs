@@ -13,7 +13,9 @@ using VBookHaven.ViewModels;
 
 namespace VBookHaven_Admin.Areas.Customer.Controllers
 {
+    [ApiController]
     [Area("Customer")]
+    [Route("api/[area]/[controller]/[action]")]
     public class ProfileController : ControllerBase
     {
 
