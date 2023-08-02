@@ -12,8 +12,8 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230802075237_updatePPHistory")]
-    partial class updatePPHistory
+    [Migration("20230802121218_initDB")]
+    partial class initDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -482,12 +482,18 @@ namespace VBookHaven.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
+                    b.Property<int?>("AmountPaid")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("OrderDate")
                         .HasColumnType("datetime");
@@ -501,13 +507,21 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int?>("StaffId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Status")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<double?>("VAT")
+                        .HasColumnType("float");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("CustomerId");
+
+                    b.HasIndex("StaffId");
 
                     b.ToTable("Order", (string)null);
                 });
@@ -1120,7 +1134,14 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasForeignKey("CustomerId")
                         .HasConstraintName("FK_Order_Customer");
 
+                    b.HasOne("VBookHaven.Models.Staff", "Staff")
+                        .WithMany("Orders")
+                        .HasForeignKey("StaffId")
+                        .HasConstraintName("FK_Order_Staff");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.OrderDetail", b =>
@@ -1310,6 +1331,8 @@ namespace VBookHaven.DataAccess.Migrations
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>
                 {
                     b.Navigation("ActivityLogs");
+
+                    b.Navigation("Orders");
 
                     b.Navigation("PurchaseOrders");
 

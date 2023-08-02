@@ -856,7 +856,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[AccountId] IS NOT NULL");
 
-                    b.ToTable("Staff", (string)null);
+                    b.ToTable("Staff");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Stationery", b =>

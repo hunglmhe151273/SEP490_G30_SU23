@@ -71,7 +71,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{area=Admin}/{controller=Order}/{action=Index}/{id?}");
+    pattern: "{area=Admin}/{controller=PurchaseOrder}/{action=Index}/{id?}");
 //add cors
 app.UseCors(builder =>
 builder.AllowAnyOrigin()

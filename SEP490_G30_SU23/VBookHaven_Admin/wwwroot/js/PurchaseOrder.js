@@ -288,7 +288,7 @@ function showSupplierInfo(supplier) {
                 <label class="fw-bold">Số điện thoại: ${supplier.phone}</label></br>
             `;
     if (supplier.province !== null) {
-        showSupplierInfoDiv += `<label class="fw-bold">Địa chỉ: ${supplier.province}</label>`;
+        showSupplierInfoDiv += `<label class="fw-bold">Địa chỉ: ${supplier.address}, ${supplier.ward}, ${supplier.district}, ${supplier.province}</label>`;
     }
     showSupplierInfoDiv += `</div>`;
 
@@ -335,7 +335,7 @@ function populateProductsSelect() {
 }
 
 // Hàm để lấy thông tin khi bấm vào thẻ <a>
-function getProductInfo(linkElement) {
+function getBookInfo(linkElement) {
     //lấy được phần tử cần ẩn
     const theA = linkElement;
     // Lấy các phần tử con bên trong thẻ <a> được click
@@ -389,7 +389,7 @@ function getProductInfo(linkElement) {
         productList.append(theA);
         // C2: Hiển thị lại thẻ a
         //theA.style.display = 'block';
-        updateOrder();
+        updateInvoice();
     });
 
     orderContainer.appendChild(productRow);
@@ -398,7 +398,7 @@ function getProductInfo(linkElement) {
     theA.remove();
     // C2: Ẩn thẻ a
     //theA.style.display = 'none';
-    updateOrder();
+    updateInvoice();
 }
 
 $(document).on('click', '#submitProduct', function () {

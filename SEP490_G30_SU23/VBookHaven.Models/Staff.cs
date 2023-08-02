@@ -25,7 +25,7 @@ public partial class Staff
     [Required(ErrorMessage = "Địa chỉ nhân viên là bắt buộc.")]
     [StringLength(100, ErrorMessage = "Địa chỉ không được vượt quá 100 kí tự.")]
     public string? Address { get; set; }
-    [Display(Name = "Số điện thoại nhân viên")]
+    [Display(Name = "Số điện thoại")]
     [Required(ErrorMessage = "Số điện thoại nhân viên là bắt buộc.")]
     [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
     [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
