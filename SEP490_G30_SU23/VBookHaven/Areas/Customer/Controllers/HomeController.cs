@@ -16,7 +16,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Product");
         }
 
 		public async Task<IActionResult> IndexFromLogin()

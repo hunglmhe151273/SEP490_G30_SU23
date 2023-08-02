@@ -220,7 +220,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNewShippingInfo([FromBody] ShippingInfo shipInfo)
 		{
-			if (!ModelState.IsValid)
+			ModelState.Remove("ProvinceCode");
+			ModelState.Remove("DistrictCode");
+			ModelState.Remove("WardCode");
+            if (!ModelState.IsValid)
 			{
 				return StatusCode(404, "Lỗi xảy ra! Vui lòng thử lại sau.");
 			}
