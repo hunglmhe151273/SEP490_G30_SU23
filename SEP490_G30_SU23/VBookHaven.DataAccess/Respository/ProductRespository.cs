@@ -12,8 +12,9 @@ namespace VBookHaven.DataAccess.Respository
         Task<Product?> GetProductByIdAsync(int id);
         Task<Book?> GetBookByIdAsync(int id);
         Task<Stationery?> GetStationeryByIdAsync(int id);
-		
-        Task<Product?> GetProductMoreInfoByIdAsync(int id);
+		Task<List<Product>> GetAllProductsForOrderCreationAsync();
+
+		Task<Product?> GetProductMoreInfoByIdAsync(int id);
 		Task<Book?> GetBookMoreInfoByIdAsync(int id);
 
         Task<Product?> GetProductByBarcodeAsync(string barcode);
@@ -199,6 +200,15 @@ namespace VBookHaven.DataAccess.Respository
                 dbContext.Entry(stationery).State = EntityState.Modified;
                 await dbContext.SaveChangesAsync();
 			}
+        }
+
+        public async Task<List<Product>> GetAllProductsForOrderCreationAsync()
+        {
+            using (var dbContext = new VBookHavenDBContext())
+            {
+                return await dbContext.Products.Include(p => p.Images)
+                    .Where(p => p.Status == true /*&& p.UnitInStock.Value > 0*/).ToListAsync();
+            }
         }
     }
 }

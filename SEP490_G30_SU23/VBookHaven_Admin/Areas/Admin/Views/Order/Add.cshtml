@@ -1,6 +1,7 @@
 ﻿@using VBookHaven.Models
 @using VBookHaven_Admin.Areas.Admin.Controllers
 @using System.Text.Json
+@using VBookHaven_Admin
 
 @model AddOrderManagementModel
 
@@ -167,6 +168,64 @@
 	}
 </script>*@
 
+<style>
+    #searchList {
+        position: absolute;
+        z-index: 3;
+        display: none;
+        box-shadow: 2px 2px gray;
+    }
+
+    .item {
+        padding: 10px 15px;
+    }
+
+    #list-product {
+        border: 1px solid lightgray;
+        overflow-y: auto;
+        max-height: 350px;
+    }
+
+    .cover {
+        padding: 0;
+        width: 60px;
+        height: 50px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+
+    td:nth-child(3) {
+        max-width: 100px;
+    }
+
+    /* Custom CSS for truncating text and keeping the link next to it */
+
+    .ellipsis {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        /* Set the number of lines to display */
+        overflow: hidden;
+    }
+
+    /* Custom CSS for adjusting the size of the ellipsis div */
+
+    .ellipsis-div {
+        max-width: 150px;
+        /* Set the maximum width for the div (adjust as needed) */
+    }
+
+    input[type=number] {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Custom CSS for text overflow ellipsis */
+</style>
+
 <!--page-wrapper-->
 <div class="page-wrapper">
     <!--page-content-wrapper-->
@@ -179,7 +238,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item">
-                                <a href="javascript:;">
+                                <a href="/Admin/Order/Index">
                                     <i class="bx bx-home-alt"></i>
                                 </a>
                             </li>
@@ -189,7 +248,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <form>
+            <form method="post">
                 <div class="row">
                     <div class="col-9 mx-auto">
                         <div class="card">
@@ -197,27 +256,31 @@
                                 <!-- Status progress bar -->
                                 <div class="wizard-progress w-100">
                                     <div class="step complete">
-                                        <span class="title">Tạo Đơn</span>
+                                        <span class="title">@OrderStatus.Create</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">Đang xử lí</span>
+                                        <span class="title">@OrderStatus.Process</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">Chờ thanh toán</span>
+                                        <span class="title">@OrderStatus.Payment</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">Đang vận chuyển</span>
+                                        <span class="title">@OrderStatus.Packaging</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">Đã giao</span>
+                                        <span class="title">@OrderStatus.Ship</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">Đã hủy</span>
+                                        <span class="title">@OrderStatus.Done</span>
+                                        <div class="node"></div>
+                                    </div>
+                                    <div class="step">
+                                        <span class="title">@OrderStatus.Cancel</span>
                                         <div class="node"></div>
                                     </div>
                                 </div>
@@ -239,7 +302,7 @@
                                         </select>
                                         <div class="btn btn-outline-success w-100 mt-2" data-bs-toggle="modal"
                                              data-bs-target="#addCustomer">
-                                            <i class='bx bx-plus-circle fs-5'></i> Thêm nhanh khách hàng
+                                            <i class='bx bx-plus-circle fs-5'></i> Thêm khách hàng
                                         </div>
                                     </div>
                                     <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
@@ -254,7 +317,8 @@
                         </div>
                         <div class="card-body">
                             <label class="form-label">Ghi chú hóa đơn</label><br>
-                            <textarea class="form-control" cols="30" rows="6"></textarea>
+                            <textarea class="form-control" cols="30" rows="6"
+                                asp-for="Order.Note"></textarea>
                         </div>
                     </div>
                     <div class="col-12 mx-auto pe-0">
@@ -333,9 +397,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <select class="form-select">
-                                            <option value="">Giá sỉ</option>
-                                            <option value="">Giá lẻ</option>
+                                        <select id="price-type" class="form-select">
+                                            <option value="Giá lẻ">Giá lẻ</option>
+                                            <option value="Giá sỉ">Giá sỉ</option>
                                         </select>
                                     </div>
                                     <div class="col-md-12">
@@ -352,11 +416,12 @@
                                                     <th class="col-2">Chiết khấu</th>
                                                     <th class="col-2">Thành tiền</th>
                                                     <th></th>
+                                                    <th hidden>ID</th>
                                                 </tr>
                                             </thead>
                                             <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
                                             <tbody id="orderContainer">
-                                                <tr>
+                                                @*<tr>
                                                     <td></td>
                                                     <td> <img src="assets/images/avatars/avatar-1.png"></td>
                                                     <td>
@@ -373,28 +438,32 @@
                                                     </td>
                                                     <td>
                                                         <div class="input-group">
-                                                            <input class="form-control price" value="0"
-                                                                   type='number' class="num">
+                                                            <input class="form-control price num" value="0"
+                                                                   type='number' />
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="input-group">
-                                                            <input class="form-control discount" step="0.5"
-                                                                   min="0" value="0" type='number' class="num">
+                                                            <input class="form-control discount num" step="0.5"
+                                                                   min="0" value="0" type='number' />
                                                             <span class="input-group-text">%</span>
                                                         </div>
                                                     </td>
                                                     <td><span class="sum"></span> VNĐ</td>
                                                     <td>
-                                                        <a type="button"
+                                                        <a href="#" type="button"
                                                            class="btn btn-close btn-danger delete"></a>
                                                     </td>
-                                                </tr>
+                                                </tr>*@
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="col-7 d-flex justify-content-start align-items-end">
-                                        <input type="submit" class="btn btn-success px-4" value="Lưu">
+                                        <input type="submit" class="btn btn-success px-4 mx-1" value="Lưu">
+                                        <button type="button" class="btn btn-danger px-4 mx-1"
+                                                onclick="window.location.href='/Admin/Order/Index'">
+                                            Hủy
+                                        </button>
                                     </div>
                                     <div class="col-5">
                                         <table class="table" id="countTable">
@@ -406,8 +475,9 @@
                                                 <td>Thuế GTGT</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="input-group w-50">
-                                                        <input id="totalVat" type="text" value="5" min="0"
-                                                               step="1" class="form-control">
+                                                        <input id="totalVat" type="number" value="0" min="0"
+                                                               step="0.1" class="form-control"
+                                                               asp-for="Order.VAT" />
                                                         <span class="input-group-text">%</span>
                                                     </div>
                                                 </td>
@@ -425,8 +495,9 @@
                                                 <td>Số tiền khách đã trả</td>
                                                 <td class="w-50">
                                                     <div class="input-group">
-                                                        <input id="paid" type="text" value="0" min="0"
-                                                               step="500" class="form-control">
+                                                        <input id="paid" type="number" value="0" min="0"
+                                                               step="1" class="form-control"
+                                                               asp-for="Order.AmountPaid" />
                                                         <span class="input-group-text">VNĐ</span>
                                                     </div>
                                                 </td>
@@ -513,10 +584,10 @@
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="" class="addForm">
+                        <form action="#" class="addForm">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
-                                    Thêm nhanh khách hàng mới
+                                    Thêm khách hàng mới
                                 </h5>
                             </div>
                             <div class="modal-body row">
@@ -533,10 +604,10 @@
                                     <div id="phone-feedback" class="feedback"></div>
                                 </div>
                                 <div class="col-12 mb-3">
-                                    <label class="form-label">Ghi chú</label><br>
-                                    <textarea id="description" class="form-control validate is-valid" id="desc"
-                                              cols="30" rows="3" placeholder="Nhập ghi chú"></textarea>
-                                    <div id="description-feedback" class="feedback"></div>
+                                    <label class="form-label">Địa chỉ *</label><br>
+                                    <textarea id="address" class="form-control validate is-valid" 
+                                              cols="30" rows="3" placeholder="Nhập địa chỉ"></textarea>
+                                    <div id="address-feedback" class="feedback"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -568,96 +639,9 @@
             allowClear: Boolean($(this).data('allow-clear')),
         });
 
-        // Update Order function
-        var updateOrder = function () {
-            var num, discount, price, sum, markup;
-            let totalPrice = 0,
-                totalPay = 0,
-                count = 0
-            vat = 0
-            paid = 0;
-
-
-            //default values
-            $('#totalPrice').text('0');
-            $('#totalPay').text('0');
-            var vatValue = $('#totalVat').val();
-            if (isNaN(vatValue) || vatValue >= 100 || !isNotNullOrEmpty(vatValue)) {
-                $('#totalVat').val(5);
-                vatValue = 5;
-            }
-            vat = vatValue;
-
-            console.log('vat là: ' + vat);
-
-            $('#myTable tr').each(function () {
-                $(this).find("td:first").text(count++)
-            });
-            $('#orderContainer tr').each(function () {
-                $(this).find($('.sum')).text(0);
-                num = $(this).find($(".num")).val();
-                discount = $(this).find($(".discount")).val();
-                price = $(this).find($(".price")).val();
-
-                if (isNotNullOrEmpty(num) &&
-                    isNotNullOrEmpty(discount) &&
-                    isNotNullOrEmpty(price)) {
-                    sum = (parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
-                    totalPrice += parseFloat(sum);
-                    totalPay = totalPrice * (100 + parseFloat(vat)) / 100;
-                    //totalPrice += parseFloat(parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
-                    //totalPay += parseFloat(parseFloat(price) * (100 - parseFloat(discount) + parseFloat(vat)) / 100 * num)
-                    $(this).find($('.sum')).text(sum.toLocaleString('en'));
-                    $('#totalPrice').text(totalPrice.toLocaleString('en'));
-                    $('#totalPay').text(totalPay.toLocaleString('en'));
-                }
-            });
-
-            paid = $('#paid').val();
-            var debt = parseFloat(totalPay) - paid;
-            if (parseFloat(totalPay) >= paid && !isNaN(paid)) {
-                $('#debt').text(debt.toLocaleString('en'));
-            } else {
-                $('#paid').val(totalPay)
-                $('#debt').text('0');
-            }
-            totalPrice = 0;
-            totalPay = 0;
-        }
-
-        $(document).ready(function () {
-            updateOrder();
-
-            // Search product
-            $('#search').on({
-                'click': function () {
-                    $('#searchList').fadeIn('fast');
-                },
-                'blur': function () {
-                    $('#searchList').fadeOut('fast');
-                },
-                'keyup': function () {
-                    var searchText = $(this).val();
-                    $('#list-product > .item').each(function () {
-                        $(this).toggle(
-                            $(this).find('.search-info').text().toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
-                    });
-                }
-            });
-
-            $('#myTable')
-                .change(updateOrder)
-                .keyup(updateOrder);
-
-            $('#countTable')
-                .change(updateOrder)
-                .keyup(updateOrder);
-        });
-
-        function isNotNullOrEmpty(value) {
-            return value !== null && value !== undefined && value !== '';
-        }
+        
     </script>
-    <script src="~/mgmt-lib/template/assets/js/order_DataTest_Update247.js"></script>
-    <script src="~/mgmt-lib/template/assets/js/validate.js"></script>
+    @*<script src="~/mgmt-lib/template/assets/js/order_DataTest_Update247.js"></script>*@
+    <script src="~/js/Order.js"></script>
+    <script src="~/js/ValidateOrder.js"></script>
 }

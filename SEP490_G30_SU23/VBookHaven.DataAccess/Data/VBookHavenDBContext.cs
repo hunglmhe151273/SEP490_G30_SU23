@@ -218,8 +218,11 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
                 .HasConstraintName("FK_Order_Customer");
+			entity.HasOne(d => d.Staff).WithMany(p => p.Orders)
+				.HasForeignKey(d => d.StaffId)
+				.HasConstraintName("FK_Order_Staff");
 
-        });
+		});
 
         modelBuilder.Entity<OrderDetail>(entity =>
         {

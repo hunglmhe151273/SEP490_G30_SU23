@@ -1,5 +1,6 @@
 ﻿@using VBookHaven.Models
 @using VBookHaven_Admin.Areas.Admin.Controllers
+@using VBookHaven_Admin
 
 @model ViewOrderManagementModel
 
@@ -118,11 +119,12 @@
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="status">
 													<option value="" selected>--Không--</option>
-													<option value="Đang xử lí">Đang xử lí</option>
-													<option value="Chờ thanh toán">Chờ thanh toán</option>
-													<option value="Đang vận chuyển">Đang vận chuyển</option>
-													<option value="Đã giao">Đã giao</option>
-													<option value="Đã hủy">Đã hủy</option>
+													<option value=@OrderStatus.Process>@OrderStatus.Process</option>
+													<option value=@OrderStatus.Payment>@OrderStatus.Payment</option>
+													<option value=@OrderStatus.Packaging>@OrderStatus.Packaging</option>
+													<option value=@OrderStatus.Ship>@OrderStatus.Ship</option>
+													<option value=@OrderStatus.Done>@OrderStatus.Done</option>
+													<option value=@OrderStatus.Cancel>@OrderStatus.Cancel</option>
 												</select>
 											</div>
 											<!-- <div class="col-md-4"></div>
@@ -158,6 +160,7 @@
 										{
 											total += d.UnitPrice.Value * (1 - d.Discount.Value / 100) * d.Quantity.Value;
 										}
+										total *= (1 + o.VAT.Value / 100);
 										
 										<tr>
 											<td>@o.OrderId</td>
@@ -166,20 +169,23 @@
 											<td>
 												@switch (o.Status)
 												{
-													case "Đang xử lí":
-														@:<span class="badge bg-warning">Đang xử lí</span>
+													case OrderStatus.Process:
+														@:<span class="badge bg-warning">@OrderStatus.Process</span>
 														break;
-													case "Chờ thanh toán":
-														@:<span class="badge bg-info">Chờ thanh toán</span>
+													case OrderStatus.Payment:
+														@:<span class="badge bg-warning">@OrderStatus.Payment</span>
 														break;
-													case "Đang vận chuyển":
-														@:<span class="badge bg-info">Đang vận chuyển</span>
+													case OrderStatus.Packaging:
+														@:<span class="badge bg-info">@OrderStatus.Packaging</span>
 														break;
-													case "Đã giao":
-														@:<span class="badge bg-success">Đã giao</span>
+													case OrderStatus.Ship:
+														@:<span class="badge bg-info">@OrderStatus.Ship</span>
 														break;
-													case "Đã hủy":
-														@:<span class="badge bg-danger">Đã hủy</span>
+													case OrderStatus.Done:
+														@:<span class="badge bg-success">@OrderStatus.Done</span>
+														break;
+													case OrderStatus.Cancel:
+														@:<span class="badge bg-danger">@OrderStatus.Cancel</span>
 														break;
 												}
 											</td>

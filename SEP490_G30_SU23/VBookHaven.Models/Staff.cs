@@ -42,4 +42,7 @@ public partial class Staff
 
     public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; } = new List<PurchaseOrder>();
 
+    // Quoc new
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
 }

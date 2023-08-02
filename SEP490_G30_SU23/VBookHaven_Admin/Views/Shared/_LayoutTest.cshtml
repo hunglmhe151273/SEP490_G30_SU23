@@ -1,0 +1,390 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@using System.Security.Claims
+@{
+    var user = Context.User as ClaimsPrincipal;
+    var role = user?.FindFirstValue(ClaimTypes.Role);
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"]</title>
+    <!--favicon-->
+    <link rel="icon" href="~/mgmt-lib/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link rel="stylesheet" href="~/mgmt-lib/plugins/notifications/css/lobibox.min.css" />
+    <link href="~/mgmt-lib/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="~/mgmt-lib/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+    <!-- loader-->
+    @*  <link href="~/mgmt-lib/css/pace.min.css" rel="stylesheet" />*@
+    @*<script src="~/mgmt-lib/js/pace.min.js"></script>*@
+    <link href="~/mgmt-lib/css/wizard.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/icons.css" />
+    <!-- App CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/app.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/dark-sidebar.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/dark-theme.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/css/avatar.css" />
+   @* <!-- Datatable -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" />*@
+    <!--Data Tables -->
+    <link href="~/mgmt-lib/plugins/datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <link href="~/mgmt-lib/plugins/datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    
+    <!--Quoc add-->
+    <!-- Custom files -->
+	<link rel="stylesheet" href="~/css/custom.css" />
+	<script src="~/js/custom.js"></script>
+</head>
+
+<body>
+        <!-- wrapper -->
+    <div class="wrapper">
+        <partial name="_Notification" />
+        <!--sidebar-wrapper-->
+        <div class="sidebar-wrapper" data-simplebar="true">
+            <div class="sidebar-header">
+                <div class="">
+                    <img src="/mgmt-lib/images/logo-icon.png" class="logo-icon-2" alt="" />
+                </div>
+                <div>
+                    <h4 class="logo-text">VBookHaven</h4>
+                </div>
+                <a href="#" class="toggle-btn ms-auto"> <i class="bx bx-menu"></i>
+                </a>
+            </div>
+            <!--navigation-->
+            <ul class="metismenu" id="menu">
+                <li class="menu-label">Owner</li>
+                <li>
+                    <a href="#">
+                        <div class="parent-icon icon-color-1"><i class='bx bx-user-circle'></i>
+                        </div>
+                        <div class="menu-title">Tài khoản</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="parent-icon icon-color-2"><i class='bx bxs-bar-chart-alt-2'></i>
+                        </div>
+                        <div class="menu-title">Thống kê</div>
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow" href="#">
+                        <div class="parent-icon icon-color-3"><i class='bx bx-body'></i>
+                        </div>
+                        <div class="menu-title">Nhân viên</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/user/index"><i class="bx bx-right-arrow-alt"></i>Danh sách nhân viên</a>
+                        </li>
+                        <li> <a href="/admin/user/create"><i class="bx bx-right-arrow-alt"></i>Thêm nhân viên</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="parent-icon icon-color-4"><i class='bx bx-history'></i>
+                        </div>
+                        <div class="menu-title">Nhật ký hoạt động</div>
+                    </a>
+                </li>
+                <li class="menu-label">Staff</li>
+                <li>
+                    <a class="has-arrow" href="#">
+                        <div class="parent-icon icon-color-5"><i class='bx bx-package'></i>
+                        </div>
+                        <div class="menu-title">Sản phẩm</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/product/index"><i class="bx bx-right-arrow-alt"></i>Danh sách sản phẩm</a>
+                        </li>
+                        <li> <a class="has-arrow" href="#"><i class="bx bx-right-arrow-alt"></i>Tạo sản phẩm mới</a>
+                            <ul>
+                                <li> <a href="/admin/product/addbook"><i class="bx bx-right-arrow-alt"></i>Sách</a>
+                                </li>
+                                <li> <a href="/admin/product/addstationery"><i class="bx bx-right-arrow-alt"></i>Văn phòng phẩm</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <a href="/admin/categories/index"><i class="bx bx-right-arrow-alt"></i>Loại sản phẩm</a>
+                        </li>
+                        <li> <a href="/admin/author/index"><i class="bx bx-right-arrow-alt"></i>Tác giả sách</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="#">
+                        <div class="parent-icon icon-color-6"><i class='bx bx-user'></i>
+                        </div>
+                        <div class="menu-title">Khách hàng</div>
+                    </a>
+                    <ul>
+                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Danh sách khách hàng</a>
+                        </li>
+                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Thêm khách hàng</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="#">
+                        <div class="parent-icon icon-color-7"><i class='bx bx-receipt'></i>
+                        </div>
+                        <div class="menu-title">Đơn hàng</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/order/index"><i class="bx bx-right-arrow-alt"></i>Danh sách đơn hàng</a>
+                        </li>
+                        <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="#">
+                        <div class="parent-icon icon-color-8"><i class='bx bxs-add-to-queue'></i>
+                        </div>
+                        <div class="menu-title">Nhập hàng</div>
+                    </a>
+                    <ul>
+                        <li> <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Index"><i class="bx bx-right-arrow-alt"></i>Danh sách hóa đơn nhập</a>
+                        </li>
+                        <li>
+                            <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Create"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
+                        </li>
+                        <li> <a href="/admin/suppliers/index"><i class="bx bx-right-arrow-alt"></i>Nhà cung cấp</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!--end navigation-->
+        </div>
+        <!--end sidebar-wrapper-->
+        <!--header-->
+        <header class="top-header">
+            <nav class="navbar navbar-expand">
+                <div class="left-topbar d-flex align-items-center">
+                    <a href="#" class="toggle-btn"> <i class="bx bx-menu"></i>
+                    </a>
+                </div>
+                <div class="flex-grow-1 search-bar">
+                    <form action="">
+                        <div class="input-group">
+                            @*<button class="btn btn-search-back search-arrow-back" type="button"><i class="bx bx-arrow-back"></i></button>*@
+                         @*   <input type="text" class="form-control" placeholder="Tìm kiếm" />*@
+                           @* <button class="btn btn-search" type="submit"><i class="lni lni-search-alt"></i></button>*@
+                        </div>
+                    </form>
+                </div>
+                <div class="right-topbar ms-auto">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown dropdown-language">
+                            <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
+                                <div class="lang d-flex">
+                                    <div><i class="flag-icon flag-icon-vn"></i>
+                                    </div>
+                                    <div><span>Việt Nam</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i
+										class="flag-icon flag-icon-vn"></i><span>Việt Nam</span></a>
+                                <a class="dropdown-item" href="#"><i
+										class="flag-icon flag-icon-um"></i><span>English</span></a>
+                            </div>
+                        </li>
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!--end header-->
+        <!--page-wrapper-->
+        @RenderBody()
+        <!--end page-wrapper-->
+        <!--start overlay-->
+        <div class="overlay toggle-btn-mobile"></div>
+        <!--end overlay-->
+        <!--Start Back To Top Button--><a href="#" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+        <!--End Back To Top Button-->
+        <!--footer -->
+        <div class="footer">
+            <p class="mb-0">VMS 2023 | Developed By : <a href="#" target="_blank">SEP490_G30</a>
+            </p>
+        </div>
+        <!-- end footer -->
+    </div>
+    <!-- end wrapper -->
+    <!--start switcher-->
+    <div class="switcher-body">
+        <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
+				class="bx bx-cog bx-spin"></i></button>
+        <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h6 class="mb-0">Theme Variation</h6>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode" value="option1" checked>
+                    <label class="form-check-label" for="lightmode">Light</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode" value="option2">
+                    <label class="form-check-label" for="darkmode">Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar" value="option3">
+                    <label class="form-check-label" for="darksidebar">Semi Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons" value="option3">
+                    <label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end switcher-->
+    <!-- JavaScript -->
+    <!-- Bootstrap JS -->
+    <script src="~/mgmt-lib/js/bootstrap.bundle.min.js"></script>
+    <!--plugins-->
+    <script src="~/mgmt-lib/js/jquery.min.js"></script>
+    <script src="~/mgmt-lib/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="~/mgmt-lib/plugins/metismenu/js/metisMenu.min.js"></script>
+
+   @* <script src="~/mgmt-lib/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>*@
+
+    <!--Quoc add-->
+    <!--Select2 plugins-->
+    <script src="~/mgmt-lib/plugins/select2/js/select2.min.js"></script>
+    <!--File-Uploader plugins-->
+    <script src="~/mgmt-lib/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+    <script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $('.multiple-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+        $(document).ready(function () {
+            $('#image-uploadify').imageuploadify();
+        });
+        $(function () {
+            $("input[type = 'submit']").click(function () {
+                var $fileUpload = $("input[type='file']");
+                if (parseInt($fileUpload.get(0).files.length) > 4) {
+                    alert("You are only allowed to upload a maximum of 4 files");
+                }
+            });
+        });
+    </script>
+
+    <!--Data Tables js-->
+    <script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/mgmt-lib/plugins/datatable/js/natural.js"></script>
+    <!-- Da chuyen sang section Scripts o Product index -->
+    
+    <!-- Vector map JavaScript -->
+   @* <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-in-mill.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-us-aea-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-uk-mill-en.js"></script>
+    <script src="~/mgmt-lib/plugins/vectormap/jquery-jvectormap-au-mill.js"></script>
+    <script src="~/mgmt-lib/plugins/apexcharts-bundle/js/apexcharts.min.js"></script>
+    <script src="~/mgmt-lib/js/index.js"></script>*@
+  @*  <script>
+        new PerfectScrollbar('.dashboard-social-list');
+        new PerfectScrollbar('.dashboard-top-countries');
+    </script>*@
+
+    <!-- VietNam Address lib -->
+    @*<script src="~/mgmt-lib/plugins/select2/js/select2.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/js/address.js"></script>
+    <!-- App JS -->
+    <script src="~/mgmt-lib/js/app.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Datatable --> <!-- Da import datatable js o tren -->
+    @*<script src="~/mgmt-lib/plugins/datatable/js/jquery.dataTables.min.js"></script>*@
+   @* <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/g28lhnxtlihu4l4a381gw7tz47voznshwbi10lmsvlekrfme/tinymce/6/tinymce.min.js" referrerpolicy="origin">
+    </script>*@
+
+    <!--notification js -->
+    <script src="~/mgmt-lib/plugins/notifications/js/lobibox.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
+    <script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
+    <!--notification internet js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear() - 18;
+
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = yyyy + '-' + mm + '-' + dd;
+        document.getElementById("datefield").setAttribute("max", today);
+
+        $(document).ready(function () {
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('.profile-pic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+            $(".upload-button").on('click', function () {
+                $(".file-upload").click();
+            });
+        });
+    </script>
+
+    <!--Quoc add-->
+    <!-- Da chuyen sang section Scripts o Product index -->
+
+</body>
+
+</html>

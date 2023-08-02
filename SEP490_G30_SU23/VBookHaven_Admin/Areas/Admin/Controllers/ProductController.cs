@@ -10,10 +10,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
 	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
 	//	-> Do sau khi POST return View, tu dong redirect lai GET action???
+	//		-> Do plugin select2??? (Neu bo select2 js trong Layout thi binh thuong lai)
+	//	-> Alternative: Validate front end / Gui ajax validate truoc khi cho phep luu
 
-	// Kiem tra xem paging front end hoat dong ko
+	// Kiem tra xem paging front end hoat dong ko??
 	// Khi de trong ten san pham -> Chua co warning
-	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)
+	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)??
+	// Sort o index - loi o cac cot gia (+ cot ten) -> Do gia bi coi la string, ko phai number (va ten co
+	//		chua ki tu Tieng Viet
 
 	// Add author, category... la 1 pop up o add product
 	// Cho subcategories vao select list group

@@ -22,7 +22,14 @@ namespace VBookHaven.Models.DTO
         [Range(0, int.MaxValue, ErrorMessage = "Giá trị phải là số nguyên không nhỏ hơn 0.")]
         [Required]
         public int? PurchasePrice { get; set; }
-        public int? UnitInStock { get; set; }
+		public int? RetailPrice { get; set; }
+
+		public double? RetailDiscount { get; set; }
+
+		public int? WholesalePrice { get; set; }
+
+		public double? WholesaleDiscount { get; set; }
+		public int? UnitInStock { get; set; }
         public bool IsBook { get; set; }
         [StringLength(200, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]
         public string? PresentImage { get; set; }
