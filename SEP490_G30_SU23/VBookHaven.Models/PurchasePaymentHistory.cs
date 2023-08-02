@@ -17,5 +17,8 @@ namespace VBookHaven.Models
         public int? PurchaseId { get; set; }
 
         public virtual PurchaseOrder? Purchase { get; set; }
+        public int? StaffId { get; set; }
+
+        public virtual Staff? Staff { get; set; }
     }
 }

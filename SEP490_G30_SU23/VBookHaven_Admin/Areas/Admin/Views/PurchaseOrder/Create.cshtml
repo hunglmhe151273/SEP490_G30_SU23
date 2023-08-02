@@ -187,19 +187,17 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-8 d-flex justify-content-start align-items-end">
-                                        <input type="submit" class="btn btn-success px-4" value="Lưu">
-                                    </div>
-                                    <div class="col-4">
-                                        <table class="table" id="countTable">
+                                    <div class="col-7"></div>
+                                    <div class="col-5">
+                                        <table class="table fs-6" id="countTable">
                                             <tr>
                                                 <td>Cộng tiền hàng</td>
                                                 <td class="text-end"><span id="totalPrice"></span> VNĐ</td>
                                             </tr>
                                             <tr>
-                                                <td class="col-3">Thuế GTGT</td>
-                                                <td class="col-1">
-                                                    <div class="input-group">
+                                                <td>Thuế GTGT</td>
+                                                <td class="d-flex justify-content-end">
+                                                    <div class="input-group" style="width:40%">
                                                         <input asp-for="VAT" id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
                                                         <span class="input-group-text">%</span>
                                                     </div>
@@ -214,12 +212,37 @@
                                                     </strong>
                                                 </td>
                                             </tr>
+                                            <!-- NEW CODE HERE -->
+                                            <tr>
+                                                <td>Số tiền đã trả</td>
+                                                <td class="d-flex justify-content-end">
+                                                    <div class="input-group" style="width:80%">
+                                                        <input asp-for="AmountPaid" id="paid" type="number" value="0" min="0" step="500" class="form-control">
+                                                        <span class="input-group-text">VNĐ</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="fw-bold">
+                                                <td class="">Số tiền còn thiếu</td>
+                                                <td class="text-end"><span id="debt"></span> VNĐ</td>
+                                            </tr>
+                                            <!-- END NEW CODE -->
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- To Add-->
+                    <div class="col-12 pe-0 mx-auto" style="position: sticky; bottom: 0;">
+                        <div class="card border-top border-0 border-4 border-primary py-2">
+                            <div class="card-body text-end">
+                                <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
+                                <input type="submit" class="btn btn-success px-5 mx-3" value="Tạo đơn">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- To Add-->
                 </div>
             </form>
             <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

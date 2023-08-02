@@ -54,7 +54,16 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             pO.Date = DateTime.Now;
             pO.VAT = model.VAT;
             pO.Staff = staffCreate;
-            //pO.AmountPaid = model.AmountPaid;
+            // To do deltete pO.AmountPaid
+            if (model.AmountPaid > 0)
+            {
+                PurchasePaymentHistory history = new PurchasePaymentHistory();
+                history.PaymentDate = DateTime.Now;
+                history.PaymentAmount = model.AmountPaid;
+                history.Staff = staffCreate;
+                pO.PurchasePaymentHistories.Add(history);
+            }
+
             for (int i = 0; i < model.ProductIdList.Count; ++i)
             {
                 var detail = new PurchaseOrderDetail
@@ -91,6 +100,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         // GET: Admin/TestPO/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var staffEdit = await GetStaffByUserID();
             if (id == null || _dbContext.PurchaseOrders == null)
             {
                 return NotFound();
@@ -105,8 +115,55 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            
+            //Tổng tiền hàng
+            decimal sum  = 0;
+            foreach(var detail in purchaseOrder.PurchaseOrderDetails)
+            {
+                if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
+                {
+                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
+                }
+            }
+            //Tổng đã trả
+            decimal sumPaid = 0;
+            foreach (var history in purchaseOrder.PurchasePaymentHistories)
+            {
+                if (history.PaymentAmount.HasValue)
+                {
+                    sumPaid += (decimal)(history.PaymentAmount);
+                }
+            }
+            //Tính số tiền còn thiếu
 
-            return View(purchaseOrder);
+
+            DetailsPurchaseOrderVM vm = new DetailsPurchaseOrderVM();
+            vm.Unpaid = sum - sumPaid;
+            vm.pO = purchaseOrder;
+            //Form
+            vm.PPHistory.PurchaseId = purchaseOrder.PurchaseOrderId;
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> PurchasePayment(DetailsPurchaseOrderVM model)
+        {
+            ModelState.Clear();
+            if (!TryValidateModel(model.PPHistory))
+            {
+                TempData["error"] = "Cập nhật thanh toán thất bại";
+                // view application user
+                return View(model);
+            }
+            PurchasePaymentHistory payment = new PurchasePaymentHistory();
+            var staffEdit = await GetStaffByUserID();
+            payment.StaffId = staffEdit.StaffId;
+            payment.PurchaseId = model.PPHistory.PurchaseId;
+            payment.PaymentDate = model.PPHistory.PaymentDate;
+            payment.PaymentAmount = model.PPHistory.PaymentAmount;
+
+            await _dbContext.PurchasePaymentHistories.AddAsync(payment);
+            _dbContext.SaveChanges();
+            return RedirectToAction(nameof(Create));
         }
 
         #region CallAPI

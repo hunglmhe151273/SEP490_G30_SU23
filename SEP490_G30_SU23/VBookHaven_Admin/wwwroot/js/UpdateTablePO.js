@@ -76,6 +76,19 @@ var updateInvoice = function () {
             $('#totalPay').text(totalPay.toLocaleString('en'));
         }
     });
+    // NEW CODE HERE
+    // validate paid and debt 
+    var paid = $('#paid').val();
+    console.log(paid);
+    var debt = parseFloat(totalPay) - paid;
+    console.log(debt);
+    if (parseFloat(totalPay) >= paid) {
+        $('#debt').text(debt.toLocaleString('en'));
+    } else {
+        $('#paid').val(totalPay)
+        $('#debt').text('0');
+    }
+    //END NEW CODE
     totalPrice = 0;
     totalPay = 0;
 }

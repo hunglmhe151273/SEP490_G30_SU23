@@ -56,6 +56,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
     public virtual DbSet<SubCategory> SubCategories { get; set; }
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
+    public virtual DbSet<PurchasePaymentHistory> PurchasePaymentHistories { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseSqlServer("name=DefaultConnection");
@@ -307,6 +308,9 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
             entity.HasOne(d => d.Purchase).WithMany(p => p.PurchasePaymentHistories)
                 .HasForeignKey(d => d.PurchaseId)
                 .HasConstraintName("FK_PurchasePaymentHistory_PurchaseOrder");
+            entity.HasOne(d => d.Staff).WithMany(p => p.PurchasePaymentHistories)
+                .HasForeignKey(d => d.StaffId)
+                .HasConstraintName("FK_PurchasePaymentHistory_Staff");
         });
 
         modelBuilder.Entity<Review>(entity =>
