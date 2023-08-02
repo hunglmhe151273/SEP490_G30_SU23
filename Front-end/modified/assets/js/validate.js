@@ -121,6 +121,32 @@ $(document).on('keyup', '#description', function () {
 });
 //-----------------------------------------------------------------------------------------------------------------
 
+// Add payment
+$(document).on('keyup', '#paid', function () {
+    var debt = $('#debt').text()
+    var paid = $(this).val()
+    if (parseFloat(paid) > debt) {
+        $('#paid').val(debt);
+        validInput(this, $('#paid-feedback'))
+    } else if ($(this).val() == "") {
+        invalidInput(this, $('#paid-feedback'), "Số tiền không để trống");
+    } else if (isNaN($(this).val())) {
+        invalidInput(this, $('#paid-feedback'), "Số tiền chỉ được chứa chữ số");
+    } else if ($(this).val() < 1000) {
+        invalidInput(this, $('#paid-feedback'), "Số tiền không hợp lệ");
+    } else {
+        validInput(this, $('#paid-feedback'))
+    }
+})
+
+$(document).on('keyup change', '#paid-date', function () {
+    if ($(this).val() == "") {
+        invalidInput(this, $('#paid-date-feedback'), "Ngày không để trống");
+    } else {
+        validInput(this, $('#paid-date-feedback'))
+    }
+})
+//-----------------------------------------------------------------------------------------------------------------
 // Reset form
 $(document).on('click', '.reset', function () {
     resetForm(this);

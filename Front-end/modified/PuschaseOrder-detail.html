@@ -180,7 +180,7 @@
                                             <span>Đã trả: <strong>23456</strong></span>
                                         </div>
                                         <div class="col-4 text-end">
-                                            <span>Còn phải trả: <strong class="text-danger">100000</strong></span>
+                                            <span>Còn phải trả: <strong class="text-danger" id="debt">100000</strong></span>
                                         </div>
                                     </div>
                                     <div class="payment-items">
@@ -307,12 +307,13 @@
                             <div class="modal-body row">
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Số tiền</label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control validate important" id="paid">
+                                    <div id="paid-feedback" class="feedback"></div>
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Ngày thanh toán</label>
-                                    <input type="datetime-local" class="form-control" placeholder="Nhập mã vạch">
-                                    <div id="barCode-feedback" class="feedback"></div>
+                                    <input type="datetime-local" class="form-control validate important" id="paid-date" placeholder="Nhập mã vạch">
+                                    <div id="paid-date-feedback" class="feedback"></div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -413,6 +414,7 @@
         })
     </script>
 
+    <script src="assets/js/validate.js"></script>
     <!-- App JS -->
     <script src="assets/js/app.js"></script>
     <!--notification js -->
