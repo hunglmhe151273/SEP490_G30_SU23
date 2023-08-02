@@ -335,7 +335,7 @@ function populateProductsSelect() {
 }
 
 // Hàm để lấy thông tin khi bấm vào thẻ <a>
-function getBookInfo(linkElement) {
+function getProductInfo(linkElement) {
     //lấy được phần tử cần ẩn
     const theA = linkElement;
     // Lấy các phần tử con bên trong thẻ <a> được click
@@ -389,7 +389,7 @@ function getBookInfo(linkElement) {
         productList.append(theA);
         // C2: Hiển thị lại thẻ a
         //theA.style.display = 'block';
-        updateInvoice();
+        updateOrder();
     });
 
     orderContainer.appendChild(productRow);
@@ -398,7 +398,7 @@ function getBookInfo(linkElement) {
     theA.remove();
     // C2: Ẩn thẻ a
     //theA.style.display = 'none';
-    updateInvoice();
+    updateOrder();
 }
 
 $(document).on('click', '#submitProduct', function () {

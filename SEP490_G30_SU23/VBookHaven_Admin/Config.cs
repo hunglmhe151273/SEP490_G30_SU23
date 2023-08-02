@@ -1,16 +1,8 @@
-﻿using System.ComponentModel;
-
-namespace VBookHaven
+﻿namespace VBookHaven_Admin
 {
-	public static class Config
-	{
-		private const string imageRoot = "https://localhost:7123";
-
-		public static string ImageRoot
-		{
-			get { return imageRoot; }
-		}
-	}
+    public class Config
+    {
+    }
 
 	public static class OrderStatus
 	{

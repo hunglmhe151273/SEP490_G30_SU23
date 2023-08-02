@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230801164013_updateOrder")]
+    partial class updateOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -382,29 +385,17 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<string>("AccountId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("DOB")
-                        .HasColumnType("date")
-                        .HasColumnName("DOB");
-
                     b.Property<int?>("DefaultShippingInfoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Image")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<bool?>("IsMale")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Phone")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
+                        .HasMaxLength(15)
+                        .HasColumnType("nchar(15)")
                         .IsFixedLength();
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CustomerId");
 
@@ -680,37 +671,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.ToTable("PurchaseOrderDetail", (string)null);
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.PurchasePaymentHistory", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Payment_ID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<decimal?>("PaymentAmount")
-                        .HasColumnType("decimal(15, 0)");
-
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("PurchaseId")
-                        .HasColumnType("int")
-                        .HasColumnName("Purchase_ID");
-
-                    b.Property<int?>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("PurchaseId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("PurchasePaymentHistory", (string)null);
-                });
-
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
                 {
                     b.Property<int>("ReviewId")
@@ -759,28 +719,15 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("District")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("DistrictCode")
-                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
-
-                    b.Property<string>("Province")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("ProvinceCode")
-                        .HasColumnType("int");
 
                     b.Property<string>("ShipAddress")
                         .IsRequired()
@@ -789,13 +736,6 @@ namespace VBookHaven.DataAccess.Migrations
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Ward")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("WardCode")
-                        .HasColumnType("int");
 
                     b.HasKey("ShipInfoId");
 
@@ -856,7 +796,7 @@ namespace VBookHaven.DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[AccountId] IS NOT NULL");
 
-                    b.ToTable("Staff", (string)null);
+                    b.ToTable("Staff");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Stationery", b =>
@@ -1206,23 +1146,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Navigation("PurchaseOrder");
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.PurchasePaymentHistory", b =>
-                {
-                    b.HasOne("VBookHaven.Models.PurchaseOrder", "Purchase")
-                        .WithMany("PurchasePaymentHistories")
-                        .HasForeignKey("PurchaseId")
-                        .HasConstraintName("FK_PurchasePaymentHistory_PurchaseOrder");
-
-                    b.HasOne("VBookHaven.Models.Staff", "Staff")
-                        .WithMany("PurchasePaymentHistories")
-                        .HasForeignKey("StaffId")
-                        .HasConstraintName("FK_PurchasePaymentHistory_Staff");
-
-                    b.Navigation("Purchase");
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("VBookHaven.Models.Review", b =>
                 {
                     b.HasOne("VBookHaven.Models.Product", "Product")
@@ -1316,8 +1239,6 @@ namespace VBookHaven.DataAccess.Migrations
             modelBuilder.Entity("VBookHaven.Models.PurchaseOrder", b =>
                 {
                     b.Navigation("PurchaseOrderDetails");
-
-                    b.Navigation("PurchasePaymentHistories");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.ShippingInfo", b =>
@@ -1332,8 +1253,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("PurchaseOrders");
-
-                    b.Navigation("PurchasePaymentHistories");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.SubCategory", b =>

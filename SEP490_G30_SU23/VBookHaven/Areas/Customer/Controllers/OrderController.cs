@@ -13,8 +13,10 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 	// Chua co thumbnail trong gio hang
 	// Chua co thumbnail tren cart o header
+	// Khi tao shipping info moi luc check out -> Neu chua co shipping info nao -> De default luon
 
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
+	// Cho khach hang them ghi chu khi dat hang?
 
 	public class OrderPurchaseModel
 	{
@@ -232,8 +234,11 @@ namespace VBookHaven.Areas.Customer.Controllers
 			order.Phone = shipInfo.Phone;
 			order.ShipAddress = shipInfo.ShipAddress;
 
-			order.Status = "Chờ xác nhận";
+			order.Status = OrderStatus.Process;
 			order.CustomerId = custId;
+
+			order.AmountPaid = 0;
+			order.VAT = 0;
 
 			foreach (var item in cart)
 			{

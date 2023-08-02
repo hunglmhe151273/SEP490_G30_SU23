@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -41,6 +41,11 @@
     <Folder Include="wwwroot\images\img\" />
     <Folder Include="wwwroot\images\customer\" />
     <Folder Include="wwwroot\images\Staff\" />
+    <Content Update="wwwroot\js\Order.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
   </ItemGroup>
 
 </Project>
