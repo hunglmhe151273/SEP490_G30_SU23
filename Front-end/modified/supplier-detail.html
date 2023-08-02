@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>Syndash - Bootstrap4 Admin Template</title>
+	<!--favicon-->
+	<link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+	<!--plugins-->
+	<link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<!--Data Tables -->
+	<link href="assets/plugins/datatable/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/plugins/datatable/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css">
+	<!--plugins-->
+	<link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+	<link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+	<link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+	<!-- loader-->
+	<link href="assets/css/pace.min.css" rel="stylesheet" />
+	<script src="assets/js/pace.min.js"></script>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+	<!-- Icons CSS -->
+	<link rel="stylesheet" href="assets/css/icons.css" />
+	<!-- App CSS -->
+	<link rel="stylesheet" href="assets/css/app.css" />
+	<link rel="stylesheet" href="assets/css/dark-sidebar.css" />
+	<link rel="stylesheet" href="assets/css/dark-theme.css" />
+	<style>
+		.title{
+			color: gray;
+			font-size: medium;
+			margin-bottom: 0;
+		}
+		.content{
+			color: black;
+			font-size: large;
+		}
+		img{
+			width: 105px;
+			height: 70px;
+		}
+		h4, h5{
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- wrapper -->
+	<div class="wrapper">
+		<!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<!--breadcrumb-->
+					<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+						<div class="breadcrumb-title pe-3">Nhà cung cấp</div>
+						<div class="ps-3">
+							<nav aria-label="breadcrumb">
+								<ol class="breadcrumb mb-0 p-0">
+									<li class="breadcrumb-item"><a href="javascript:;"><i
+												class="bx bx-home-alt"></i></a>
+									</li>
+									<li class="breadcrumb-item active" aria-current="page">Chi tiết nhà cung cấp</li>
+								</ol>
+							</nav>
+						</div>
+					</div>
+					<!--end breadcrumb-->
+					<div class="card border-top border-0 border-4 border-info">
+						<div class="card-body p-4">
+							<div class="card-title mb-3 row">
+								<div class="col-md-6 d-flex align-items-center">
+									<div><i class="bx bxs-detail bx-tada me-2 font-24"></i>
+									</div>
+									<h4 class="mb-0">Thông tin chung</h4>									
+								</div>
+								<div class="col-md-6 d-flex justify-content-end">
+									<a href="" class="btn btn-primary px-3 py-2">Sửa thông tin nhà cung cấp</a>
+								</div>
+							</div>
+							<div class="card-body px-0">
+								<h5 class="mb-3"><span class="badge bg-success px-3">Đang giao dịch</span></h5>
+								<div class="row mt-3">
+									<div class="col-sm-6">
+										<p class="title">Tên nhà cung cấp</p>
+										<p class="content">Nhà cung cấp 1</p>
+									</div>
+									<div class="col-sm-6">
+										<p class="title">Số điện thoại</p>
+										<p class="content">0123456789</p>
+									</div>
+									<div class="col-sm-6">
+										<p class="title">Email</p>
+										<p class="content">nhacungcap1@gmail.com</p>
+									</div>
+									<div class="col-sm-6">
+										<p class="title">Địa chỉ</p>
+										<p class="content">Hà Nội, Việt Nam</p>
+									</div>
+									<div class="col-md-12">
+										<p class="title">Ghi chú</p>
+										<p class="content">...</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card border-top border-0 border-4 border-info">
+						<div class="card-body">
+							<div class="card-title">
+								<div class="col-md-6 d-flex align-items-center">
+									<div><i class="bx bxs-package bx-tada me-2 font-24"></i>
+									</div>
+									<h4 class="mb-0">Các sản phẩm cung cấp</h4>
+								</div>
+							</div>
+							<hr />
+							<div class="input-group input-group-lg my-2">
+								<span class="input-group-text bg-transparent"><i class="bx bx-search"></i></span>
+								<input class="form-control border-start-0 filter" type="text" placeholder="Tìm kiếm bằng tên sản phẩm" id="search">
+							</div>
+							<div class="mb-3 row">
+								<div class="table-responsive mt-3">
+									<table id="example2" class="table table-striped table-bordered" style="width:100%">
+										<thead>
+											<tr>
+												<th>Mã sản phẩm</th>
+												<th>Ảnh</th>
+												<th>Tên sản phẩm</th>
+												<th>Loại</th>
+												<th>Đơn vị</th>
+												<th>Ngày khởi tạo</th>
+												<th>Chi tiết</th>
+											</tr>
+										</thead>
+										<tbody id="myTable">
+											<tr>
+												<td>0213127301283</td>
+												<td>
+													<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrLma5aAvx0GfOw_SpUWij6cng9eleiZoXxMyh-fsyRloR5RuxJW_KdBw5Hbup0ocbo5s&usqp=CAU"
+														alt="">
+												</td>
+												<td>Sách 1</td>
+												<td>Sách</td>
+												<td>Cuốn</td>
+												<td>19/7/2023 16:13</td>
+												<td class="text-center">
+													<a href="" class="btn btn-sm btn-default">
+														<i class="lni lni-eye"></i>
+													</a>
+												</td>
+											</tr>
+											<tr>
+												<td>9234923742394</td>
+												<td>
+													<img src="https://product.hstatic.net/1000230347/product/but_bi_thien_long_tl-027__1__1024x1024.jpg"
+														alt="">
+												</td>
+												<td>VVP 1</td>
+												<td>Bút bi</td>
+												<td>Chiếc</td>
+												<td>19/7/2023 16:34</td>
+												<td class="text-center">
+													<a href="" class="btn btn-sm btn-default">
+														<i class="lni lni-eye"></i>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!--end page-content-wrapper-->
+			</div>
+			<!--end page-wrapper-->
+			<!--start overlay-->
+			<div class="overlay toggle-btn-mobile"></div>
+			<!--end overlay-->
+			<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top"><i
+					class='bx bxs-up-arrow-alt'></i></a>
+			<!--End Back To Top Button-->
+			<!--footer -->
+			<div class="footer">
+				<p class="mb-0">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent"
+						target="_blank">codervent</a>
+				</p>
+			</div>
+			<!-- end footer -->
+		</div>
+		<!-- end wrapper -->
+		<!--start switcher-->
+		<div class="switcher-body">
+			<button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas"
+				data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
+					class="bx bx-cog bx-spin"></i></button>
+			<div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true"
+				data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling">
+				<div class="offcanvas-header border-bottom">
+					<h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+				</div>
+				<div class="offcanvas-body">
+					<h6 class="mb-0">Theme Variation</h6>
+					<hr>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode"
+							value="option1" checked>
+						<label class="form-check-label" for="lightmode">Light</label>
+					</div>
+					<hr>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode"
+							value="option2">
+						<label class="form-check-label" for="darkmode">Dark</label>
+					</div>
+					<hr>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar"
+							value="option3">
+						<label class="form-check-label" for="darksidebar">Semi Dark</label>
+					</div>
+					<hr>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons"
+							value="option3">
+						<label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end switcher-->
+		<!-- JavaScript -->
+		<!-- Bootstrap JS -->
+		<script src="assets/js/bootstrap.bundle.min.js"></script>
+
+		<!--plugins-->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+		<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+		<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+		<!--Data Tables js-->
+		<script src="assets/plugins/datatable/js/jquery.dataTables.min.js"></script>
+		<script>
+			$(document).ready(function () {
+				var table = $('#example2').DataTable({});
+				table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+			});
+		</script>
+		<!-- App JS -->
+		<script src="assets/js/app.js"></script>
+		<!-- CSS Description -->
+		<script>
+			$(document).ready(function () {
+				$(".filter").on("input", function () {
+					var search = $("#search").val().toLowerCase();
+					$("#myTable tr").filter(function () {
+						$(this).toggle(
+							$(this).find('td:eq(2)').text().toLowerCase().indexOf(search) > -1 
+						);
+					})
+				});
+			});
+		</script>
+	</div>
+</body>
+
+</html>
