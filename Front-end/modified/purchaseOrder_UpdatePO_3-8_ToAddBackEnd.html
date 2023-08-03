@@ -145,7 +145,7 @@
                                         <hr>
                                         <div class="card-body row g-3">
                                             <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                            <div class="col-md-12 px-0" id="supplierContainer">
+                                            <div class="col-md-12 px-0" id="supplierContainer" style="display: none;">
                                                 <select id="supplierSelect" class="single-select">
 
                                                 </select>
@@ -154,7 +154,12 @@
                                                 </div>
                                             </div>
                                             <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                            <div id="supplierInfoContainer" class="mb-4"></div>
+                                            <div id="supplierInfoContainer" class="mb-4">
+                                                <div class="supplier-info">
+                                                    <h6 class="text-primary fw-bold">Nhà cung cấp A<button type="button" onclick="closeButton()" class="btn-close"></button></h6>
+                                                    <label class="fw-bold">Số điện thoại: 0123456789</label></br>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -238,7 +243,7 @@
                                                             </td>
                                                             <td><span class="sum"></span> VNĐ</td>
                                                             <td>
-                                                                <a type="button" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+                                                                <a href="javascript:;" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
                                                                     <div class="hidden-content productId">1</div>
                                                                     <div class="hidden-content name">Sach test 1</div>
                                                                     <div class="hidden-content barcode">PVN1</div>

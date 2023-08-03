@@ -302,7 +302,7 @@ $("#supplierSelect").change(() => {
 
             var showSupplierInfoDiv =  `
             <div class="supplier-info">
-                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" class="btn-close"></button></h6>
+                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" onclick="closeButton()" class="btn-close"></button></h6>
                 <label class="fw-bold">Số điện thoại: ${supplier.phone}</label></br>
             `;
             if (supplier.province !== null) {
@@ -311,16 +311,21 @@ $("#supplierSelect").change(() => {
             showSupplierInfoDiv += `</div>`;
 
         supplierInfoContainer.innerHTML = showSupplierInfoDiv;
-
-        // Add event listener to the close button
-        const closeBtn = supplierInfoContainer.querySelector('.btn-close');
-        closeBtn.addEventListener('click', function() {
-            supplierInfoContainer.innerHTML = '';//clear supplier Infomation
-            $('#supplierSelect').val('').trigger('change'); //change value
-            console.log("supplierSelect VALUE: " + supplierSelect.value)
-            supplierContainer.style.display = 'block'; // Show the supplier container
-        });
+        // // Add event listener to the close button
+        // const closeBtn = supplierInfoContainer.querySelector('.btn-close');
+        // closeBtn.addEventListener('click', function() {
+        //     supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        //     $('#supplierSelect').val('').trigger('change'); //change value
+        //     supplierContainer.style.display = 'block'; // Show the supplier container
+        // });
+       
     }
+    function closeButton(){
+        supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        $('#supplierSelect').val('').trigger('change'); //change value
+        supplierContainer.style.display = 'block'; // Show the supplier container
+    }
+     
       // Function to populate products select list
       function populateProductsSelect() {
         productList.innerHTML = `
@@ -397,7 +402,7 @@ $("#supplierSelect").change(() => {
             </td>
             <td><span class="sum"></span> VNĐ</td>
             <td>
-            <a href="javascript:;" type="button" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+            <a href="javascript:;" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
                 <div class="hidden-content productId">${productId}</div>
                 <div class="hidden-content name"> ${name}</div>
                 <div class="hidden-content barcode">${barcode}</div>
