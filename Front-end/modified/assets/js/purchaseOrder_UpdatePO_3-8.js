@@ -202,14 +202,22 @@ const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
 
 //Call API
-//fetchDataFromAPIs();
+fetchDataFromAPIs(purchaseId);
 
 //for test
-populateSuppliersSelect();
-populateProductsSelect();
+// populateSuppliersSelect();
+// populateProductsSelect();
+var purchaseId = getParameterFromUrl('purchaseId');
 
+function getParameterFromUrl(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 // Function to fetch suppliers and products data using AJAX
-function fetchDataFromAPIs() {
+
+fetchDataFromAPIs(purchaseId);
+
+function fetchDataFromAPIs(purchaseId) {
     $.ajax({
         url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSuppliers',
         type: 'GET',
@@ -225,8 +233,9 @@ function fetchDataFromAPIs() {
             console.log('Error fetching suppliers data:', error);
         }
     });
+    let urlGetAllOtherProductsInPurchaseId = `https://localhost:7123/Admin/PurchaseOrder/GetAllOtherProductsByPurchaseId?purchaseId=${purchaseId}`;
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/getallproducts',
+        url: urlGetAllOtherProductsInPurchaseId,
         type: 'GET',
         dataType: 'json',
         success: function(productsData) {
@@ -350,7 +359,7 @@ let productExists = [{
     // Hàm để lấy thông tin khi bấm vào thẻ <a>
     function getBookInfo(linkElement) {
         // Lấy các phần tử con bên trong thẻ <a> được click
-        const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
+    const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
     const name = linkElement.querySelector('.hidden-content.name').innerHTML;
     const barcode = linkElement.querySelector('.hidden-content.barcode').innerHTML;
     const unit = linkElement.querySelector('.hidden-content.unit').innerHTML;
@@ -417,6 +426,7 @@ let productExists = [{
             console.log('productID: '+productId);
             products = products.filter((product) => product.productId !== Number(productId));
             console.log('after'+products);
+            products.sort((a, b) => a.productId - b.productId);
             populateProductsSelect();
             // // C1: Xóa thẻ a
             // theA.remove();
@@ -435,11 +445,11 @@ let productExists = [{
     });
 
     function addSupplierByAPI() {
-        var name = $('#supplier').val();
-        var phone = $('#phone').val();
-        var description = $('#description').val();
-        var supplierLength = suppliers.length;
-        var supplierDTO = {
+        let name = $('#supplier').val();
+        let phone = $('#phone').val();
+        let description = $('#description').val();
+        let supplierLength = suppliers.length;
+        let supplierDTO = {
             "supplierId": null,
             "address": null,
             "supplierName": name,
@@ -486,14 +496,14 @@ let productExists = [{
         });
     }
     function addProductByAPI() {
-        var productName = $('#productName').val();
-        var barCode = $('#barCode').val();
-        var price = $('#price').val();
-        var quantity = $('#quantity').val();
-        var unit = $('#unit').val();
-        var isBook = $('#isBook').val(); 
+        let productName = $('#productName').val();
+        let barCode = $('#barCode').val();
+        let price = $('#price').val();
+        let quantity = $('#quantity').val();
+        let unit = $('#unit').val();
+        let isBook = $('#isBook').val(); 
 
-        var bookDTO =  {
+        let bookDTO =  {
                 "productId": null,
                 "name": productName,
                 "barcode": barCode,
@@ -570,6 +580,8 @@ let productExists = [{
   console.log('curproduct'+products);
   // Push the new product object to the productExists array
      products.push(newProduct);
+     // Sorting products by productId in ascending order
+    products.sort((a, b) => a.productId - b.productId);
         populateProductsSelect();
         parentTr.remove();
     }

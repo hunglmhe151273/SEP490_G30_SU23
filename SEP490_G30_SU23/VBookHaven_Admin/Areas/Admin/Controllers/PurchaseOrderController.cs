@@ -197,6 +197,25 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return listProducts.Select(_mapper.Map<Product, ProductDTO>).ToList();
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllOtherProductsByPurchaseId(int purchaseId)
+        {
+            if(purchaseId == 0)
+            {
+                return NotFound();
+            }
+            //get list product and return list
+            var listProducts = new List<Product>();
+            try
+            {
+                listProducts = await _dbContext.Products.Where(p => !p.PurchaseOrderDetails.Where(pd => pd.PurchaseOrderId == purchaseId).Any()).Include(x => x.Images).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return listProducts.Select(_mapper.Map<Product, ProductDTO>).ToList();
+        }
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] ProductDTO productDTO)
         {
