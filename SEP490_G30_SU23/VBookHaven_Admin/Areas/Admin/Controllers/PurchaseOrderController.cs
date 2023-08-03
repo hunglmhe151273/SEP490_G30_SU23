@@ -42,6 +42,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         public async Task<IActionResult> Create(CreatePurchaseOrderVM model)
         {
             var staffCreate = await GetStaffByUserID();
+            ModelState.Remove("PurchaseOrderEdit");
             if (!ModelState.IsValid || staffCreate == null || model.ProductIdList.Count == 0)
             {
                 TempData["error"] = "Thêm đơn nhập thất bại";
@@ -164,6 +165,54 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             await _dbContext.PurchasePaymentHistories.AddAsync(payment);
             _dbContext.SaveChanges();
             return RedirectToAction(nameof(Create));
+        }
+        public async Task<IActionResult> Edit(int purchaseId)
+        {
+            var staffEdit = await GetStaffByUserID();
+            if (purchaseId == 0 || _dbContext.PurchaseOrders == null)
+            {
+                return NotFound();
+            }
+
+            var purchaseOrder = await _dbContext.PurchaseOrders
+                .Include(p => p.Staff)
+                .Include(p => p.Supplier)
+                .Include(p => p.PurchasePaymentHistories)
+                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product)
+                .FirstOrDefaultAsync(m => m.PurchaseOrderId == purchaseId);
+            if (purchaseOrder == null)
+            {
+                return NotFound();
+            }
+
+            ////Tổng tiền hàng
+            //decimal sum = 0;
+            //foreach (var detail in purchaseOrder.PurchaseOrderDetails)
+            //{
+            //    if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
+            //    {
+            //        sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
+            //    }
+            //}
+            ////Tổng đã trả
+            //decimal sumPaid = 0;
+            //foreach (var history in purchaseOrder.PurchasePaymentHistories)
+            //{
+            //    if (history.PaymentAmount.HasValue)
+            //    {
+            //        sumPaid += (decimal)(history.PaymentAmount);
+            //    }
+            //}
+            ////Tính số tiền còn thiếu
+            //DetailsPurchaseOrderVM vm = new DetailsPurchaseOrderVM();
+            //vm.Unpaid = sum - sumPaid;
+            //vm.pO = purchaseOrder;
+            ////Form
+            //vm.PPHistory.PurchaseId = purchaseOrder.PurchaseOrderId;
+
+            CreatePurchaseOrderVM vm = new CreatePurchaseOrderVM();
+            vm.PurchaseOrderEdit = purchaseOrder;
+            return View(vm);
         }
 
         #region CallAPI
