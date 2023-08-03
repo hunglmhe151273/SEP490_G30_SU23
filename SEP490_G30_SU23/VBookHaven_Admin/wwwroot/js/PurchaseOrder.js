@@ -348,7 +348,7 @@ function getBookInfo(linkElement) {
     const productHTML = `
             <input name="ProductIDList" value="${proId}" hidden>
             <td></td>
-            <td> <img src="${imgSrc}"></td>
+            <td> <img src="${imgSrc}" class="productImg"></td>
             <td>
                 <div class="ellipsis">
                 ${bookTitle}

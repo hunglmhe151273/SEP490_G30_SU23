@@ -210,6 +210,63 @@ let products = [{
         "subCategoryId": 2
     }
 ];
+
+let productExists = [{
+        "productId": 1,
+        "name": "Sach test 1",
+        "barcode": "PVN1",
+        "unit": "Quyển",
+        "unitInStock": 0,
+        "purchasePrice": 15,
+        "retailPrice": 17,
+        "retailDiscount": 2,
+        "wholesalePrice": 16,
+        "wholesaleDiscount": 2,
+        "size": null,
+        "weight": null,
+        "description": null,
+        "status": true,
+        "isBook": true,
+        "subCategoryId": 1
+    },
+    {
+        "productId": 2,
+        "name": "Sach test 2",
+        "barcode": "PVN2",
+        "unit": "Bộ",
+        "unitInStock": 0,
+        "purchasePrice": 20000,
+        "retailPrice": 23000,
+        "retailDiscount": 2,
+        "wholesalePrice": 21000,
+        "wholesaleDiscount": 2,
+        "size": null,
+        "weight": null,
+        "description": null,
+        "status": true,
+        "isBook": true,
+        "subCategoryId": 2
+    },
+    {
+        "productId": 3,
+        "name": "Sach test 3",
+        "barcode": "PVN3",
+        "unit": "Thùng",
+        "unitInStock": 0,
+        "purchasePrice": 25000,
+        "retailPrice": 28000,
+        "retailDiscount": 0.2,
+        "wholesalePrice": 27000,
+        "wholesaleDiscount": 0.2,
+        "size": null,
+        "weight": null,
+        "description": null,
+        "status": true,
+        "isBook": true,
+        "subCategoryId": 1
+    }
+];
+
 const supplierSelect = document.getElementById('supplierSelect');
 const supplierInfoContainer = document.getElementById('supplierInfoContainer');
 const supplierContainer = document.getElementById('supplierContainer');
