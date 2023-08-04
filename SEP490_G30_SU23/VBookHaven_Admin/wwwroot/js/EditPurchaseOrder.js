@@ -322,7 +322,6 @@ function showSupplierInfo(supplier) {
 
 }
 function closeButton() {
-
     supplierInfoContainer.innerHTML = '';//clear supplier Infomation
     $('#supplierSelect').val('').trigger('change'); //change value
     supplierContainer.style.display = 'block'; // Show the supplier container

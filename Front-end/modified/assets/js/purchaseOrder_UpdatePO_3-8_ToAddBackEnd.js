@@ -322,12 +322,35 @@ $("#supplierSelect").change(() => {
        
     }
     function closeButton(){
+       
         supplierInfoContainer.innerHTML = '';//clear supplier Infomation
         $('#supplierSelect').val('').trigger('change'); //change value
         console.log("Display block");
         supplierContainer.style.display = 'block'; // Show the supplier container
     }
-     
+    function defaultCloseButton(){
+        $("#supplierContainer").append(`<div class="hidden-content">
+        <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
+            <option value="" selected></option>
+        </select>
+        </div>`);
+        supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        $('#supplierSelect').val('').trigger('change'); //change value
+        console.log("Display block");
+        supplierContainer.style.display = 'block'; // Show the supplier container
+    }
+    function handleFormSubmit() {
+        if( $('#supplierSelect').val() == '' && $('#supplierSelectDefault').val()== ''){
+            console.log("Please select");
+            round_error_noti();
+            return false;
+        }else{
+            console.log("Đã  submit");
+            return true;
+        }
+        
+      } 
+
       // Function to populate products select list
       function populateProductsSelect() {
         productList.innerHTML = `

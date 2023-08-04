@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Syndash - Bootstrap4 Admin Template</title>
+    <!--favicon-->
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link rel="stylesheet" href="assets/plugins/notifications/css/lobibox.min.css" />
+    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.css" rel="stylesheet" />
+    <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="assets/plugins/select2/css/select2-bootstrap4.css" rel="stylesheet" />
+    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <!-- loader-->
+    <link href="assets/css/pace.min.css" rel="stylesheet" />
+    <link href="assets/css/wizard.css" rel="stylesheet" />
+    <script src="assets/js/pace.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="assets/css/icons.css" />
+    <!-- App CSS -->
+    <link rel="stylesheet" href="assets/css/app.css" />
+    <link rel="stylesheet" href="assets/css/dark-sidebar.css" />
+    <link rel="stylesheet" href="assets/css/dark-theme.css" />
+    <style>
+        .hidden-content {
+            display: none;
+        }
+        
+        #searchList {
+            position: absolute;
+            z-index: 3;
+            display: none;
+            box-shadow: 2px 2px gray;
+        }
+        
+        .item {
+            padding: 10px 15px;
+        }
+        
+        #list-product {
+            border: 1px solid lightgray;
+            overflow-y: auto;
+            max-height: 350px;
+        }
+        
+        .cover {
+            padding: 0;
+            width: 60px;
+            height: 50px;
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        td:nth-child(3) {
+            max-width: 100px;
+        }
+        /* Custom CSS for truncating text and keeping the link next to it */
+        
+        .ellipsis {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            /* Set the number of lines to display */
+            overflow: hidden;
+        }
+        /* Custom CSS for adjusting the size of the ellipsis div */
+        
+        .ellipsis-div {
+            max-width: 150px;
+            /* Set the maximum width for the div (adjust as needed) */
+        }
+        
+        input[type=number] {
+            width: 100%;
+            text-align: center;
+        }
+        /* Custom CSS for text overflow ellipsis */
+    </style>
+</head>
+
+<body>
+    <!-- wrapper -->
+    <div class="wrapper">
+        <!--page-wrapper-->
+        <div class="page-wrapper">
+            <!--page-content-wrapper-->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <!--breadcrumb-->
+                    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                        <div class="breadcrumb-title pe-3">Nhập hàng</div>
+                        <div class="ps-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0 p-0">
+                                    <li class="breadcrumb-item"><a href="javascript:;"><i
+                                                class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Nhập hàng</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Tạo đơn đơn nhập hàng</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                    <!--end breadcrumb-->
+                    <form id="myForm">
+                        <div class="row">
+                            <div class="col-9 mx-auto">
+                                <div class="col-12 card border-top border-0 border-4 border-primary">
+                                    <div class="pt-4 px-5">
+                                        <div class="card-title d-flex align-items-center">
+                                            <div><i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
+                                            </div>
+                                            <h4 class="mb-0 fw-bold">Nhà cung cấp</h4>
+                                        </div>
+                                        <hr>
+                                        <div class="card-body row g-3">
+                                            <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
+                                            <div class="col-md-12 px-0" id="supplierContainer" style="display: none;">
+                                                <select id="supplierSelect" class="single-select">
+                                                    <option value="">Chọn nhà cung cấp...</option>
+                                                </select>
+                                                <div class="btn btn-outline-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#addSupplier">
+                                                    <i class='bx bx-plus-circle fs-5'></i> Thêm nhanh nhà cung cấp
+                                                </div>
+                                            </div>
+                                            <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
+                                            <div id="supplierInfoContainer" class="mb-4">
+                                                <div class="supplier-info">
+                                                    <h6 class="text-primary fw-bold">Nhà cung cấp A<button type="button" onclick="defaultCloseButton()" class="btn-close"></button></h6>
+                                                    <label class="fw-bold">Số điện thoại: 0123456789</label></br>
+                                                </div>
+                                                <div class="hidden-content">
+                                                    <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
+                                                        <option value="1" selected></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 pe-0 mx-auto">
+                                <div class="card border-top border-0 border-4 border-primary py-2">
+                                    <div class="card-body text-end">
+                                        <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
+                                        <input type="submit" class="btn btn-success px-5 mx-3" onclick="return handleFormSubmit()" value="Tạo đơn">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+            <!--end page-content-wrapper-->
+        </div>
+        <!--end page-wrapper-->
+        <!--start overlay-->
+        <div class="overlay toggle-btn-mobile"></div>
+        <!--end overlay-->
+        <!--Start Back To Top Button--><a href="javaScript:;" class="back-to-top"><i
+                class='bx bxs-up-arrow-alt'></i></a>
+        <!--End Back To Top Button-->
+        <!--footer -->
+        <div class="footer">
+            <p class="mb-0">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent" target="_blank">codervent</a>
+            </p>
+        </div>
+        <!-- end footer -->
+    </div>
+    <!-- end wrapper -->
+    <!--start switcher-->
+    <div class="switcher-body">
+        <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
+                class="bx bx-cog bx-spin"></i></button>
+        <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h6 class="mb-0">Theme Variation</h6>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode" value="option1" checked>
+                    <label class="form-check-label" for="lightmode">Light</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode" value="option2">
+                    <label class="form-check-label" for="darkmode">Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar" value="option3">
+                    <label class="form-check-label" for="darksidebar">Semi Dark</label>
+                </div>
+                <hr>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons" value="option3">
+                    <label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end switcher-->
+    <!-- JavaScript -->
+    <!-- Bootstrap JS -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <!--plugins-->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <!-- <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script> -->
+    <!--Select2 plugins-->
+    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <!--File-Uploader plugins-->
+    <script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+
+    <script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+
+        // prevent: "e", "=", ",", "-", "." 
+        $(document).on('keydown', 'input[type=number]', function(e) {
+            if ([69, 187, 188, 189, 190].includes(e.keyCode)) {
+                e.preventDefault();
+            }
+        })
+
+        // Update invoice function
+        var updateInvoice = function() {
+            var num, discount, price, sum, markup;
+            let totalPrice = 0,
+                totalPay = 0,
+                count = 0
+            vat = 0;
+
+            //default values
+            $('#totalPrice').text('0');
+            $('#totalPay').text('0');
+
+            // check valid VAT (NEW)
+            var vatValue = $('#totalVat').val();
+            if (isNaN(vatValue) || vatValue >= 100 || !isNotNullOrEmpty(vatValue)) {
+                $('#totalVat').val(0);
+                vatValue = 0;
+            }
+            vat = vatValue;
+
+            $('#myTable tr').each(function() {
+                $(this).find("td:first").text(count++)
+            });
+            $('#orderContainer tr').each(function() {
+                $(this).find($('.sum')).text(0);
+
+                // check quantity validation (NEW)
+                var numValue = $(this).find($(".num")).val();
+                if (isNaN(numValue) || !isNotNullOrEmpty(numValue)) {
+                    $(this).find($(".num")).val(1);
+                    numValue = 1;
+                }
+                num = numValue;
+
+                // check discount validation (NEW)
+                var discountValue = $(this).find($(".discount")).val();
+                if (isNaN(discountValue) || discountValue >= 100 || !isNotNullOrEmpty(discountValue)) {
+                    $(this).find($(".discount")).val(0);
+                    discountValue = 0;
+                }
+                discount = discountValue;
+
+                // check price validation (NEW)
+                priceValue = $(this).find($(".price")).val();
+                if (isNaN(priceValue) || !isNotNullOrEmpty(priceValue)) {
+                    $(this).find($(".price")).val(0);
+                    priceValue = 0;
+                }
+                price = priceValue;
+
+                if (isNotNullOrEmpty(num) &&
+                    isNotNullOrEmpty(discount) &&
+                    isNotNullOrEmpty(price)) {
+                    sum = (parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
+                    totalPrice += parseFloat(sum);
+                    totalPay = totalPrice * (100 + parseFloat(vat)) / 100;
+                    //totalPrice += parseFloat(parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
+                    //totalPay += parseFloat(parseFloat(price) * (100 - parseFloat(discount) + parseFloat(vat)) / 100 * num)
+                    $(this).find($('.sum')).text(sum.toLocaleString('en'));
+                    $('#totalPrice').text(totalPrice.toLocaleString('en'));
+                    $('#totalPay').text(totalPay.toLocaleString('en'));
+
+                }
+            })
+
+            // NEW CODE HERE
+            // validate paid and debt 
+            var paid = $('#paid').val();
+            var debt = parseFloat(totalPay) - paid;
+            if (parseFloat(totalPay) >= paid) {
+                $('#debt').text(debt.toLocaleString('en'));
+            } else {
+                $('#paid').val(totalPay)
+                $('#debt').text('0');
+            }
+            //END NEW CODE
+            totalPrice = 0;
+            totalPay = 0;
+        }
+
+        $(document).ready(function() {
+            updateInvoice();
+
+            // Search product
+            $('#search').on({
+                'click': function() {
+                    $('#searchList').fadeIn('fast');
+                },
+                'blur': function() {
+                    $('#searchList').fadeOut('fast');
+                },
+                'keyup': function() {
+                    var searchText = $(this).val();
+                    $('#list-product > .item').each(function() {
+                        $(this).toggle(
+                            $(this).find('.search-info').text().toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
+                    });
+                }
+            });
+
+            $('#myTable')
+                .change(updateInvoice)
+                .keyup(updateInvoice);
+
+            $('#countTable')
+                .change(updateInvoice)
+                .keyup(updateInvoice);
+        });
+
+        function isNotNullOrEmpty(value) {
+            return value !== null && value !== undefined && value !== '';
+        }
+    </script>
+    <script src="assets/js/purchaseOrder_UpdatePO_3-8_ToAddBackEnd.js"></script>
+    <script src="assets/js/validate.js"></script>
+    <!-- App JS -->
+    <script src="assets/js/app.js"></script>
+    <!--notification js -->
+    <script src="assets/plugins/notifications/js/lobibox.min.js"></script>
+    <script src="assets/plugins/notifications/js/notifications.min.js"></script>
+    <script src="assets/plugins/notifications/js/notification-custom-script.js"></script>
+</body>
+
+</html>

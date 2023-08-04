@@ -123,7 +123,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 return View(model);
             }
             //Nếu không thay đổi supplier
-            if(model.PurchaseOrderEdit.SupplierId == 0) {
+            if(model.PurchaseOrderEdit.SupplierId == 0 || model.PurchaseOrderEdit.SupplierId == null) {
                 model.PurchaseOrderEdit.SupplierId = model.DefaultSupplierIDShow;
             }
             var pO = await _dbContext.PurchaseOrders.Include(p=> p.PurchaseOrderDetails).SingleOrDefaultAsync(po => po.PurchaseOrderId == model.PurchaseOrderEdit.PurchaseOrderId);
