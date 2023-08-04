@@ -46,7 +46,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             if (!ModelState.IsValid || staffCreate == null || model.ProductIdList.Count == 0)
             {
                 TempData["error"] = "Thêm đơn nhập thất bại";
-                return View();
+                return View(model);
             }
             PurchaseOrder pO = new PurchaseOrder();
             pO.Status = "Tạo đơn hàng";
@@ -81,7 +81,80 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             TempData["success"] = "Thêm đơn nhập thành công";
             return RedirectToAction(nameof(Create));
         }
+        public async Task<IActionResult> Edit(int purchaseId)
+        {
+            var staffEdit = await GetStaffByUserID();
+            if (purchaseId == 0 || _dbContext.PurchaseOrders == null)
+            {
+                return NotFound();
+            }
 
+            var purchaseOrder = await _dbContext.PurchaseOrders
+                .Include(p => p.Staff)
+                .Include(p => p.Supplier)
+                .Include(p => p.PurchasePaymentHistories)
+                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product).ThenInclude(p => p.Images)
+                .FirstOrDefaultAsync(m => m.PurchaseOrderId == purchaseId);
+            if (purchaseOrder == null)
+            {
+                return NotFound();
+            }
+            //front end cần total paid để so sánh với tổng giá trị đơn hàng, không được phép nhỏ hơn
+            CreatePurchaseOrderVM vm = new CreatePurchaseOrderVM();
+            vm.TotalPaid = totalPayment(purchaseOrder.PurchaseOrderDetails);
+            vm.PurchaseOrderEdit = purchaseOrder;
+            vm.DefaultSupplierIDShow = purchaseOrder.Supplier.SupplierId;
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(CreatePurchaseOrderVM model)
+        {
+            //Check nếu tổng tiền, nhỏ hơn số tiền đã trả thì thông báo, trả về trang, không thể lưu
+            //Kiểm tra ở front-end
+            //Check ở back-end
+            if(model.TotalPayment < model.TotalPaid) {
+                TempData["error"] = "Sửa đơn nhập thất bại";
+                return View(model);
+            }
+            var staffCreate = await GetStaffByUserID();
+            if (!ModelState.IsValid || staffCreate == null || model.ProductIdList.Count == 0)
+            {
+                TempData["error"] = "Sửa đơn nhập thất bại";
+                return View(model);
+            }
+            //Nếu không thay đổi supplier
+            if(model.PurchaseOrderEdit.SupplierId == 0) {
+                model.PurchaseOrderEdit.SupplierId = model.DefaultSupplierIDShow;
+            }
+            var pO = await _dbContext.PurchaseOrders.Include(p=> p.PurchaseOrderDetails).SingleOrDefaultAsync(po => po.PurchaseOrderId == model.PurchaseOrderEdit.PurchaseOrderId);
+           
+            if (pO != null) {
+                pO.PurchaseOrderDetails.Clear();
+                pO.Status = "Tạo đơn hàng";
+                pO.Description = model.PurchaseOrderEdit.Description;
+                pO.SupplierId = model.PurchaseOrderEdit.SupplierId;
+                pO.Date = DateTime.Now;
+                pO.VAT = model.PurchaseOrderEdit.VAT;
+                pO.Staff = staffCreate;
+
+               
+                for (int i = 0; i < model.ProductIdList.Count; ++i)
+                {
+                    var detail = new PurchaseOrderDetail
+                    {
+                        ProductId = model.ProductIdList[i],
+                        Quantity = model.QuantityList[i],
+                        UnitPrice = model.UnitPriceList[i],
+                        Discount = model.DiscountList[i],
+                    };
+                    pO.PurchaseOrderDetails.Add(detail);
+                }
+            }
+           
+            await _dbContext.SaveChangesAsync();
+            TempData["success"] = "Cập nhật đơn hàng nhập thành công";
+            return RedirectToAction(nameof(Create));
+        }
         private async Task<Staff> GetStaffByUserID()
         {
             try
@@ -165,55 +238,33 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction(nameof(Create));
         }
-        public async Task<IActionResult> Edit(int purchaseId)
+        
+        // Tổng tiền của đơn hàng - tham số purchasorder.purchaseOrderDetails
+        private decimal? totalPayment(ICollection<PurchaseOrderDetail> purchaseOrderDetails)
         {
-            var staffEdit = await GetStaffByUserID();
-            if (purchaseId == 0 || _dbContext.PurchaseOrders == null)
+            decimal sum = 0;
+            foreach (var detail in purchaseOrderDetails)
             {
-                return NotFound();
+                if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
+                {
+                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
+                }
             }
-
-            var purchaseOrder = await _dbContext.PurchaseOrders
-                .Include(p => p.Staff)
-                .Include(p => p.Supplier)
-                .Include(p => p.PurchasePaymentHistories)
-                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product).ThenInclude(p => p.Images)
-                .FirstOrDefaultAsync(m => m.PurchaseOrderId == purchaseId);
-            if (purchaseOrder == null)
-            {
-                return NotFound();
-            }
-
-            ////Tổng tiền hàng
-            //decimal sum = 0;
-            //foreach (var detail in purchaseOrder.PurchaseOrderDetails)
-            //{
-            //    if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
-            //    {
-            //        sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
-            //    }
-            //}
-            ////Tổng đã trả
-            //decimal sumPaid = 0;
-            //foreach (var history in purchaseOrder.PurchasePaymentHistories)
-            //{
-            //    if (history.PaymentAmount.HasValue)
-            //    {
-            //        sumPaid += (decimal)(history.PaymentAmount);
-            //    }
-            //}
-            ////Tính số tiền còn thiếu
-            //DetailsPurchaseOrderVM vm = new DetailsPurchaseOrderVM();
-            //vm.Unpaid = sum - sumPaid;
-            //vm.pO = purchaseOrder;
-            ////Form
-            //vm.PPHistory.PurchaseId = purchaseOrder.PurchaseOrderId;
-
-            CreatePurchaseOrderVM vm = new CreatePurchaseOrderVM();
-            vm.PurchaseOrderEdit = purchaseOrder;
-            return View(vm);
+            return sum;
         }
-
+        //Tổng đã trả - tham số purchasorder.purchasePaymentHistories
+        private decimal? totalPaid(ICollection<PurchasePaymentHistory> purchasePaymentHistories)
+        {
+            decimal sumPaid = 0;
+            foreach (var history in purchasePaymentHistories)
+            {
+                if (history.PaymentAmount.HasValue)
+                {
+                    sumPaid += (decimal)(history.PaymentAmount);
+                }
+            }
+            return sumPaid;
+        }
         #region CallAPI
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SupplierDTO>>> GetAllSuppliers()

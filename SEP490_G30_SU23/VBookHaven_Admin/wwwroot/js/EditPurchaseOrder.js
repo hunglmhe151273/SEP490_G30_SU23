@@ -322,9 +322,9 @@ function showSupplierInfo(supplier) {
 
 }
 function closeButton() {
+
     supplierInfoContainer.innerHTML = '';//clear supplier Infomation
     $('#supplierSelect').val('').trigger('change'); //change value
-    console.log("Display block");
     supplierContainer.style.display = 'block'; // Show the supplier container
 }
 
@@ -389,17 +389,17 @@ function getBookInfo(linkElement) {
             <td>${unit}</td>
             <td>
                 <div class="input-group">
-                    <input type="number" value="1" min="1" step="1" class="form-control num">
+                    <input name="QuantityList" type="number" value="1" min="1" step="1" class="form-control num">
                 </div>
             </td>
             <td>
                 <div class="input-group">
-                    <input class="form-control price" step="1000" min="0" value="0" type='number' class="num">
+                    <input name="UnitPriceList" class="form-control price num" step="1000" min="0" value="0" type='number'>
                 </div>
             </td>
             <td>
                 <div class="input-group">
-                    <input class="form-control discount" step="0.1" min="0" value="0" type='number' class="num">
+                    <input name="DiscountList" class="form-control discount num" step="0.1" min="0" value="0" type='number'>
                     <span class="input-group-text">%</span>
                 </div>
             </td>

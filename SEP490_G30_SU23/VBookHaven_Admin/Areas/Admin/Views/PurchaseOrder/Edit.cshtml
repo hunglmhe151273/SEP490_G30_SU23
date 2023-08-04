@@ -85,6 +85,7 @@
             </div>
             <!--end breadcrumb-->
             <form asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Edit" method="post">
+                <input asp-for="PurchaseOrderEdit.PurchaseOrderId" class="form-control" hidden>
                 <div class="row">
                     <div class="col-9 mx-auto">
                         <div class="card">
@@ -129,6 +130,11 @@
                                             <h6 class="text-primary fw-bold">@Model.PurchaseOrderEdit.Supplier.SupplierName<button type="button" onclick="closeButton()" class="btn-close"></button></h6>
                                             <label class="fw-bold">Số điện thoại: @Model.PurchaseOrderEdit.Supplier.Phone</label><br>
                                             <label class="fw-bold">Địa chỉ: @Model.PurchaseOrderEdit.Supplier.Address</label>
+                                            <div class="hidden-content">
+                                                <select asp-for="DefaultSupplierIDShow" class="single-select">
+                                                    <option value="@Model.DefaultSupplierIDShow" selected></option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -247,7 +253,7 @@
                                                 <td>Thuế GTGT</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="input-group w-50">
-                                                        <input asp-for="VAT" id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
+                                                        <input asp-for="PurchaseOrderEdit.VAT" id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
                                                         <span class="input-group-text">%</span>
                                                     </div>
                                                 </td>
@@ -260,7 +266,7 @@
                                             </tr>
 
                                             <!-- NEW CODE HERE -->
-                                            <tr>
+                                            @*<tr>
                                                 <td>Số tiền đã trả</td>
                                                 <td class="w-50">
                                                     <div class="input-group">
@@ -272,7 +278,7 @@
                                             <tr class="fw-bold">
                                                 <td class="">Số tiền còn thiếu</td>
                                                 <td class="text-end"><span id="debt"></span> VNĐ</td>
-                                            </tr>
+                                            </tr>*@
                                             <!-- END NEW CODE -->
 
                                         </table>
