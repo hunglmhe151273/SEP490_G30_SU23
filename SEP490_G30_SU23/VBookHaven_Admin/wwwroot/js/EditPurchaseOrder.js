@@ -218,8 +218,6 @@ const supplierContainer = document.getElementById('supplierContainer');
 const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
 
-//Call API
-fetchDataFromAPIs(purchaseId);
 
 //display product list
 function displayProductList() {
@@ -232,14 +230,17 @@ function displayProductList() {
 //for test
 // populateSuppliersSelect();
 // populateProductsSelect();
-var purchaseId = getParameterFromUrl('purchaseId');
 
+var purchaseId = getParameterFromUrl('purchaseId');
 function getParameterFromUrl(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
 // Function to fetch suppliers and products data using AJAX
-fetchDataFromAPIs(purchaseId);
+if (purchaseId !== null) {
+    console.log("purchaseId" + purchaseId);
+    fetchDataFromAPIs(purchaseId);
+}
 
 function fetchDataFromAPIs(purchaseId) {
     $.ajax({
@@ -302,7 +303,7 @@ function showSupplierInfo(supplier) {
 
     var showSupplierInfoDiv = `
             <div class="supplier-info">
-                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" class="btn-close"></button></h6>
+                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" onclick="closeButton()" class="btn-close"></button></h6>
                 <label class="fw-bold">Số điện thoại: ${supplier.phone}</label></br>
             `;
     if (supplier.province !== null) {
@@ -311,16 +312,22 @@ function showSupplierInfo(supplier) {
     showSupplierInfoDiv += `</div>`;
 
     supplierInfoContainer.innerHTML = showSupplierInfoDiv;
+    // // Add event listener to the close button
+    // const closeBtn = supplierInfoContainer.querySelector('.btn-close');
+    // closeBtn.addEventListener('click', function() {
+    //     supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+    //     $('#supplierSelect').val('').trigger('change'); //change value
+    //     supplierContainer.style.display = 'block'; // Show the supplier container
+    // });
 
-    // Add event listener to the close button
-    const closeBtn = supplierInfoContainer.querySelector('.btn-close');
-    closeBtn.addEventListener('click', function () {
-        supplierInfoContainer.innerHTML = '';//clear supplier Infomation
-        $('#supplierSelect').val('').trigger('change'); //change value
-        console.log("supplierSelect VALUE: " + supplierSelect.value)
-        supplierContainer.style.display = 'block'; // Show the supplier container
-    });
 }
+function closeButton() {
+    supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+    $('#supplierSelect').val('').trigger('change'); //change value
+    console.log("Display block");
+    supplierContainer.style.display = 'block'; // Show the supplier container
+}
+
 // Function to populate products select list
 function populateProductsSelect() {
     productList.innerHTML = `
@@ -337,7 +344,7 @@ function populateProductsSelect() {
                                             <div class="hidden-content purchasePrice">${product.purchasePrice}</div>
                                             <div class="hidden-content presentImage">${product.presentImage}</div>
                                             <div class="hidden-content unitInStock">${product.unitInStock}</div>
-                                                <img src="${product.presentImage}" class="productImg">
+                                                <img class="productImg"  src="${product.presentImage}" class="productImg">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <p class="m-0 search-info fs-6 productName">${product.name}</p>
@@ -371,8 +378,9 @@ function getBookInfo(linkElement) {
     const unitInStock = linkElement.querySelector('.hidden-content.unitInStock').innerHTML;
     //1. Hiển thị sản phẩm ở order
     const productHTML = `
+            <input name="ProductIDList" value="${productId}" hidden>
             <td></td>
-            <td><img src="${presentImage}"></td>
+            <td><img class="productImg" src="${presentImage}"></td>
             <td>
                 <div class="ellipsis">
                 ${name}
@@ -410,13 +418,13 @@ function getBookInfo(linkElement) {
         `;
     const productRow = document.createElement('tr');
     productRow.innerHTML = productHTML;
-    const removeBtn = productRow.querySelector('.btn-danger.delete');
-    removeBtn.addEventListener('click', function () {
-        //onclick="addSelect(this)" --> thêm product lại về selectlist
-        // xóa product row
-        productRow.remove();
-        updateInvoice();
-    });
+    //const removeBtn = productRow.querySelector('.btn-danger.delete');
+    //removeBtn.addEventListener('click', function () {
+    //    //onclick="addSelect(this)" --> thêm product lại về selectlist
+    //    // xóa product row
+    //    //productRow.remove();
+    //    updateInvoice();
+    //});
 
     orderContainer.appendChild(productRow);
 
@@ -488,23 +496,24 @@ function addSupplierByAPI() {
     });
 }
 function addProductByAPI() {
-    let productName = $('#productName').val();
-    let barCode = $('#barCode').val();
-    let price = $('#price').val();
-    let quantity = $('#quantity').val();
-    let unit = $('#unit').val();
-    let isBook = $('#isBook').val();
-
-    let bookDTO = {
+    var productName = $('#productName').val();
+    var barCode = $('#barCode').val();
+    var price = $('#price').val();
+    var unit = $('#unit').val();
+    // lấy giá trị radio button
+    const radioButtons = document.getElementsByName('IsBook');
+    const selectedValue = radioButtons[0].checked.toString();
+    var isBook = JSON.parse(selectedValue);
+    var bookDTO = {
         "productId": null,
         "name": productName,
         "barcode": barCode,
         "unit": unit,
         "purchasePrice": price,
-        "unitInStock": quantity,
         "isBook": isBook,
         "presentImage": null
     }
+    console.log('bookDTO' + JSON.stringify(bookDTO));
     $.ajax({
         url: "https://localhost:7123/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
         type: "POST",
@@ -516,6 +525,13 @@ function addProductByAPI() {
                     <div class="row d-flex align-items-center">
                         <div class="col-6 d-flex align-items-center">
                             <div class="flex-shrink-0 cover">
+                            <div class="hidden-content productId">${response.productId}</div>
+                            <div class="hidden-content name">${response.name}</div>
+                            <div class="hidden-content barcode">${response.barcode}</div>
+                            <div class="hidden-content unit">${response.unit}</div>
+                            <div class="hidden-content purchasePrice">${response.purchasePrice}</div>
+                            <div class="hidden-content presentImage">${response.presentImage}</div>
+                            <div class="hidden-content unitInStock">${response.unitInStock}</div>
                                 <img src="${response.presentImage}" class="productImg" >
                             </div>
                             <div class="flex-grow-1 ms-3">
@@ -532,8 +548,9 @@ function addProductByAPI() {
                         </div>
                     </div>
                 </a>`;
+            //thêm response vào list
+            products.push(response);
             $('#list-product').append(productItem);
-
             $('#list-product > a:last').trigger('click')
 
             resetCreateProductForm();
@@ -578,6 +595,7 @@ function addSelect(linkElement) {
     populateProductsSelect();
     //Delete row in table
     parentTr.remove();
+    updateInvoice();
 }
 
 function resetCreateSupplierForm() {

@@ -3,7 +3,64 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .hidden-content {
+        display: none;
+    }
 
+    #searchList {
+        position: absolute;
+        z-index: 3;
+        display: none;
+        box-shadow: 2px 2px gray;
+    }
+
+    .item {
+        padding: 10px 15px;
+    }
+
+    #list-product {
+        border: 1px solid lightgray;
+        overflow-y: auto;
+        max-height: 350px;
+    }
+
+    .cover {
+        padding: 0;
+        width: 60px;
+        height: 50px;
+    }
+
+    .productImg {
+        width: 65px;
+        height: 70px;
+    }
+
+    td:nth-child(3) {
+        max-width: 100px;
+    }
+    /* Custom CSS for truncating text and keeping the link next to it */
+
+    .ellipsis {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        /* Set the number of lines to display */
+        overflow: hidden;
+    }
+    /* Custom CSS for adjusting the size of the ellipsis div */
+
+    .ellipsis-div {
+        max-width: 150px;
+        /* Set the maximum width for the div (adjust as needed) */
+    }
+
+    input[type=number] {
+        width: 100%;
+        text-align: center;
+    }
+    /* Custom CSS for text overflow ellipsis */
+</style>
 <!--page-wrapper-->
 <div class="page-wrapper">
     <!--page-content-wrapper-->
@@ -21,13 +78,13 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Nhập hàng</li>
-                            <li class="breadcrumb-item active" aria-current="page">Sửa đơn đơn nhập hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Tạo đơn đơn nhập hàng</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
-            <form>
+            <form asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Edit" method="post">
                 <div class="row">
                     <div class="col-9 mx-auto">
                         <div class="card">
@@ -59,16 +116,21 @@
                                 </div>
                                 <hr>
                                 <div class="card-body row g-3">
-                                    <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                    <div class="col-md-12 px-0" id="supplierContainer">
-                                        <select id="supplierSelect" class="single-select">
+                                    <div class="col-md-12 px-0" id="supplierContainer" style="display: none;">
+                                        <select asp-for="PurchaseOrderEdit.SupplierId" id="supplierSelect" class="single-select">
+                                            <option value="">Chọn nhà cung cấp...</option>
                                         </select>
                                         <div class="btn btn-outline-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#addSupplier">
                                             <i class='bx bx-plus-circle fs-5'></i> Thêm nhanh nhà cung cấp
                                         </div>
                                     </div>
-                                    <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                    <div id="supplierInfoContainer" class="mb-4"></div>
+                                    <div id="supplierInfoContainer" class="mb-4">
+                                        <div class="supplier-info">
+                                            <h6 class="text-primary fw-bold">@Model.PurchaseOrderEdit.Supplier.SupplierName<button type="button" onclick="closeButton()" class="btn-close"></button></h6>
+                                            <label class="fw-bold">Số điện thoại: @Model.PurchaseOrderEdit.Supplier.Phone</label><br>
+                                            <label class="fw-bold">Địa chỉ: @Model.PurchaseOrderEdit.Supplier.Address</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +140,9 @@
                             <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                         </div>
                         <div class="card-body">
-                            <label class="form-label">Ghi chú hóa đơn</label><br>
-                            <textarea class="form-control" cols="30" rows="6"></textarea>
+                            <label asp-for="PurchaseOrderEdit.Description" class="form-label">Ghi chú hóa đơn</label><br>
+                            <textarea asp-for="PurchaseOrderEdit.Description" class="form-control" cols="30" rows="6"></textarea>
+                            <!-- to do: add span validate -->
                         </div>
                     </div>
                     <div class="col-12 mx-auto pe-0">
@@ -125,46 +188,51 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
+                                            <!-- List product in purchase order -->
                                             <tbody id="orderContainer">
-                                                <tr>
-                                                    <td></td>
-                                                    <td> <img src="assets/images/avatars/avatar-1.png"></td>
-                                                    <td>
-                                                        <div class="ellipsis">
-                                                            Sach test 1
-                                                        </div>
-                                                    </td>
-                                                    <td>Quyển</td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" value="5" min="1" step="1" class="form-control num">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input class="form-control price" value="0" min="0" step="1000" type='number' class="num">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input class="form-control discount" step="0.1" min="0" value="0" type='number' class="num">
-                                                            <span class="input-group-text">%</span>
-                                                        </div>
-                                                    </td>
-                                                    <td><span class="sum"></span> VNĐ</td>
-                                                    <td>
-                                                        <a onclick="addSelect(this)" class="btn btn-close btn-danger delete">
-                                                            <div class="hidden-content productId">1</div>
-                                                            <div class="hidden-content name">Sach test 1</div>
-                                                            <div class="hidden-content barcode">PVN1</div>
-                                                            <div class="hidden-content unit">Quyển</div>
-                                                            <div class="hidden-content purchasePrice">48</div>
-                                                            <div class="hidden-content presentImage"></div>
-                                                            <div class="hidden-content unitInStock">30</div>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                                @foreach (var detailPO in Model.PurchaseOrderEdit.PurchaseOrderDetails)
+                                                {
+                                                    <tr>
+                                                        <input name="ProductIDList" value="@detailPO.Product.ProductId" hidden>
+                                                        <td></td>
+                                                        <td><img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName"></td>
+                                                        <td>
+                                                            <div class="ellipsis">
+                                                                @detailPO.Product.Name
+                                                            </div>
+                                                        </td>
+                                                        <td>@detailPO.Product.Unit</td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input type="number" value="@detailPO.Quantity" name="QuantityList" min="1" step="1" class="form-control num">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input class="form-control price num" value="@detailPO.UnitPrice" name="UnitPriceList" min="0" step="1000" type='number'>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input class="form-control discount num" value="@detailPO.Discount" name="DiscountList" step="0.1" min="0" type='number'>
+                                                                <span class="input-group-text">%</span>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="sum"></span> VNĐ</td>
+                                                        <td>
+                                                            <a href="javascript:;" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+                                                                <div class="hidden-content productId">@detailPO.Product.ProductId</div>
+                                                                <div class="hidden-content name">@detailPO.Product.Name</div>
+                                                                <div class="hidden-content barcode">@detailPO.Product.Barcode</div>
+                                                                <div class="hidden-content unit">@detailPO.Product.Unit</div>
+                                                                <div class="hidden-content purchasePrice">@detailPO.Product.PurchasePrice</div>
+                                                                <div class="hidden-content presentImage">../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
+                                                                <div class="hidden-content unitInStock">@detailPO.Product.UnitInStock</div>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -179,7 +247,7 @@
                                                 <td>Thuế GTGT</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="input-group w-50">
-                                                        <input id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
+                                                        <input asp-for="VAT" id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
                                                         <span class="input-group-text">%</span>
                                                     </div>
                                                 </td>
@@ -196,8 +264,8 @@
                                                 <td>Số tiền đã trả</td>
                                                 <td class="w-50">
                                                     <div class="input-group">
-                                                        <input id="paid" type="number" value="0" min="0" step="500" class="form-control">
-                                                        <span class="input-group-text">VNĐ</span>
+                                                        <input asp-for="AmountPaid" id="paid" type="number" value="0" min="0" step="500" class="form-control">
+                                                        <span asp-validation-for="AmountPaid" class="input-group-text">VNĐ</span>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -240,11 +308,11 @@
                                     <label for="inputCity" class="form-label">Loại sản phẩm</label>
                                     <div class="input-group mt-1">
                                         <div class="form-check-inline">
-                                            <input class="form-check-input" type="radio" name="IsBook" checked>
+                                            <input class="form-check-input" type="radio" name="IsBook" value="true" checked>
                                             <label class="form-check-label" for="flexRadioDefault2">Sách</label>
                                         </div>
                                         <div class="form-check-inline">
-                                            <input class="form-check-input" type="radio" name="IsBook">
+                                            <input class="form-check-input" type="radio" value="false" name="IsBook">
                                             <label class="form-check-label" for="flexRadioDefault2">VPP</label>
                                         </div>
                                     </div>
@@ -259,11 +327,7 @@
                                     <input type="text" class="form-control validate important" id="price" placeholder="Nhập giá" required>
                                     <div id="price-feedback" class="feedback"></div>
                                 </div>
-                                <div class="col-12 col-md-6 mb-3">
-                                    <label class="form-label">Số lượng nhập *</label>
-                                    <input type="text" class="form-control validate important" id="quantity" placeholder="Nhập số lượng" required>
-                                    <div id="quantity-feedback" class="feedback"></div>
-                                </div>
+                               
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Đơn vị tính *</label>
                                     <input type="text" class="form-control validate important" id="unit" placeholder="Nhập đơn vị" required>

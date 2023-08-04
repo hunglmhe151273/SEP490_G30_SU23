@@ -32,8 +32,8 @@ function resetForm(button) {
 
 //Add product
 $(document).on('keyup', '#productName', function () {
-    if ($(this).val().length >= 20 || $(this).val() == "") {
-        invalidInput(this, $('#product-feedback'), "Tên sản phẩm không được vượt quá 20 kí tự");
+    if ($(this).val().length >= 100 || $(this).val() == "") {
+        invalidInput(this, $('#product-feedback'), "Tên sản phẩm không được vượt quá 100 kí tự");
     } else {
         validInput(this, $('#product-feedback'))
     }

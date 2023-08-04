@@ -98,7 +98,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 return null;
             }
         }
-        // GET: Admin/TestPO/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             var staffEdit = await GetStaffByUserID();
@@ -178,7 +177,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 .Include(p => p.Staff)
                 .Include(p => p.Supplier)
                 .Include(p => p.PurchasePaymentHistories)
-                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product)
+                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product).ThenInclude(p => p.Images)
                 .FirstOrDefaultAsync(m => m.PurchaseOrderId == purchaseId);
             if (purchaseOrder == null)
             {
