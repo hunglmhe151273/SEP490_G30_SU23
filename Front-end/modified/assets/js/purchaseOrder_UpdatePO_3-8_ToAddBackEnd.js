@@ -218,8 +218,6 @@ const supplierContainer = document.getElementById('supplierContainer');
 const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
 
-//Call API
-fetchDataFromAPIs(purchaseId);
 
 //display product list
 function displayProductList() {
@@ -239,7 +237,10 @@ function getParameterFromUrl(param) {
     return urlParams.get(param);
 }
 // Function to fetch suppliers and products data using AJAX
-fetchDataFromAPIs(purchaseId);
+if (purchaseId !== null) {
+    console.log("purchaseId" + purchaseId);
+    fetchDataFromAPIs(purchaseId);
+}
 
 function fetchDataFromAPIs(purchaseId) {
     $.ajax({
@@ -323,6 +324,7 @@ $("#supplierSelect").change(() => {
     function closeButton(){
         supplierInfoContainer.innerHTML = '';//clear supplier Infomation
         $('#supplierSelect').val('').trigger('change'); //change value
+        console.log("Display block");
         supplierContainer.style.display = 'block'; // Show the supplier container
     }
      
