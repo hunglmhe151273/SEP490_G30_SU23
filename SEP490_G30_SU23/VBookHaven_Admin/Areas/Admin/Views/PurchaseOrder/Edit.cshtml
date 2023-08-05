@@ -84,7 +84,7 @@
                 </div>
             </div>
             <!--end breadcrumb-->
-            <form asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Edit" method="post">
+            <form onsubmit="return validateFormSubmit()" asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Edit" method="post">
                 <input asp-for="PurchaseOrderEdit.PurchaseOrderId" class="form-control" hidden>
                 <div class="row">
                     <div class="col-9 mx-auto">
@@ -127,11 +127,11 @@
                                     </div>
                                     <div id="supplierInfoContainer" class="mb-4">
                                         <div class="supplier-info">
-                                            <h6 class="text-primary fw-bold">@Model.PurchaseOrderEdit.Supplier.SupplierName<button type="button" onclick="closeButton()" class="btn-close"></button></h6>
+                                            <h6 class="text-primary fw-bold">@Model.PurchaseOrderEdit.Supplier.SupplierName<button type="button" onclick="defaultCloseButton()" class="btn-close"></button></h6>
                                             <label class="fw-bold">Số điện thoại: @Model.PurchaseOrderEdit.Supplier.Phone</label><br>
                                             <label class="fw-bold">Địa chỉ: @Model.PurchaseOrderEdit.Supplier.Address</label>
                                             <div class="hidden-content">
-                                                <select asp-for="DefaultSupplierIDShow" class="single-select">
+                                                <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
                                                     <option value="@Model.DefaultSupplierIDShow" selected></option>
                                                 </select>
                                             </div>
@@ -199,9 +199,10 @@
                                                 @foreach (var detailPO in Model.PurchaseOrderEdit.PurchaseOrderDetails)
                                                 {
                                                     <tr>
-                                                        <input name="ProductIDList" value="@detailPO.Product.ProductId" hidden>
                                                         <td></td>
-                                                        <td><img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName"></td>
+                                                        <td>@if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null){
+                                                                <img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
+                                                            }
                                                         <td>
                                                             <div class="ellipsis">
                                                                 @detailPO.Product.Name
@@ -232,13 +233,22 @@
                                                                 <div class="hidden-content barcode">@detailPO.Product.Barcode</div>
                                                                 <div class="hidden-content unit">@detailPO.Product.Unit</div>
                                                                 <div class="hidden-content purchasePrice">@detailPO.Product.PurchasePrice</div>
-                                                                <div class="hidden-content presentImage">../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
+                                                                @if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
+                                                                {
+                                                                    <div class="hidden-content presentImage">
+                                                                ../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
+                                                                }else{
+                                                                    <div class="hidden-content presentImage">
+                                                                    </div>
+                                                                }
                                                                 <div class="hidden-content unitInStock">@detailPO.Product.UnitInStock</div>
                                                             </a>
+                                                            <div class="input-group hidden-content">
+                                                                <input name="ProductIDList" value="@detailPO.Product.ProductId">
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 }
-
                                             </tbody>
                                         </table>
                                     </div>
@@ -274,7 +284,7 @@
                         <div class="card border-top border-0 border-4 border-primary py-2">
                             <div class="card-body text-end">
                                 <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
-                                <input type="submit" class="btn btn-success px-5 mx-3" value="Tạo đơn">
+                                <input type="submit" class="btn btn-success px-5 mx-3" value="Sửa đơn">
                             </div>
                         </div>
                     </div>

@@ -596,6 +596,34 @@ function addSelect(linkElement) {
     parentTr.remove();
     updateInvoice();
 }
+//--------------------------------Validate Purchase Order--------------------------------
+function defaultCloseButton() {
+    $("#supplierContainer").append(`<div class="hidden-content">
+        <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
+            <option value="" selected></option>
+        </select>
+        </div>`);
+    supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+    $('#supplierSelect').val('').trigger('change'); //change value
+    console.log("Display block");
+    supplierContainer.style.display = 'block'; // Show the supplier container
+}
+function validateFormSubmit() {
+    console.log("Số dòng trong table: " + $('#myTable tr').length);
+    if ($('#myTable tr').length < 2) {
+        anim4_noti('Chưa chọn sản phẩm');
+        return false;
+    } else if (($('#supplierSelect').val() == '' && $('#supplierSelectDefault').val() == '')) {
+        anim4_noti('Chưa chọn nhà cung cấp');
+        return false;
+    } else {
+        console.log("Đã  submit");
+        return true;
+    }
+}
+//--------------------------------Validate Purchase Order--------------------------------
+
+//--------------------------------Clear form--------------------------------
 
 function resetCreateSupplierForm() {
     // Clear input fields (set their values to empty strings)
@@ -612,3 +640,4 @@ function resetCreateProductForm() {
     $('#unit').val('');
     $('#isBook').val(true);
 }
+//--------------------------------Clear form--------------------------------

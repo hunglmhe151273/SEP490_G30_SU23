@@ -125,3 +125,4 @@ $(document).ready(function () {
 function isNotNullOrEmpty(value) {
     return value !== null && value !== undefined && value !== '';
 }
+

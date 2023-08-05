@@ -6,7 +6,7 @@
  * @param {int} n
  * @returns {String}
  */
-Math.randomString = function (n) {
+Math.randomString = function(n) {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -16,23 +16,23 @@ Math.randomString = function (n) {
     return text;
 };
 var Lobibox = Lobibox || {};
-(function () {
+(function() {
 
-    var LobiboxNotify = function (type, options) {
-//------------------------------------------------------------------------------
-//----------------PROTOTYPE VARIABLES-------------------------------------------
-//------------------------------------------------------------------------------
+    var LobiboxNotify = function(type, options) {
+        //------------------------------------------------------------------------------
+        //----------------PROTOTYPE VARIABLES-------------------------------------------
+        //------------------------------------------------------------------------------
         this.$type = null;
         this.$options = null;
         this.$el = null;
-//------------------------------------------------------------------------------
-//-----------------PRIVATE VARIABLES--------------------------------------------
-//------------------------------------------------------------------------------        
+        //------------------------------------------------------------------------------
+        //-----------------PRIVATE VARIABLES--------------------------------------------
+        //------------------------------------------------------------------------------        
         var me = this;
-//------------------------------------------------------------------------------
-//-----------------PRIVATE FUNCTIONS--------------------------------------------
-//------------------------------------------------------------------------------
-        var _processInput = function (options) {
+        //------------------------------------------------------------------------------
+        //-----------------PRIVATE FUNCTIONS--------------------------------------------
+        //------------------------------------------------------------------------------
+        var _processInput = function(options) {
 
             if (options.size === 'mini' || options.size === 'large') {
                 options = $.extend({}, Lobibox.notify.OPTIONS[options.size], options);
@@ -56,7 +56,7 @@ var Lobibox = Lobibox || {};
             return options;
         };
 
-        var _appendInWrapper = function ($el, $wrapper) {
+        var _appendInWrapper = function($el, $wrapper) {
             if (me.$options.size === 'normal') {
                 if ($wrapper.hasClass('bottom')) {
                     $wrapper.prepend($el);
@@ -76,37 +76,37 @@ var Lobibox = Lobibox || {};
                 $wrapper.find('.lb-notify-wrapper').append(tabPane);
                 $wrapper.find('.lb-notify-tabs').append($li);
                 _activateTab($li);
-                $li.find('>a').click(function () {
+                $li.find('>a').click(function() {
                     _activateTab($li);
                 });
             }
         };
-        var _activateTab = function ($li) {
+        var _activateTab = function($li) {
             $li.closest('.lb-notify-tabs').find('>li').removeClass('active');
             $li.addClass('active');
             var $current = $($li.find('>a').attr('href'));
             $current.closest('.lb-notify-wrapper').find('>.lb-tab-pane').removeClass('active');
             $current.addClass('active')
         };
-        var _createTabControl = function (tabPaneId) {
+        var _createTabControl = function(tabPaneId) {
             var $li = $('<li></li>', {
                 'class': Lobibox.notify.OPTIONS[me.$type]['class']
             });
             $('<a></a>', {
-                'href': '#' + tabPaneId
-            }).append('<i class="tab-control-icon ' + me.$options.icon + '"></i>')
+                    'href': '#' + tabPaneId
+                }).append('<i class="tab-control-icon ' + me.$options.icon + '"></i>')
                 .appendTo($li);
             return $li;
         };
-        var _createTabPane = function () {
+        var _createTabPane = function() {
             return $('<div></div>', {
                 'class': 'lb-tab-pane',
                 'id': Math.randomString(10)
             })
         };
-        var _createNotifyWrapper = function () {
-            var selector = (me.$options.size === 'large' ? '.lobibox-notify-wrapper-large' : '.lobibox-notify-wrapper')
-                    + "." + me.$options.position.replace(/\s/gi, '.'),
+        var _createNotifyWrapper = function() {
+            var selector = (me.$options.size === 'large' ? '.lobibox-notify-wrapper-large' : '.lobibox-notify-wrapper') +
+                "." + me.$options.position.replace(/\s/gi, '.'),
                 $wrapper;
 
             //var classes = me.$options.position.split(" ");
@@ -122,7 +122,7 @@ var Lobibox = Lobibox || {};
             }
             return $wrapper;
         };
-        var _createNotify = function () {
+        var _createNotify = function() {
             var OPTS = Lobibox.notify.OPTIONS,
                 $iconEl,
                 $innerIconEl,
@@ -172,26 +172,26 @@ var Lobibox = Lobibox || {};
 
             return $notify;
         };
-        var _addCloseButton = function ($el) {
+        var _addCloseButton = function($el) {
             if (!me.$options.closable) {
                 return;
             }
             $('<span class="lobibox-close">&times;</span>')
-                .click(function (ev) {
+                .click(function(ev) {
                     ev.preventDefault();
                     ev.stopPropagation();
                     me.remove();
                 }).appendTo($el);
         };
-        var _addCloseOnClick = function ($el) {
+        var _addCloseOnClick = function($el) {
             if (!me.$options.closeOnClick) {
                 return;
             }
-            $el.click(function () {
+            $el.click(function() {
                 me.remove();
             });
         };
-        var _addDelay = function ($el) {
+        var _addDelay = function($el) {
             if (!me.$options.delay) {
                 return;
             }
@@ -202,7 +202,7 @@ var Lobibox = Lobibox || {};
             var time = 0;
             var interval = 1000 / 30;
             var currentTime = new Date().getTime();
-            var timer = setInterval(function () {
+            var timer = setInterval(function() {
                 if (me.$options.continueDelayOnInactiveTab) {
                     time = new Date().getTime() - currentTime;
                 } else {
@@ -222,14 +222,14 @@ var Lobibox = Lobibox || {};
             }, interval);
 
             if (me.$options.pauseDelayOnHover) {
-                $el.on('mouseenter.lobibox', function () {
+                $el.on('mouseenter.lobibox', function() {
                     interval = 0;
-                }).on('mouseleave.lobibox', function () {
+                }).on('mouseleave.lobibox', function() {
                     interval = 1000 / 30;
                 });
             }
         };
-        var _findTabToActivate = function ($li) {
+        var _findTabToActivate = function($li) {
             var $itemToActivate = $li.prev();
             if ($itemToActivate.length === 0) {
                 $itemToActivate = $li.next();
@@ -239,19 +239,19 @@ var Lobibox = Lobibox || {};
             }
             return $itemToActivate;
         };
-        var _calculateWidth = function (width) {
+        var _calculateWidth = function(width) {
             width = Math.min($(window).outerWidth(), width);
             return width;
         };
-//------------------------------------------------------------------------------
-//----------------PROTOTYPE FUNCTIONS-------------------------------------------
-//------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------
+        //----------------PROTOTYPE FUNCTIONS-------------------------------------------
+        //------------------------------------------------------------------------------
         /**
          * Delete the notification
          *
          * @returns {LobiboxNotify}
          */
-        this.remove = function () {
+        this.remove = function() {
             me.$el.removeClass(me.$options.showClass)
                 .addClass(me.$options.hideClass);
             var parent = me.$el.parent();
@@ -262,7 +262,7 @@ var Lobibox = Lobibox || {};
             var $li = wrapper.find('>.lb-notify-tabs>li:has(a[href="' + href + '"])');
             $li.addClass(Lobibox.notify.OPTIONS['class'])
                 .addClass(me.$options.hideClass);
-            setTimeout(function () {
+            setTimeout(function() {
                 if (me.$options.size === 'normal' || me.$options.size === 'mini') {
                     me.$el.remove();
                 } else if (me.$options.size === 'large') {
@@ -284,7 +284,7 @@ var Lobibox = Lobibox || {};
             }, 500);
             return me;
         };
-        me._init = function () {
+        me._init = function() {
             // Create notification
             var $notify = _createNotify();
             if (me.$options.size === 'mini') {
@@ -314,7 +314,7 @@ var Lobibox = Lobibox || {};
             if (me.$options.rounded) {
                 me.$el.addClass('rounded');
             }
-            me.$el.on('click.lobibox', function (ev) {
+            me.$el.on('click.lobibox', function(ev) {
                 if (me.$options.onClickUrl) {
                     window.location.href = me.$options.onClickUrl;
                 }
@@ -324,9 +324,9 @@ var Lobibox = Lobibox || {};
             });
             me.$el.data('lobibox', me);
         };
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------
         this.$type = type;
         this.$options = _processInput(options);
         if (!me.$options.showAfterPrevious || Lobibox.notify.list.length === 0) {
@@ -335,7 +335,7 @@ var Lobibox = Lobibox || {};
 
     };
 
-    Lobibox.notify = function (type, options) {
+    Lobibox.notify = function(type, options) {
         if (["default", "info", "warning", "error", "success"].indexOf(type) > -1) {
             var lobibox = new LobiboxNotify(type, options);
             Lobibox.notify.list.push(lobibox);
@@ -343,7 +343,7 @@ var Lobibox = Lobibox || {};
         }
     };
     Lobibox.notify.list = [];
-    Lobibox.notify.closeAll = function () {
+    Lobibox.notify.closeAll = function() {
         var list = Lobibox.notify.list;
         for (var i in list) {
             list[i].remove();
@@ -351,32 +351,32 @@ var Lobibox = Lobibox || {};
     };
     //User can set default options to this variable
     Lobibox.notify.DEFAULTS = {
-        title: true,                // Title of notification. If you do not include the title in options it will automatically takes its value 
+        title: true, // Title of notification. If you do not include the title in options it will automatically takes its value 
         //from Lobibox.notify.OPTIONS object depending of the type of the notifications or set custom string. Set this false to disable title
-        size: 'normal',             // normal, mini, large
-        soundPath: 'sounds/',   // The folder path where sounds are located
-        soundExt: '.ogg',           // Default extension for all sounds
-        showClass: 'fadeInDown',    // Show animation class.
-        hideClass: 'zoomOut',       // Hide animation class.
-        icon: true,                 // Icon of notification. Leave as is for default icon or set custom string
-        msg: '',                    // Message of notification
-        img: null,                  // Image source string
-        closable: true,             // Make notifications closable
-        hideCloseButton: false,     // Notification may be closable but you can hide close button and it will be closed by clicking on notification itsef
-        delay: 5000,                // Hide notification after this time (in miliseconds)
-        delayIndicator: true,       // Show timer indicator
-        closeOnClick: true,         // Close notifications by clicking on them
-        width: 400,                 // Width of notification box
-        sound: true,                // Sound of notification. Set this false to disable sound. Leave as is for default sound or set custom soud path
+        size: 'normal', // normal, mini, large
+        soundPath: 'sounds/', // The folder path where sounds are located
+        soundExt: '.ogg', // Default extension for all sounds
+        showClass: 'fadeInDown', // Show animation class.
+        hideClass: 'zoomOut', // Hide animation class.
+        icon: true, // Icon of notification. Leave as is for default icon or set custom string
+        msg: '', // Message of notification
+        img: null, // Image source string
+        closable: true, // Make notifications closable
+        hideCloseButton: false, // Notification may be closable but you can hide close button and it will be closed by clicking on notification itsef
+        delay: 5000, // Hide notification after this time (in miliseconds)
+        delayIndicator: true, // Show timer indicator
+        closeOnClick: true, // Close notifications by clicking on them
+        width: 400, // Width of notification box
+        sound: true, // Sound of notification. Set this false to disable sound. Leave as is for default sound or set custom soud path
         // Place to show notification. Available options: "top left", "top right", "bottom left", "bottom right", "center top", "center bottom"
         // It can also be object {left: number, top: number} to position notification at any place
         position: "bottom right",
-        iconSource: 'bootstrap',    // "bootstrap" or "fontAwesome" the library which will be used for icons
-        rounded: false,             // Whether to make notification corners rounded
-        messageHeight: 60,          // Notification message maximum height. This is not for notification itself, this is for <code>.lobibox-notify-msg</code>
-        pauseDelayOnHover: true,    // When you mouse over on notification delay (if it is enabled) will be paused.
-        onClickUrl: null,           // The url which will be opened when notification is clicked
-        showAfterPrevious: false,   // Set this to true if you want notification not to be shown until previous notification is closed. This is useful for notification queues
+        iconSource: 'bootstrap', // "bootstrap" or "fontAwesome" the library which will be used for icons
+        rounded: false, // Whether to make notification corners rounded
+        messageHeight: 60, // Notification message maximum height. This is not for notification itself, this is for <code>.lobibox-notify-msg</code>
+        pauseDelayOnHover: true, // When you mouse over on notification delay (if it is enabled) will be paused.
+        onClickUrl: null, // The url which will be opened when notification is clicked
+        showAfterPrevious: false, // Set this to true if you want notification not to be shown until previous notification is closed. This is useful for notification queues
         continueDelayOnInactiveTab: true, // Continue delay when browser tab is inactive
 
         // Events
@@ -434,5 +434,3 @@ var Lobibox = Lobibox || {};
         }
     };
 })();
-
-

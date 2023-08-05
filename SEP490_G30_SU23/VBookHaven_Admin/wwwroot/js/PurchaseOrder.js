@@ -535,3 +535,15 @@ function resetCreateProductForm() {
     $('#unit').val('');
     $('#isBook').val(true);
 }
+function validateFormSubmit() {
+    console.log("Số dòng trong table: " + $('#myTable tr').length);
+    if ($('#myTable tr').length < 2) {
+        anim4_noti('Chưa chọn sản phẩm');
+        return false;
+    } else if ($('#supplierSelect').val() == '') {
+        anim4_noti('Chưa chọn nhà cung cấp');
+        return false;
+    } else {
+        return true;
+    }
+}
