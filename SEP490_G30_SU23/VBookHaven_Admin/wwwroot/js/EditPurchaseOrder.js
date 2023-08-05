@@ -610,11 +610,16 @@ function defaultCloseButton() {
 }
 function validateFormSubmit() {
     console.log("Số dòng trong table: " + $('#myTable tr').length);
+    console.log("Đã trả:" + parseFloat($('#totalPaid').html()));
+    console.log("Tổng tiền: " + parseFloat($('#totalPayToCompare').html()));
     if ($('#myTable tr').length < 2) {
         anim4_noti('Chưa chọn sản phẩm');
         return false;
     } else if (($('#supplierSelect').val() == '' && $('#supplierSelectDefault').val() == '')) {
         anim4_noti('Chưa chọn nhà cung cấp');
+        return false;
+    } else if (parseFloat($('#totalPaid').html()) > parseFloat($('#totalPayToCompare').html())) {
+        anim4_noti('Tổng tiền phải lớn hơn hoặc bằng số tiền đã trả');
         return false;
     } else {
         console.log("Đã  submit");

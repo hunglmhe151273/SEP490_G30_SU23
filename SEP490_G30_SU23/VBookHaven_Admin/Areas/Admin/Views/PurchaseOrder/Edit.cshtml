@@ -78,7 +78,7 @@
                                 </a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">Nhập hàng</li>
-                            <li class="breadcrumb-item active" aria-current="page">Tạo đơn đơn nhập hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sửa đơn nhập hàng</li>
                         </ol>
                     </nav>
                 </div>
@@ -273,6 +273,10 @@
                                                 <td class="text-end">
                                                     <span id="totalPay"></span> VNĐ
                                                 </td>
+                                                <div class="hidden-content">
+                                                    <span id="totalPaid">@Model.TotalPaid</span>
+                                                    <span id="totalPayToCompare"></span>
+                                                </div>
                                             </tr>
                                         </table>
                                     </div>

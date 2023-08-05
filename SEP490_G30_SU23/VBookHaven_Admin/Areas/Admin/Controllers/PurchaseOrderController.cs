@@ -104,12 +104,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             vm.TotalPaid = totalPayment(purchaseOrder.PurchaseOrderDetails);
             vm.PurchaseOrderEdit = purchaseOrder;
             vm.DefaultSupplierIDShow = purchaseOrder.Supplier.SupplierId;
+            vm.TotalPaid = totalPaid(purchaseOrder.PurchasePaymentHistories);
             return View(vm);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(CreatePurchaseOrderVM model)
         {
-            //Check nếu tổng tiền, nhỏ hơn số tiền đã trả thì thông báo, trả về trang, không thể lưu
+            //Todo: Check nếu tổng tiền, nhỏ hơn số tiền đã trả thì thông báo, trả về trang, không thể lưu
             //Kiểm tra ở front-end
             //Check ở back-end
             if(model.TotalPayment < model.TotalPaid) {

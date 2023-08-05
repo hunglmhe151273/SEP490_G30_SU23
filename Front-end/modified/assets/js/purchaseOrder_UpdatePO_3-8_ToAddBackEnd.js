@@ -339,13 +339,20 @@ $("#supplierSelect").change(() => {
         console.log("Display block");
         supplierContainer.style.display = 'block'; // Show the supplier container
     }
+    // $('#debt').text('0')
     function handleFormSubmit() {
+
         console.log("Số dòng trong table: "+ $('#myTable tr').length);
+        console.log("Đã trả:"+ $('#amountPaid').html());    
+        console.log("Tổng tiền: "+ $('#totalPay').html());
         if( $('#myTable tr').length < 2){
             anim4_noti('Chưa chọn sản phẩm');
             return false;
         }else if(($('#supplierSelect').val() == '' && $('#supplierSelectDefault').val() == '')){
             anim4_noti('Chưa chọn nhà cung cấp');
+            return false;
+        }else if($('#amountPaid').html() > $('#totalPay').html()){
+            anim4_noti('Tổng tiền phải lớn hơn hoặc bằng đã trả');
             return false;
         }else{
             console.log("Đã  submit");
