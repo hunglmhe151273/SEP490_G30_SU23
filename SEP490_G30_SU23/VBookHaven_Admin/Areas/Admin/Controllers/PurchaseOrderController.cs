@@ -137,8 +137,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 pO.Date = DateTime.Now;
                 pO.VAT = model.PurchaseOrderEdit.VAT;
                 pO.Staff = staffCreate;
-
-               
                 for (int i = 0; i < model.ProductIdList.Count; ++i)
                 {
                     var detail = new PurchaseOrderDetail
@@ -151,7 +149,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     pO.PurchaseOrderDetails.Add(detail);
                 }
             }
-           
             await _dbContext.SaveChangesAsync();
             TempData["success"] = "Cập nhật đơn hàng nhập thành công";
             return RedirectToAction(nameof(Create));
@@ -319,6 +316,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] ProductDTO productDTO)
         {
+            //To Do: Validate unique barcode
             if (!ModelState.IsValid)
             {
                 return StatusCode(404, "Lỗi xảy ra khi thêm sản phẩm mới! Vui lòng thử lại sau.");
