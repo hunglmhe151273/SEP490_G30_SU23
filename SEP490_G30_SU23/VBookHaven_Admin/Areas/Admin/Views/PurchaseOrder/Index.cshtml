@@ -129,7 +129,7 @@
                                         @Html.DisplayFor(modelItem => item.AmountPaid)
                                     </td>
                                     <td>
-                                        <a asp-action="Details" asp-route-id="@item.PurchaseOrderId">Details</a>
+                                        <a asp-action="Edit" asp-route-purchaseId="@item.PurchaseOrderId">Edit</a>
                                     </td>
                                 </tr>
                             }

@@ -151,7 +151,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             await _dbContext.SaveChangesAsync();
             TempData["success"] = "Cập nhật đơn hàng nhập thành công";
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
         private async Task<Staff> GetStaffByUserID()
         {

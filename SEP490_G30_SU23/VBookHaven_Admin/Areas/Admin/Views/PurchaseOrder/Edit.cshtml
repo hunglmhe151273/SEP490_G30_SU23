@@ -202,11 +202,11 @@
                                                         <td></td>
                                                         <td>@if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
                                                             {
-                                                                <img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
+                                                                <img class="productImg" src="/images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
                                                             }
                                                             else
                                                             {
-                                                                <img class="productImg" src="../../images/img/default_image.png">
+                                                                <img class="productImg" src="/images/img/default_image.png">
                                                             }
                                                             <td>
                                                             <div class="ellipsis">
