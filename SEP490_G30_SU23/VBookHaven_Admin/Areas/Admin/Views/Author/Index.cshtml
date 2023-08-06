@@ -57,3 +57,186 @@
 	<!--end page-content-wrapper-->
 </div>
 <!--end page-wrapper-->
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+	<!--page-content-wrapper-->
+	<div class="page-content-wrapper">
+		<div class="page-content">
+			<!--breadcrumb-->
+			<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+				<div class="breadcrumb-title pe-3">Tác giả</div>
+				<div class="ps-3">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb mb-0 p-0">
+							<li class="breadcrumb-item">
+								<a href="javascript:;">
+									<i class="bx bx-home-alt"></i>
+								</a>
+							</li>
+							<li class="breadcrumb-item active" aria-current="page">Tác giả</li>
+						</ol>
+					</nav>
+				</div>
+			</div>
+			<!--end breadcrumb-->
+			<div class="card">
+				<div class="card-body">
+					<div class="card-title">
+						<h4 class="mb-0">Quản lí tác giả</h4>
+					</div>
+					<hr />
+					<div class="mb-3 row">
+						<div class="accordion col-8" id="accordionExample">
+							<div class="accordion-item">
+								<h3 class="accordion-header" id="headingOne">
+									<button class="accordion-button collapsed" type="button"
+											data-bs-toggle="collapse" data-bs-target="#filler" aria-expanded="false"
+											aria-controls="filler">
+										BỘ LỌC
+									</button>
+								</h3>
+								<div id="filler" class="accordion-collapse collapse"
+									 aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+										<form class="row" action="">
+											<div class="col-md-6 mb-2">
+												<label class="form-label">Tên tác giả hoặc ID</label>
+												<input type="text" class="form-control filter"
+													   id="userNameInput" placeholder="Nhập từ khóa vào đây...">
+											</div>
+											<div class="col-md-6 mb-2">
+												<label class="form-label">Trạng thái</label>
+												<select class="form-select filter" id="activation">
+													<option value="" selected>--Không--</option>
+													<option value="Hoạt động">Hoạt động</option>
+													<option value="Đình chỉ">Đình chỉ</option>
+												</select>
+											</div>
+											<!-- <div class="col-md-4"></div>
+											<input type="submit" class="btn btn-primary mt-3 col-md-4" value="Lọc">
+											<div class="col-md-4"></div> -->
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<button type="button" class="btn btn-success">Nhập file</button>
+							<button type="button" class="btn btn-success">Xuất file</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+									data-bs-target="#add">
+								Thêm tác giả
+							</button>
+
+							<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel"
+								 aria-hidden="true">
+								<form action="" class="row"></form>
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">
+												Thêm tác giả mới
+											</h5>
+										</div>
+										<div class="modal-body">
+											<div class="col-md-12 mb-3">
+												<label class="form-label">Tên tác giả</label>
+												<input type="text" class="form-control" value="">
+											</div>
+											<div class="col-md-12 mb-3">
+												<label class="form-label">Mô tả</label>
+												<textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">
+												Hủy
+											</button>
+											<button type="button" class="btn btn-primary">Lưu</button>
+										</div>
+									</div>
+									@*</form>*@
+								</div>
+							</div>
+						</div>
+						<div class="table-responsive mt-3 text-center">
+							<table id="example2" class="table table-striped" style="width:100%">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Tác giả</th>
+										<th>Trạng thái</th>
+										<th>Hoạt động</th>
+									</tr>
+								</thead>
+								<tbody id="myTable">
+									<tr>
+										<td>1</td>
+										<td>HungLM</td>
+										<td>
+											<div class="form-switch ps-0">
+												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox" checked>
+											</div>
+										</td>
+										<td>
+											<a href="" class="btn btn-sm btn-default">
+												<i class="lni lni-pencil-alt"></i>
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>ChinhLK</td>
+										<td>
+											<div class="form-switch ps-0">
+												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox">
+											</div>
+										</td>
+										<td>
+											<a href="" class="btn btn-sm btn-default">
+												<i class="lni lni-pencil-alt"></i>
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>QuocTK</td>
+										<td>
+											<div class="form-switch ps-0">
+												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox" checked>
+											</div>
+										</td>
+										<td>
+											<a href="" class="btn btn-sm btn-default">
+												<i class="lni lni-pencil-alt"></i>
+											</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--end page-content-wrapper-->
+	</div>
+	<!--end page-wrapper-->
+	<!--start overlay-->
+	<div class="overlay toggle-btn-mobile"></div>
+	<!--end overlay-->
+	<!--Start Back To Top Button--> <a href="javaScript:;" class="back-to-top">
+		<i class='bx bxs-up-arrow-alt'></i>
+	</a>
+	<!--End Back To Top Button-->
+	<!--footer -->
+	@*<div class="footer">
+	<p class="mb-0">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent"
+	target="_blank">codervent</a>
+	</p>
+	</div>*@
+	<!-- end footer -->
+</div>
+<!-- end wrapper -->
