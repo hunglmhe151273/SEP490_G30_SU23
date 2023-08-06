@@ -200,10 +200,15 @@
                                                 {
                                                     <tr>
                                                         <td></td>
-                                                        <td>@if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null){
+                                                        <td>@if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
+                                                            {
                                                                 <img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
                                                             }
-                                                        <td>
+                                                            else
+                                                            {
+                                                                <img class="productImg" src="../../images/img/default_image.png">
+                                                            }
+                                                            <td>
                                                             <div class="ellipsis">
                                                                 @detailPO.Product.Name
                                                             </div>
@@ -239,6 +244,7 @@
                                                                 ../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
                                                                 }else{
                                                                     <div class="hidden-content presentImage">
+                                                                        ../../images/img/default_image.png
                                                                     </div>
                                                                 }
                                                                 <div class="hidden-content unitInStock">@detailPO.Product.UnitInStock</div>

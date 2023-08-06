@@ -350,7 +350,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     _dbContext.Stationeries.Add(stationery);
                 }
                 await _dbContext.SaveChangesAsync();
-                return Ok(product);
+                return Ok(_mapper.Map<Product, ProductDTO>(product));
             }
             catch (Exception ex)
             {
