@@ -235,12 +235,14 @@
                                     <input type="text" id="amount" name="price" placeholder="Add Your Price" readonly/>*@
                                     <label for="min-price" style="width: 20%"><b>Từ: </b></label>
                                     <input type="number" id="min-price" name="minPrice" min="0" 
-                                        value="@Model.MinPrice" style="float: none" /> VNĐ<br />
+                                        value="@(Model.MinPrice == null ? "" : Model.MinPrice)" 
+                                        style="float: none" /> VNĐ<br />
                                     <label for="max-price" style="width: 20%"><b>Đến: </b></label>
                                     <input type="number" id="max-price" name="maxPrice" min="0" 
-                                        value="@Model.MaxPrice" style="float: none; margin-bottom: 20px" /> VNĐ<br />
+                                        value="@(Model.MaxPrice == null ? "" : Model.MaxPrice)" 
+                                        style="float: none; margin-bottom: 20px" /> VNĐ<br />
                                 </div>
-                                <div id="slider-range"></div>
+                                @*<div id="slider-range"></div>*@
                             </div>
                         </aside>
                         <!-- widget-color -->

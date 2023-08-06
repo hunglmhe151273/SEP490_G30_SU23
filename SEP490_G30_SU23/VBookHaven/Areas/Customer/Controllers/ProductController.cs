@@ -13,6 +13,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 	// Chua co list view cua trang product list
 	// Recommended new product o ben trai trang index
 
+	// Input filter min max price - ko co border - trong dang xau
+
 	public class ProductBuyingViewModel
 	{
 		public List<Product> Products { get; set; }
@@ -20,8 +22,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 		public Dictionary<int, string?> Thumbnails { get; set; }
 
 		public string SearchText { get; set; }
-		public int MinPrice { get; set; }
-		public int MaxPrice { get; set; }
+		public int? MinPrice { get; set; }
+		public int? MaxPrice { get; set; }
 		public List<int> SelectedSubCategories { get; set; }
 		public List<int> SelectedCategories { get; set; }
 		public SelectList SortList { get; set; }
@@ -39,8 +41,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 			Thumbnails = new Dictionary<int, string?>();
 
 			SearchText = "";
-			MinPrice = 0;
-			MaxPrice = 1000000;
+			MinPrice = null;
+			MaxPrice = null;
 			SelectedSubCategories = new List<int>();
 			SelectedCategories = new List<int>();
 
