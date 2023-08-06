@@ -10,7 +10,7 @@ namespace VBookHaven.Models.DTO
     public class ProductDTO
     {
         public int? ProductId { get; set; }
-        [StringLength(20, ErrorMessage = "Tên sản phẩm không được vượt quá 20 kí tự.")]
+        [StringLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]
         [Required]
         public string? Name { get; set; }
         [StringLength(100, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]

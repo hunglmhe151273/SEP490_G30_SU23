@@ -1,12 +1,13 @@
 ﻿@model VBookHaven.Models.ViewModels.CreatePurchaseOrderVM
 @{
-    ViewData["Title"] = "Tạo đơn nhập hàng";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
     .hidden-content {
         display: none;
     }
+
     #searchList {
         position: absolute;
         z-index: 3;
@@ -31,8 +32,8 @@
     }
 
     .productImg {
-        width : 65px;
-        height : 70px;
+        width: 65px;
+        height: 70px;
     }
 
     td:nth-child(3) {
@@ -76,13 +77,15 @@
                                     <i class="bx bx-home-alt"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn nhập hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Nhập hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sửa đơn nhập hàng</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
-            <form onsubmit="return validateFormSubmit()" asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Create" method="post">
+            <form onsubmit="return validateFormSubmit()" asp-area="Admin" asp-controller="PurchaseOrder" asp-action="Edit" method="post">
+                <input asp-for="PurchaseOrderEdit.PurchaseOrderId" class="form-control" hidden>
                 <div class="row">
                     <div class="col-9 mx-auto">
                         <div class="card">
@@ -114,16 +117,26 @@
                                 </div>
                                 <hr>
                                 <div class="card-body row g-3">
-                                    <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                    <div class="col-md-12 px-0" id="supplierContainer">
-                                        <select asp-for="SupplierID" id="supplierSelect" class="single-select">
+                                    <div class="col-md-12 px-0" id="supplierContainer" style="display: none;">
+                                        <select asp-for="PurchaseOrderEdit.SupplierId" id="supplierSelect" class="single-select">
+                                            <option value="">Chọn nhà cung cấp...</option>
                                         </select>
                                         <div class="btn btn-outline-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#addSupplier">
                                             <i class='bx bx-plus-circle fs-5'></i> Thêm nhanh nhà cung cấp
                                         </div>
                                     </div>
-                                    <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
-                                    <div id="supplierInfoContainer" class="mb-4"></div>
+                                    <div id="supplierInfoContainer" class="mb-4">
+                                        <div class="supplier-info">
+                                            <h6 class="text-primary fw-bold">@Model.PurchaseOrderEdit.Supplier.SupplierName<button type="button" onclick="defaultCloseButton()" class="btn-close"></button></h6>
+                                            <label class="fw-bold">Số điện thoại: @Model.PurchaseOrderEdit.Supplier.Phone</label><br>
+                                            <label class="fw-bold">Địa chỉ: @Model.PurchaseOrderEdit.Supplier.Address</label>
+                                            <div class="hidden-content">
+                                                <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
+                                                    <option value="@Model.DefaultSupplierIDShow" selected></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -133,8 +146,8 @@
                             <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                         </div>
                         <div class="card-body">
-                            <label class="form-label">Ghi chú hóa đơn</label><br>
-                            <textarea asp-for="Note" class="form-control" cols="30" rows="6"></textarea>
+                            <label asp-for="PurchaseOrderEdit.Description" class="form-label">Ghi chú hóa đơn</label><br>
+                            <textarea asp-for="PurchaseOrderEdit.Description" class="form-control" cols="30" rows="6"></textarea>
                             <!-- to do: add span validate -->
                         </div>
                     </div>
@@ -163,7 +176,6 @@
                                                     <i class='bx bx-plus-circle'></i> Thêm nhanh sản phẩm mới
                                                 </div>
                                                 <div id="list-product"></div>
-                                        
                                             </div>
                                         </div>
                                     </div>
@@ -182,9 +194,67 @@
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
+                                            <!-- List product in purchase order -->
                                             <tbody id="orderContainer">
-                                               
+                                                @foreach (var detailPO in Model.PurchaseOrderEdit.PurchaseOrderDetails)
+                                                {
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>@if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
+                                                            {
+                                                                <img class="productImg" src="../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="productImg" src="../../images/img/default_image.png">
+                                                            }
+                                                            <td>
+                                                            <div class="ellipsis">
+                                                                @detailPO.Product.Name
+                                                            </div>
+                                                        </td>
+                                                        <td>@detailPO.Product.Unit</td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input type="number" value="@detailPO.Quantity" name="QuantityList" min="1" step="1" class="form-control num">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input class="form-control price num" value="@detailPO.UnitPrice" name="UnitPriceList" min="0" step="1000" type='number'>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input class="form-control discount num" value="@detailPO.Discount" name="DiscountList" step="0.1" min="0" type='number'>
+                                                                <span class="input-group-text">%</span>
+                                                            </div>
+                                                        </td>
+                                                        <td><span class="sum"></span> VNĐ</td>
+                                                        <td>
+                                                            <a href="javascript:;" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+                                                                <div class="hidden-content productId">@detailPO.Product.ProductId</div>
+                                                                <div class="hidden-content name">@detailPO.Product.Name</div>
+                                                                <div class="hidden-content barcode">@detailPO.Product.Barcode</div>
+                                                                <div class="hidden-content unit">@detailPO.Product.Unit</div>
+                                                                <div class="hidden-content purchasePrice">@detailPO.Product.PurchasePrice</div>
+                                                                @if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
+                                                                {
+                                                                    <div class="hidden-content presentImage">
+                                                                ../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
+                                                                }else{
+                                                                    <div class="hidden-content presentImage">
+                                                                        ../../images/img/default_image.png
+                                                                    </div>
+                                                                }
+                                                                <div class="hidden-content unitInStock">@detailPO.Product.UnitInStock</div>
+                                                            </a>
+                                                            <div class="input-group hidden-content">
+                                                                <input name="ProductIDList" value="@detailPO.Product.ProductId">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -198,52 +268,36 @@
                                             <tr>
                                                 <td>Thuế GTGT</td>
                                                 <td class="d-flex justify-content-end">
-                                                    <div class="input-group" style="width:40%">
-                                                        <input asp-for="VAT" id="totalVat" type="number" value="5" min="0" step="1" class="form-control">
+                                                    <div class="input-group w-50">
+                                                        <input asp-for="PurchaseOrderEdit.VAT" id="totalVat" type="number" min="0" step="1" class="form-control">
                                                         <span class="input-group-text">%</span>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <th><strong>Tổng tiền thanh toán</strong></th>
-                                                <td class="text-end">
-                                                    <strong>
-                                                        <span id="totalPay"></span>
-                                                        VNĐ
-                                                    </strong>
-                                                </td>
-                                            </tr>
-                                            <!-- NEW CODE HERE -->
-                                            <tr>
-                                                <td>Số tiền đã trả</td>
-                                                <td class="d-flex justify-content-end">
-                                                    <div class="input-group" style="width:80%">
-                                                        <input asp-for="AmountPaid" id="paid" type="number" value="0" min="0" step="500" class="form-control">
-                                                        <span class="input-group-text">VNĐ</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
                                             <tr class="fw-bold">
-                                                <td class="">Số tiền còn thiếu</td>
-                                                <td class="text-end"><span id="debt"></span> VNĐ</td>
+                                                <th>Tổng tiền thanh toán</th>
+                                                <td class="text-end">
+                                                    <span id="totalPay"></span> VNĐ
+                                                </td>
+                                                <div class="hidden-content">
+                                                    <span id="totalPaid">@Model.TotalPaid</span>
+                                                    <span id="totalPayToCompare"></span>
+                                                </div>
                                             </tr>
-                                            <!-- END NEW CODE -->
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- To Add-->
-                    <div class="col-12 pe-0 mx-auto" style="bottom: 0;">
+                    <div class="col-12 pe-0 mx-auto">
                         <div class="card border-top border-0 border-4 border-primary py-2">
                             <div class="card-body text-end">
                                 <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
-                                <input type="submit" class="btn btn-success px-5 mx-3" value="Tạo đơn">
+                                <input type="submit" class="btn btn-success px-5 mx-3" value="Sửa đơn">
                             </div>
                         </div>
                     </div>
-                    <!-- To Add-->
                 </div>
             </form>
             <div class="modal fade" id="addProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -282,11 +336,7 @@
                                     <input type="text" class="form-control validate important" id="price" placeholder="Nhập giá" required>
                                     <div id="price-feedback" class="feedback"></div>
                                 </div>
-       @*                         <div class="col-12 col-md-6 mb-3">
-                                    <label class="form-label">Số lượng nhập *</label>
-                                    <input type="text" class="form-control validate important" id="quantity" placeholder="Nhập số lượng" required>
-                                    <div id="quantity-feedback" class="feedback"></div>
-                                </div>*@
+                               
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Đơn vị tính *</label>
                                     <input type="text" class="form-control validate important" id="unit" placeholder="Nhập đơn vị" required>
@@ -343,7 +393,7 @@
 </div>
 <!--end page-wrapper-->
 @section Scripts {
-    <script type="text/javascript" src="~/js/PurchaseOrder.js"></script>
+    <script type="text/javascript" src="~/js/EditPurchaseOrder.js"></script>
     <script type="text/javascript" src="~/js/UpdateTablePO.js"></script>
     <script type="text/javascript" src="~/js/ValidatePurchaseOrder.js"></script>
 }

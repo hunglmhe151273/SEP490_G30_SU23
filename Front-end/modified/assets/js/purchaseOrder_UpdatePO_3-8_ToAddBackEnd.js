@@ -120,24 +120,6 @@ let suppliers = [{
     }
 ];
 let products = [{
-        "productId": 1,
-        "name": "Sach test 1",
-        "barcode": "PVN1",
-        "unit": "Quyển",
-        "unitInStock": 0,
-        "purchasePrice": 15,
-        "retailPrice": 17,
-        "retailDiscount": 2,
-        "wholesalePrice": 16,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    },
-    {
         "productId": 2,
         "name": "Sach test 2",
         "barcode": "PVN2",
@@ -210,62 +192,25 @@ let products = [{
         "subCategoryId": 2
     }
 ];
-
 let productExists = [{
-        "productId": 1,
-        "name": "Sach test 1",
-        "barcode": "PVN1",
-        "unit": "Quyển",
-        "unitInStock": 0,
-        "purchasePrice": 15,
-        "retailPrice": 17,
-        "retailDiscount": 2,
-        "wholesalePrice": 16,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    },
-    {
-        "productId": 2,
-        "name": "Sach test 2",
-        "barcode": "PVN2",
-        "unit": "Bộ",
-        "unitInStock": 0,
-        "purchasePrice": 20000,
-        "retailPrice": 23000,
-        "retailDiscount": 2,
-        "wholesalePrice": 21000,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 2
-    },
-    {
-        "productId": 3,
-        "name": "Sach test 3",
-        "barcode": "PVN3",
-        "unit": "Thùng",
-        "unitInStock": 0,
-        "purchasePrice": 25000,
-        "retailPrice": 28000,
-        "retailDiscount": 0.2,
-        "wholesalePrice": 27000,
-        "wholesaleDiscount": 0.2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    }
-];
+    "productId": 1,
+    "name": "Sach test 1",
+    "barcode": "PVN1",
+    "unit": "Quyển",
+    "unitInStock": 0,
+    "purchasePrice": 15,
+    "retailPrice": 17,
+    "retailDiscount": 2,
+    "wholesalePrice": 16,
+    "wholesaleDiscount": 2,
+    "size": null,
+    "weight": null,
+    "description": null,
+    "status": true,
+    "isBook": true,
+    "subCategoryId": 1
+}];
+
 
 const supplierSelect = document.getElementById('supplierSelect');
 const supplierInfoContainer = document.getElementById('supplierInfoContainer');
@@ -273,39 +218,50 @@ const supplierContainer = document.getElementById('supplierContainer');
 const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
 
-//Call API
-//fetchDataFromAPIs();
+
+//display product list
+function displayProductList() {
+    products.forEach(product => {
+        console.log(product);
+    })
+}
+
 
 //for test
-populateSuppliersSelect();
-populateProductsSelect();
+// populateSuppliersSelect();
+// populateProductsSelect();
+var purchaseId = getParameterFromUrl('purchaseId');
 
+function getParameterFromUrl(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 // Function to fetch suppliers and products data using AJAX
-function fetchDataFromAPIs() {
+if (purchaseId !== null) {
+    console.log("purchaseId" + purchaseId);
+    fetchDataFromAPIs(purchaseId);
+}
+
+function fetchDataFromAPIs(purchaseId) {
     $.ajax({
         url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSuppliers',
         type: 'GET',
         dataType: 'json',
         success: function(suppliersData) {
-            suppliers = suppliersData; // Update the suppliers array with fetched data
-            //       suppliers.forEach(supplier => {
-            //     console.log(supplier);
-            // });
+            suppliers = suppliersData;
             populateSuppliersSelect();
         },
         error: function(error) {
             console.log('Error fetching suppliers data:', error);
         }
     });
+    let urlGetAllOtherProductsInPurchaseId = `https://localhost:7123/Admin/PurchaseOrder/GetAllOtherProductsByPurchaseId?purchaseId=${purchaseId}`;
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/getallproducts',
+        url: urlGetAllOtherProductsInPurchaseId,
         type: 'GET',
         dataType: 'json',
         success: function(productsData) {
             products = productsData;
-            products.forEach(product => {
-                console.log(product);
-            })
             populateProductsSelect();
         },
         error: function(error) {
@@ -347,7 +303,7 @@ $("#supplierSelect").change(() => {
 
             var showSupplierInfoDiv =  `
             <div class="supplier-info">
-                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" class="btn-close"></button></h6>
+                <h6 class="text-primary fw-bold">${supplier.supplierName} <button type="button" onclick="closeButton()" class="btn-close"></button></h6>
                 <label class="fw-bold">Số điện thoại: ${supplier.phone}</label></br>
             `;
             if (supplier.province !== null) {
@@ -356,16 +312,54 @@ $("#supplierSelect").change(() => {
             showSupplierInfoDiv += `</div>`;
 
         supplierInfoContainer.innerHTML = showSupplierInfoDiv;
-
-        // Add event listener to the close button
-        const closeBtn = supplierInfoContainer.querySelector('.btn-close');
-        closeBtn.addEventListener('click', function() {
-            supplierInfoContainer.innerHTML = '';//clear supplier Infomation
-            $('#supplierSelect').val('').trigger('change'); //change value
-            console.log("supplierSelect VALUE: " + supplierSelect.value)
-            supplierContainer.style.display = 'block'; // Show the supplier container
-        });
+        // // Add event listener to the close button
+        // const closeBtn = supplierInfoContainer.querySelector('.btn-close');
+        // closeBtn.addEventListener('click', function() {
+        //     supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        //     $('#supplierSelect').val('').trigger('change'); //change value
+        //     supplierContainer.style.display = 'block'; // Show the supplier container
+        // });
+       
     }
+    function closeButton(){
+        supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        $('#supplierSelect').val('').trigger('change'); //change value
+        console.log("Display block");
+        supplierContainer.style.display = 'block'; // Show the supplier container
+    }
+    //--------------------------------Validate form--------------------------------
+    function defaultCloseButton(){
+        $("#supplierContainer").append(`<div class="hidden-content">
+        <select asp-for="DefaultSupplierIDShow" id="supplierSelectDefault" class="single-select">
+            <option value="" selected></option>
+        </select>
+        </div>`);
+        supplierInfoContainer.innerHTML = '';//clear supplier Infomation
+        $('#supplierSelect').val('').trigger('change'); //change value
+        console.log("Display block");
+        supplierContainer.style.display = 'block'; // Show the supplier container
+    }
+    // $('#debt').text('0')
+    function handleFormSubmit() {
+
+        console.log("Số dòng trong table: "+ $('#myTable tr').length);
+        console.log("Đã trả:"+ $('#amountPaid').html());    
+        console.log("Tổng tiền: "+ $('#totalPay').html());
+        if( $('#myTable tr').length < 2){
+            anim4_noti('Chưa chọn sản phẩm');
+            return false;
+        }else if(($('#supplierSelect').val() == '' && $('#supplierSelectDefault').val() == '')){
+            anim4_noti('Chưa chọn nhà cung cấp');
+            return false;
+        }else if($('#amountPaid').html() > $('#totalPay').html()){
+            anim4_noti('Tổng tiền phải lớn hơn hoặc bằng đã trả');
+            return false;
+        }else{
+            console.log("Đã  submit");
+            return true;
+        }
+      } 
+    //--------------------------------
       // Function to populate products select list
       function populateProductsSelect() {
         productList.innerHTML = `
@@ -375,6 +369,13 @@ $("#supplierSelect").change(() => {
                                     <div class="row d-flex align-items-center">
                                         <div class="col-6 d-flex align-items-center">
                                             <div class="flex-shrink-0 cover">
+                                            <div class="hidden-content productId">${product.productId}</div>
+                                            <div class="hidden-content name">${product.name}</div>
+                                            <div class="hidden-content barcode">${product.barcode}</div>
+                                            <div class="hidden-content unit">${product.unit}</div>
+                                            <div class="hidden-content purchasePrice">${product.purchasePrice}</div>
+                                            <div class="hidden-content presentImage">${product.presentImage}</div>
+                                            <div class="hidden-content unitInStock">${product.unitInStock}</div>
                                                 <img src="${product.presentImage}" class="productImg">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
@@ -385,9 +386,9 @@ $("#supplierSelect").change(() => {
                                             </div>
                                         </div>
                                         <div class="col-6 text-end">
-                                            <p class="m-0"><strong>Giá nhập:</strong> ${product.purchasePrice}
+                                            <p class="m-0"><strong>Giá nhập:</strong>${product.purchasePrice}
                                             </p>
-                                            <p class="m-0 text-info fw-bold">Tồn: 145</p>
+                                            <p class="m-0 text-info fw-bold">Tồn: ${product.unitInStock}</p>
                                         </div>
                                     </div>
                                 </a>`
@@ -397,23 +398,23 @@ $("#supplierSelect").change(() => {
         `;
     }
 
-    // Hàm để lấy thông tin khi bấm vào thẻ <a>
+    // Hàm để lấy thông tin khi bấm vào selectlist - thẻ <a>
     function getBookInfo(linkElement) {
-        //lấy được phần tử cần ẩn
-        const theA = linkElement;
         // Lấy các phần tử con bên trong thẻ <a> được click
-        const bookTitle = linkElement.querySelector('.productName').textContent;
-        const unit = linkElement.querySelector('.productUnit').textContent;
-        var imgSrc = linkElement.querySelector('.productImg').src;
-
-        console.log(bookTitle + ' ' + imgSrc);
-        //Hiển thị sản phẩm ở order
+    const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
+    const name = linkElement.querySelector('.hidden-content.name').innerHTML;
+    const barcode = linkElement.querySelector('.hidden-content.barcode').innerHTML;
+    const unit = linkElement.querySelector('.hidden-content.unit').innerHTML;
+    const purchasePrice = linkElement.querySelector('.hidden-content.purchasePrice').innerHTML;
+    const presentImage = linkElement.querySelector('.hidden-content.presentImage').innerHTML;
+    const unitInStock = linkElement.querySelector('.hidden-content.unitInStock').innerHTML;
+        //1. Hiển thị sản phẩm ở order
             const productHTML = `
             <td></td>
-            <td> <img src="${imgSrc}"></td>
+            <td><img src="${presentImage}"></td>
             <td>
                 <div class="ellipsis">
-                ${bookTitle}
+                ${name}
                 </div>
             </td>
             <td>${unit}</td>
@@ -435,31 +436,33 @@ $("#supplierSelect").change(() => {
             </td>
             <td><span class="sum"></span> VNĐ</td>
             <td>
-                <a type="button" class="btn btn-close btn-danger delete"></a>
+            <a href="javascript:;" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+                <div class="hidden-content productId">${productId}</div>
+                <div class="hidden-content name"> ${name}</div>
+                <div class="hidden-content barcode">${barcode}</div>
+                <div class="hidden-content unit">${unit}</div>
+                <div class="hidden-content purchasePrice">${purchasePrice}</div>
+                <div class="hidden-content presentImage">${presentImage}</div>
+                <div class="hidden-content unitInStock">${unitInStock}</div>
+             </a>
             </td>
         `;
         const productRow = document.createElement('tr');
             productRow.innerHTML = productHTML;
-
-            const removeBtn = productRow.querySelector('.btn-danger');
+            const removeBtn = productRow.querySelector('.btn-danger.delete');
             removeBtn.addEventListener('click', function() {
+                //onclick="addSelect(this)" --> thêm product lại về selectlist
                 // xóa product row
                 productRow.remove();
-
-                // thêm lại the a vao select product list
-                 // C1: Thêm lại thẻ a
-                productList.append(theA);
-                 // C2: Hiển thị lại thẻ a
-                //theA.style.display = 'block';
                 updateInvoice();
             });
 
             orderContainer.appendChild(productRow);
 
-            // C1: Xóa thẻ a
-            theA.remove();
-            // C2: Ẩn thẻ a
-            //theA.style.display = 'none';
+            //2. Cập nhật lại product list - xóa sp trong product list
+            products = products.filter((product) => product.productId !== Number(productId));
+            products.sort((a, b) => a.productId - b.productId);
+            populateProductsSelect();
             updateInvoice();
     }
 
@@ -473,11 +476,11 @@ $("#supplierSelect").change(() => {
     });
 
     function addSupplierByAPI() {
-        var name = $('#supplier').val();
-        var phone = $('#phone').val();
-        var description = $('#description').val();
-        var supplierLength = suppliers.length;
-        var supplierDTO = {
+        let name = $('#supplier').val();
+        let phone = $('#phone').val();
+        let description = $('#description').val();
+        let supplierLength = suppliers.length;
+        let supplierDTO = {
             "supplierId": null,
             "address": null,
             "supplierName": name,
@@ -524,14 +527,14 @@ $("#supplierSelect").change(() => {
         });
     }
     function addProductByAPI() {
-        var productName = $('#productName').val();
-        var barCode = $('#barCode').val();
-        var price = $('#price').val();
-        var quantity = $('#quantity').val();
-        var unit = $('#unit').val();
-        var isBook = $('#isBook').val(); 
+        let productName = $('#productName').val();
+        let barCode = $('#barCode').val();
+        let price = $('#price').val();
+        let quantity = $('#quantity').val();
+        let unit = $('#unit').val();
+        let isBook = $('#isBook').val(); 
 
-        var bookDTO =  {
+        let bookDTO =  {
                 "productId": null,
                 "name": productName,
                 "barcode": barCode,
@@ -583,6 +586,38 @@ $("#supplierSelect").change(() => {
         });
     }
 
+    //new
+    function addSelect(linkElement) {
+    // Get the parent <td> element of the <a> element
+    const parentTd = linkElement.parentNode;
+    // Get the parent <tr> element of the <td> element
+    const parentTr = parentTd.parentNode;
+    // Use querySelector to access the hidden elements inside the linkElement
+    const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
+    const name = linkElement.querySelector('.hidden-content.name').innerHTML;
+    const barcode = linkElement.querySelector('.hidden-content.barcode').innerHTML;
+    const unit = linkElement.querySelector('.hidden-content.unit').innerHTML;
+    const purchasePrice = linkElement.querySelector('.hidden-content.purchasePrice').innerHTML;
+    const unitInStock = linkElement.querySelector('.hidden-content.unitInStock').innerHTML;
+    const presentImage = linkElement.querySelector('.hidden-content.presentImage').innerHTML;
+    // Create a new product object
+    const newProduct = {
+        productId: Number(productId),
+        name,
+        barcode,
+        unit,
+        purchasePrice,
+        unitInStock,
+        presentImage,
+  };
+    // Push the new product object to the productExists array
+    products.push(newProduct);
+    // Sorting products by productId in ascending order
+    products.sort((a, b) => a.productId - b.productId);
+    populateProductsSelect();
+    //Delete row in table
+    parentTr.remove();
+    }
 
     function resetCreateSupplierForm(){
         // Clear input fields (set their values to empty strings)

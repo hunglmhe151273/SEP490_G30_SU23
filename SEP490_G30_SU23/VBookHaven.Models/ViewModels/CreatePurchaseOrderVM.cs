@@ -14,6 +14,7 @@ namespace VBookHaven.Models.ViewModels
             QuantityList = new List<int>();
             UnitPriceList = new List<int>();
             DiscountList = new List<double>();
+            PurchaseOrderEdit = new PurchaseOrder();
         }
         public int SupplierID { get; set; }
         public string? Note { get; set; }
@@ -21,7 +22,13 @@ namespace VBookHaven.Models.ViewModels
         public List<int> QuantityList { get; set; }
         public List<int> UnitPriceList { get; set; }
         public List<double> DiscountList { get; set; }
+        // to notice
         public decimal? AmountPaid { get; set; }
         public double? VAT { get; set; }
+        public PurchaseOrder PurchaseOrderEdit { get; set; }
+        //for EditPurchaseOrderVM 
+        public decimal? TotalPayment { get; set; }
+        public decimal? TotalPaid { get; set; }
+        public int? DefaultSupplierIDShow { get; set; }
     }
 }

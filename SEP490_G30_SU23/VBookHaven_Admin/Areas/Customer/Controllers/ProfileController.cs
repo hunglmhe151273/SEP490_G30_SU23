@@ -37,7 +37,7 @@ namespace VBookHaven_Admin.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([FromForm] IFormFile avatarFile, [FromForm] string customerDTOJson)
+        public async Task<IActionResult> Update([FromForm] IFormFile? avatarFile, [FromForm] string customerDTOJson)
         {
             //to do JWT
 

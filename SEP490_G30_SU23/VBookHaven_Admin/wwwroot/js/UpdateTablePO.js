@@ -74,6 +74,7 @@ var updateInvoice = function () {
             $(this).find($('.sum')).text(sum.toLocaleString('en'));
             $('#totalPrice').text(totalPrice.toLocaleString('en'));
             $('#totalPay').text(totalPay.toLocaleString('en'));
+            $('#totalPayToCompare').text(totalPay);
         }
     });
     // NEW CODE HERE
@@ -125,3 +126,4 @@ $(document).ready(function () {
 function isNotNullOrEmpty(value) {
     return value !== null && value !== undefined && value !== '';
 }
+

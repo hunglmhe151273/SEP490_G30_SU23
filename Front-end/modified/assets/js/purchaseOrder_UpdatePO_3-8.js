@@ -120,24 +120,6 @@ let suppliers = [{
     }
 ];
 let products = [{
-        "productId": 1,
-        "name": "Sach test 1",
-        "barcode": "PVN1",
-        "unit": "Quyển",
-        "unitInStock": 0,
-        "purchasePrice": 15,
-        "retailPrice": 17,
-        "retailDiscount": 2,
-        "wholesalePrice": 16,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    },
-    {
         "productId": 2,
         "name": "Sach test 2",
         "barcode": "PVN2",
@@ -211,61 +193,7 @@ let products = [{
     }
 ];
 
-let productExists = [{
-        "productId": 1,
-        "name": "Sach test 1",
-        "barcode": "PVN1",
-        "unit": "Quyển",
-        "unitInStock": 0,
-        "purchasePrice": 15,
-        "retailPrice": 17,
-        "retailDiscount": 2,
-        "wholesalePrice": 16,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    },
-    {
-        "productId": 2,
-        "name": "Sach test 2",
-        "barcode": "PVN2",
-        "unit": "Bộ",
-        "unitInStock": 0,
-        "purchasePrice": 20000,
-        "retailPrice": 23000,
-        "retailDiscount": 2,
-        "wholesalePrice": 21000,
-        "wholesaleDiscount": 2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 2
-    },
-    {
-        "productId": 3,
-        "name": "Sach test 3",
-        "barcode": "PVN3",
-        "unit": "Thùng",
-        "unitInStock": 0,
-        "purchasePrice": 25000,
-        "retailPrice": 28000,
-        "retailDiscount": 0.2,
-        "wholesalePrice": 27000,
-        "wholesaleDiscount": 0.2,
-        "size": null,
-        "weight": null,
-        "description": null,
-        "status": true,
-        "isBook": true,
-        "subCategoryId": 1
-    }
-];
+
 
 const supplierSelect = document.getElementById('supplierSelect');
 const supplierInfoContainer = document.getElementById('supplierInfoContainer');
@@ -274,14 +202,22 @@ const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
 
 //Call API
-//fetchDataFromAPIs();
+fetchDataFromAPIs(purchaseId);
 
 //for test
-populateSuppliersSelect();
-populateProductsSelect();
+// populateSuppliersSelect();
+// populateProductsSelect();
+var purchaseId = getParameterFromUrl('purchaseId');
 
+function getParameterFromUrl(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
 // Function to fetch suppliers and products data using AJAX
-function fetchDataFromAPIs() {
+
+fetchDataFromAPIs(purchaseId);
+
+function fetchDataFromAPIs(purchaseId) {
     $.ajax({
         url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSuppliers',
         type: 'GET',
@@ -297,8 +233,9 @@ function fetchDataFromAPIs() {
             console.log('Error fetching suppliers data:', error);
         }
     });
+    let urlGetAllOtherProductsInPurchaseId = `https://localhost:7123/Admin/PurchaseOrder/GetAllOtherProductsByPurchaseId?purchaseId=${purchaseId}`;
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/getallproducts',
+        url: urlGetAllOtherProductsInPurchaseId,
         type: 'GET',
         dataType: 'json',
         success: function(productsData) {
@@ -340,7 +277,24 @@ $("#supplierSelect").change(() => {
         supplierContainer.style.display = 'block';
     }
 });
-
+let productExists = [{
+    "productId": 1,
+    "name": "Sach test 1",
+    "barcode": "PVN1",
+    "unit": "Quyển",
+    "unitInStock": 0,
+    "purchasePrice": 15,
+    "retailPrice": 17,
+    "retailDiscount": 2,
+    "wholesalePrice": 16,
+    "wholesaleDiscount": 2,
+    "size": null,
+    "weight": null,
+    "description": null,
+    "status": true,
+    "isBook": true,
+    "subCategoryId": 1
+}];
     // Function to show the supplier info
     function showSupplierInfo(supplier) {
         // Clear supplier info container
@@ -375,6 +329,11 @@ $("#supplierSelect").change(() => {
                                     <div class="row d-flex align-items-center">
                                         <div class="col-6 d-flex align-items-center">
                                             <div class="flex-shrink-0 cover">
+                                            <div class="hidden-content productId">${product.productId}</div>
+                                            <div class="hidden-content name">${product.name}</div>
+                                            <div class="hidden-content barcode">${product.barcode}</div>
+                                            <div class="hidden-content unit">${product.unit}</div>
+                                            <div class="hidden-content purchasePrice">${product.purchasePrice}</div>
                                                 <img src="${product.presentImage}" class="productImg">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
@@ -385,7 +344,7 @@ $("#supplierSelect").change(() => {
                                             </div>
                                         </div>
                                         <div class="col-6 text-end">
-                                            <p class="m-0"><strong>Giá nhập:</strong> ${product.purchasePrice}
+                                            <p class="m-0"><strong>Giá nhập:</strong>${product.purchasePrice}
                                             </p>
                                             <p class="m-0 text-info fw-bold">Tồn: 145</p>
                                         </div>
@@ -399,21 +358,20 @@ $("#supplierSelect").change(() => {
 
     // Hàm để lấy thông tin khi bấm vào thẻ <a>
     function getBookInfo(linkElement) {
-        //lấy được phần tử cần ẩn
-        const theA = linkElement;
         // Lấy các phần tử con bên trong thẻ <a> được click
-        const bookTitle = linkElement.querySelector('.productName').textContent;
-        const unit = linkElement.querySelector('.productUnit').textContent;
-        var imgSrc = linkElement.querySelector('.productImg').src;
+    const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
+    const name = linkElement.querySelector('.hidden-content.name').innerHTML;
+    const barcode = linkElement.querySelector('.hidden-content.barcode').innerHTML;
+    const unit = linkElement.querySelector('.hidden-content.unit').innerHTML;
+    const purchasePrice = linkElement.querySelector('.hidden-content.purchasePrice').innerHTML;
 
-        console.log(bookTitle + ' ' + imgSrc);
         //Hiển thị sản phẩm ở order
             const productHTML = `
+            <td>${productId}</td>
             <td></td>
-            <td> <img src="${imgSrc}"></td>
             <td>
                 <div class="ellipsis">
-                ${bookTitle}
+                ${name}
                 </div>
             </td>
             <td>${unit}</td>
@@ -435,7 +393,13 @@ $("#supplierSelect").change(() => {
             </td>
             <td><span class="sum"></span> VNĐ</td>
             <td>
-                <a type="button" class="btn btn-close btn-danger delete"></a>
+            <a href="javascript:;" type="button" onclick="addSelect(this)" class="btn btn-close btn-danger delete">
+                <div class="hidden-content productId">${productId}</div>
+                <div class="hidden-content name"> ${name}</div>
+                <div class="hidden-content barcode">${barcode}</div>
+                <div class="hidden-content unit">${unit}</div>
+                <div class="hidden-content purchasePrice">${purchasePrice}</div>
+             </a>
             </td>
         `;
         const productRow = document.createElement('tr');
@@ -448,18 +412,26 @@ $("#supplierSelect").change(() => {
 
                 // thêm lại the a vao select product list
                  // C1: Thêm lại thẻ a
-                productList.append(theA);
+                //productList.append(theA);
                  // C2: Hiển thị lại thẻ a
                 //theA.style.display = 'block';
                 updateInvoice();
+
             });
 
             orderContainer.appendChild(productRow);
 
-            // C1: Xóa thẻ a
-            theA.remove();
-            // C2: Ẩn thẻ a
-            //theA.style.display = 'none';
+            //cập nhật lại product list
+            console.log('before'+products);
+            console.log('productID: '+productId);
+            products = products.filter((product) => product.productId !== Number(productId));
+            console.log('after'+products);
+            products.sort((a, b) => a.productId - b.productId);
+            populateProductsSelect();
+            // // C1: Xóa thẻ a
+            // theA.remove();
+            // // C2: Ẩn thẻ a
+            // //theA.style.display = 'none';
             updateInvoice();
     }
 
@@ -473,11 +445,11 @@ $("#supplierSelect").change(() => {
     });
 
     function addSupplierByAPI() {
-        var name = $('#supplier').val();
-        var phone = $('#phone').val();
-        var description = $('#description').val();
-        var supplierLength = suppliers.length;
-        var supplierDTO = {
+        let name = $('#supplier').val();
+        let phone = $('#phone').val();
+        let description = $('#description').val();
+        let supplierLength = suppliers.length;
+        let supplierDTO = {
             "supplierId": null,
             "address": null,
             "supplierName": name,
@@ -524,14 +496,14 @@ $("#supplierSelect").change(() => {
         });
     }
     function addProductByAPI() {
-        var productName = $('#productName').val();
-        var barCode = $('#barCode').val();
-        var price = $('#price').val();
-        var quantity = $('#quantity').val();
-        var unit = $('#unit').val();
-        var isBook = $('#isBook').val(); 
+        let productName = $('#productName').val();
+        let barCode = $('#barCode').val();
+        let price = $('#price').val();
+        let quantity = $('#quantity').val();
+        let unit = $('#unit').val();
+        let isBook = $('#isBook').val(); 
 
-        var bookDTO =  {
+        let bookDTO =  {
                 "productId": null,
                 "name": productName,
                 "barcode": barCode,
@@ -583,6 +555,36 @@ $("#supplierSelect").change(() => {
         });
     }
 
+    //new
+    function addSelect(linkElement) {
+    // Get the parent <td> element of the <a> element
+    const parentTd = linkElement.parentNode;
+    // Get the parent <tr> element of the <td> element
+    const parentTr = parentTd.parentNode;
+    // Use querySelector to access the hidden elements inside the linkElement
+    const productId = linkElement.querySelector('.hidden-content.productId').innerHTML;
+    const name = linkElement.querySelector('.hidden-content.name').innerHTML;
+    const barcode = linkElement.querySelector('.hidden-content.barcode').innerHTML;
+    const unit = linkElement.querySelector('.hidden-content.unit').innerHTML;
+    const purchasePrice = linkElement.querySelector('.hidden-content.purchasePrice').innerHTML;
+    // Create a new product object
+    const newProduct = {
+        productId: Number(productId),
+        name,
+        barcode,
+        unit,
+        purchasePrice,
+        // Add other properties with their corresponding values if needed
+  };
+  console.log(newProduct);
+  console.log('curproduct'+products);
+  // Push the new product object to the productExists array
+     products.push(newProduct);
+     // Sorting products by productId in ascending order
+    products.sort((a, b) => a.productId - b.productId);
+        populateProductsSelect();
+        parentTr.remove();
+    }
 
     function resetCreateSupplierForm(){
         // Clear input fields (set their values to empty strings)

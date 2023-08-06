@@ -16,7 +16,7 @@ namespace VBookHaven.Models.DTO
             CreateMap<SupplierDTO, Supplier>();
             CreateMap<Product, ProductDTO>()
              .ForMember(dest => dest.UnitInStock, opt => opt.MapFrom(src => src.UnitInStock == null ? 0 : src.UnitInStock))
-             .ForMember(dest => dest.PresentImage, opt => opt.MapFrom(src => "../../images/img/" + src.Images.Where(i => i.Status == true).FirstOrDefault().ImageName));
+             .ForMember(dest => dest.PresentImage, opt => opt.MapFrom(src => (src.Images.Where(i => i.Status == true).FirstOrDefault() == null ? "../../images/img/" + "default_image.png" : "../../images/img/" + src.Images.Where(i => i.Status == true).FirstOrDefault().ImageName)));
             CreateMap<ProductDTO, Product>();
             CreateMap<Customer, CustomerDTO>();
             CreateMap<CustomerDTO, Customer>();

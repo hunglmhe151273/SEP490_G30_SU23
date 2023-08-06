@@ -22,8 +22,7 @@
     <script src="assets/js/pace.min.js"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto&display=swap" />
     <!-- Icons CSS -->
     <link rel="stylesheet" href="assets/css/icons.css" />
     <!-- App CSS -->
@@ -35,33 +34,37 @@
             width: 100%;
             height: 100%;
         }
-
+        
         .payment-items {
             padding: 10px 10px;
             margin: 0 15px;
             border-bottom: 1px solid lightgray;
         }
+        
         .payment-items p {
             animation: forwards;
             margin-bottom: 0;
             font-size: 16px;
         }
+        
         .payment-title {
             color: black;
         }
+        
         .payment-date {
             font-size: 13px;
             color: gray;
         }
+        
         .payment-detail {
             display: none;
             padding: 10px 35px;
             font-size: 15px;
         }
+        
         .payment-items:first-child {
             background-color: lightsteelblue;
         }
-
         /* Custom CSS for text overflow ellipsis */
     </style>
 </head>
@@ -131,7 +134,8 @@
                                     <div class="card-body row g-3">
                                         <div class="supplier-info mt-0">
                                             <h6 class="text-primary fw-bold">
-                                                <a href="">Supp1</a> <!-- Click vào để dẫn đến supplier-detail -->
+                                                <a href="">Supp1</a>
+                                                <!-- Click vào để dẫn đến supplier-detail -->
                                             </h6>
                                             <label class="fw-bold">Số điện thoại: 0123456789</label></br>
                                             <label class="fw-bold">Địa chỉ: HaNoi</label>
@@ -159,15 +163,18 @@
                                 <div class="card-titl px-5 row">
                                     <div class="col-8 d-flex align-items-center">
                                         <div>
-                                            <i class="bx bx-credit-card bx-tada me-2 fs-4"></i> <!--Not paid icon-->
-                                            <!-- <i class="bx bxs-check-circle bx-tada me-2 fs-4 text-success"></i> --> <!--Paid icon-->
+                                            <i class="bx bx-credit-card bx-tada me-2 fs-4"></i>
+                                            <!--Not paid icon-->
+                                            <!-- <i class="bx bxs-check-circle bx-tada me-2 fs-4 text-success"></i> -->
+                                            <!--Paid icon-->
                                         </div>
-                                        <h5 class="mb-0 fw-bold">Đơn hàng chưa được thanh toán</h5> <!--Not paid title-->
-                                        <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> --> <!--Paid title-->
+                                        <h5 class="mb-0 fw-bold">Đơn hàng chưa được thanh toán</h5>
+                                        <!--Not paid title-->
+                                        <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
+                                        <!--Paid title-->
                                     </div>
                                     <div class="col-4 d-flex align-items-center justify-content-end">
-                                        <button class=" btn btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#addPayment">Thanh toán</button>
+                                        <button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
                                     </div>
                                 </div>
                                 <hr>
@@ -221,23 +228,23 @@
                                         <div class="col-md-12">
                                             <table id="myTable" class="table table-sm table-hover text-center">
                                                 <thead>
-                                                    <tr">
+                                                    <tr ">
                                                         <th>STT</th>
-                                                        <th class="col-1">Ảnh</th>
-                                                        <th class="col-4">Tên SP</th>
-                                                        <th class="col-1">Đơn vị</th>
-                                                        <th class="col-1">Số lượng</th>
-                                                        <th class="col-2">Đơn giá</th>
-                                                        <th class="col-1">Chiết khấu</th>
-                                                        <th class="col-2">Thành tiền</th>
+                                                        <th class="col-1 ">Ảnh</th>
+                                                        <th class="col-4 ">Tên SP</th>
+                                                        <th class="col-1 ">Đơn vị</th>
+                                                        <th class="col-1 ">Số lượng</th>
+                                                        <th class="col-2 ">Đơn giá</th>
+                                                        <th class="col-1 ">Chiết khấu</th>
+                                                        <th class="col-2 ">Thành tiền</th>
                                                         </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td>1</td>
-                                                        <td> <img src="assets/images/avatars/avatar-1.png"></td>
+                                                        <td> <img src="assets/images/avatars/avatar-1.png "></td>
                                                         <td>
-                                                            <div class="ellipsis">
+                                                            <div class="ellipsis ">
                                                                 Sách a
                                                             </div>
                                                         </td>
@@ -258,9 +265,9 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="col-8"></div>
-                                        <div class="col-4">
-                                            <table class="w-75">
+                                        <div class="col-8 "></div>
+                                        <div class="col-4 ">
+                                            <table class="w-75 ">
                                                 <tr>
                                                     <td>Số lượng</td>
                                                     <td>5</td>
@@ -285,42 +292,42 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 pe-0 mx-auto" style="position: sticky; bottom: 0;">
-                            <div class="card border-top border-0 border-4 border-primary">
-                                <div class="card-body text-end">
-                                    <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
-                                    <a href="" class="btn btn-outline-info px-5 mx-3">Sửa đơn</a>
+                        <div class="col-12 pe-0 mx-auto " style=" bottom: 0; ">
+                            <div class="card border-top border-0 border-4 border-primary ">
+                                <div class="card-body text-end ">
+                                    <a href=" " class="btn btn-outline-info px-5 mx-3 ">Thoát</a>
+                                    <a href=" " class="btn btn-outline-info px-5 mx-3 ">Sửa đơn</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="addPayment" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form action="" class="addForm">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Xác nhận thanh toán</h5>
+            <div class="modal fade " id="addPayment " tabindex="-1 " aria-labelledby="exampleModalLabel "
+                aria-hidden="true ">
+                <div class="modal-dialog ">
+                    <div class="modal-content ">
+                        <form action=" " class="addForm ">
+                            <div class="modal-header ">
+                                <h5 class="modal-title " id="exampleModalLabel ">Xác nhận thanh toán</h5>
                             </div>
-                            <div class="modal-body row">
-                                <div class="col-12 col-md-6 mb-3">
-                                    <label class="form-label">Số tiền</label>
-                                    <input type="text" class="form-control validate important" id="paid">
-                                    <div id="paid-feedback" class="feedback"></div>
+                            <div class="modal-body row ">
+                                <div class="col-12 col-md-6 mb-3 ">
+                                    <label class="form-label ">Số tiền</label>
+                                    <input type="text " class="form-control validate important " id="paid ">
+                                    <div id="paid-feedback " class="feedback "></div>
                                 </div>
-                                <div class="col-12 col-md-6 mb-3">
-                                    <label class="form-label">Ngày thanh toán</label>
-                                    <input type="datetime-local" class="form-control validate important" id="paid-date" placeholder="Nhập mã vạch">
-                                    <div id="paid-date-feedback" class="feedback"></div>
+                                <div class="col-12 col-md-6 mb-3 ">
+                                    <label class="form-label ">Ngày thanh toán</label>
+                                    <input type="datetime-local " class="form-control validate important " id="paid-date " placeholder="Nhập mã vạch ">
+                                    <div id="paid-date-feedback " class="feedback "></div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <input type="button" class="btn btn-primary reset submit" value="Lưu" id="submitProduct"
-                                    data-bs-dismiss="modal">
-                                <input type="reset" class="btn btn-secondary reset" value="Đặt lại">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <div class="modal-footer ">
+                                <input type="button " class="btn btn-primary reset submit " value="Lưu " id="submitProduct "
+                                    data-bs-dismiss="modal ">
+                                <input type="reset " class="btn btn-secondary reset " value="Đặt lại ">
+                                <button type="button " class="btn btn-secondary " data-bs-dismiss="modal ">Hủy</button>
                             </div>
                         </form>
                     </div>
@@ -330,56 +337,56 @@
         </div>
         <!--end page-wrapper-->
         <!--start overlay-->
-        <div class="overlay toggle-btn-mobile"></div>
+        <div class="overlay toggle-btn-mobile "></div>
         <!--end overlay-->
-        <!--Start Back To Top Button--><a href="javaScript:;" class="back-to-top"><i
+        <!--Start Back To Top Button--><a href="javaScript:; " class="back-to-top "><i
                 class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
         <!--footer -->
-        <div class="footer">
-            <p class="mb-0">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent"
-                    target="_blank">codervent</a>
+        <div class="footer ">
+            <p class="mb-0 ">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent "
+                    target="_blank ">codervent</a>
             </p>
         </div>
         <!-- end footer -->
     </div>
     <!-- end wrapper -->
     <!--start switcher-->
-    <div class="switcher-body">
-        <button class="btn btn-primary btn-switcher shadow-sm" type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"><i
-                class="bx bx-cog bx-spin"></i></button>
-        <div class="offcanvas offcanvas-end shadow border-start-0 p-2" data-bs-scroll="true" data-bs-backdrop="false"
-            tabindex="-1" id="offcanvasScrolling">
-            <div class="offcanvas-header border-bottom">
-                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Theme Customizer</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+    <div class="switcher-body ">
+        <button class="btn btn-primary btn-switcher shadow-sm " type="button " data-bs-toggle="offcanvas "
+            data-bs-target="#offcanvasScrolling " aria-controls="offcanvasScrolling "><i
+                class="bx bx-cog bx-spin "></i></button>
+        <div class="offcanvas offcanvas-end shadow border-start-0 p-2 " data-bs-scroll="true " data-bs-backdrop="false "
+            tabindex="-1 " id="offcanvasScrolling ">
+            <div class="offcanvas-header border-bottom ">
+                <h5 class="offcanvas-title " id="offcanvasScrollingLabel ">Theme Customizer</h5>
+                <button type="button " class="btn-close text-reset " data-bs-dismiss="offcanvas "></button>
             </div>
-            <div class="offcanvas-body">
-                <h6 class="mb-0">Theme Variation</h6>
+            <div class="offcanvas-body ">
+                <h6 class="mb-0 ">Theme Variation</h6>
                 <hr>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="lightmode"
-                        value="option1" checked>
-                    <label class="form-check-label" for="lightmode">Light</label>
+                <div class="form-check form-check-inline ">
+                    <input class="form-check-input " type="radio " name="inlineRadioOptions " id="lightmode "
+                        value="option1 " checked>
+                    <label class="form-check-label " for="lightmode ">Light</label>
                 </div>
                 <hr>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darkmode"
-                        value="option2">
-                    <label class="form-check-label" for="darkmode">Dark</label>
+                <div class="form-check form-check-inline ">
+                    <input class="form-check-input " type="radio " name="inlineRadioOptions " id="darkmode "
+                        value="option2 ">
+                    <label class="form-check-label " for="darkmode ">Dark</label>
                 </div>
                 <hr>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="darksidebar"
-                        value="option3">
-                    <label class="form-check-label" for="darksidebar">Semi Dark</label>
+                <div class="form-check form-check-inline ">
+                    <input class="form-check-input " type="radio " name="inlineRadioOptions " id="darksidebar "
+                        value="option3 ">
+                    <label class="form-check-label " for="darksidebar ">Semi Dark</label>
                 </div>
                 <hr>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="ColorLessIcons"
-                        value="option3">
-                    <label class="form-check-label" for="ColorLessIcons">Color Less Icons</label>
+                <div class="form-check form-check-inline ">
+                    <input class="form-check-input " type="radio " name="inlineRadioOptions " id="ColorLessIcons "
+                        value="option3 ">
+                    <label class="form-check-label " for="ColorLessIcons ">Color Less Icons</label>
                 </div>
             </div>
         </div>
@@ -387,40 +394,40 @@
     <!--end switcher-->
     <!-- JavaScript -->
     <!-- Bootstrap JS -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js "></script>
 
     <!--plugins-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-    <!-- <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script> -->
+    <script src="assets/js/jquery.min.js "></script>
+    <script src="assets/plugins/simplebar/js/simplebar.min.js "></script>
+    <script src="assets/plugins/metismenu/js/metisMenu.min.js "></script>
+    <!-- <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js "></script> -->
     <!--Select2 plugins-->
-    <script src="assets/plugins/select2/js/select2.min.js"></script>
+    <script src="assets/plugins/select2/js/select2.min.js "></script>
     <!--File-Uploader plugins-->
-    <script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js"></script>
+    <script src="assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js "></script>
 
     <script>
         $(document).on('click', '.show-btn', function () {
-            if ($(this).hasClass("bx-caret-down")) {
+            if ($(this).hasClass("bx-caret-down ")) {
                 $(this).parent().parent().find('.payment-detail').show();
-                $(this).removeClass("bx-caret-down")
-                $(this).addClass("bx-caret-up")
+                $(this).removeClass("bx-caret-down ")
+                $(this).addClass("bx-caret-up ")
             }
             else {
                 $(this).parent().parent().find('.payment-detail').hide();
-                $(this).addClass("bx-caret-down")
-                $(this).removeClass("bx-caret-up")
+                $(this).addClass("bx-caret-down ")
+                $(this).removeClass("bx-caret-up ")
             }
         })
     </script>
 
-    <script src="assets/js/validate.js"></script>
+    <script src="assets/js/validate.js "></script>
     <!-- App JS -->
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.js "></script>
     <!--notification js -->
-    <script src="assets/plugins/notifications/js/lobibox.min.js"></script>
-    <script src="assets/plugins/notifications/js/notifications.min.js"></script>
-    <script src="assets/plugins/notifications/js/notification-custom-script.js"></script>
+    <script src="assets/plugins/notifications/js/lobibox.min.js "></script>
+    <script src="assets/plugins/notifications/js/notifications.min.js "></script>
+    <script src="assets/plugins/notifications/js/notification-custom-script.js "></script>
 </body>
 
 </html>
