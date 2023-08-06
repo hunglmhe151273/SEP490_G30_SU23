@@ -226,42 +226,42 @@
 	/* ********************************************
 		8. Price Slider
 	******************************************** */
-    //$( "#slider-range" ).slider({
+    ////$( "#slider-range" ).slider({
+    ////    range: true,
+    ////    min: 50,
+    ////    max: 2000,
+    ////    values: [ 50, 999 ],
+    ////    slide: function( event, ui ) {
+    ////        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+    ////    }
+    ////});
+    ////$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+    ////    " - $" + $("#slider-range").slider("values", 1));
+
+    //// Custom
+    //var minPrice = $("#min-price").val() / 1000;
+    //var maxPrice = $("#max-price").val() / 1000;
+    ////console.log(minPrice, maxPrice);
+
+    //$("#slider-range").slider({
     //    range: true,
-    //    min: 50,
-    //    max: 2000,
-    //    values: [ 50, 999 ],
-    //    slide: function( event, ui ) {
-    //        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+    //    min: 0,
+    //    max: 1000,
+    //    values: [minPrice, maxPrice],
+    //    //slide: function (event, ui) {
+    //    //    $("#amount").val(ui.values[0] + "000 VNĐ" + " - " + ui.values[1] + "000 VNĐ");
+    //    //}
+
+    //    slide: function (event, ui) {
+    //        $("#min-price").val(ui.values[0] * 1000);
+    //        $("#max-price").val(ui.values[1] * 1000);
     //    }
     //});
-    //$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-    //    " - $" + $("#slider-range").slider("values", 1));
+    ////$("#amount").val($("#slider-range").slider("values", 0) + "000 VNĐ" +
+    ////    " - " + $("#slider-range").slider("values", 1) + "000 VNĐ");
 
-    // Custom
-    var minPrice = $("#min-price").val() / 1000;
-    var maxPrice = $("#max-price").val() / 1000;
-    //console.log(minPrice, maxPrice);
-
-    $("#slider-range").slider({
-        range: true,
-        min: 0,
-        max: 1000,
-        values: [minPrice, maxPrice],
-        //slide: function (event, ui) {
-        //    $("#amount").val(ui.values[0] + "000 VNĐ" + " - " + ui.values[1] + "000 VNĐ");
-        //}
-
-        slide: function (event, ui) {
-            $("#min-price").val(ui.values[0] * 1000);
-            $("#max-price").val(ui.values[1] * 1000);
-        }
-    });
-    //$("#amount").val($("#slider-range").slider("values", 0) + "000 VNĐ" +
-    //    " - " + $("#slider-range").slider("values", 1) + "000 VNĐ");
-
-    //$("#min-price").val($("#slider-range").slider("values", 0) * 1000);
-    //$("#max-price").val($("#slider-range").slider("values", 1) * 1000);
+    ////$("#min-price").val($("#slider-range").slider("values", 0) * 1000);
+    ////$("#max-price").val($("#slider-range").slider("values", 1) * 1000);
 
 	/* ********************************************
 		9. Fancybox active

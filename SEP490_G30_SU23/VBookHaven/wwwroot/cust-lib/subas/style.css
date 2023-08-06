@@ -163,7 +163,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-transform: uppercase;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
+
+  /* Custom */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  height: 3.5em;
 }
 .pro-rating {
   line-height: 1;
