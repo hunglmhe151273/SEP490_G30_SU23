@@ -119,10 +119,10 @@
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="status">
 													<option value="" selected>--Không--</option>
+													<option value=@OrderStatus.Wait>@OrderStatus.Wait</option>
 													<option value=@OrderStatus.Process>@OrderStatus.Process</option>
-													<option value=@OrderStatus.Payment>@OrderStatus.Payment</option>
-													<option value=@OrderStatus.Packaging>@OrderStatus.Packaging</option>
-													<option value=@OrderStatus.Ship>@OrderStatus.Ship</option>
+													<option value=@OrderStatus.Shipping>@OrderStatus.Shipping</option>
+													<option value=@OrderStatus.Shipped>@OrderStatus.Shipped</option>
 													<option value=@OrderStatus.Done>@OrderStatus.Done</option>
 													<option value=@OrderStatus.Cancel>@OrderStatus.Cancel</option>
 												</select>
@@ -169,17 +169,17 @@
 											<td>
 												@switch (o.Status)
 												{
+													case OrderStatus.Wait:
+														@:<span class="badge bg-warning">@OrderStatus.Wait</span>
+														break;
 													case OrderStatus.Process:
 														@:<span class="badge bg-warning">@OrderStatus.Process</span>
 														break;
-													case OrderStatus.Payment:
-														@:<span class="badge bg-warning">@OrderStatus.Payment</span>
+													case OrderStatus.Shipping:
+														@:<span class="badge bg-info">@OrderStatus.Shipping</span>
 														break;
-													case OrderStatus.Packaging:
-														@:<span class="badge bg-info">@OrderStatus.Packaging</span>
-														break;
-													case OrderStatus.Ship:
-														@:<span class="badge bg-info">@OrderStatus.Ship</span>
+													case OrderStatus.Shipped:
+														@:<span class="badge bg-info">@OrderStatus.Shipped</span>
 														break;
 													case OrderStatus.Done:
 														@:<span class="badge bg-success">@OrderStatus.Done</span>

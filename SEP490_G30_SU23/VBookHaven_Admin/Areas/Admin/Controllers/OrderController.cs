@@ -138,9 +138,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			totalPrice *= 1 + model.Order.VAT.Value / 100;
 
-			if (model.Order.AmountPaid.Equals((int)totalPrice))
-				model.Order.Status = OrderStatus.Packaging;
-			else model.Order.Status = OrderStatus.Payment;
+			model.Order.Status = OrderStatus.Process;
 
 			await orderRepository.AddOrderAsync(model.Order, detailList);
 

@@ -3,6 +3,8 @@ using VBookHaven.Models;
 using VBookHaven.DataAccess.Common;
 using VBookHaven.DataAccess.Data;
 using VBookHaven.DataAccess.Respository;
+using Microsoft.EntityFrameworkCore;
+using VBookHaven.Models.DTO;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -32,26 +34,26 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return View(authors);
         }
 
-        public IActionResult Add()
-        {
-            return View();
-        }
+        //public IActionResult Add()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(AuthorViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Add(AuthorViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View();
+        //    }
 
-            model.Author.Status = true;
+        //    model.Author.Status = true;
 
-            await authorRepository.AddAuthorAsync(model.Author);
+        //    await authorRepository.AddAuthorAsync(model.Author);
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -79,16 +81,60 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> ChangeStatus(int id)
+        //public async Task<IActionResult> ChangeStatus(int id)
+        //{
+        //    var author = await authorRepository.GetAuthorByIdAsync(id);
+        //    if (author == null)
+        //        return NotFound();
+
+        //    author.Status = !author.Status;
+        //    await authorRepository.UpdateAuthorAsync(author);
+
+        //    return RedirectToAction("Index");
+        //}
+
+        /*---------- Other codes ----------*/
+
+        #region Call API
+
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] Author author)
         {
-            var author = await authorRepository.GetAuthorByIdAsync(id);
-            if (author == null)
-                return NotFound();
+			if (!ModelState.IsValid)
+			{
+				return StatusCode(404, "Dữ liệu khi thêm tác giả không đúng tiêu chuẩn!");
+            }
+            try
+			{
+				await authorRepository.AddAuthorAsync(author);
+                return Ok(author);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(404, "Có lỗi khi thêm tác giả mới!");
+			}
+		}
 
-            author.Status = !author.Status;
-            await authorRepository.UpdateAuthorAsync(author);
+        [HttpPost]
+		public async Task<IActionResult> ChangeStatus([FromBody] int id)
+		{
+            try
+            {
+				var author = await authorRepository.GetAuthorByIdAsync(id);
+				if (author == null)
+					return StatusCode(404, "Tác giả không tồn tại!");
 
-            return RedirectToAction("Index");
-        }
-    }
+				author.Status = !author.Status;
+				await authorRepository.UpdateAuthorAsync(author);
+
+				return Ok();
+			}
+            catch (Exception ex)
+            {
+                return StatusCode(400, "Có lỗi khi đổi trạng thái tác giả!");
+            }
+		}
+
+		#endregion
+	}
 }

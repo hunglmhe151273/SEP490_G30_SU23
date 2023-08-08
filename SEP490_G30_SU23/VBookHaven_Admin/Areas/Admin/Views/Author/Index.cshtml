@@ -1,7 +1,8 @@
 ﻿@using VBookHaven.Models
 @model List<Author>
 
-<style>
+<!-- Old code -->
+@*<style>
 	table, th, td {
 		border: 1px solid;
 	}
@@ -56,7 +57,7 @@
 	</div>
 	<!--end page-content-wrapper-->
 </div>
-<!--end page-wrapper-->
+<!--end page-wrapper-->*@
 
 <!--page-wrapper-->
 <div class="page-wrapper">
@@ -103,14 +104,14 @@
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Tên tác giả hoặc ID</label>
 												<input type="text" class="form-control filter"
-													   id="userNameInput" placeholder="Nhập từ khóa vào đây...">
+													   id="searchInput" placeholder="Nhập từ khóa vào đây...">
 											</div>
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="activation">
 													<option value="" selected>--Không--</option>
-													<option value="Hoạt động">Hoạt động</option>
-													<option value="Đình chỉ">Đình chỉ</option>
+													<option value="true">Hoạt động</option>
+													<option value="false">Đình chỉ</option>
 												</select>
 											</div>
 											<!-- <div class="col-md-4"></div>
@@ -131,7 +132,6 @@
 
 							<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel"
 								 aria-hidden="true">
-								<form action="" class="row"></form>
 								<div class="modal-dialog">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -142,22 +142,21 @@
 										<div class="modal-body">
 											<div class="col-md-12 mb-3">
 												<label class="form-label">Tên tác giả</label>
-												<input type="text" class="form-control" value="">
+												<input id="authorName" type="text" class="form-control" value="" required />
 											</div>
 											<div class="col-md-12 mb-3">
 												<label class="form-label">Mô tả</label>
-												<textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
+												<textarea class="form-control" id="authorDescription" cols="30" rows="5"></textarea>
 											</div>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary"
+											<button id="cancelButton" type="button" class="btn btn-secondary"
 													data-bs-dismiss="modal">
 												Hủy
 											</button>
-											<button type="button" class="btn btn-primary">Lưu</button>
+											<button id="saveButton" type="button" class="btn btn-primary">Lưu</button>
 										</div>
 									</div>
-									@*</form>*@
 								</div>
 							</div>
 						</div>
@@ -169,51 +168,29 @@
 										<th>Tác giả</th>
 										<th>Trạng thái</th>
 										<th>Hoạt động</th>
+										<th hidden>Status text</th>
 									</tr>
 								</thead>
 								<tbody id="myTable">
-									<tr>
-										<td>1</td>
-										<td>HungLM</td>
-										<td>
-											<div class="form-switch ps-0">
-												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox" checked>
-											</div>
-										</td>
-										<td>
-											<a href="" class="btn btn-sm btn-default">
-												<i class="lni lni-pencil-alt"></i>
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>ChinhLK</td>
-										<td>
-											<div class="form-switch ps-0">
-												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox">
-											</div>
-										</td>
-										<td>
-											<a href="" class="btn btn-sm btn-default">
-												<i class="lni lni-pencil-alt"></i>
-											</a>
-										</td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>QuocTK</td>
-										<td>
-											<div class="form-switch ps-0">
-												<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox" checked>
-											</div>
-										</td>
-										<td>
-											<a href="" class="btn btn-sm btn-default">
-												<i class="lni lni-pencil-alt"></i>
-											</a>
-										</td>
-									</tr>
+									@foreach (Author a in Model)
+									{
+										<tr>
+											<td>@a.AuthorId</td>
+											<td>@a.AuthorName</td>
+											<td>
+												<div class="form-switch ps-0">
+													<input class="form-check-input fs-5 m-0 mx-auto authorStatus" type="checkbox"
+														@(@a.Status == true ? "checked" : "") />
+												</div>
+											</td>
+											<td>
+												<a href="/Admin/Author/Edit/@a.AuthorId" class="btn btn-sm btn-default">
+													<i class="lni lni-pencil-alt"></i>
+												</a>
+											</td>
+											<td hidden>@a.Status</td>
+										</tr>
+									}
 								</tbody>
 							</table>
 						</div>
@@ -240,3 +217,126 @@
 	<!-- end footer -->
 </div>
 <!-- end wrapper -->
+
+@section Scripts{
+	<script>
+		// Filter script
+		$(document).ready(function () {
+			$(".filter").on("input", function () {
+				filterAuthor();
+			});
+			
+			$("#saveButton").on("click", function() {
+				addAuthorByAPI();
+			});
+
+			$("#cancelButton").on("click", function() {
+				resetAddAuthorForm();
+			});
+
+			$(".authorStatus").on("change", function() {
+				changeStatus(this);
+			});
+		});
+
+
+		// Filter Author
+		function filterAuthor()
+		{
+			var search = $("#searchInput").val().toLowerCase();
+			var activation = $("#activation").val().toLowerCase();
+
+			$("#myTable tr").filter(function () {
+				$(this).toggle(
+					($(this).find('td:eq(0)').text().toLowerCase().indexOf(search) > -1
+						|| $(this).find('td:eq(1)').text().toLowerCase().indexOf(search) > -1)
+					&& $(this).find('td:eq(4)').text().toLowerCase().indexOf(activation) > -1
+				);
+			})
+		}
+
+		// Add new author script
+		function addAuthorByAPI() {
+			var name = $('#authorName').val();
+			var description = $('#authorDescription').val();
+			var author = {
+				"authorId": 0,
+				"authorName": name,
+				"description": description,
+				"status": true
+			}
+			$.ajax({
+				url: "https://localhost:7123/Admin/Author/Add", // Replace with the correct API endpoint URL
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(author),
+				success: function (response) {
+					// add new author to table
+					var newRow = `
+						<tr>
+							<td>${response.authorId}</td>
+							<td>${response.authorName}</td>
+							<td>
+								<div class="form-switch ps-0">
+									<input class="form-check-input fs-5 m-0 mx-auto" type="checkbox"
+										${response.status == true ? "checked" : ""} />
+								</div>
+							</td>
+							<td>
+								<a href="/Admin/Author/Edit/${response.authorId}" class="btn btn-sm btn-default">
+									<i class="lni lni-pencil-alt"></i>
+								</a>
+							</td>
+							<td hidden>${response.status}</td>
+						</tr>
+					`
+					$("#example2").append(newRow);
+
+					//reset form
+					resetAddAuthorForm();
+					round_success_noti("Thêm khách hàng thành công");
+
+				},
+				error: function (error) {
+					round_error_noti(error.responseText);
+					resetAddAuthorForm();
+					console.error("Lỗi gọi addAuthor API: " + error.responseText);
+				},
+			});
+		}
+
+		// Reset add form
+		function resetAddAuthorForm() {
+			// Clear input fields (set their values to empty strings)
+			$("#authorName").val('');
+			$("#authorDescription").val('');
+		}
+
+		// Change Author status
+		function changeStatus(element)
+		{
+			var row = $(element).parents("tr").last();
+			var id = $(row).children("td").eq(0).text();
+
+			$.ajax({
+				url: "https://localhost:7123/Admin/Author/ChangeStatus", // Replace with the correct API endpoint URL
+				type: "POST",
+				contentType: "application/json",
+				data: id,
+				success: function () {
+					$(row).children("td").eq(4).text($(element).prop("checked"));
+
+					filterAuthor();
+				},
+				error: function (error) {
+					var prev = $(element).prop("checked");
+					$(element).prop("checked", !prev);
+					
+					round_error_noti(error.responseText);
+					resetAddAuthorForm();
+					console.error("Lỗi gọi changeStatus API: " + error.responseText);
+				},
+			});
+		}
+	</script>
+}

@@ -103,30 +103,6 @@
                                 @if (Model.Order.Status.Equals(OrderStatus.Cancel))
                                 {
                                     <div class="step complete">
-                                        <span class="title">@OrderStatus.Create</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Process</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Payment</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Packaging</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Ship</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Done</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step complete">
                                         <span class="title">@OrderStatus.Cancel</span>
                                         <div class="node"></div>
                                     </div>
@@ -138,27 +114,23 @@
                                         <div class="node"></div>
                                     </div>
                                     <div class="step @(numStatus >= 1 ? "complete" : "")">
-                                        <span class="title">@OrderStatus.Process</span>
+                                        <span class="title">@OrderStatus.Wait</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step @(numStatus >= 2 ? "complete" : "")">
-                                        <span class="title">@OrderStatus.Payment</span>
+                                        <span class="title">@OrderStatus.Process</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step @(numStatus >= 3 ? "complete" : "")">
-                                        <span class="title">@OrderStatus.Packaging</span>
+                                        <span class="title">@OrderStatus.Shipping</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 4 ? "complete" : "")">
-                                        <span class="title">@OrderStatus.Ship</span>
+                                    <div class="step @(numStatus >= 3 ? "complete" : "")">
+                                        <span class="title">@OrderStatus.Shipped</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step @(numStatus >= 5 ? "complete" : "")">
                                         <span class="title">@OrderStatus.Done</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Cancel</span>
                                         <div class="node"></div>
                                     </div>
                                 }

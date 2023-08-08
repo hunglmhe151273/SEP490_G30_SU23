@@ -7,11 +7,11 @@
 	public static class OrderStatus
 	{
 		public const string Create = "Tạo đơn";
+		public const string Wait = "Chờ xác nhận";
 		public const string Process = "Đang xử lí";
-		public const string Payment = "Chờ thanh toán";
-		public const string Packaging = "Đóng gói";
-		public const string Ship = "Đang giao hàng";
-		public const string Done = "Đã giao";
+		public const string Shipping = "Đang vận chuyển";
+		public const string Shipped = "Đã giao hàng";
+		public const string Done = "Đã hoàn thành";
 		public const string Cancel = "Đã hủy";
 
 		public static int ToNum(string status)
@@ -19,10 +19,10 @@
 			switch (status)
 			{
 				case Create: return 0;
-				case Process: return 1;
-				case Payment: return 2;
-				case Packaging: return 3;
-				case Ship: return 4;
+				case Wait: return 1;
+				case Process: return 2;
+				case Shipping: return 3;
+				case Shipped: return 4;
 				case Done: return 5;
 				case Cancel: return 6;
 				default: return -1;
