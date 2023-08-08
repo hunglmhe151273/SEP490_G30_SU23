@@ -69,6 +69,38 @@
         text-align: center;
     }
 
+    /* Additional css */
+
+    .payment-items {
+        padding: 10px 10px;
+        margin: 0 15px;
+        border-bottom: 1px solid lightgray;
+    }
+        
+    .payment-items p {
+        animation: forwards;
+        margin-bottom: 0;
+        font-size: 16px;
+    }
+        
+    .payment-title {
+        color: black;
+    }
+        
+    .payment-date {
+        font-size: 13px;
+        color: gray;
+    }
+        
+    .payment-detail {
+        padding: 10px 35px;
+        font-size: 15px;
+    }
+        
+    .payment-items:first-child {
+        background-color: lightsteelblue;
+    }
+
     /* Custom CSS for text overflow ellipsis */
 </style>
 
@@ -88,7 +120,7 @@
                                     <i class="bx bx-home-alt"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Tạo đơn hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
                         </ol>
                     </nav>
                 </div>
@@ -113,23 +145,27 @@
                                         <span class="title">@OrderStatus.Create</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 1 ? "complete" : "")">
+                                    <div class="step @(numStatus > 1 ? "complete" : "")
+                                        @(numStatus == 1 ? "in-progress" : "")">
                                         <span class="title">@OrderStatus.Wait</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 2 ? "complete" : "")">
+                                    <div class="step @(numStatus > 2 ? "complete" : "")
+                                        @(numStatus == 2 ? "in-progress" : "")">
                                         <span class="title">@OrderStatus.Process</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 3 ? "complete" : "")">
+                                    <div class="step @(numStatus > 3 ? "complete" : "")
+                                        @(numStatus == 3 ? "in-progress" : "")">
                                         <span class="title">@OrderStatus.Shipping</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 3 ? "complete" : "")">
+                                    <div class="step @(numStatus >= 4 ? "complete" : "")">
                                         <span class="title">@OrderStatus.Shipped</span>
                                         <div class="node"></div>
                                     </div>
-                                    <div class="step @(numStatus >= 5 ? "complete" : "")">
+                                    <div class="step @(numStatus == 5 ? "complete" : "")
+                                        @(numStatus == 4 ? "in-progress" : "")">
                                         <span class="title">@OrderStatus.Done</span>
                                         <div class="node"></div>
                                     </div>
@@ -164,8 +200,62 @@
                         <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                     </div>
                     <div class="card-body">
-                        <label class="form-label">Ghi chú hóa đơn</label><br>
-                        <textarea class="form-control" cols="30" rows="6" readonly>@Model.Order.Note</textarea>
+                        <p><strong>Người tạo đơn: </strong>@Model.Order.Staff.FullName</p>
+                        <p><strong>Ngày tạo đơn: </strong>@Model.Order.OrderDate.Value.ToString("dd/MM/yyyy")</p>
+                        <p>
+                            <strong>Ghi chú: </strong>
+                            @Model.Order.Note
+                        </p>
+                    </div>
+                </div>
+                <div class="col-12 pe-0 mx-auto">
+                    <div class="card pt-4">
+                        <div class="card-titl px-5 row">
+                            <div class="col-8 d-flex align-items-center">
+                                <div>
+                                    <i class="bx bx-credit-card bx-tada me-2 fs-4"></i>
+                                    <!--Not paid icon-->
+                                    <!-- <i class="bx bxs-check-circle bx-tada me-2 fs-4 text-success"></i> -->
+                                    <!--Paid icon-->
+                                </div>
+                                <h5 class="mb-0 fw-bold">Lịch sử thanh toán</h5>
+                                <!--Not paid title-->
+                                <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
+                                <!--Paid title-->
+                            </div>
+                            <div class="col-4 d-flex align-items-center justify-content-end">
+                                @*<button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>*@
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="card-body pt-0">
+                            <div class="row payment-items">
+                                <div class="col-4">
+                                    <span>Tiền khách cần trả : <strong>@total VNĐ</strong></span>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <span>Đã trả: <strong>@Model.Order.AmountPaid VNĐ</strong></span>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <span>Còn phải trả: <strong class="text-danger" id="debt">@(total - Model.Order.AmountPaid) VNĐ</strong></span>
+                                </div>
+                            </div>
+                            @foreach (OrderPaymentHistory o in Model.Payments)
+                            {
+                                <div class="payment-items">
+                                    <p class="payment-content">
+                                        <i class='bx bxs-circle text-primary pe-3'></i>
+                                        <span class="payment-title"><strong>Đã trả: </strong>@o.PaymentAmount VNĐ</span>
+                                        <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
+                                        <span class="payment-date">@o.PaymentDate.Value.ToString("dd/MM/yyyy")</span>
+                                    </p>
+                                    <p class="payment-detail">
+                                        <strong>Nhân viên xử lí: </strong>@o.Staff.FullName <br />
+                                        <strong>Phương thức thanh toán: </strong>@o.PaymentMethod
+                                    </p>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 mx-auto pe-0">
@@ -219,6 +309,10 @@
                                     </table>
                                 </div>
                                 <div class="col-7 d-flex justify-content-start align-items-end">
+                                    <button type="button" class="btn btn-primary px-4 mx-1"
+                                            onclick="window.location.href='/Admin/Order/Edit/@Model.Order.OrderId'">
+                                        Cập nhật
+                                    </button>
                                     <button type="button" class="btn btn-secondary px-4 mx-1"
                                             onclick="window.location.href='/Admin/Order/Index'">
                                         Quay lại
@@ -263,3 +357,25 @@
     <!--end page-content-wrapper-->
 </div>
 <!--end page-wrapper-->
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $(".payment-detail").hide();
+
+            $(".show-btn").on("click", function () {
+                if ($(this).hasClass("bx-caret-down")) {
+                    $(this).parent().parent().find('.payment-detail').show();
+                    $(this).removeClass("bx-caret-down ")
+                    $(this).addClass("bx-caret-up ")
+                }
+                else {
+                    $(this).parent().parent().find('.payment-detail').hide();
+                    $(this).addClass("bx-caret-down ")
+                    $(this).removeClass("bx-caret-up ")
+                }
+            });
+        });
+    </script>
+}

@@ -11,7 +11,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	// Chua kiem tra da chon khach hang, da chon it nhat 1 san pham chua khi add don hang
 	// Chua co validate du lieu khi add don hang (?)
 
-	// Show thong tin staff xu li order?
+	// Show thong tin staff xu li order? (da xong?)
 
 	public class ViewOrderManagementModel
 	{
@@ -59,12 +59,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		public Order Order { get; set; }
 		public List<OrderDetail> Details { get; set; }
 		public List<string?> Thumbnails { get; set; }
+		public List<OrderPaymentHistory> Payments { get; set; }
 
 		public EditOrderManagementModel()
 		{
 			Order = new Order();
 			Details = new List<OrderDetail>();
 			Thumbnails = new List<string?>();
+			Payments = new List<OrderPaymentHistory>();
 		}
 	}
 
@@ -169,6 +171,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				return NotFound();
 			
 			var detailsTask = orderRepository.GetOrderDetailByIdFullInfoAsync(id);
+			var paymentTask = orderRepository.GetOrderPaymentHistoryByIdFullInfoAsync(id);
 
 			var thumbnails = new List<string?>();
 			foreach (var o in order.OrderDetails)
@@ -185,10 +188,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			}
 
 			var details = await detailsTask;
+			var payments = await paymentTask;
 
 			model.Order = order;
 			model.Details = details;
 			model.Thumbnails = thumbnails;
+			model.Payments = payments;
 
 			return View(model);
 		}
