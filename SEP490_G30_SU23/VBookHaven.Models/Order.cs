@@ -41,4 +41,6 @@ public partial class Order
     public int? StaffId { get; set; }
 
     public virtual Staff? Staff { get; set; }
+
+	public virtual ICollection<OrderPaymentHistory> OrderPaymentHistories { get; set; } = new List<OrderPaymentHistory>();
 }

@@ -29,4 +29,11 @@
 			}
 		}
 	}
+
+	public static class PaymentMethod
+	{
+		public const string Card = "Quẹt thẻ";
+		public const string Transfer = "Chuyển khoản";
+		public const string Cash = "Tiền mặt";
+	}
 }

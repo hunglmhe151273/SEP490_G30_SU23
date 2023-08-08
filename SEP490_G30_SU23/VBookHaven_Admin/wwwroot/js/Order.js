@@ -42,7 +42,7 @@ fetchDataFromAPIs();
 // Function to fetch customers and products data using AJAX
 function fetchDataFromAPIs() {
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllShippingInfo',
+        url: 'https://localhost:7123/Admin/Order/GetAllCustomers',
         type: 'GET',
         dataType: 'json',
         success: function(customersData) {
