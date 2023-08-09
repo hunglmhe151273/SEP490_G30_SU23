@@ -198,6 +198,113 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> Update(int id)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			switch (order.Status)
+			{
+				case (OrderStatus.Wait):
+					order.Status = OrderStatus.Process;
+					order.StaffId = staff.StaffId;
+					await orderRepository.UpdateOrderAsync(order);
+					break;
+				case (OrderStatus.Process):
+					var exportTask = ExportFromStorage(id);
+					order.Status = OrderStatus.Shipping;
+					await orderRepository.UpdateOrderAsync(order);
+					await exportTask;
+					break;
+				case (OrderStatus.Shipping):
+					var total = await orderRepository.GetOrderTotalCostAsync(id);
+					if (order.AmountPaid == (int)total)
+					{
+						order.Status = OrderStatus.Done;
+					}
+					else order.Status = OrderStatus.Shipped;
+					await orderRepository.UpdateOrderAsync(order);
+					break;
+			}
+
+			return RedirectToAction("Detail", new { id = id }); 
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Cancel(int id)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			if (order.Status.Equals(OrderStatus.Wait))
+			{
+				order.StaffId = staff.StaffId;
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+			}
+			else if (order.Status.Equals(OrderStatus.Shipping))
+			{
+				var undoTask = UndoExportFromStorage(id);
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+				await undoTask;
+			}
+			else
+			{
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+			}
+
+			return RedirectToAction("Detail", new { id = id });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddPayment(int id, string method, DateTime date, int amount)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			var totalTask = orderRepository.GetOrderTotalCostAsync(id);
+
+			var payment = new OrderPaymentHistory()
+			{
+				PaymentDate = date,
+				PaymentAmount = amount,
+				PaymentMethod = method,
+				OrderId = id,
+				StaffId = staff.StaffId
+			};
+
+			var paymentTask = orderRepository.AddOrderPaymentHistoryAsync(payment);
+
+			order.AmountPaid += amount;
+			var total = await totalTask;
+			if (order.AmountPaid.Equals((int)total) && order.Status.Equals(OrderStatus.Shipped))
+			{
+				order.Status = OrderStatus.Done;
+			}
+			var orderTask = orderRepository.UpdateOrderAsync(order);
+
+			Task.WaitAll(paymentTask, orderTask);
+			return RedirectToAction("Detail", new { id = id });
+		}
+
 		//---------- Other functions ----------
 
 		private async Task<Staff?> GetCurrentLoggedInStaffAsync()
@@ -214,6 +321,34 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			catch (Exception ex)
 			{
 				return null;
+			}
+		}
+
+		private async Task ExportFromStorage(int orderId)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+			if (order == null)
+				return;
+
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.UnitInStock -= detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
+			}	
+		}
+
+		private async Task UndoExportFromStorage(int orderId)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+			if (order == null)
+				return;
+
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.UnitInStock += detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
 			}
 		}
 

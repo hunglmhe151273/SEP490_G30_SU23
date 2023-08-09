@@ -134,7 +134,7 @@
                             <div class="wizard-progress w-100">
                                 @if (Model.Order.Status.Equals(OrderStatus.Cancel))
                                 {
-                                    <div class="step complete">
+                                    <div class="step cancel">
                                         <span class="title">@OrderStatus.Cancel</span>
                                         <div class="node"></div>
                                     </div>
@@ -200,7 +200,7 @@
                         <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                     </div>
                     <div class="card-body">
-                        <p><strong>Người tạo đơn: </strong>@Model.Order.Staff.FullName</p>
+                        <p><strong>Nhân viên xác nhận đơn: </strong>@Model.Order.Staff.FullName</p>
                         <p><strong>Ngày tạo đơn: </strong>@Model.Order.OrderDate.Value.ToString("dd/MM/yyyy")</p>
                         <p>
                             <strong>Ghi chú: </strong>
@@ -223,9 +223,12 @@
                                 <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
                                 <!--Paid title-->
                             </div>
-                            <div class="col-4 d-flex align-items-center justify-content-end">
-                                @*<button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>*@
-                            </div>
+                            @if (OrderStatus.ToNum(Model.Order.Status) < 5)
+                            {
+                                <div class="col-4 d-flex align-items-center justify-content-end">
+                                    <button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
+                                </div>
+                            }
                         </div>
                         <hr>
                         <div class="card-body pt-0">
@@ -309,14 +312,40 @@
                                     </table>
                                 </div>
                                 <div class="col-7 d-flex justify-content-start align-items-end">
-                                    <button type="button" class="btn btn-primary px-4 mx-1"
-                                            onclick="window.location.href='/Admin/Order/Edit/@Model.Order.OrderId'">
-                                        Cập nhật
-                                    </button>
+                                    <!-- Co the cap nhat va huy neu khach chua nhan hang -->
+                                    @if (OrderStatus.ToNum(Model.Order.Status) < 4) 
+                                    {
+                                        <button type="button" class="btn btn-primary px-4 mx-1"
+                                                onclick="document.getElementById('updateOrder').submit();">
+                                            @switch (Model.Order.Status)
+                                            {
+                                                case OrderStatus.Wait:
+                                                    @:Xác nhận
+                                                    break;
+                                                case OrderStatus.Process:
+                                                    @:Giao hàng
+                                                    break;
+                                                case OrderStatus.Shipping:
+                                                    @:Đã giao
+                                                    break;
+                                            }
+                                        </button>
+                                        <button type="button" class="btn btn-danger px-4 mx-1"
+                                            onclick="document.getElementById('cancelOrder').submit();">
+                                            Hủy đơn
+                                        </button>
+                                    }
                                     <button type="button" class="btn btn-secondary px-4 mx-1"
                                             onclick="window.location.href='/Admin/Order/Index'">
                                         Quay lại
                                     </button>
+
+                                    <form hidden id="updateOrder" action="/Admin/Order/Update" method="post">
+                                        <input name="id" value="@Model.Order.OrderId" />
+                                    </form>
+                                    <form hidden id="cancelOrder" action="/Admin/Order/Cancel" method="post">
+                                        <input name="id" value="@Model.Order.OrderId" />
+                                    </form>
                                 </div>
                                 <div class="col-5">
                                     <table class="table" id="countTable">
@@ -351,6 +380,45 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="addPayment" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/Admin/Order/AddPayment" method="post" class="addForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Xác nhận thanh toán</h5>
+                    </div>
+                    <div class="modal-body row">
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label">Phương thức thanh toán *</label>
+                            <select class="form-control validate important" name="method">
+                                <option value="@PaymentMethod.Card">@PaymentMethod.Card</option>
+                                <option value="@PaymentMethod.Transfer" selected>@PaymentMethod.Transfer</option>
+                                <option value="@PaymentMethod.Cash">@PaymentMethod.Cash</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label">Ngày thanh toán *</label>
+                            <input required type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" 
+                                min="@Model.Order.OrderDate.Value.ToString("yyyy-MM-dd")"
+                                class="form-control validate important" name="date">
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                            <label class="form-label">Số tiền *</label>
+                            <input required type="number" class="form-control validate important" 
+                                min="1" max="@(total - Model.Order.AmountPaid)" name="amount">
+                        </div>
+                        <input hidden name="id" value="@Model.Order.OrderId" />
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary reset submit" value="Lưu" />
+                        <input type="reset" class="btn btn-secondary reset" value="Đặt lại">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
