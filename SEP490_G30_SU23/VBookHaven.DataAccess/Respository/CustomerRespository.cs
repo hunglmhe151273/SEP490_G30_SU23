@@ -14,6 +14,9 @@ namespace VBookHaven.DataAccess.Respository
         Task UpdateCustomerDefaultShipInfoAsync(int customerId, int defaultShippingInfoId);
         Task UpdateCustomerDefaultShipInfoOnCreateAsync(ShippingInfoVM model);
         Task UpdateCustomerProfile(Customer c);
+
+        Task<List<Customer>> GetAllNoAccountCustomersAsync();
+        Task AddCustomerNoAccountAsync(Customer customer);
     }
 
     public class CustomerRespository : ICustomerRespository
@@ -22,6 +25,24 @@ namespace VBookHaven.DataAccess.Respository
         public CustomerRespository(VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task AddCustomerNoAccountAsync(Customer customer)
+        {
+            using (var dbContext = new VBookHavenDBContext())
+            {
+                dbContext.Customers.Add(customer);
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Customer>> GetAllNoAccountCustomersAsync()
+        {
+            using (var dbContext = new VBookHavenDBContext())
+            {
+                return await dbContext.Customers.Where(c => c.AccountId == null)
+                    .Include(c => c.DefaultShippingInfo).ToListAsync();
+            }
         }
 
         public async Task<Customer?> GetCustomerByIdAsync(int customerId)

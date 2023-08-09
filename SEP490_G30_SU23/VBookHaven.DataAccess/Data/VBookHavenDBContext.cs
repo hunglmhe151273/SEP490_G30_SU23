@@ -39,6 +39,8 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
+    public virtual DbSet<OrderPaymentHistory> OrderPaymentHistories { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
@@ -166,7 +168,8 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
         {
             entity.ToTable("Customer");
             entity.Property(e => e.Image).HasMaxLength(150);
-            entity.HasIndex(e => e.AccountId, "IX_Customer").IsUnique();
+            entity.HasIndex(e => e.AccountId, "IX_Customer")
+                .HasFilter("AccountId IS NOT NULL").IsUnique();
             entity.Property(e => e.DOB)
                .HasColumnType("date")
                .HasColumnName("DOB");
@@ -244,7 +247,24 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
                 .HasConstraintName("FK_OrderDetail_Product");
         });
 
-        modelBuilder.Entity<Product>(entity =>
+		modelBuilder.Entity<OrderPaymentHistory>(entity =>
+		{
+			entity.HasKey(e => e.PaymentId);
+
+			entity.ToTable("OrderPaymentHistory");
+
+			entity.Property(e => e.PaymentAmount).HasColumnType("decimal(15, 0)");
+			entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+
+			entity.HasOne(d => d.Order).WithMany(p => p.OrderPaymentHistories)
+				.HasForeignKey(d => d.OrderId)
+				.HasConstraintName("FK_OrderPaymentHistory_Order");
+			entity.HasOne(d => d.Staff).WithMany(p => p.OrderPaymentHistories)
+				.HasForeignKey(d => d.StaffId)
+				.HasConstraintName("FK_OrderPaymentHistory_Staff");
+		});
+
+		modelBuilder.Entity<Product>(entity =>
         {
             entity.ToTable("Product");
 

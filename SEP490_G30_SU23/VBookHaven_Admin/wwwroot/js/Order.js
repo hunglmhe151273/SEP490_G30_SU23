@@ -42,7 +42,7 @@ fetchDataFromAPIs();
 // Function to fetch customers and products data using AJAX
 function fetchDataFromAPIs() {
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllShippingInfo',
+        url: 'https://localhost:7123/Admin/Order/GetAllCustomers',
         type: 'GET',
         dataType: 'json',
         success: function(customersData) {
@@ -301,13 +301,13 @@ function addcustomerByAPI() {
             //showcustomerInfo(customers[customerLength]);
 
             //reset form
-            resetCreatecustomerForm();
+            resetAddAuthorForm();
             round_success_noti("Thêm khách hàng thành công");
 
         },
         error: function(error) {
             round_error_noti(error.responseText);
-            resetCreatecustomerForm();
+            resetAddAuthorForm();
             console.error("Lỗi gọi addcustomer API: " + error.responseText);
         },
     });
@@ -372,7 +372,7 @@ function addcustomerByAPI() {
 //    });
 //}
 
-function resetCreatecustomerForm(){
+function resetAddAuthorForm(){
     // Clear input fields (set their values to empty strings)
     $("#customer").val('');
     $("#phone").val('');

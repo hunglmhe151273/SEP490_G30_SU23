@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230808043304_changeCustomer")]
+    partial class changeCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -545,38 +548,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderDetail", (string)null);
-                });
-
-            modelBuilder.Entity("VBookHaven.Models.OrderPaymentHistory", b =>
-                {
-                    b.Property<int>("PaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("PaymentAmount")
-                        .HasColumnType("decimal(15, 0)");
-
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("PaymentMethod")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("OrderPaymentHistory", (string)null);
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Product", b =>
@@ -1192,23 +1163,6 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("VBookHaven.Models.OrderPaymentHistory", b =>
-                {
-                    b.HasOne("VBookHaven.Models.Order", "Order")
-                        .WithMany("OrderPaymentHistories")
-                        .HasForeignKey("OrderId")
-                        .HasConstraintName("FK_OrderPaymentHistory_Order");
-
-                    b.HasOne("VBookHaven.Models.Staff", "Staff")
-                        .WithMany("OrderPaymentHistories")
-                        .HasForeignKey("StaffId")
-                        .HasConstraintName("FK_OrderPaymentHistory_Staff");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Staff");
-                });
-
             modelBuilder.Entity("VBookHaven.Models.Product", b =>
                 {
                     b.HasOne("VBookHaven.Models.SubCategory", "SubCategory")
@@ -1339,8 +1293,6 @@ namespace VBookHaven.DataAccess.Migrations
             modelBuilder.Entity("VBookHaven.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
-
-                    b.Navigation("OrderPaymentHistories");
                 });
 
             modelBuilder.Entity("VBookHaven.Models.Product", b =>
@@ -1379,8 +1331,6 @@ namespace VBookHaven.DataAccess.Migrations
             modelBuilder.Entity("VBookHaven.Models.Staff", b =>
                 {
                     b.Navigation("ActivityLogs");
-
-                    b.Navigation("OrderPaymentHistories");
 
                     b.Navigation("Orders");
 

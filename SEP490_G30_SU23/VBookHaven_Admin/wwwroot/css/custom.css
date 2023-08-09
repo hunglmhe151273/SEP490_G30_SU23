@@ -82,3 +82,20 @@
 	.logout-button:hover {
 		color: #00245b;
 	}
+
+.step.cancel .title {
+	color: red;
+}
+
+.wizard-progress .step.cancel .node {
+	padding-bottom: 5px;
+	background-color: red;
+	border: 0;
+}
+
+	.wizard-progress .step.cancel .node:before {
+		font-family: 'boxicons';
+		color: white;
+		font-size: 20px;
+		content: "\2716";
+	}

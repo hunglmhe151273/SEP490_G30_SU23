@@ -241,10 +241,10 @@
                                                                 @if (@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
                                                                 {
                                                                     <div class="hidden-content presentImage">
-                                                                ../../images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
+                                                                /images/img/@detailPO.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName</div>
                                                                 }else{
                                                                     <div class="hidden-content presentImage">
-                                                                        ../../images/img/default_image.png
+                                                                        /images/img/default_image.png
                                                                     </div>
                                                                 }
                                                                 <div class="hidden-content unitInStock">@detailPO.Product.UnitInStock</div>

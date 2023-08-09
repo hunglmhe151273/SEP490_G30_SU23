@@ -260,27 +260,23 @@
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
+                                        <span class="title">@OrderStatus.Wait</span>
+                                        <div class="node"></div>
+                                    </div>
+                                    <div class="step">
                                         <span class="title">@OrderStatus.Process</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">@OrderStatus.Payment</span>
+                                        <span class="title">@OrderStatus.Shipping</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
-                                        <span class="title">@OrderStatus.Packaging</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Ship</span>
+                                        <span class="title">@OrderStatus.Shipped</span>
                                         <div class="node"></div>
                                     </div>
                                     <div class="step">
                                         <span class="title">@OrderStatus.Done</span>
-                                        <div class="node"></div>
-                                    </div>
-                                    <div class="step">
-                                        <span class="title">@OrderStatus.Cancel</span>
                                         <div class="node"></div>
                                     </div>
                                 </div>
@@ -499,6 +495,13 @@
                                                                step="1" class="form-control"
                                                                asp-for="Order.AmountPaid" />
                                                         <span class="input-group-text">VNĐ</span>
+                                                    </div>
+                                                    <div>
+                                                        <select class="single-select" name="PaymentMethod">
+                                                            <option value="@PaymentMethod.Card">@PaymentMethod.Card</option>
+                                                            <option value="@PaymentMethod.Transfer" selected>@PaymentMethod.Transfer</option>
+                                                            <option value="@PaymentMethod.Cash">@PaymentMethod.Cash</option>
+                                                        </select>
                                                     </div>
                                                 </td>
                                             </tr>

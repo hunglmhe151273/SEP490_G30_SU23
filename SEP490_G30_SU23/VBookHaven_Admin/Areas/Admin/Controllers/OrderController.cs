@@ -11,7 +11,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	// Chua kiem tra da chon khach hang, da chon it nhat 1 san pham chua khi add don hang
 	// Chua co validate du lieu khi add don hang (?)
 
-	// Show thong tin staff xu li order?
+	// Show thong tin staff xu li order? (da xong?)
 
 	public class ViewOrderManagementModel
 	{
@@ -35,6 +35,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		public Order Order { get; set; }
 
+		public string PaymentMethod { get; set; }
+
 
 		public AddOrderManagementModel()
 		{
@@ -47,6 +49,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			DiscountList = new List<double>();
 
 			Order = new Order();
+
+			PaymentMethod = "";
 		}
 	}
 
@@ -55,12 +59,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		public Order Order { get; set; }
 		public List<OrderDetail> Details { get; set; }
 		public List<string?> Thumbnails { get; set; }
+		public List<OrderPaymentHistory> Payments { get; set; }
 
 		public EditOrderManagementModel()
 		{
 			Order = new Order();
 			Details = new List<OrderDetail>();
 			Thumbnails = new List<string?>();
+			Payments = new List<OrderPaymentHistory>();
 		}
 	}
 
@@ -73,10 +79,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		private readonly IMapper mapper;
 		private readonly IApplicationUserRespository userRepository;
 		private readonly IImageRepository imageRepository;
+		private readonly ICustomerRespository customerRespository;
 
 		public OrderController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,
 			IProductRespository productRespository, IMapper mapper, IApplicationUserRespository userRepository,
-			IImageRepository imageRepository)
+			IImageRepository imageRepository, ICustomerRespository customerRespository)
 		{
 			this.orderRepository = orderRepository;
 			this.shippingInfoRepository = shippingInfoRepository;
@@ -84,6 +91,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			this.mapper = mapper;
 			this.userRepository = userRepository;
 			this.imageRepository = imageRepository;
+			this.customerRespository = customerRespository;
 		}
 
 		public async Task<IActionResult> Index()
@@ -119,7 +127,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			model.Order.OrderDate = DateTime.Now;
 			model.Order.StaffId = staff.StaffId;
 
-			double totalPrice = 0;
 			var detailList = new List<OrderDetail>();
 			for (int i = 0; i < model.ProductIdList.Count; ++i)
 			{
@@ -131,18 +138,26 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 					Discount = model.DiscountList[i]
 				};
 
-				totalPrice += detail.UnitPrice.Value * (1 - detail.Discount.Value / 100) * detail.Quantity.Value;
-
 				detailList.Add(detail);
 			}
 
-			totalPrice *= 1 + model.Order.VAT.Value / 100;
-
-			if (model.Order.AmountPaid.Equals((int)totalPrice))
-				model.Order.Status = OrderStatus.Packaging;
-			else model.Order.Status = OrderStatus.Payment;
+			model.Order.Status = OrderStatus.Process;
 
 			await orderRepository.AddOrderAsync(model.Order, detailList);
+
+			if (model.Order.AmountPaid > 0)
+			{
+				var payment = new OrderPaymentHistory()
+				{
+					PaymentDate = model.Order.OrderDate,
+					PaymentAmount = model.Order.AmountPaid,
+					PaymentMethod = model.PaymentMethod,
+					OrderId = model.Order.OrderId,
+					StaffId = staff.StaffId,
+				};
+
+				await orderRepository.AddOrderPaymentHistoryAsync(payment);
+			}
 
 			return RedirectToAction("Index");
 		}
@@ -156,6 +171,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				return NotFound();
 			
 			var detailsTask = orderRepository.GetOrderDetailByIdFullInfoAsync(id);
+			var paymentTask = orderRepository.GetOrderPaymentHistoryByIdFullInfoAsync(id);
 
 			var thumbnails = new List<string?>();
 			foreach (var o in order.OrderDetails)
@@ -172,12 +188,121 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			}
 
 			var details = await detailsTask;
+			var payments = await paymentTask;
 
 			model.Order = order;
 			model.Details = details;
 			model.Thumbnails = thumbnails;
+			model.Payments = payments;
 
 			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Update(int id)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			switch (order.Status)
+			{
+				case (OrderStatus.Wait):
+					order.Status = OrderStatus.Process;
+					order.StaffId = staff.StaffId;
+					await orderRepository.UpdateOrderAsync(order);
+					break;
+				case (OrderStatus.Process):
+					var exportTask = ExportFromStorage(id);
+					order.Status = OrderStatus.Shipping;
+					await orderRepository.UpdateOrderAsync(order);
+					await exportTask;
+					break;
+				case (OrderStatus.Shipping):
+					var total = await orderRepository.GetOrderTotalCostAsync(id);
+					if (order.AmountPaid == (int)total)
+					{
+						order.Status = OrderStatus.Done;
+					}
+					else order.Status = OrderStatus.Shipped;
+					await orderRepository.UpdateOrderAsync(order);
+					break;
+			}
+
+			return RedirectToAction("Detail", new { id = id }); 
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Cancel(int id)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			if (order.Status.Equals(OrderStatus.Wait))
+			{
+				order.StaffId = staff.StaffId;
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+			}
+			else if (order.Status.Equals(OrderStatus.Shipping))
+			{
+				var undoTask = UndoExportFromStorage(id);
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+				await undoTask;
+			}
+			else
+			{
+				order.Status = OrderStatus.Cancel;
+				await orderRepository.UpdateOrderAsync(order);
+			}
+
+			return RedirectToAction("Detail", new { id = id });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddPayment(int id, string method, DateTime date, int amount)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+			if (order == null)
+				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+
+			var totalTask = orderRepository.GetOrderTotalCostAsync(id);
+
+			var payment = new OrderPaymentHistory()
+			{
+				PaymentDate = date,
+				PaymentAmount = amount,
+				PaymentMethod = method,
+				OrderId = id,
+				StaffId = staff.StaffId
+			};
+
+			var paymentTask = orderRepository.AddOrderPaymentHistoryAsync(payment);
+
+			order.AmountPaid += amount;
+			var total = await totalTask;
+			if (order.AmountPaid.Equals((int)total) && order.Status.Equals(OrderStatus.Shipped))
+			{
+				order.Status = OrderStatus.Done;
+			}
+			var orderTask = orderRepository.UpdateOrderAsync(order);
+
+			Task.WaitAll(paymentTask, orderTask);
+			return RedirectToAction("Detail", new { id = id });
 		}
 
 		//---------- Other functions ----------
@@ -199,6 +324,34 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			}
 		}
 
+		private async Task ExportFromStorage(int orderId)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+			if (order == null)
+				return;
+
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.UnitInStock -= detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
+			}	
+		}
+
+		private async Task UndoExportFromStorage(int orderId)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+			if (order == null)
+				return;
+
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.UnitInStock += detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
+			}
+		}
+
 		#region CallAPI
 
 		[HttpGet]
@@ -210,9 +363,15 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<ShippingInfo>>> GetAllShippingInfo()
+		public async Task<ActionResult<List<ShippingInfo>>> GetAllCustomers()
 		{
-			var shipInfos = await shippingInfoRepository.GetAllShipInfoAsync();
+			var customers = await customerRespository.GetAllNoAccountCustomersAsync();
+
+			var shipInfos = new List<ShippingInfo>();
+			foreach (VBookHaven.Models.Customer c in customers)
+			{
+				shipInfos.Add(c.DefaultShippingInfo);
+			}
 
 			return shipInfos;
 		}
@@ -230,6 +389,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			try
 			{
 				await shippingInfoRepository.AddShippingInfoAsync(shipInfo);
+
+				var customer = new VBookHaven.Models.Customer()
+				{
+					FullName = "",
+					DefaultShippingInfoId = shipInfo.ShipInfoId
+				};
+				await customerRespository.AddCustomerNoAccountAsync(customer);
+				
 				return Ok(shipInfo);
 			}
 			catch (Exception ex)

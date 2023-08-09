@@ -234,7 +234,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			order.Phone = shipInfo.Phone;
 			order.ShipAddress = shipInfo.ShipAddress;
 
-			order.Status = OrderStatus.Process;
+			order.Status = OrderStatus.Wait;
 			order.CustomerId = custId;
 
 			order.AmountPaid = 0;

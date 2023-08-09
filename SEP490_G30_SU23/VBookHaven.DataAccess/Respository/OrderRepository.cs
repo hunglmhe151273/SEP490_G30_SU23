@@ -11,6 +11,12 @@ namespace VBookHaven.DataAccess.Respository
 		Task<List<Order>> GetAllOrdersFullInfoAsync();
 		Task<Order?> GetOrderByIdFullInfoAsync(int id);
 		Task<List<OrderDetail>> GetOrderDetailByIdFullInfoAsync(int id);
+
+		Task UpdateOrderAsync(Order order);
+
+		Task AddOrderPaymentHistoryAsync(OrderPaymentHistory payment);
+		Task<List<OrderPaymentHistory>> GetOrderPaymentHistoryByIdFullInfoAsync(int orderId);
+		Task<decimal?> GetOrderTotalCostAsync(int orderId);
 	}
 
 	public class OrderRepository : IOrderRepository
@@ -30,6 +36,15 @@ namespace VBookHaven.DataAccess.Respository
 			}
 		}
 
+		public async Task AddOrderPaymentHistoryAsync(OrderPaymentHistory payment)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				dbContext.OrderPaymentHistories.Add(payment);
+				await dbContext.SaveChangesAsync();
+			}
+		}
+
 		public async Task<List<Order>> GetAllOrdersFullInfoAsync()
 		{
 			using (var dbContext = new VBookHavenDBContext())
@@ -44,7 +59,7 @@ namespace VBookHaven.DataAccess.Respository
 			using (var dbContext = new VBookHavenDBContext())
 			{
 				return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
-					.SingleOrDefaultAsync(o => o.OrderId == id);
+					.Include(o => o.Staff).SingleOrDefaultAsync(o => o.OrderId == id);
 			}
 		}
 
@@ -54,6 +69,46 @@ namespace VBookHaven.DataAccess.Respository
 			{
 				return await dbContext.OrderDetails.Include(o => o.Product)
 					.Where(o => o.OrderId == id).ToListAsync();
+			}
+		}
+
+		public async Task<List<OrderPaymentHistory>> GetOrderPaymentHistoryByIdFullInfoAsync(int orderId)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				var payments = await dbContext.OrderPaymentHistories.Where(o => o.OrderId == orderId)
+					.Include(o => o.Staff).ToListAsync();
+				return payments.OrderBy(p => p.PaymentDate).ToList();
+			}
+		}
+
+		public async Task<decimal?> GetOrderTotalCostAsync(int orderId)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				var order = await dbContext.Orders.FindAsync(orderId);
+				if (order == null)
+					return null;
+
+				var details = await dbContext.OrderDetails.Where(o => o.OrderId == orderId).ToListAsync();
+
+				double total = 0;
+				foreach (var d in details)
+				{
+					total += d.UnitPrice.Value * (1 - d.Discount.Value / 100) * d.Quantity.Value;
+				}
+				total *= (1 + order.VAT.Value / 100);
+
+				return (decimal)total;
+			}
+		}
+
+		public async Task UpdateOrderAsync(Order order)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				dbContext.Entry(order).State = EntityState.Modified;
+				await dbContext.SaveChangesAsync();
 			}
 		}
 	}
