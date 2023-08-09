@@ -18,11 +18,12 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using VBookHaven.DataAccess.Data;
+using AutoMapper;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-  
+
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -34,7 +35,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IApplicationUserRespository _IApplicationUserRespository;
-        private readonly VBookHavenDBContext _dbContext;   
+        private readonly VBookHavenDBContext _dbContext;
         public UserController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
@@ -71,7 +72,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
             returnUrl ??= Url.Content("~/");
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if(String.IsNullOrEmpty(model.Role))
+            if (String.IsNullOrEmpty(model.Role))
             {
                 model.RoleValidate = "Hãy chọn vị trí của nhân viên";
             }
@@ -79,7 +80,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 model.GenderValidate = "Hãy chọn giới tính của nhân viên";
             }
-            if (model.Staff_IsMale == null|| String.IsNullOrEmpty(model.Role))
+            if (model.Staff_IsMale == null || String.IsNullOrEmpty(model.Role))
             {
                 model.RoleList = GetRoleList();
                 return View(model);
@@ -89,27 +90,27 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 var user = CreateUser();
                 await _userStore.SetUserNameAsync(user, model.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);
-                    string wwwRootPath = _webHostEnvironment.WebRootPath;
-                    Staff s = new Staff();
-                    s.FullName = model.Staff_FullName;
-                    s.Phone = model.Staff_Phone;
-                    s.IdCard = model.Staff_IdCard;
-                    s.IsMale = model.Staff_IsMale;
-                    s.Dob = model.Staff_Dob;
-                    s.Address = model.Staff_Address;
-                    if (model.Staff_ImageFile != null)
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                Staff s = new Staff();
+                s.FullName = model.Staff_FullName;
+                s.Phone = model.Staff_Phone;
+                s.IdCard = model.Staff_IdCard;
+                s.IsMale = model.Staff_IsMale;
+                s.Dob = model.Staff_Dob;
+                s.Address = model.Staff_Address;
+                if (model.Staff_ImageFile != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Staff_ImageFile.FileName);
+                    string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+
+                    using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
                     {
-                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Staff_ImageFile.FileName);
-                        string staffPath = Path.Combine(wwwRootPath, @"images\staff");
-
-                        using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
-                        {
-                            model.Staff_ImageFile.CopyTo(fileStream);
-                        }
-
-                        s.Image = @"\images\staff\" + fileName;
+                        model.Staff_ImageFile.CopyTo(fileStream);
                     }
-                    user.Staff = s;
+
+                    s.Image = @"\images\staff\" + fileName;
+                }
+                user.Staff = s;
                 //Create account
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -136,7 +137,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
                         $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
                     TempData["success"] = "Thêm nhân viên thành công";
-                    return RedirectToAction("Index","User");
+                    return RedirectToAction("Index", "User");
                 }
 
                 //- TO DO: Neu add khong thanh cong xoa anh vua add
@@ -168,7 +169,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 if (profileVM.StaffProfileVM.ApplicationUser.Staff == null) return NotFound();
                 //view application user
                 return View(profileVM);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return NotFound();
             }
@@ -176,13 +178,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileVM profileVM)
         {
+            //To do: Validate user and model?
             if (profileVM.StaffProfileVM.ApplicationUser.Staff.IsMale == null)
             {
                 profileVM.StaffProfileVM.GenderValidate = "Hãy chọn giới tính của nhân viên";
                 return View(profileVM);
             }
             ModelState.Clear();
-			if (!TryValidateModel(profileVM.StaffProfileVM))
+            if (!TryValidateModel(profileVM.StaffProfileVM))
             {
                 TempData["error"] = "Cập nhật hồ sơ thất bại";
                 // view application user
@@ -223,7 +226,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             //    ModelState.AddModelError(string.Empty, error.Description);
             //}
             return RedirectToAction(nameof(Profile));
-            
         }
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ProfileVM profileVM)
@@ -279,7 +281,27 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 Value = i
             });
         }
+        private IEnumerable<SelectListItem> GetRoleListToUpdateStaff(String selectedRole)
+        {
+            var roles = new List<SelectListItem>();
 
+            roles.AddRange(_roleManager.Roles.Where(x => x.Name != SD.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+            {
+                Text = i,
+                Value = i
+            }));
+
+            // Set the selected role as the default option
+            foreach (var role in roles)
+            {
+                if (role.Value == selectedRole)
+                {
+                    role.Selected = true;
+                    break;
+                }
+            }
+            return roles;
+        }
         private IUserEmailStore<IdentityUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
@@ -292,9 +314,83 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> Edit(String userId)
+        {
+            UpdateStaffVM VM = new UpdateStaffVM();
+            VM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+            if (VM.ApplicationUser.Staff == null) return NotFound();
+            var user = await _userManager.FindByIdAsync(userId);
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            VM.RoleList = GetRoleListToUpdateStaff(currentRoles.FirstOrDefault());
+            //view application user
+            return View(VM);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpdateStaffVM model, string? returnUrl)
+        {
 
+            returnUrl ??= Url.Content("~/");
+            if (String.IsNullOrEmpty(model.Role))
+            {
+                model.RoleList = GetRoleListToUpdateStaff(model.Role);
+                ModelState.AddModelError("Role", "Hãy chọn vị trí của nhân viên");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            //update role
+            await updateRoleByUIDAsync(model.ApplicationUser.Id, model.Role);
 
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (model.Staff_ImageFile != null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Staff_ImageFile.FileName);
+                string staffPath = Path.Combine(wwwRootPath, @"images\staff");
+                if (!string.IsNullOrEmpty(model.ApplicationUser.Staff.Image))
+                {
+                    //delete the old image
+                    var oldImagePath =
+                        Path.Combine(wwwRootPath, model.ApplicationUser.Staff.Image.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+                //add image, update url
+                using (var fileStream = new FileStream(Path.Combine(staffPath, fileName), FileMode.Create))
+                {
+                    model.Staff_ImageFile.CopyTo(fileStream);
+                }
 
+                model.ApplicationUser.Staff.Image = @"\images\staff\" + fileName;
+            }
+
+            //update staff
+            await _IApplicationUserRespository.UpdateStaffByAsync(model.ApplicationUser);
+            TempData["success"] = "Cập nhật hồ sơ nhân viên thành công";
+            ////- TO DO: Neu update khong thanh cong xoa anh vua add
+            //foreach (var error in result.Errors)
+            //{
+            //    ModelState.AddModelError(string.Empty, error.Description);
+            //}
+            return RedirectToAction(nameof(Index));
+        }
+        private async Task updateRoleByUIDAsync(string uid, string newRole)
+        {
+            var user = await _userManager.FindByIdAsync(uid);
+            if (user == null)
+            {
+                // Handle the case where the user is not found
+                return;
+            }
+            // Get the user's current roles
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            // Remove the user from their current roles
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            // Add the user to the new role
+            await _userManager.AddToRoleAsync(user, newRole);
+        }
         #region API CALLS
         [HttpGet]
         public async Task<IActionResult> GetAllStaff()

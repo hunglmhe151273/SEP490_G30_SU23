@@ -42,17 +42,9 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Address)
                             </th>
-                          
                             <th>
                                 @Html.DisplayNameFor(model => model.Phone)
                             </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Description)
-                            </th>
-
                             <th>
                                 @Html.DisplayNameFor(model => model.Province)
                             </th>
@@ -82,30 +74,14 @@
                                     @Html.DisplayFor(modelItem => item.Phone)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                </td>
-                                <td>
                                     @Html.DisplayFor(modelItem => item.Province)
                                 </td>
-
                                 <td>
                                     @Html.DisplayFor(modelItem => item.District)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Ward)
                                 </td>
-                                @* <td>
-                            @Html.DisplayFor(modelItem => item.DistrictCode)
-                            </td>
-                            <td>
-                            @Html.DisplayFor(modelItem => item.Ward)
-                            </td>
-                            <td>
-                            @Html.DisplayFor(modelItem => item.WardCode)
-                            </td>*@
                                 <td>
                                     <a asp-action="Edit" asp-route-id="@item.SupplierId">Edit</a>@* |
                                     <a asp-action="Details" asp-route-id="@item.SupplierId">Details</a> |
