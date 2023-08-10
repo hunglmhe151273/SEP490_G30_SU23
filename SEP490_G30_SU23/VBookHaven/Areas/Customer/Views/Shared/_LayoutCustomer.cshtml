@@ -2,6 +2,7 @@
 @using VBookHaven.Areas.Customer.Controllers;
 @using VBookHaven.Models;
 @using VBookHaven.DataAccess.Respository;
+@using VBookHaven;
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -13,6 +14,10 @@
     int total = 0;
 
     List<Category> categories = await CategoryRepository.GetAllCategoriesAllInfoAsync();
+
+    var thumbnails = await OrderFunctions.GetThumbnailsAsync();
+
+    string imageRoot = Config.ImageRoot;
 }
 
 <!doctype html>
@@ -53,6 +58,10 @@
 
     <!-- Custom css -->
     <link rel="stylesheet" href="~/css/custom.css" />
+
+    <!-- Select2 css-->
+    <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2-bootstrap4.css">
      
 </head>
 
@@ -145,7 +154,7 @@
                             <!-- logo -->
                             <div class="col-lg-2 col-md-4">
                                 <div class="logo">
-                                    <a href="/Customer/Product">
+                                    <a href="/Customer/Home">
                                         <img src="~/images/header_logo.png" style="width:100px;height:90px;" alt="main logo">
                                     </a>
                                 </div>
@@ -228,13 +237,14 @@
                                                             <div class="single-cart clearfix">
                                                                 <div class="cart-img f-left">
                                                                     <a href="#">
-                                                                        <img src="~/cust-lib/subas/img/cart/1.jpg" alt="Cart Product" />
+                                                                        <img src="@imageRoot/images/img/@thumbnails[detail.ProductId]" alt="Cart Product"
+                                                                             style="width: 100px; aspect-ratio: 100/111; object-fit: contain;" />
                                                                     </a>
-                                                                    <div class="del-icon">
+                                                                    @*<div class="del-icon">
                                                                         <a href="#">
                                                                             <i class="zmdi zmdi-close"></i>
                                                                         </a>
-                                                                    </div>
+                                                                    </div>*@
                                                                 </div>
                                                                 <div class="cart-info f-left">
                                                                     <h6 class="text-capitalize">
@@ -300,7 +310,7 @@
                                     </li>
                                     <li>
                                         <a href="/Customer/Product">Sản phẩm</a>
-                                        <ul>
+                                        @*<ul>
                                             <li>
                                                 <a href="shop.html">Shop</a>
                                             </li>
@@ -349,7 +359,7 @@
                                             <li>
                                                 <a href="404.html">404</a>
                                             </li>
-                                        </ul>
+                                        </ul>*@
                                     </li>
                                 </ul>
                             </nav>
@@ -692,6 +702,21 @@
 
     <!-- Custom js -->
     <script src="~/js/custom.js"></script>
+
+    <!-- Select2 js-->
+    <script src="~/cust-lib/subas/lib/select2/js/select2.min.js"></script>
+    <script>
+        $('.single-select').select2({
+            theme: 'bootstrap4',
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            height: $(this).data('height') == "auto",
+            placeholder: $(this).data('placeholder'),
+            allowClear: Boolean($(this).data('allow-clear')),
+        });
+    </script>
+    <!--Address-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 
