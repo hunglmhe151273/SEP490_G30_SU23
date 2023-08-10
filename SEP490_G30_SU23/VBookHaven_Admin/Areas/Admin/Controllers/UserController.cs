@@ -275,7 +275,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
         private IEnumerable<SelectListItem> GetRoleList()
         {
-            return _roleManager.Roles.Where(x => x.Name != SD.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+            return _roleManager.Roles.Where(x => x.Name != SD.Role_Customer && x.Name != SD.Role_Owner).Select(x => x.Name).Select(i => new SelectListItem
             {
                 Text = i,
                 Value = i
@@ -285,7 +285,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
             var roles = new List<SelectListItem>();
 
-            roles.AddRange(_roleManager.Roles.Where(x => x.Name != SD.Role_Customer).Select(x => x.Name).Select(i => new SelectListItem
+            roles.AddRange(_roleManager.Roles.Where(x => x.Name != SD.Role_Customer && x.Name != SD.Role_Owner).Select(x => x.Name).Select(i => new SelectListItem
             {
                 Text = i,
                 Value = i
@@ -401,6 +401,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 user.Role = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
             }
+            objUserList = objUserList.Where(x => x.Role != SD.Role_Owner).ToList();
             return Json(new { data = objUserList });
         }
 

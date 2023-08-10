@@ -53,7 +53,6 @@ function loadDataTable() {
                 },
                 "width": "20%"
             },
-            // Additional column with the desired content
             {
                 "data": "id",
                 "render": function (data) {
@@ -79,7 +78,7 @@ function LockUnlock(id) {
         contentType: "application/json",
         success: function (data) {
             if (data.success) {
-                toastr.success(data.message);
+                round_success_noti(data.message);
                 dataTable.ajax.reload();
             }
         }
