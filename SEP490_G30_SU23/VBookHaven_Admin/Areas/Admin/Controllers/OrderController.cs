@@ -105,12 +105,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		public async Task<IActionResult> Add()
 		{
 			if (await GetCurrentLoggedInStaffAsync() == null)
-				return Unauthorized();
-			
-			//var shipInfoTask = shippingInfoRepository.GetAllShipInfoAsync();
-			//var productTask = productRespository.GetAllProductsAsync();
-			
-			var model = new AddOrderManagementModel();
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            //var shipInfoTask = shippingInfoRepository.GetAllShipInfoAsync();
+            //var productTask = productRespository.GetAllProductsAsync();
+
+            var model = new AddOrderManagementModel();
 			//model.AllShipInfo = await shipInfoTask;
 			//model.AllProducts = await productTask;
 			

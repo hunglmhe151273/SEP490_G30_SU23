@@ -71,7 +71,10 @@
                                     <label class="form-label">Tỉnh/Thành Phố</label>
                                     <select asp-for="ProvinceCode" class="single-select" id="province">
                                         <option value="">Chọn Tỉnh/Thành Phố</option>
-                                        <option hidden selected value="@Model.ProvinceCode"></option>
+                                        @if(Model.ProvinceCode != null)
+                                        {
+                                            <option hidden selected value="@Model.ProvinceCode"></option>
+                                        }
                                     </select>
                                     <span asp-validation-for="ProvinceCode" class="text-danger"></span>
                                     <input id="provinceString" hidden asp-for="Province" class="form-control" />
@@ -80,7 +83,10 @@
                                     <label asp-for="DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
                                     <select asp-for="DistrictCode" class="single-select" id="district">
                                         <option value="">Chọn Quận/Huyện</option>
-                                        <option hidden selected value="@Model.DistrictCode"></option>
+                                        @if (Model.DistrictCode != null)
+                                        {
+                                            <option hidden selected value="@Model.DistrictCode"></option>
+                                        }
                                     </select>
                                     <span asp-validation-for="DistrictCode" class="text-danger"></span>
                                     <input id="districtString" hidden asp-for="District" class="form-control" />
@@ -89,7 +95,10 @@
                                     <label asp-for="WardCode" for="inputCity" class="form-label">Phường/Xã</label>
                                     <select asp-for="WardCode" class="single-select" id="ward">
                                         <option value="">Chọn Phường/Xã</option>
-                                        <option hidden selected value="@Model.WardCode"></option>
+                                        @if (Model.WardCode != null)
+                                        {
+                                            <option hidden selected value="@Model.WardCode"></option>
+                                        }
                                     </select>
                                     <span asp-validation-for="WardCode" class="text-danger"></span>
 
@@ -98,15 +107,17 @@
                                 <div class="col-md-12">
                                     <label asp-for="Address" class="form-label">Địa chỉ chi tiết</label>
                                     <textarea asp-for="Address" id="result" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                    <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
                                 <div class="col-md-12">
                                     <label asp-for="Description" class="form-label">Ghi Chú</label>
                                     <textarea asp-for="Description" class="form-control" rows="5" placeholder="Nhập ghi chú"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
-                                <button onclick="goBack()" class="btn btn-danger px-5 py-2">Trở lại</button>
-                                <button type="submit" class="btn btn-success px-5 py-2">Tạo</button>
+                                <button type="button" onclick="goBack()" class="btn btn-danger px-5 py-2">Trở lại</button>
+                                <button type="submit" class="btn btn-success px-5 py-2">Lưu</button>
                             </div>
                         </form>
                     </div>

@@ -42,6 +42,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         public async Task<IActionResult> Create(CreatePurchaseOrderVM model)
         {
             var staffCreate = await GetStaffByUserID();
+            if (staffCreate == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             ModelState.Remove("PurchaseOrderEdit");
             if (!ModelState.IsValid || staffCreate == null || model.ProductIdList.Count == 0)
             {
@@ -151,7 +153,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             await _dbContext.SaveChangesAsync();
             TempData["success"] = "Cập nhật đơn hàng nhập thành công";
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
         private async Task<Staff> GetStaffByUserID()
         {

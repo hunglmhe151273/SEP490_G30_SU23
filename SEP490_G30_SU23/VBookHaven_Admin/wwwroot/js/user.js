@@ -16,8 +16,8 @@ function loadDataTable() {
                     if (data !== null){
                     var fixedImageUrl = data.replace(/\\/g, "/");
                     console.log("fixedImageUrl: "+ fixedImageUrl);
-                        return `<img src="${fixedImageUrl}" alt="" style="max-width: 100px; max-height: 100px;">`;
-                    }//
+                        return `<img src="${fixedImageUrl}" alt="" style="width: 70px; height: 70px;">`;
+                    }
                 },
                 "width": "5%" },
             { "data": "staff.fullName", "width": "15%" },
@@ -55,10 +55,12 @@ function loadDataTable() {
             },
             // Additional column with the desired content
             {
-                "render": function () {
+                "data": "id",
+                "render": function (data) {
+                    console.log("id: " + data);
                     return `
                         <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-default">
+                            <button type="button" class="btn btn-sm btn-default" onclick="window.location.href='/admin/user/edit?userId=${data}'">
                                 <i class="lni lni-eye"></i>
                             </button>
                         </td>
@@ -100,3 +102,6 @@ $(document).ready(function () {
         })
     });
 });
+function goBack() {
+    history.back();
+}
