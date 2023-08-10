@@ -23,12 +23,12 @@ namespace VBookHaven.Areas.Identity.Pages.Account
 
 		public LogoutModel(SignInManager<IdentityUser> signInManager, ILogger<LogoutModel> logger,
 			IProductRespository productRepository, IApplicationUserRespository userRepository,
-			ICartRepository cartRepository, IHttpContextAccessor httpContextAccessor)
+			ICartRepository cartRepository, IHttpContextAccessor httpContextAccessor, IImageRepository imageRepository)
         {
             _signInManager = signInManager;
             _logger = logger;
 
-			functions = new OrderFunctions(productRepository, userRepository, cartRepository, httpContextAccessor);
+			functions = new OrderFunctions(productRepository, userRepository, cartRepository, httpContextAccessor, imageRepository);
 		}
 
         public async Task<IActionResult> OnGet(string returnUrl = null)

@@ -8,6 +8,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 {
 	// Giau inactivated product
 	// Khi dat hang -> Chi cho max la so luong con lai
+	// San pham het hang
 
 	// Trang detail product - Khi chuyen anh khac va zoom - bi cat mat mot it ben phai?
 	// Chua co list view cua trang product list
@@ -106,6 +107,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			var categoriesTask = categoryRepository.GetAllCategoriesAllInfoAsync();
 
 			model.Products = await productsTask;
+			model.Products = model.Products.Where(p => p.Status == true).ToList();
 
 			if (search != null)
 			{
@@ -220,6 +222,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			var product = await productRespository.GetProductMoreInfoByIdAsync(id);
 			if (product == null)
+				return NotFound();
+			else if (product.Status != true)
 				return NotFound();
 
 			model.Product = product;

@@ -19,6 +19,8 @@ namespace VBookHaven.DataAccess.Respository
 
         Task<Product?> GetProductByBarcodeAsync(string barcode);
 
+        int GetTimesBoughtProductById(int id);
+
 		Task AddBookAsync(Product product, Book book);
         Task AddAuthorsToBookAsync(int productId, List<int> AuthorIdList);
         Task AddStationeryAsync(Product product, Stationery stationery);
@@ -210,5 +212,20 @@ namespace VBookHaven.DataAccess.Respository
                     .Where(p => p.Status == true /*&& p.UnitInStock.Value > 0*/).ToListAsync();
             }
         }
+
+        public int GetTimesBoughtProductById(int id)
+        {
+			using (var dbContext = new VBookHavenDBContext())
+            {
+                var orders = dbContext.OrderDetails.Where(o => o.ProductId == id).ToList();
+                int total = 0;
+                foreach (OrderDetail o in orders)
+                {
+                    total += o.Quantity.Value;
+                }
+
+                return total;
+            }
+		}
     }
 }

@@ -1,4 +1,5 @@
 ﻿@using VBookHaven.Models
+@using VBookHaven;
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<IdentityUser> SignInManager
@@ -7,12 +8,15 @@
 @model List<CartDetail>
 
 @{
-	double total = 0;
-	foreach (CartDetail item in Model)
-	{
-		var p = item.Product;
-		total += (int)p.RetailPrice * (1 - (double)p.RetailDiscount / 100) * (int)item.Quantity;
-	}
+    double total = 0;
+    foreach (CartDetail item in Model)
+    {
+        var p = item.Product;
+        total += (int)p.RetailPrice * (1 - (double)p.RetailDiscount / 100) * (int)item.Quantity;
+    }
+
+    Dictionary<int, string?> thumbnails = (Dictionary<int, string?>)ViewData["thumbnails"];
+    string imageRoot = Config.ImageRoot;
 }
 
 <!-- Old code -->
@@ -130,7 +134,7 @@ else
                                                 <tr>
                                                     <td class="product-thumbnail">
                                                         <div class="pro-thumbnail-img">
-                                                            <img src="~/cust-lib/subas/img/cart/1.jpg" alt="">
+                                                            <img src="@imageRoot/images/img/@thumbnails[o.ProductId]" alt="">
                                                         </div>
                                                         <div class="pro-thumbnail-info text-start">
                                                             <h6 class="product-title-2">

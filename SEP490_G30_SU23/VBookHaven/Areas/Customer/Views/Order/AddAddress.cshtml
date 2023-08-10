@@ -114,9 +114,64 @@
                                                     <input type="text" placeholder="Phone here...">
                                                 </div>
                                             </div>*@
-                                            <input type="text" asp-for="ShipInfo.CustomerName" required placeholder="Tên khách hàng (*)">
+                                            
+                                            @*<input type="text" asp-for="ShipInfo.CustomerName" required placeholder="Tên khách hàng (*)">
                                             <input type="text" asp-for="ShipInfo.ShipAddress" required placeholder="Địa chỉ giao hàng (*)">
-                                            <input type="tel" asp-for="ShipInfo.Phone" pattern="[0-9]{10}" placeholder="Số điện thoại (*)">
+                                            <input type="tel" asp-for="ShipInfo.Phone" pattern="[0-9]{10}" placeholder="Số điện thoại (*)">*@
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class=" mb-3 row ">
+                                                <label asp-for="ShipInfo.CustomerName" class="col-sm-2 col-form-label">Họ và tên: </label>
+                                                <div class="col-sm-10 ">
+                                                    <input class="form-control" asp-for="ShipInfo.CustomerName">
+                                                    <span asp-validation-for="ShipInfo.CustomerName" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row ">
+                                                <label asp-for="ShipInfo.Phone" class="col-sm-2 col-form-label ">Số điện thoại</label>
+                                                <div class="col-sm-10 ">
+                                                    <input asp-for="@Model.ShipInfo.Phone" class="form-control">
+                                                    <span asp-validation-for="@Model.ShipInfo.Phone" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="mb-5 row ">
+                                                <label class="col-sm-2 col-form-label ">Tỉnh/Thành phố</label>
+                                                <div class="col-sm-10 ">
+                                                    <select asp-for="@Model.ShipInfo.ProvinceCode" class="single-select" id="province">
+                                                        <option value="" selected>Chọn Tỉnh/Thành Phố</option>
+                                                    </select>
+                                                    <span asp-validation-for="@Model.ShipInfo.ProvinceCode" class="text-danger"></span>
+                                                    <input hidden id="provinceString" asp-for="@Model.ShipInfo.Province" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="mb-5 row ">
+                                                <label class="col-sm-2 col-form-label ">Quận huyện</label>
+                                                <div class="col-sm-10 ">
+                                                    <select asp-for="@Model.ShipInfo.DistrictCode" class="single-select" id="district">
+                                                        <option selected value="">Chọn Quận/Huyện</option>
+                                                    </select>
+                                                    <span asp-validation-for="@Model.ShipInfo.DistrictCode" class="text-danger"></span>
+                                                    <input hidden id="districtString" asp-for="@Model.ShipInfo.District" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="mb-5 row ">
+                                                <label class="col-sm-2 col-form-label ">Phường xã</label>
+                                                <div class="col-sm-10 ">
+                                                    <select asp-for="@Model.ShipInfo.WardCode" class="single-select" id="ward">
+                                                        <option selected value="">Chọn Phường/Xã</option>
+                                                    </select>
+                                                    <span asp-validation-for="@Model.ShipInfo.WardCode" class="text-danger"></span>
+
+                                                    <input hidden id="wardString" asp-for="@Model.ShipInfo.Ward" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="mb-5 row ">
+                                                <label asp-for="@Model.ShipInfo.ShipAddress" class="col-sm-2 col-form-label ">Địa chỉ</label>
+                                                <div class="col-sm-10 ">
+                                                    <textarea asp-for="@Model.ShipInfo.ShipAddress" class="form-control " rows="10 "
+                                                        style="font-size: 13px;"></textarea>
+                                                    <span asp-validation-for="@Model.ShipInfo.ShipAddress" class="text-danger"></span>
+                                                </div>
+                                            </div>
                                             @*<textarea class="custom-textarea"
                                                       placeholder="Additional information..."></textarea>*@
                                             <div class="row">
@@ -149,3 +204,10 @@
     <!-- LOGIN SECTION END -->
 </div>
 <!-- End page content -->
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/address.js"></script>
+}

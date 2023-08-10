@@ -113,7 +113,7 @@ else
                             {
                                 var shipInfo = Model.Address;
                                 <div class="address-info">@shipInfo.CustomerName</div>
-                                <div class="address-info">@shipInfo.ShipAddress</div>
+                                <div class="address-info">@shipInfo.ShipAddress, @shipInfo.Ward, @shipInfo.District, @shipInfo.Province</div>
                                 <div class="address-info">@shipInfo.Phone</div>
                             }
                             <form action="ChangeAddress" method="post">

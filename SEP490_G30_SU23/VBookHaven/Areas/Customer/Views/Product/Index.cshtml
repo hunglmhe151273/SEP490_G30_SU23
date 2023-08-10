@@ -110,7 +110,7 @@
                                                         }
                                                         else
                                                         {
-                                                            <img src="~/cust-lib/subas/img/product/7.jpg" alt="" />
+                                                            <img src="~/images/default_image.png" alt="" />
                                                         }
                                                     </a>
                                                 </div>
@@ -118,13 +118,13 @@
                                                     <h6 class="product-title">
                                                         <a href="/customer/product/detail/@id">@p.Name </a>
                                                     </h6>
-                                                    <div class="pro-rating">
+                                                    @*<div class="pro-rating">
                                                         <a href="#"><i class="zmdi zmdi-star"></i></a>
                                                         <a href="#"><i class="zmdi zmdi-star"></i></a>
                                                         <a href="#"><i class="zmdi zmdi-star"></i></a>
                                                         <a href="#"><i class="zmdi zmdi-star-half"></i></a>
                                                         <a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-                                                    </div>
+                                                    </div>*@
                                                     @if (p.RetailDiscount != 0)
                                                     {
                                                         <h5 class="pro-price" style="margin-bottom: 10px; color: #bbbbbb"><s>@p.RetailPrice VNĐ</s></h5>

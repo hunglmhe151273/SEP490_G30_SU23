@@ -11,8 +11,6 @@ namespace VBookHaven.Areas.Customer.Controllers
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
 
-	// Chua co thumbnail trong gio hang
-	// Chua co thumbnail tren cart o header
 	// Khi tao shipping info moi luc check out -> Neu chua co shipping info nao -> De default luon
 
 	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
@@ -57,9 +55,9 @@ namespace VBookHaven.Areas.Customer.Controllers
 		public OrderController(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository,
 			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository,
-			IOrderRepository orderRepository)
+			IOrderRepository orderRepository, IImageRepository imageRepository)
 		{
-			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor);
+			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor, imageRepository);
 			this.shippingInfoRepository = shippingInfoRepository;
 			this.orderRepository = orderRepository;
 		}
@@ -86,9 +84,12 @@ namespace VBookHaven.Areas.Customer.Controllers
 			return RedirectToAction("Cart");
 		}
 
-		public IActionResult Cart()
+		public async Task<IActionResult> Cart()
 		{
 			var cart = functions.GetCartFromCookies();
+
+			var thumbnails = await functions.GetThumbnailsAsync();
+			ViewData["thumbnails"] = thumbnails;
 			
 			return View(cart);
 		}
@@ -193,6 +194,11 @@ namespace VBookHaven.Areas.Customer.Controllers
 			}
 			else if (model.Method.Equals("post"))
 			{
+				if (!ModelState.IsValid)
+				{
+					return View(model);
+				}
+				
 				model.ShipInfo.CustomerId = custId;
 				model.ShipInfo.Status = true;
 
@@ -270,10 +276,11 @@ namespace VBookHaven.Areas.Customer.Controllers
 		private readonly IProductRespository productRespository;
 		private readonly IApplicationUserRespository userRepository;
 		private readonly ICartRepository cartRepository;
+		private readonly IImageRepository imageRepository;
 
 		public OrderFunctions(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository, 
-			IHttpContextAccessor httpContextAccessor)
+			IHttpContextAccessor httpContextAccessor, IImageRepository imageRepository)
 		{
 			this.productRespository = productRespository;
 			this.userRepository = userRepository;
@@ -282,6 +289,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 			Request = httpContextAccessor.HttpContext.Request;
 			Response = httpContextAccessor.HttpContext.Response;
 			User = httpContextAccessor.HttpContext.User;
+
+			this.imageRepository = imageRepository;
 		}
 
 		public async Task<Models.Customer?> GetLoginCustomerAsync()
@@ -395,6 +404,24 @@ namespace VBookHaven.Areas.Customer.Controllers
 				List<CartDetail> cart = JsonSerializer.Deserialize<List<CartDetail>>(cartJson);
 				return cart;
 			}
+		}
+
+		public async Task<Dictionary<int, string?>> GetThumbnailsAsync()
+		{
+			Dictionary<int, string?> thumbnails = new Dictionary<int, string?>();
+			var allProducts = await productRespository.GetAllProductsAsync();
+			foreach (var product in allProducts)
+			{
+				int id = product.ProductId;
+				Image? thumbnail = await imageRepository.GetThumbnailByProductIdAsync(id);
+				string? thumbnailName;
+				if (thumbnail == null)
+					thumbnailName = null;
+				else thumbnailName = thumbnail.ImageName;
+				thumbnails.Add(id, thumbnailName);
+			}
+
+			return thumbnails;
 		}
 
 		void AddCartToCookies(List<CartDetail> cart)
