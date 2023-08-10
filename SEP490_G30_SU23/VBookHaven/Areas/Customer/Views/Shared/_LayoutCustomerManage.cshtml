@@ -50,8 +50,8 @@
     <link rel="stylesheet" href="~/cust-lib/subas/css/custom.css">
 
     <!-- Style customizer (Remove these two lines please) -->
-    @*<link rel="stylesheet" href="~/cust-lib/subas/css/style-customizer.css">
-    <link href="#" data-style="styles" rel="stylesheet">*@
+    <link rel="stylesheet" href="~/cust-lib/subas/css/style-customizer.css">
+    <link href="#" data-style="styles" rel="stylesheet">
 
     <!-- Modernizr JS -->
     <script src="~/cust-lib/subas/js/vendor/modernizr-3.11.2.min.js"></script>
@@ -62,7 +62,9 @@
     <!-- Select2 css-->
     <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2-bootstrap4.css">
-     
+
+    <!-- Edit Profile css -->
+    <link href="~/cust-lib/subas/css/avatar.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -369,8 +371,44 @@
             </div>
         </div>
         <!-- END MOBILE MENU AREA -->
-
-        @RenderBody();
+        <!-- BREADCRUMBS SETCTION START -->
+        <!-- BREADCRUMBS SETCTION END -->
+        <!-- Start page content -->
+        <div id="page-content" class="page-wrapper section">
+            <!-- LOGIN SECTION START -->
+            <div class="login-section mb-80">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 mb-20">
+                            <div class="list-group list-group-flush">
+                                <a class="list-group-item list-group-item-action" href="/customer/account/edit">
+                                    <i class="zmdi zmdi-hc-lg zmdi-account py-3 pe-4"></i>Thông tin tài khoản
+                                </a>
+                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                    <i class="zmdi zmdi-hc-lg zmdi-receipt py-3 pe-4"></i>Quản lí đơn hàng
+                                </a>
+                                <a class="list-group-item list-group-item-action" href="~/customer/account/ShipInfo">
+                                    <i class="zmdi zmdi-hc-lg zmdi-pin py-3 pe-4"></i>Số địa chỉ
+                                </a>
+                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                    <i class="zmdi zmdi-hc-lg zmdi-card py-3 pe-4"></i>Thông tin thanh toán
+                                </a>
+                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                    <i class="zmdi zmdi-hc-lg zmdi-favorite py-3 pe-4"></i>Sản phẩm yêu thích
+                                </a>
+                            </div>
+                        </div>
+                        <!-- to add -->
+                        <div class="col-lg-9">
+                            @RenderBody()
+                        </div>
+                        <!-- to add -->
+                    </div>
+                </div>
+            </div>
+            <!-- LOGIN SECTION END -->
+        </div>
+        <!-- End page content -->
 
         <!-- START FOOTER AREA -->
         <footer id="footer" class="footer-area section">
