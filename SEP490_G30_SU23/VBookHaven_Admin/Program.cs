@@ -28,10 +28,10 @@ builder.Services.ConfigureApplicationCookie(options => {
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(60));
+builder.Services.AddSession(opt => opt.IdleTimeout = TimeSpan.FromMinutes(120));
 builder.Services.Configure<CookieAuthenticationOptions>(options =>
 {
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
+    options.ExpireTimeSpan = TimeSpan.FromDays(30);
 });
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();

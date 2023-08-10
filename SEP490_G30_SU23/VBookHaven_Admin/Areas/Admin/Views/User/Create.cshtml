@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
-                                <button type="button" onclick="goback()" class="btn btn-danger px-5 py-2">Hủy</button>
+                                <button type="button" onclick="window.location.href='/Admin/User/Index'" class="btn btn-danger px-5 py-2">Hủy</button>
                                 <button type="submit" class="btn btn-success px-5 py-2">Lưu</button>
                             </div>
                         </form>
@@ -122,9 +122,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        function goBack() {
-            history.back();
-        }
-    </script>
 }
