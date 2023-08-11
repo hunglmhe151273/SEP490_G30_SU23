@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Protocol.Core.Types;
+using System.Data;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using VBookHaven.DataAccess.Data;
@@ -16,6 +18,7 @@ using VBookHaven.ViewModels;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
     public class PurchaseOrderController : Controller
     {
         private readonly VBookHavenDBContext _dbContext;
@@ -92,7 +95,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var staffEdit = await GetStaffByUserID();
             if (purchaseId == 0 || _dbContext.PurchaseOrders == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             var purchaseOrder = await _dbContext.PurchaseOrders
@@ -101,13 +104,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 .Include(p => p.PurchasePaymentHistories)
                 .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product).ThenInclude(p => p.Images)
                 .FirstOrDefaultAsync(m => m.PurchaseOrderId == purchaseId);
-            if (purchaseOrder == null)
+            if (purchaseOrder == null || SD.POStatusToNum(purchaseOrder.Status) > 1)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             //front end cần total paid để so sánh với tổng giá trị đơn hàng, không được phép nhỏ hơn
             CreatePurchaseOrderVM vm = new CreatePurchaseOrderVM();
-            vm.TotalPaid = totalPayment(purchaseOrder.PurchaseOrderDetails);
+            //vm.TotalPayment = totalPaymentNotVAT(purchaseOrder.PurchaseOrderDetails)*(1 + (decimal)purchaseOrder.VAT/100);
             vm.PurchaseOrderEdit = purchaseOrder;
             vm.DefaultSupplierIDShow = purchaseOrder.Supplier.SupplierId;
             vm.TotalPaid = totalPaid(purchaseOrder.PurchasePaymentHistories);
@@ -157,7 +160,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             await _dbContext.SaveChangesAsync();
             TempData["success"] = "Cập nhật đơn hàng nhập thành công";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", new { id = pO.PurchaseOrderId });
         }
         private async Task<Staff> GetStaffByUserID()
         {
@@ -193,12 +196,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 return NotFound();
             }
             //Tổng tiền hàng
-            decimal sum = (decimal)totalPayment(purchaseOrder.PurchaseOrderDetails);
+            decimal totalForPayment = Math.Ceiling((decimal)totalPaymentNotVAT(purchaseOrder.PurchaseOrderDetails) * (1 + (decimal)purchaseOrder.VAT / 100));
             //Tổng đã trả
-            decimal sumPaid = (decimal)totalPaid(purchaseOrder.PurchasePaymentHistories);
+            decimal sumPaid = Math.Ceiling((decimal)totalPaid(purchaseOrder.PurchasePaymentHistories));
             //Tính số tiền còn thiếu
             DetailsPurchaseOrderVM vm = new DetailsPurchaseOrderVM();
-            vm.Unpaid = sum - sumPaid;
+            vm.Unpaid = Math.Ceiling(totalForPayment - sumPaid);
+            vm.TotalPayment = totalForPayment;
+            vm.Paid = sumPaid;
             vm.pO = purchaseOrder;
             //Form
             vm.PPHistory.PurchaseId = purchaseOrder.PurchaseOrderId;
@@ -224,7 +229,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     await _purchaseOrderRepository.UpdatePurchaseOrderAsync(purchaseOrder);
                     await ImportToStorage(id);
                     break;
-                //Chú ý khi thanh toán
+                //Chú ý khi làm tính năng thanh toán
                 case (SD.PurchaseOrder_Imported):
                     purchaseOrder.Status = SD.PurchaseOrder_Complete;
                     TempData["success"] = "Cập nhật đơn hàng thành công";
@@ -297,14 +302,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
         
         // Tổng tiền của đơn hàng - tham số purchasorder.purchaseOrderDetails
-        private decimal? totalPayment(ICollection<PurchaseOrderDetail> purchaseOrderDetails)
+        private decimal? totalPaymentNotVAT(ICollection<PurchaseOrderDetail> purchaseOrderDetails)
         {
             decimal sum = 0;
             foreach (var detail in purchaseOrderDetails)
             {
                 if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
                 {
-                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
+                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount/100));
                 }
             }
             return sum;

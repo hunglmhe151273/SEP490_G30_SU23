@@ -104,148 +104,147 @@
                                     </div>
                                     <!-- Status progress bar -->
                                     <div class="col-6 d-flex justify-content-center">
-                                        <div class="wizard-progress w-100"></div>
-                                        @if (Model.pO.Status.Equals(SD.PurchaseOrder_Canceled)) {
+                                        <div class="wizard-progress w-100">
+                                            @if (Model.pO.Status.Equals(SD.PurchaseOrder_Canceled)) {
 
-                                        <div class="step cancel">
-                                            <span class="title">@SD.PurchaseOrder_Canceled</span>
-                                            <div class="node"></div>
+                                            <div class="step cancel">
+                                                <span class="title">@SD.PurchaseOrder_Canceled</span>
+                                                <div class="node"></div>
+                                            </div>
+                                            }else {
+                                            <div class="step complete">
+                                                <span class="title">@SD.PurchaseOrder_Created</span>
+                                                <div class="node"></div>
+                                            </div>
+                                            <div class="step @(numStatus > 1 ? " complete " : " ")
+                                                @(numStatus == 1 ? "in-progress " : " ")">
+                                                <span class="title">@SD.PurchaseOrder_Imported</span>
+                                                <div class="node"></div>
+                                            </div>
+                                            <div class="step @(numStatus == 3 ? " complete " : " ")
+                                                @(numStatus == 2 ? "in-progress " : " ")">
+                                                <span class="title">@SD.PurchaseOrder_Complete</span>
+                                                <div class="node"></div>
+                                            </div>
+                                            }
                                         </div>
-                                        }else {
+                                    </div>
 
-                                        <div class="step complete">
-                                            <span class="title">@SD.PurchaseOrder_Created</span>
-                                            <div class="node"></div>
-                                        </div>
-                                        <div class="step @(numStatus > 1 ? " complete " : " ")
-                                                    @(numStatus == 1 ? "in-progress " : " ")">
-                                            <span class="title">@SD.PurchaseOrder_Imported</span>
-                                            <div class="node"></div>
-                                        </div>
-                                        <div class="step @(numStatus == 3 ? " complete " : " ")
-                                                    @(numStatus == 2 ? "in-progress " : " ")">
-                                            <span class="title">@SD.PurchaseOrder_Complete</span>
-                                            <div class="node"></div>
-                                        </div>
-                                        }
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-8 mx-auto">
-                        <div class="card">
-                            <div class="pt-4 px-5">
-                                <div class="card-title d-flex align-items-center">
-                                    <div><i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
-                                    </div>
-                                    <h5 class="mb-0 fw-bold">@Model.pO.Supplier.SupplierNam</h5>
-                                </div>
-                                <hr>
-                                <div class="card-body row g-3">
-                                    <div class="supplier-info mt-0">
-                                        <h6 class="text-primary fw-bold">
-                                            <a href="">Supp1</a>
-                                            <!-- Click vào để dẫn đến supplier-detail -->
-                                        </h6>
-                                        <label class="fw-bold">Số điện thoại: @Model.pO.Supplier.Phone</label></br>
-                                        <label class="fw-bold">Địa chỉ: @Model.pO.Supplier.Ward, @Model.pO.Supplier.District, @Model.pO.Supplier.Province</label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-4 mx-auto">
-                        <div class="card">
-                            <div class="card-title text-center pt-4">
-                                <h5 class="mb-0 fw-bold">Thông tin bổ sung</h5>
+                        <div class="col-8 mx-auto">
+                            <div class="card">
+                                <div class="pt-4 px-5">
+                                    <div class="card-title d-flex align-items-center">
+                                        <div><i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-bold">@Model.pO.Supplier.SupplierNam</h5>
+                                    </div>
+                                    <hr>
+                                    <div class="card-body row g-3">
+                                        <div class="supplier-info mt-0">
+                                            <h6 class="text-primary fw-bold">
+                                                <a href="">Supp1</a>
+                                                <!-- Click vào để dẫn đến supplier-detail -->
+                                            </h6>
+                                            <label class="fw-bold">Số điện thoại: @Model.pO.Supplier.Phone</label></br>
+                                            <label class="fw-bold">Địa chỉ: @Model.pO.Supplier.Ward, @Model.pO.Supplier.District, @Model.pO.Supplier.Province</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <p><strong>Nhân viên phụ trách: </strong> @Model.pO.Staff.FullName</p>
-                                <p><strong>Ghi chú:
+                        </div>
+                        <div class="col-4 mx-auto">
+                            <div class="card">
+                                <div class="card-title text-center pt-4">
+                                    <h5 class="mb-0 fw-bold">Thông tin bổ sung</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Nhân viên phụ trách: </strong> @Model.pO.Staff.FullName</p>
+                                    <p><strong>Ghi chú:
                                         </strong> @Model.pO.Description
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 pe-0 mx-auto">
-                        <div class="card pt-4">
-                            <div class="card-titl px-5 row">
-                                <div class="col-8 d-flex align-items-center">
-                                    <div>
-                                        <i class="bx bx-credit-card bx-tada me-2 fs-4"></i>
-                                        <!--Not paid icon-->
-                                        <!-- <i class="bx bxs-check-circle bx-tada me-2 fs-4 text-success"></i> -->
-                                        <!--Paid icon-->
-                                    </div>
-                                    <h5 class="mb-0 fw-bold">Đơn hàng chưa được thanh toán</h5>
-                                    <!--Not paid title-->
-                                    <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
-                                    <!--Paid title-->
-                                </div>
-                                <div class="col-4 d-flex align-items-center justify-content-end">
-                                    <button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="card-body pt-0">
-                                <div class="row payment-items">
-                                    <div class="col-4">
-                                        <span>Tiền cần trả NCC: <strong>123456</strong></span>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <span>Đã trả: <strong>23456</strong></span>
-                                    </div>
-                                    <div class="col-4 text-end">
-                                        <span>Còn phải trả: <strong class="text-danger" id="debt">100000</strong></span>
-                                    </div>
-                                </div>
-                                <div class="payment-items">
-                                    <p class="payment-content">
-                                        <i class='bx bxs-circle text-primary pe-3'></i>
-                                        <span class="payment-title">Đã trả: 13056</span>
-                                        <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
-                                        <span class="payment-date">27/07/2023</span>
-                                    </p>
-                                    <p class="payment-detail">
-                                        Người thanh toán: ChinhLK
-                                    </p>
-                                    <p class="payment-detail">
-                                        Phương thức thanh toán: Tiền mặt
-                                    </p>
-                                </div>
-                                <div class="payment-items">
-                                    <p class="payment-content">
-                                        <i class='bx bxs-circle text-primary pe-3'></i>
-                                        <span class="payment-title">Đã trả: 10400</span>
-                                        <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
-                                        <span class="payment-date">29/07/2023</span>
-                                    </p>
-                                    <p class="payment-detail">
-                                        Người thanh toán: HungLM
-                                    </p>
-                                    <p class="payment-detail">
-                                        Phương thức thanh toán: Chuyển khoản
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 mx-auto pe-0">
-                        <div class="card">
-                            <div class="card-body p-5">
-                                <div class="card-title d-flex align-items-center">
-                                    <div><i class="bx bxs-receipt bx-tada me-2 fs-4"></i>
+                        <div class="col-12 pe-0 mx-auto">
+                            <div class="card pt-4">
+                                <div class="card-titl px-5 row">
+                                    <div class="col-8 d-flex align-items-center">
+                                        <div>
+                                            <i class="bx bx-credit-card bx-tada me-2 fs-4"></i>
+                                            <!--Not paid icon-->
+                                            <!-- <i class="bx bxs-check-circle bx-tada me-2 fs-4 text-success"></i> -->
+                                            <!--Paid icon-->
+                                        </div>
+                                        <h5 class="mb-0 fw-bold">Đơn hàng chưa được thanh toán</h5>
+                                        <!--Not paid title-->
+                                        <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
+                                        <!--Paid title-->
                                     </div>
-                                    <h5 class="mb-0 fw-bold">Chi tiết đơn hàng</h5>
+                                    <div class="col-4 d-flex align-items-center justify-content-end">
+                                        <button class=" btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
+                                    </div>
                                 </div>
                                 <hr>
-                                <div class="row g-3">
-                                    <div class="col-md-12">
-                                        <table id="myTable" class="table table-sm table-hover text-center">
-                                            <thead>
-                                                <tr ">
+                                <div class="card-body pt-0">
+                                    <div class="row payment-items">
+                                        <div class="col-4">
+                                            <span>Tiền cần trả NCC: <strong>123456</strong></span>
+                                        </div>
+                                        <div class="col-4 text-center">
+                                            <span>Đã trả: <strong>23456</strong></span>
+                                        </div>
+                                        <div class="col-4 text-end">
+                                            <span>Còn phải trả: <strong class="text-danger" id="debt">100000</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="payment-items">
+                                        <p class="payment-content">
+                                            <i class='bx bxs-circle text-primary pe-3'></i>
+                                            <span class="payment-title">Đã trả: 13056</span>
+                                            <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
+                                            <span class="payment-date">27/07/2023</span>
+                                        </p>
+                                        <p class="payment-detail">
+                                            Người thanh toán: ChinhLK
+                                        </p>
+                                        <p class="payment-detail">
+                                            Phương thức thanh toán: Tiền mặt
+                                        </p>
+                                    </div>
+                                    <div class="payment-items">
+                                        <p class="payment-content">
+                                            <i class='bx bxs-circle text-primary pe-3'></i>
+                                            <span class="payment-title">Đã trả: 10400</span>
+                                            <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
+                                            <span class="payment-date">29/07/2023</span>
+                                        </p>
+                                        <p class="payment-detail">
+                                            Người thanh toán: HungLM
+                                        </p>
+                                        <p class="payment-detail">
+                                            Phương thức thanh toán: Chuyển khoản
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mx-auto pe-0">
+                            <div class="card">
+                                <div class="card-body p-5">
+                                    <div class="card-title d-flex align-items-center">
+                                        <div><i class="bx bxs-receipt bx-tada me-2 fs-4"></i>
+                                        </div>
+                                        <h5 class="mb-0 fw-bold">Chi tiết đơn hàng</h5>
+                                    </div>
+                                    <hr>
+                                    <div class="row g-3">
+                                        <div class="col-md-12">
+                                            <table id="myTable" class="table table-sm table-hover text-center">
+                                                <thead>
+                                                    <tr ">
                                                         <th>STT</th>
                                                         <th class="col-1 ">Ảnh</th>
                                                         <th class="col-4 ">Tên SP</th>
@@ -266,133 +265,130 @@
                                                             @if (@detail.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
                                                             {
                                                                 <img class="productImg " src="/images/img/@detail.Product.Images.Where(i=> i.Status == true).FirstOrDefault().ImageName"> } else {
-                                                    <img class="productImg" src="/images/img/default_image.png"> }
-                                                    </td>
-                                                    <td>
-                                                        <div class="ellipsis">
-                                                            @detail.Product.Name
-                                                        </div>
-                                                    </td>
-                                                    <td> @detail.Product.Unit</td>
-                                                    <td> @detail.Quantity</td>
-                                                    <td> @detail.UnitPrice VNĐ</td>
-                                                    <td>@detail.Discount %</td>
-                                                    <td>@((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value) VNĐ</td>
+                                                        <img class="productImg" src="/images/img/default_image.png"> }
+                                                        </td>
+                                                        <td>
+                                                            <div class="ellipsis">
+                                                                @detail.Product.Name
+                                                            </div>
+                                                        </td>
+                                                        <td> @detail.Product.Unit</td>
+                                                        <td> @detail.Quantity</td>
+                                                        <td> @detail.UnitPrice VNĐ</td>
+                                                        <td>@detail.Discount %</td>
+                                                        <td>@((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value) VNĐ</td>
+                                                    </tr>
+                                                    }
+                                                    </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-8 "></div>
+                                        <div class="col-4 ">
+                                            <table class="w-75 ">
+                                                <tr>
+                                                    <td>Số lượng</td>
+                                                    <td>5</td>
                                                 </tr>
-                                                }
-                                                </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-8 "></div>
-                                    <div class="col-4 ">
-                                        <table class="w-75 ">
-                                            <tr>
-                                                <td>Số lượng</td>
-                                                <td>5</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tổng tiền hàng</td>
-                                                <td>570,000</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Thuế GTGT</td>
-                                                <td>
-                                                    <span>0</span> %
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tổng tiền thanh toán</th>
-                                                <td>570,000</td>
-                                            </tr>
-                                        </table>
+                                                <tr>
+                                                    <td>Tổng tiền hàng</td>
+                                                    <td>570,000</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Thuế GTGT</td>
+                                                    <td>
+                                                        <span>0</span> %
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tổng tiền thanh toán</th>
+                                                    <td>570,000</td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 pe-0 mx-auto " style="position: sticky; bottom: 0; ">
-                        <div class="card border-top border-0 border-4 border-primary py-2 ">
-                            <div class="card-body text-end ">
-
-                                <a href=" " class="btn btn-outline-info px-4 mx-2 ">Sửa đơn</a> @if (SD.POStatusToNum(Model.pO.Status)
-                                < 3) { <button type="button" class="btn btn-primary px-4 mx-2 " onclick="document.getElementById('updatePurchaseOrder').submit();">
-                                    @switch (Model.pO.Status) { case SD.PurchaseOrder_Created: @:Nhập hàng break; case SD.PurchaseOrder_Imported: @:Đã thanh toán break; }
-                                    </button>
+                        <div class="col-12 pe-0 mx-auto " style="position: sticky; bottom: 0; ">
+                            <div class="card border-top border-0 border-4 border-primary py-2">
+                                <div class="card-body text-end">
                                     @if (SD.POStatusToNum(Model.pO.Status)
-                                    < 2) { <button type="button" class="btn btn-outline-info px-4 mx-2 " onclick="document.getElementById('cancelPurchaseOrder').submit();">
-                                        Hủy đơn
-                                        </button>
-                                        } }
-                                        <button type="button" class="btn btn-secondary px-4 mx-1" onclick="window.location.href='/Admin/PurchaseOrder/Index'">
-                                    Quay lại
-                                </button>
+                                    < 3) { <a href="" class="btn btn-outline-info px-4 mx-2">Sửa đơn</a>
+                                        <button type="button" class="btn btn-primary px-4 mx-2" onclick="document.getElementById('updatePurchaseOrder').submit();">
+                                        @switch (Model.pO.Status)
+                                        {
+                                            case SD.PurchaseOrder_Created:
+                                                @:Nhập hàng
+                                                break;
+                                            case SD.PurchaseOrder_Imported:
+                                                @:Đã thanh toán
+                                                break;
+                                        }
+                                    </button> @if (SD.POStatusToNum(Model.pO.Status)
+                                        < 2) { <button type="button" class="btn btn-outline-danger px-4 mx-2" onclick="document.getElementById('cancelPurchaseOrder').submit();">
+                                            Hủy đơn
+                                            </button>
+                                            } }
+                                </div>
 
-                                        <form hidden id="updatePurchaseOrder" asp-action="UpdateStatus" method="post">
-                                            <input name="id" value="@Model.pO.PurchaseOrderId" />
-                                        </form>
-                                        <form hidden id="cancelPurchaseOrder" asp-action="CancelPurchaseOrder" method="post">
-                                            <input name="id" value="@Model.pO.PurchaseOrderId" />
-                                        </form>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade " id="addPayment " tabindex="-1 " aria-labelledby="exampleModalLabel " aria-hidden="true ">
-            <div class="modal-dialog ">
-                <div class="modal-content ">
-                    <form action=" " class="addForm ">
-                        <div class="modal-header ">
-                            <h5 class="modal-title " id="exampleModalLabel ">Xác nhận thanh toán</h5>
-                        </div>
-                        <div class="modal-body row ">
-                            <div class="col-12 col-md-6 mb-3 ">
-                                <label class="form-label ">Phương thức</label>
-                                <select class="form-select ">
+            <div class="modal fade " id="addPayment " tabindex="-1 " aria-labelledby="exampleModalLabel " aria-hidden="true ">
+                <div class="modal-dialog ">
+                    <div class="modal-content ">
+                        <form action=" " class="addForm ">
+                            <div class="modal-header ">
+                                <h5 class="modal-title " id="exampleModalLabel ">Xác nhận thanh toán</h5>
+                            </div>
+                            <div class="modal-body row ">
+                                <div class="col-12 col-md-6 mb-3 ">
+                                    <label class="form-label ">Phương thức</label>
+                                    <select class="form-select ">
                                         <option value="0 ">Chuyển khoản</option>
                                         <option value="1 ">Tiền mặt</option>
                                     </select>
-                            </div>
-                            <div class="col-12 col-md-6 mb-3 ">
-                                <label class="form-label ">Ngày thanh toán</label>
-                                <input type="datetime-local " class="form-control validate important " id="paid-date " placeholder="Nhập mã vạch ">
-                                <div id="paid-date-feedback " class="feedback "></div>
-                            </div>
-                            <div class="col-12 mb-3 ">
-                                <label class="form-label ">Số tiền</label>
-                                <div class="input-group mb-3 ">
-                                    <input type="text " class="form-control validate important " id="paid ">
-                                    <span class="input-group-text ">VNĐ</span>
-                                    <div id="paid-feedback " class="feedback "></div>
+                                </div>
+                                <div class="col-12 col-md-6 mb-3 ">
+                                    <label class="form-label ">Ngày thanh toán</label>
+                                    <input type="datetime-local " class="form-control validate important " id="paid-date " placeholder="Nhập mã vạch ">
+                                    <div id="paid-date-feedback " class="feedback "></div>
+                                </div>
+                                <div class="col-12 mb-3 ">
+                                    <label class="form-label ">Số tiền</label>
+                                    <div class="input-group mb-3 ">
+                                        <input type="text " class="form-control validate important " id="paid ">
+                                        <span class="input-group-text ">VNĐ</span>
+                                        <div id="paid-feedback " class="feedback "></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="modal-footer ">
-                            <input type="button " class="btn btn-primary reset submit " value="Lưu " id="submitProduct " data-bs-dismiss="modal ">
-                            <input type="reset " class="btn btn-secondary reset " value="Đặt lại ">
-                            <button type="reset " class="btn btn-secondary reset " data-bs-dismiss="modal ">Hủy</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer ">
+                                <input type="button " class="btn btn-primary reset submit " value="Lưu " id="submitProduct " data-bs-dismiss="modal ">
+                                <input type="reset " class="btn btn-secondary reset " value="Đặt lại ">
+                                <button type="reset " class="btn btn-secondary reset " data-bs-dismiss="modal ">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+            <!--end page-content-wrapper-->
         </div>
-        <!--end page-content-wrapper-->
-    </div>
-    <!--end page-wrapper-->
-    <!--start overlay-->
-    <div class="overlay toggle-btn-mobile "></div>
-    <!--end overlay-->
-    <!--Start Back To Top Button--><a href="javaScript:; " class="back-to-top "><i
+        <!--end page-wrapper-->
+        <!--start overlay-->
+        <div class="overlay toggle-btn-mobile "></div>
+        <!--end overlay-->
+        <!--Start Back To Top Button--><a href="javaScript:; " class="back-to-top "><i
                 class='bx bxs-up-arrow-alt'></i></a>
-    <!--End Back To Top Button-->
-    <!--footer -->
-    <div class="footer ">
-        <p class="mb-0 ">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent " target="_blank ">codervent</a>
-        </p>
-    </div>
-    <!-- end footer -->
+        <!--End Back To Top Button-->
+        <!--footer -->
+        <div class="footer ">
+            <p class="mb-0 ">Syndash @2020 | Developed By : <a href="https://themeforest.net/user/codervent " target="_blank ">codervent</a>
+            </p>
+        </div>
+        <!-- end footer -->
     </div>
     <!-- end wrapper -->
     <!--start switcher-->

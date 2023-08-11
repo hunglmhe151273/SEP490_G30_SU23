@@ -362,7 +362,7 @@ function getBookInfo(linkElement) {
             </td>
             <td>
                 <div class="input-group">
-                    <input name="UnitPriceList" class="form-control price" step="1000" min="0" value="0" type='number' class="num">
+                    <input name="UnitPriceList" class="form-control price" step="1" min="0" value="0" type='number' class="num">
                 </div>
             </td>
             <td>

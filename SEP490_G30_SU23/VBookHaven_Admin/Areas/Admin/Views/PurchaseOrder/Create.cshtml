@@ -218,7 +218,7 @@
                                                 <td>Số tiền đã trả</td>
                                                 <td class="d-flex justify-content-end">
                                                     <div class="input-group" style="width:80%">
-                                                        <input asp-for="AmountPaid" id="paid" type="number" value="0" min="0" step="500" class="form-control">
+                                                        <input asp-for="AmountPaid" id="paid" type="number" value="0" min="0" step="1" class="form-control">
                                                         <span class="input-group-text">VNĐ</span>
                                                     </div>
                                                 </td>
@@ -238,7 +238,7 @@
                     <div class="col-12 pe-0 mx-auto" style="bottom: 0;">
                         <div class="card border-top border-0 border-4 border-primary py-2">
                             <div class="card-body text-end">
-                                <a href="" class="btn btn-outline-info px-5 mx-3">Thoát</a>
+                                <a asp-action="Index" class="btn btn-outline-info px-5 mx-3">Thoát</a>
                                 <input type="submit" class="btn btn-success px-5 mx-3" value="Tạo đơn">
                             </div>
                         </div>
@@ -324,7 +324,7 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Ghi chú</label><br>
-                                    <textarea id="description" class="form-control validate is-valid" id="desc" cols="30" rows="3" placeholder="Nhập ghi chú"></textarea>
+                                    <textarea id="description" class="form-control validate is-valid" cols="30" rows="3" placeholder="Nhập ghi chú"></textarea>@*id="desc"*@
                                     <div id="description-feedback" class="feedback"></div>
                                 </div>
                             </div>

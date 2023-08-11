@@ -16,6 +16,8 @@ namespace VBookHaven.Models.ViewModels
         }
 
         public PurchaseOrder pO { get; set; }
+        public decimal TotalPayment { get; set; }
+        public decimal? Paid { get; set; }
         public decimal? Unpaid { get; set; }
         public PurchasePaymentHistory PPHistory { get; set; }
     }
