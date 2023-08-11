@@ -599,7 +599,8 @@ namespace VBookHaven.DataAccess.Migrations
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .UseCollation("SQL_Latin1_General_CP1_CI_AI");
 
                     b.Property<decimal?>("PurchasePrice")
                         .HasColumnType("decimal(7, 0)");

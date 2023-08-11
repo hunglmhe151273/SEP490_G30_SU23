@@ -28,10 +28,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _dbContext = dbContext;
             _IApplicationUserRespository = applicationUserRespository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? query, string? fromDate, string? toDate, string? supplier)
         {
-            var vBookHavenDBContext = _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier);
-            return View(await vBookHavenDBContext.ToListAsync());
+            var purchaseOrders = await _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();
+            return View(purchaseOrders);
         }
         [HttpGet]
         public async Task<IActionResult> Create()

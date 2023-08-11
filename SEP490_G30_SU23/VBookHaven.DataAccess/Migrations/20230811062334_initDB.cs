@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VBookHaven.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initialNewDB : Migration
+    public partial class initDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -314,7 +314,7 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, collation: "SQL_Latin1_General_CP1_CI_AI"),
                     Barcode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Unit = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UnitInStock = table.Column<int>(type: "int", nullable: true),
@@ -647,6 +647,33 @@ namespace VBookHaven.DataAccess.Migrations
                         principalColumn: "ProductId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderPaymentHistory",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    PaymentAmount = table.Column<decimal>(type: "decimal(15,0)", nullable: true),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderId = table.Column<int>(type: "int", nullable: true),
+                    StaffId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderPaymentHistory", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_OrderPaymentHistory_Order",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "OrderId");
+                    table.ForeignKey(
+                        name: "FK_OrderPaymentHistory_Staff",
+                        column: x => x.StaffId,
+                        principalTable: "Staff",
+                        principalColumn: "StaffId");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityLog_ActorID",
                 table: "ActivityLog",
@@ -706,7 +733,7 @@ namespace VBookHaven.DataAccess.Migrations
                 table: "Customer",
                 column: "AccountId",
                 unique: true,
-                filter: "[AccountId] IS NOT NULL");
+                filter: "AccountId IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_DefaultShippingInfoId",
@@ -744,6 +771,16 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "IX_OrderDetail_ProductId",
                 table: "OrderDetail",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderPaymentHistory_OrderId",
+                table: "OrderPaymentHistory",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderPaymentHistory_StaffId",
+                table: "OrderPaymentHistory",
+                column: "StaffId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_SubCategoryId",
@@ -862,6 +899,9 @@ namespace VBookHaven.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
+
+            migrationBuilder.DropTable(
+                name: "OrderPaymentHistory");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrderDetail");

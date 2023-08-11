@@ -272,7 +272,7 @@ public partial class VBookHavenDBContext : IdentityDbContext<IdentityUser>
 
             entity.Property(e => e.Barcode).HasMaxLength(50);
             entity.Property(e => e.Description).HasColumnType("ntext");
-            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100).UseCollation("SQL_Latin1_General_CP1_CI_AI");
             entity.Property(e => e.Size).HasMaxLength(50);
             entity.Property(e => e.Unit).HasMaxLength(50);
             entity.Property(e => e.Weight).HasMaxLength(50);
