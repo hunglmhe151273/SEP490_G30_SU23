@@ -325,9 +325,7 @@
                                     </ul>
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane active show" id="description">
-                                            <p>
-                                                @Model.Product.Description
-                                            </p>
+                                            <p style="white-space: pre-wrap">@Model.Product.Description</p>
                                         </div>
                                         <div role="tabpanel" class="tab-pane" id="information">
                                             @if (Model.Product.IsBook == true)

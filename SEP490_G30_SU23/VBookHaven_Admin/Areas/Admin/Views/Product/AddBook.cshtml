@@ -1,15 +1,5 @@
 ﻿@model VBookHaven_Admin.Areas.Admin.Controllers.ProductManagementViewModel
 @{
-	//Layout = "~/Views/Shared/_AdminLayout.cshtml";
-	Layout = "~/Views/Shared/_LayoutTest.cshtml";
-
-	// For testing
-	string error = "TESTING";
-	if (ViewData["barcodeError"] != null)
-	{
-		error = ViewData["barcodeError"].ToString();
-	}
-	bool temp = true;
 }
 
 
@@ -33,7 +23,7 @@
 				</div>
 			</div>
 			<!--end breadcrumb-->
-			<form action="" method="post" enctype="multipart/form-data">
+			<form action="" method="post" enctype="multipart/form-data" class="addForm">
 				@Html.AntiForgeryToken()
 				<div class="row">
 					<div class="col-5 mx-auto h6">
@@ -57,21 +47,22 @@
 								<div class="row g-3">
 									<div class="col-md-4">
 										<label class="form-label">Mã vạch</label>
-										<input class="form-control" asp-for="Product.Barcode" placeholder="Để trống để tự sinh" />
-										@*<!-- For testing -->
-										<div class="text-danger">@error</div>*@
+										<input class="form-control validate is-valid" asp-for="Product.Barcode" placeholder="Để trống để tự sinh" />
+										<div id="Product_Barcode-feedback" class="feedback"></div>
 									</div>
 									<div class="col-md-8">
 										<label class="form-label">Tên sản phẩm *</label>
-										<input type="text" class="form-control" asp-for="Product.Name" placeholder="VD: Sách a, Bút bi xyz, v.v.." required />
+										<input type="text" class="form-control validate" asp-for="Product.Name" placeholder="VD: Sách a, Bút bi xyz, v.v.." />
+										<div id="Product_Name-feedback" class="feedback"></div>
 									</div>
 									<div class="col-md-12">
 										<label class="form-label">Mô tả</label>
 										<textarea class="form-control" asp-for="Product.Description" placeholder="Mô tả về sản phẩm..."></textarea>
 									</div>
 									<div class="col-md-4">
-										<label class="form-label">Đơn vị</label>
-										<input class="form-control" asp-for="Product.Unit" placeholder="VD: Quyển, Bộ, v.v.." />
+										<label class="form-label">Đơn vị *</label>
+										<input class="form-control validate" asp-for="Product.Unit" placeholder="VD: Quyển, Bộ, v.v.." />
+										<div id="Product_Unit-feedback" class="feedback"></div>
 									</div>
 									<div class="col-md-4">
 										<label class="form-label">Kích thước</label>
@@ -133,36 +124,41 @@
 									<div class="col-md-8">
 										<label class="form-label">Giá nhập *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" asp-for="Product.PurchasePrice" required min="0" />
+											<input type="number" class="form-control validate" asp-for="Product.PurchasePrice" min="0" />
 											<span class="input-group-text">VNĐ</span>
+											<div id="Product_PurchasePrice-feedback" class="feedback"></div>
 										</div>
 									</div>
 									<div class="col-md-8">
 										<label class="form-label">Giá lẻ *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" asp-for="Product.RetailPrice" required min="0" />
+											<input type="number" class="form-control validate" asp-for="Product.RetailPrice" />
 											<span class="input-group-text">VNĐ</span>
+											<div id="Product_RetailPrice-feedback" class="feedback"></div>
 										</div>
 									</div>
 									<div class="col-md-4">
 										<label class="form-label">Chiết khấu lẻ *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" asp-for="Product.RetailDiscount" required min="0" step="0.1" />
+											<input type="number" class="form-control validate" asp-for="Product.RetailDiscount" step="0.1" />
 											<span class="input-group-text">%</span>
+											<div id="Product_RetailDiscount-feedback" class="feedback"></div>
 										</div>
 									</div>
 									<div class="col-md-8">
 										<label class="form-label">Giá sỉ *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" asp-for="Product.WholesalePrice" required min="0" />
+											<input type="number" class="form-control validate" asp-for="Product.WholesalePrice" />
 											<span class="input-group-text">VNĐ</span>
+											<div id="Product_WholesalePrice-feedback" class="feedback"></div>
 										</div>
 									</div>
 									<div class="col-md-4">
 										<label class="form-label">Chiết khấu sỉ *</label>
 										<div class="input-group">
-											<input type="number" class="form-control" asp-for="Product.WholesaleDiscount" required min="0" step="0.1" />
+											<input type="number" class="form-control validate" asp-for="Product.WholesaleDiscount" step="0.1" />
 											<span class="input-group-text">%</span>
+											<div id="Product_WholesaleDiscount-feedback" class="feedback"></div>
 										</div>
 									</div>
 								</div>
@@ -172,15 +168,23 @@
 					<div class="col-12 mx-auto">
 						<div class="card border-top border-0 border-4 border-primary" style="justify-content: left;">
 							<div class="card-body p-5">
-								<input type="submit" class="btn btn-primary" value="Lưu" />
+								<input type="submit" class="btn btn-primary add submit" value="Lưu" />
 								<input type="button" class="btn btn-secondary" value="Hủy" onclick="window.location.href='/admin/product/index'" />
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<input hidden id="Product_ProductId" value="" />
+
 			</form>
 		</div>
 	</div>
 	<!--end page-content-wrapper-->
 </div>
 <!--end page-wrapper-->
+
+@section Scripts
+{
+	<script src="~/js/ValidateProduct.js"></script>
+}

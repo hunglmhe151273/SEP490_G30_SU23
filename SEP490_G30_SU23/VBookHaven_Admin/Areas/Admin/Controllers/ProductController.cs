@@ -8,18 +8,16 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
-	// Khi ModelState co van de luc add, edit -> khong luu lai truong input da nhap, sua
-	//	-> Do sau khi POST return View, tu dong redirect lai GET action???
-	//		-> Do plugin select2??? (Neu bo select2 js trong Layout thi binh thuong lai)
-	//	-> Alternative: Validate front end / Gui ajax validate truoc khi cho phep luu
+	// Step mismatch validation
+	// Warning khi gia ban thap hon gia nhap
+	// Add author, category... la 1 pop up o add product
+	// Show so luong trong kho & so luong co the ban
 
 	// Kiem tra xem paging front end hoat dong ko??
-	// Khi de trong ten san pham -> Chua co warning
 	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)??
 	// Sort o index - loi o cac cot gia (+ cot ten) -> Do gia bi coi la string, ko phai number (va ten co
 	//		chua ki tu Tieng Viet
 
-	// Add author, category... la 1 pop up o add product
 	// Cho subcategories vao select list group
 	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi change status product - khong luu lai thong tin thay doi o tren
@@ -119,37 +117,34 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddBook(ProductManagementViewModel model)
 		{
-			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
+			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 			
-			bool validModel = true;
+			//bool validModel = true;
 
-			ModelState.Remove("Stationery.Product");
-			ModelState.Remove("Book.Product");
+			//ModelState.Remove("Stationery.Product");
+			//ModelState.Remove("Book.Product");
 
-			if (!ModelState.IsValid)
-			{
-				validModel = false;
-			}
+			//if (!ModelState.IsValid)
+			//{
+			//	validModel = false;
+			//}
 
-			var validatebarCode = await validateBarcodeTask;
-			if (!validatebarCode.Equals(""))
-				validModel = false;
+			//var validatebarCode = await validateBarcodeTask;
+			//if (!validatebarCode.Equals(""))
+			//	validModel = false;
 			
-			if (!validModel)
-			{
-				var authorsTask = authorRepository.GetAllAuthorsAsync();
-				var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
+			//if (!validModel)
+			//{
+			//	var authorsTask = authorRepository.GetAllAuthorsAsync();
+			//	var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 
-				var authors = await authorsTask;
-				ViewData["authors"] = new MultiSelectList(authors, "AuthorId", "AuthorName");
-				var subCategories = await subCategoriesTask;
-				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
+			//	var authors = await authorsTask;
+			//	ViewData["authors"] = new MultiSelectList(authors, "AuthorId", "AuthorName");
+			//	var subCategories = await subCategoriesTask;
+			//	ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
 
-				// For testing
-				ViewData["barcodeError"] = validatebarCode;
-
-				return View(model);
-			}
+			//	return View(model);
+			//}
 
 			model.Product.UnitInStock = 0;
 			model.Product.IsBook = true;
@@ -179,31 +174,31 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddStationery(ProductManagementViewModel model)
 		{
-			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
+			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 
-			bool validModel = true;
+			//bool validModel = true;
 
-			ModelState.Remove("Stationery.Product");
-			ModelState.Remove("Book.Product");
+			//ModelState.Remove("Stationery.Product");
+			//ModelState.Remove("Book.Product");
 
-			if (!ModelState.IsValid)
-			{
-				validModel = false;
-			}
+			//if (!ModelState.IsValid)
+			//{
+			//	validModel = false;
+			//}
 
-			var validatebarCode = await validateBarcodeTask;
-			if (!validatebarCode.Equals(""))
-				validModel = false;
+			//var validatebarCode = await validateBarcodeTask;
+			//if (!validatebarCode.Equals(""))
+			//	validModel = false;
 
-			if (!validModel)
-			{
-				var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
+			//if (!validModel)
+			//{
+			//	var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 
-				var subCategories = await subCategoriesTask;
-				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
+			//	var subCategories = await subCategoriesTask;
+			//	ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
 
-				return View(model);
-			}
+			//	return View(model);
+			//}
 
 			model.Product.UnitInStock = 0;
 			model.Product.IsBook = false;
@@ -257,40 +252,40 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> EditBook(int id, ProductManagementViewModel model)
 		{
-			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
+			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
-			bool validModel = true;
+			//bool validModel = true;
 
-			ModelState.Remove("Stationery.Product");
-			ModelState.Remove("Book.Product");
+			//ModelState.Remove("Stationery.Product");
+			//ModelState.Remove("Book.Product");
 
-			if (!ModelState.IsValid)
-			{
-				validModel = false;
-			}
+			//if (!ModelState.IsValid)
+			//{
+			//	validModel = false;
+			//}
 
-			var validatebarCode = await validateBarcodeTask;
-			if (!validatebarCode.Equals(""))
-				validModel = false;
+			//var validatebarCode = await validateBarcodeTask;
+			//if (!validatebarCode.Equals(""))
+			//	validModel = false;
 
-			if (!validModel)
-			{
-				var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
-				var authorsTask = authorRepository.GetAllAuthorsAsync();
-				var imageListTask = imageRepository.GetImagesByProductIdAsync(id);
+			//if (!validModel)
+			//{
+			//	var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
+			//	var authorsTask = authorRepository.GetAllAuthorsAsync();
+			//	var imageListTask = imageRepository.GetImagesByProductIdAsync(id);
 				
-				var subCategories = await subCategoriesTask;
-				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
+			//	var subCategories = await subCategoriesTask;
+			//	ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
 
-				var authors = await authorsTask;
-				ViewData["authors"] = authors;
-				ViewData["bookAuthorsId"] = model.AuthorIdList;
+			//	var authors = await authorsTask;
+			//	ViewData["authors"] = authors;
+			//	ViewData["bookAuthorsId"] = model.AuthorIdList;
 
-				var imageList = await imageListTask;
-				ViewData["images"] = imageList;
+			//	var imageList = await imageListTask;
+			//	ViewData["images"] = imageList;
 
-				return View(model);
-			}
+			//	return View(model);
+			//}
 
 			if (model.Product.Barcode == null)
 				model.Product.Barcode = "PVN" + id;
@@ -336,35 +331,35 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> EditStationery(int id, ProductManagementViewModel model)
 		{
-			var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
+			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
-			bool validModel = true;
+			//bool validModel = true;
 
-			ModelState.Remove("Stationery.Product");
-			ModelState.Remove("Book.Product");
+			//ModelState.Remove("Stationery.Product");
+			//ModelState.Remove("Book.Product");
 
-			if (!ModelState.IsValid)
-			{
-				validModel = false;
-			}
+			//if (!ModelState.IsValid)
+			//{
+			//	validModel = false;
+			//}
 
-			var validatebarCode = await validateBarcodeTask;
-			if (!validatebarCode.Equals(""))
-				validModel = false;
+			//var validatebarCode = await validateBarcodeTask;
+			//if (!validatebarCode.Equals(""))
+			//	validModel = false;
 
-			if (!validModel)
-			{
-				var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
-				var imageListTask = imageRepository.GetImagesByProductIdAsync(id);
+			//if (!validModel)
+			//{
+			//	var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
+			//	var imageListTask = imageRepository.GetImagesByProductIdAsync(id);
 
-				var subCategories = await subCategoriesTask;
-				ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
+			//	var subCategories = await subCategoriesTask;
+			//	ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", model.Product.SubCategoryId);
 
-				var imageList = await imageListTask;
-				ViewData["images"] = imageList;
+			//	var imageList = await imageListTask;
+			//	ViewData["images"] = imageList;
 				
-				return View(model);
-			}
+			//	return View(model);
+			//}
 
 			if (model.Product.Barcode == null)
 				model.Product.Barcode = "PVN" + id;
@@ -464,5 +459,39 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return "";
 		}
 
+		#region CallAPI
+
+		[HttpGet]
+		public async Task<ActionResult<string>> ValidateBarcodeAsyncAPI(string? barcode, int? id)
+		{
+			if (barcode == null)
+				return "";
+
+			if (id == null)
+			{
+				if (barcode.StartsWith("PVN"))
+					return "Mã vạch không được có tiền tố PVN của hệ thống";
+			}	
+			else
+			{
+				if (barcode.StartsWith("PVN") && !barcode.Equals("PVN" + id))
+					return "Mã vạch không được có tiền tố PVN của hệ thống";
+			}	
+
+			var product = await _productRespository.GetProductByBarcodeAsync(barcode);
+			if (product != null)
+			{
+				if (id != null)
+				{
+					if (product.ProductId != id)
+						return "Mã vạch đã tồn tại";
+				}	
+				else return "Mã vạch đã tồn tại";
+			}
+
+			return "";
+		}
+
+		#endregion
 	}
 }

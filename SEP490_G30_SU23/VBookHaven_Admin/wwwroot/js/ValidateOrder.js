@@ -137,5 +137,5 @@ $(document).on('keyup click', '.addForm', function () {
 // Set submit button disable
 $(document).ready(function () {
     $('#submitProduct').attr('disabled', 'disabled');
-    $('#submitSupplier').attr('disabled', 'disabled');
+    $('#submitcustomer').attr('disabled', 'disabled');
 })

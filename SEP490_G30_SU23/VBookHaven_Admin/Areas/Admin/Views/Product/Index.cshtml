@@ -93,9 +93,9 @@
 										<th>Tên sản phẩm</th>
 										<th hidden>Loại</th>
 										<th>Số lượng</th>
-										<th>Giá nhập</th>
-										<th>Giá lẻ</th>
-										<th>Giá buôn</th>
+										<th>Giá nhập (VNĐ)</th>
+										<th>Giá lẻ (VNĐ)</th>
+										<th>Giá buôn (VNĐ)</th>
 										<th>Chi tiết</th>
 										<th>Trạng thái</th>
 										<th>Hành động</th>
@@ -116,10 +116,10 @@
 											<td>@p.Barcode</td>
 											<td>@p.Name</td>
 											<td hidden>@p.SubCategoryId</td>
-											<td>@p.UnitInStock</td>
-											<td>@p.PurchasePrice VNĐ</td>
-											<td>@p.RetailPrice VNĐ</td>
-											<td>@p.WholesalePrice VNĐ</td>
+											<td>@p.UnitInStock.Value.ToString("#,0")</td>
+											<td>@p.PurchasePrice.Value.ToString("#,0")</td>
+											<td>@p.RetailPrice.Value.ToString("#,0")</td>
+											<td>@p.WholesalePrice.Value.ToString("#,0")</td>
 											<td>
 												@if (p.IsBook == true)
 												{
