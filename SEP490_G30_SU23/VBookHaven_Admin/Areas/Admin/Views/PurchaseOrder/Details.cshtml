@@ -84,6 +84,15 @@
                                             <span class="title">@SD.PurchaseOrder_Canceled</span>
                                             <div class="node"></div>
                                         </div>
+                                        <div class="step">
+                                            <span class="title">@SD.PurchaseOrder_Imported</span>
+                                            <div class="node"></div>
+                                        </div>
+                                        <div class="step">
+                                            <span class="title">@SD.PurchaseOrder_Complete</span>
+                                            <div class="node"></div>
+                                        </div>
+
                                     }
                                     else
                                     {
@@ -261,10 +270,7 @@
                                     </button>
                                 }
                             }
-                            <button type="button" class="btn btn-secondary px-4 mx-1"
-                                    onclick="history.back()">
-                                Quay lại
-                            </button>
+                            <a asp-action="Index" class="btn btn-outline-info px-5 mx-3">Thoát</a>
                         </div>
                     </div>
                 </div>
