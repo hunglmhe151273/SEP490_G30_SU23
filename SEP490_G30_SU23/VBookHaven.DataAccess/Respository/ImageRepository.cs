@@ -45,7 +45,12 @@ namespace VBookHaven.DataAccess.Respository
 				Image? image = await dbContext.Images.FindAsync(id);
 				if (image == null) return;
 
-				image.Status = false;
+				string wwwRootPath = webHostEnvironment.WebRootPath;
+				string imagePath = Path.Combine(wwwRootPath, @"images\img", image.ImageName);
+				if (File.Exists(imagePath))
+					File.Delete(imagePath);
+
+				dbContext.Images.Remove(image);
 				await dbContext.SaveChangesAsync();
 			}
 		}
@@ -54,11 +59,18 @@ namespace VBookHaven.DataAccess.Respository
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
+				string wwwRootPath = webHostEnvironment.WebRootPath;
 				foreach (int id in idList)
 				{
 					Image? image = await dbContext.Images.FindAsync(id);
 					if (image != null)
-						image.Status = false;
+					{
+						string imagePath = Path.Combine(wwwRootPath, @"images\img", image.ImageName);
+						if (File.Exists(imagePath))
+							File.Delete(imagePath);
+
+						dbContext.Images.Remove(image);
+					}
 				}
 
 				await dbContext.SaveChangesAsync();

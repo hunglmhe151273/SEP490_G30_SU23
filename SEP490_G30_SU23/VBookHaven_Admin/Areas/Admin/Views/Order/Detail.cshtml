@@ -200,7 +200,12 @@
                         <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                     </div>
                     <div class="card-body">
-                        <p><strong>Nhân viên xác nhận đơn: </strong>@Model.Order.Staff.FullName</p>
+                        <p><strong>Nhân viên xác nhận đơn: </strong>
+                            @if (Model.Order.Staff != null)
+                            {
+                                @Model.Order.Staff.FullName
+                            }
+                        </p>
                         <p><strong>Ngày tạo đơn: </strong>@Model.Order.OrderDate.Value.ToString("dd/MM/yyyy")</p>
                         <p>
                             <strong>Ghi chú: </strong>

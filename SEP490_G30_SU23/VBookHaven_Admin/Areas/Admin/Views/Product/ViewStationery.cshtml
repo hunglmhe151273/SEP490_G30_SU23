@@ -50,7 +50,7 @@
 									</tr>
 									<tr>
 										<th>Số lượng</th>
-										<td>@Model.Product.UnitInStock</td>
+										<td>@Model.Product.UnitInStock.Value.ToString("#,0")</td>
 									</tr>
 									<tr>
 										<th>Loại sản phẩm</th>
@@ -85,11 +85,11 @@
 									</tr>
 									<tr>
 										<th>Giá nhập</th>
-										<td>@Model.Product.PurchasePrice VND</td>
+										<td>@Model.Product.PurchasePrice.Value.ToString("#,0") VNĐ</td>
 									</tr>
 									<tr>
 										<th>Giá lẻ</th>
-										<td>@Model.Product.RetailPrice VND</td>
+										<td>@Model.Product.RetailPrice.Value.ToString("#,0") VNĐ</td>
 									</tr>
 									<tr>
 										<th>Chiết khấu lẻ</th>
@@ -97,7 +97,7 @@
 									</tr>
 									<tr>
 										<th>Giá sỉ</th>
-										<td>@Model.Product.WholesalePrice VND</td>
+										<td>@Model.Product.WholesalePrice.Value.ToString("#,0") VNĐ</td>
 									</tr>
 									<tr>
 										<th>Chiết khấu sỉ</th>
@@ -116,9 +116,7 @@
 									</tr>
 									<tr>
 										<th>Mô tả</th>
-										<td id="Desc">
-											@Model.Product.Description
-										</td>
+										<td id="Desc" style="white-space: pre-wrap">@Model.Product.Description</td>
 									</tr>
 									<tr>
 										<th>Ảnh minh họa</th>
