@@ -10,6 +10,7 @@ using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.DTO;
 using VBookHaven.Models.ViewModels;
+using VBookHaven.Utility;
 using VBookHaven.ViewModels;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
@@ -20,13 +21,16 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly VBookHavenDBContext _dbContext;
         private readonly IApplicationUserRespository _IApplicationUserRespository;
         private readonly IProductRespository _productRespository;
+        private readonly IPurchaseOrderRepository _purchaseOrderRepository;
         IMapper _mapper;
-        public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository, VBookHavenDBContext dbContext, IProductRespository productRespository)
+        public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository, 
+            VBookHavenDBContext dbContext, IProductRespository productRespository, IPurchaseOrderRepository purchaseOrderRepository)
         {
             _productRespository = productRespository;
             _mapper = mapper;
             _dbContext = dbContext;
             _IApplicationUserRespository = applicationUserRespository;
+            _purchaseOrderRepository = purchaseOrderRepository;
         }
         public async Task<IActionResult> Index(string? query, string? fromDate, string? toDate, string? supplier)
         {
@@ -81,7 +85,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             await _dbContext.PurchaseOrders.AddAsync(pO);
             _dbContext.SaveChanges();
             TempData["success"] = "Thêm đơn nhập thành công";
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction("Details", new { id = pO.PurchaseOrderId });
         }
         public async Task<IActionResult> Edit(int purchaseId)
         {
@@ -178,44 +182,97 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var purchaseOrder = await _dbContext.PurchaseOrders
                 .Include(p => p.Staff)
                 .Include(p => p.Supplier)
                 .Include(p => p.PurchasePaymentHistories)
+                .Include(p => p.PurchaseOrderDetails).ThenInclude(d => d.Product).ThenInclude(p => p.Images)
                 .FirstOrDefaultAsync(m => m.PurchaseOrderId == id);
             if (purchaseOrder == null)
             {
                 return NotFound();
             }
-            
             //Tổng tiền hàng
-            decimal sum  = 0;
-            foreach(var detail in purchaseOrder.PurchaseOrderDetails)
-            {
-                if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
-                {
-                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount));
-                }
-            }
+            decimal sum = (decimal)totalPayment(purchaseOrder.PurchaseOrderDetails);
             //Tổng đã trả
-            decimal sumPaid = 0;
-            foreach (var history in purchaseOrder.PurchasePaymentHistories)
-            {
-                if (history.PaymentAmount.HasValue)
-                {
-                    sumPaid += (decimal)(history.PaymentAmount);
-                }
-            }
+            decimal sumPaid = (decimal)totalPaid(purchaseOrder.PurchasePaymentHistories);
             //Tính số tiền còn thiếu
-
-
             DetailsPurchaseOrderVM vm = new DetailsPurchaseOrderVM();
             vm.Unpaid = sum - sumPaid;
             vm.pO = purchaseOrder;
             //Form
             vm.PPHistory.PurchaseId = purchaseOrder.PurchaseOrderId;
             return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(int id)
+        {
+            var purchaseOrder = await _dbContext.PurchaseOrders.SingleOrDefaultAsync(o => o.PurchaseOrderId == id);
+            if (purchaseOrder == null)
+                return RedirectToAction("Index", "PurchaseOrder");
+
+            var staff = await GetStaffByUserID();
+            if (staff == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            switch (purchaseOrder.Status)
+            {
+                case (SD.PurchaseOrder_Created):
+                    purchaseOrder.Status = SD.PurchaseOrder_Imported;
+                    TempData["success"] = "Cập nhật đơn hàng thành công";
+                    //Thêm nhân viên cập nhật nếu cần
+                    await _purchaseOrderRepository.UpdatePurchaseOrderAsync(purchaseOrder);
+                    await ImportToStorage(id);
+                    break;
+                //Chú ý khi thanh toán
+                case (SD.PurchaseOrder_Imported):
+                    purchaseOrder.Status = SD.PurchaseOrder_Complete;
+                    TempData["success"] = "Cập nhật đơn hàng thành công";
+                    //Thêm nhân viên cập nhật nếu cần
+                    await _purchaseOrderRepository.UpdatePurchaseOrderAsync(purchaseOrder);
+                    break;
+            }
+            return RedirectToAction("Details", new { id = id });
+        }
+        [HttpPost]
+        public async Task<IActionResult> CancelPurchaseOrder(int id)
+        {
+            var purchaseOrder = await _dbContext.PurchaseOrders.SingleOrDefaultAsync(o => o.PurchaseOrderId == id);
+            if (purchaseOrder == null)
+                return NotFound();
+
+            var staff = await GetStaffByUserID();
+            if (staff == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            if (purchaseOrder.Status.Equals(SD.PurchaseOrder_Created))
+            {
+                purchaseOrder.Status = SD.PurchaseOrder_Canceled;
+                await _purchaseOrderRepository.UpdatePurchaseOrderAsync(purchaseOrder);
+            }
+            
+            return RedirectToAction("Details", new { id = id });
+        }
+        private async Task ImportToStorage(int purchaseOrderId)
+        {
+            var purchaseOrder = await _dbContext.PurchaseOrders.Include(p => p.PurchaseOrderDetails)
+                                                                .ThenInclude(d => d.Product)
+                                                                .SingleOrDefaultAsync(o => o.PurchaseOrderId == purchaseOrderId);
+            if (purchaseOrder == null)
+                RedirectToAction("Index", "PurchaseOrder");
+
+            foreach (var detail in purchaseOrder.PurchaseOrderDetails)
+            {
+                var product = await _dbContext.Products.SingleOrDefaultAsync(o => o.ProductId == detail.ProductId);
+                decimal newPurchasePrice = (decimal)(detail.UnitPrice * (1 - (decimal)(detail.Discount / 100)) * (1 + (decimal)purchaseOrder.VAT / 100));
+                decimal totalNewPrice = (decimal)(newPurchasePrice * detail.Quantity);
+                decimal totalOldPrice = (decimal)(product.PurchasePrice * product.UnitInStock);
+                decimal totalInStock = (decimal)((decimal)product.UnitInStock + detail.Quantity);
+
+                product.PurchasePrice = Math.Ceiling((totalNewPrice + totalOldPrice) / totalInStock);
+                product.UnitInStock += detail.Quantity;
+                await _productRespository.UpdateProductAsync(product);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> PurchasePayment(DetailsPurchaseOrderVM model)

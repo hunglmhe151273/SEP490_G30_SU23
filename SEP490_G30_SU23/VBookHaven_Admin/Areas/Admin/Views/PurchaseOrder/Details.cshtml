@@ -1,8 +1,49 @@
-﻿@*@model VBookHaven.Models.ViewModels.DetailsPurchaseOrderVM
+﻿@model VBookHaven.Models.ViewModels.DetailsPurchaseOrderVM
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+@{
+    int numStatus = SD.POStatusToNum(Model.pO.Status);
+    int countRow = 0;
+}
+<style>
+    .productImg {
+        width: 65px;
+        height: 70px;
+    }
+
+    .payment-items {
+        padding: 10px 10px;
+        margin: 0 15px;
+        border-bottom: 1px solid lightgray;
+    }
+
+        .payment-items p {
+            animation: forwards;
+            margin-bottom: 0;
+            font-size: 16px;
+        }
+
+    .payment-title {
+        color: black;
+    }
+
+    .payment-date {
+        font-size: 13px;
+        color: gray;
+    }
+
+    .payment-detail {
+        display: none;
+        padding: 7px 35px;
+        font-size: 15px !important;
+    }
+
+    .payment-items:first-child {
+        background-color: lightsteelblue;
+    }
+</style>
 <!--page-wrapper-->
 <div class="page-wrapper">
     <!--page-content-wrapper-->
@@ -10,80 +51,145 @@
         <div class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Loại sản phẩm</div>
+                <div class="breadcrumb-title pe-3">Đơn hàng</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item">
-                                <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                                <a href="/Admin/Order/Index">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Loại</li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
                         </ol>
                     </nav>
                 </div>
             </div>
             <!--end breadcrumb-->
-            <div class="card radius-15">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h6 class="mb-0">Danh sách các loại</h6>
+            <div class="row">
+                <div class="col-9 mx-auto">
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-center align-items-center wizard-container">
+                            <!-- Status progress bar -->
+                            <div class="wizard-progress w-100">
+                                @if (Model.pO.Status.Equals(SD.PurchaseOrder_Canceled))
+                                {
+                                    <div class="step cancel">
+                                        <span class="title">@SD.PurchaseOrder_Canceled</span>
+                                        <div class="node"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="step complete">
+                                        <span class="title">@SD.PurchaseOrder_Created</span>
+                                        <div class="node"></div>
+                                    </div>
+                                    <div class="step @(numStatus > 1 ? "complete" : "")
+                                        @(numStatus == 1 ? "in-progress" : "")">
+                                        <span class="title">@SD.PurchaseOrder_Imported</span>
+                                        <div class="node"></div>
+                                    </div>
+                                    <div class="step @(numStatus == 3 ? "complete" : "")
+                                        @(numStatus == 2 ? "in-progress" : "")">
+                                        <span class="title">@SD.PurchaseOrder_Complete</span>
+                                        <div class="node"></div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
-                    <hr />
-                    <h3>CHi tiết đơn nhập</h3>
-                    <div>
-                        <h4>PurchaseOrder</h4>
-                        <hr />
-                        <dl class="row">
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Date)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Date)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Status)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Status)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Description)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Description)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.AmountPaid)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.AmountPaid)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.VAT)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.VAT)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Staff)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Staff.Address)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Phone)
-                            </dd>
-                        </dl>
+                </div>
+                <div class="col-12 mx-auto pe-0">
+                    <div>Mã đơn hàng: @Model.pO.PurchaseOrderId</div>
+                    <div>Ngày tạo: @Model.pO.Date</div>
+                    <div>Trạng thái: @Model.pO.Status</div>
+                    <div>Nhà cung cấp: @Model.pO.Supplier.SupplierName - Phone:@Model.pO.Supplier.Phone -Địa chỉ: @Model.pO.Supplier.Ward, @Model.pO.Supplier.District, @Model.pO.Supplier.Province</div>
+                    <div>Nhân viên phụ trách: @Model.pO.Staff.FullName </div>
+                    <div>Ghi chú: @Model.pO.Description</div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <table id="myTable"
+                               class="table table-striped table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th class="col-1">Ảnh</th>
+                                    <th class="col-2">Tên SP</th>
+                                    <th class="col-1">Đơn vị</th>
+                                    <th class="col-1">Số lượng</th>
+                                    <th class="col-2">Đơn giá</th>
+                                    <th class="col-2">Chiết khấu</th>
+                                    <th class="col-2">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderContainer">
+                                @foreach (var detail in Model.pO.PurchaseOrderDetails)
+                                {
+                                    countRow++;
+                                    <tr>
+                                        <td>@countRow</td>
+                                        <td>
+                                            @if (@detail.Product.Images.Where(i => i.Status == true).FirstOrDefault() != null)
+                                            {
+                                                <img class="productImg" src="/images/img/@detail.Product.Images.Where(i => i.Status == true).FirstOrDefault().ImageName">
+                                            }
+                                            else
+                                            {
+                                                <img class="productImg" src="/images/img/default_image.png">
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="ellipsis">
+                                                @detail.Product.Name
+                                            </div>
+                                        </td>
+                                        <td> @detail.Product.Unit</td>
+                                        <td> @detail.Quantity</td>
+                                        <td> @detail.UnitPrice VNĐ</td>
+                                        <td>@detail.Discount %</td>
+                                        <td>@((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value) VNĐ</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@Model?.PurchaseOrderId">Edit</a> |
-                        <a asp-action="Index">Back to List</a>
-                    </div>
+                    <div class="col-7 d-flex justify-content-start align-items-end">
+                        @if (SD.POStatusToNum(Model.pO.Status) < 3)
+                        {
+                            <button type="button" class="btn btn-primary px-4 mx-1"
+                                    onclick="document.getElementById('updatePurchaseOrder').submit();">
+                                @switch (Model.pO.Status)
+                                {
+                                    case SD.PurchaseOrder_Created:
+                                        @:Nhập hàng
+                                        break;
+                                    case SD.PurchaseOrder_Imported:
+                                        @:Đã thanh toán
+                                        break;
+                                }
+                            </button>
+                            @if (SD.POStatusToNum(Model.pO.Status) < 2)
+                            {
+                                <button type="button" class="btn btn-danger px-4 mx-1"
+                                        onclick="document.getElementById('cancelPurchaseOrder').submit();">
+                                    Hủy đơn
+                                </button>
+                            }
+                        }
+                        <button type="button" class="btn btn-secondary px-4 mx-1"
+                                onclick="window.location.href='/Admin/PurchaseOrder/Index'">
+                            Quay lại
+                        </button>
 
-
+                        <form hidden id="updatePurchaseOrder" asp-action="UpdateStatus" method="post">
+                            <input name="id" value="@Model.pO.PurchaseOrderId" />
+                        </form>
+                        <form hidden id="cancelPurchaseOrder" asp-action="CancelPurchaseOrder" method="post">
+                            <input name="id" value="@Model.pO.PurchaseOrderId" />
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,5 +197,3 @@
     <!--end page-content-wrapper-->
 </div>
 <!--end page-wrapper-->
-
-*@

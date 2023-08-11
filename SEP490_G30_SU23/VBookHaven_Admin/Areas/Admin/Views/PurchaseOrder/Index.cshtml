@@ -128,26 +128,32 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.Supplier.SupplierId</td>
+                                            <td>@item.PurchaseOrderId</td>
                                             <td>@item.Supplier.SupplierName</td>
                                             <td>@item.Date</td>
                                             <td>
                                                 @switch (item.Status)
                                                 {
-                                                    case SD.PuschaseOrder_Created:
-                                                        @:<span class="badge bg-warning">@SD.PuschaseOrder_Created</span>
+                                                    case SD.PurchaseOrder_Created:
+                                                        @:<span class="badge bg-warning">@SD.PurchaseOrder_Created</span>
                                                         break;
-                                                    case SD.PuschaseOrder_Imported:
-                                                        @:<span class="badge bg-warning">@SD.PuschaseOrder_Imported</span>
+                                                    case SD.PurchaseOrder_Imported:
+                                                        @:<span class="badge bg-warning">@SD.PurchaseOrder_Imported</span>
                                                         break;
-                                                    case SD.PuschaseOrder_Complete:
-                                                        @:<span class="badge bg-success">@SD.PuschaseOrder_Complete</span>
+                                                    case SD.PurchaseOrder_Complete:
+                                                        @:<span class="badge bg-success">@SD.PurchaseOrder_Complete</span>
+                                                        break;
+                                                    case SD.PurchaseOrder_Canceled:
+                                                        @:<span class="badge bg-danger">@SD.PurchaseOrder_Canceled</span>
                                                         break;
                                                 }
                                             </td>
                                             <td>@item.Staff.FullName</td>
                                             <td>
                                                 <a asp-action="Edit" asp-route-purchaseId="@item.PurchaseOrderId" class="btn btn-sm btn-default">
+                                                    <i class="lni lni-pencil-alt"></i>
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@item.PurchaseOrderId" class="btn btn-sm btn-default">
                                                     <i class="lni lni-eye"></i>
                                                 </a>
                                             </td>
