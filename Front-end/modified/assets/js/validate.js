@@ -101,12 +101,12 @@ $(document).on('keyup', '#supplier', function () {
 });
 
 $(document).on('keyup', '#phone', function () {
-    if ($(this).val().length != 10) {
-        invalidInput(this, $('#phone-feedback'), "Số điện thoại phải có đúng 10 kí tự");
+    if (isNaN($(this).val())) {
+        invalidInput(this, $('#phone-feedback'), "Số điện thoại chỉ được chứa chữ số");
     } else if ($(this).val() == "") {
         invalidInput(this, $('#phone-feedback'), "Số điện thoại cấp là bắt buộc");
-    } else if (isNaN($(this).val())) {
-        invalidInput(this, $('#phone-feedback'), "Số điện thoại chỉ được chứa chữ số");
+    } else if ($(this).val().length != 10) {
+        invalidInput(this, $('#phone-feedback'), "Số điện thoại phải có đúng 10 kí tự");
     } else {
         validInput(this, $('#phone-feedback'))
     }
@@ -146,6 +146,39 @@ $(document).on('keyup change', '#paid-date', function () {
         validInput(this, $('#paid-date-feedback'))
     }
 })
+//-----------------------------------------------------------------------------------------------------------------
+
+// Add address
+$(document).on('keyup', '#name', function () {
+    if ($(this).val().length >= 30) {
+        invalidInput(this, $('#name-feedback'), "Tên không được vượt quá 30 kí tự");
+    } else {
+        validInput(this, $('#name-feedback'))
+    }
+});
+
+$(document).on('keyup', '#cus-phone', function () {
+    if (isNaN($(this).val())) {
+        invalidInput(this, $('#phone-feedback'), "Số điện thoại chỉ được chứa chữ số");
+    } else if ($(this).val() == "") {
+        validInput(this, $('#phone-feedback'))
+    } else if ($(this).val().length != 10) {
+        invalidInput(this, $('#phone-feedback'), "Số điện thoại phải có đúng 10 kí tự");
+    } else {
+        validInput(this, $('#phone-feedback'))
+    }
+});
+
+$(document).on('keyup', '#address', function () {
+    if ($(this).val().length >= 100) {
+        invalidInput(this, $('#address-feedback'), "Tên không được vượt quá 100 kí tự");
+    } else if ($(this).val() == "") {
+        invalidInput(this, $('#address-feedback'), "Địa chỉ không được rỗng");
+    } else {
+        validInput(this, $('#address-feedback'))
+    }
+});
+
 //-----------------------------------------------------------------------------------------------------------------
 // Reset form
 $(document).on('click', '.reset', function () {
