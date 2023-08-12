@@ -8,12 +8,12 @@ function invalidInput(inputId, feedbackId, message) {
 }
 
 // Change style for valid input
-function validInput(inputId, feedbackId) {
+function validInput(inputId, feedbackId, message) {
     $(inputId).addClass("is-valid");
     $(inputId).removeClass("is-invalid");
     $(feedbackId).addClass("valid-feedback");
     $(feedbackId).removeClass("invalid-feedback");
-    //$(feedbackId).text("OK");
+    $(feedbackId).text(message);
 }
 
 // Reset all input
@@ -129,3 +129,26 @@ $(document).on('keyup', '.addForm', function () {
 // Set submit button disable
 $('#submitProduct').attr('disabled', 'disabled');
 $('#submitSupplier').attr('disabled', 'disabled');
+//-----------------------------------------Validate Barcode----------------------
+// Add product
+$(document).on('keyup', '#barCode', function () {
+    var barcodeInput = $(this);
+    var barcode = $(this).val();
+    var id = $("#Product_ProductId").val();
+    $.ajax({
+        url: "https://localhost:7123/Admin/Product/ValidateBarcodeAsyncAPI",
+        type: "GET",
+        contentType: "application/json",
+        data: { barcode: barcode, id: id },
+        success: function (response) {
+            if (response != "") {
+                invalidInput(barcodeInput, $("#barCode-feedback"), response);
+            } else {
+                validInput(barcodeInput, $("#barCode-feedback"), '');
+            }
+        },
+        error: function (error) {
+            console.error("Lỗi gọi validate barcode API: " + error.responseText);
+        },
+    });
+});

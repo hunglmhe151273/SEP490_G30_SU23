@@ -274,7 +274,7 @@
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Mã vạch</label>
-                                    <input type="text" class="form-control validate is-valid" id="barCode" placeholder="Nhập mã vạch">
+                                    <input type="text" class="form-control validate is-valid" id="barCode" onchange="validateBarcode(this)" placeholder="Nhập mã vạch">
                                     <div id="barCode-feedback" class="feedback"></div>
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
@@ -333,6 +333,7 @@
                                 <input type="reset" class="btn btn-secondary reset" value="Đặt lại">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                             </div>
+                            <input hidden id="Product_ProductId" value="" />
                         </form>
                     </div>
                 </div>

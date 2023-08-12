@@ -46,8 +46,8 @@
                                         <th>Tên nhà cung cấp</th>
                                         <th data-orderable="false">Số điện thoại</th>
                                         <th data-orderable="false">Email</th>
-                                        <th data-orderable="false">Địa chỉ</th>
                                         <th data-orderable="false">Trạng thái</th>
+                                        <th data-orderable="false">Địa chỉ</th>
                                         <th data-orderable="false">Hoạt động</th>
                                     </tr>
                                 </thead>
@@ -69,12 +69,29 @@
                                                 }
 
                                             </td>
-                                            <td>@item.Address, @item.Ward, @item.District, @item.Province</td>
+                                            <td>
+                                                @if (item.Address != null)
+                                                {
+                                                    @item.Address
+                                                }
+                                                @if (item.Ward != null)
+                                                {
+                                                    @(", " + item.Ward)
+                                                }
+                                                @if (item.District != null)
+                                                {
+                                                    @(", " + item.District)
+                                                }
+                                                @if (item.Province != null)
+                                                {
+                                                    @(", " + item.Province)
+                                                }
+                                            </td>
                                             <td>
                                                 <a asp-action="Edit" asp-route-id="@item.SupplierId" class="btn btn-sm btn-default">
                                                     <i class="lni lni-pencil-alt"></i>
                                                 </a>
-                                                <a href="" class="btn btn-sm btn-default">
+                                                <a asp-action="Details" asp-route-id="@item.SupplierId" class="btn btn-sm btn-default">
                                                     <i class="lni lni-eye"></i>
                                                 </a>
                                             </td>

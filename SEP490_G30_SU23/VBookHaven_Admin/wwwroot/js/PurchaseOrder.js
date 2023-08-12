@@ -312,6 +312,7 @@ function populateProductsSelect() {
                                         <div class="col-6 d-flex align-items-center">
                                             <div class="flex-shrink-0 cover">
                                                 <div class="hidden-content">${product.productId}</div>
+                                                 <div class="hidden-content purchaseprice">${product.purchasePrice}</div>
                                                <img src="${product.presentImage}" class="productImg" >
                                             </div>
                                             <div class="flex-grow-1 ms-3">
@@ -342,6 +343,7 @@ function getBookInfo(linkElement) {
     const bookTitle = linkElement.querySelector('.productName').textContent;
     const unit = linkElement.querySelector('.productUnit').textContent;
     var imgSrc = linkElement.querySelector('.productImg').src;
+    const purchasePrice = linkElement.querySelector('.hidden-content.purchaseprice').innerHTML;
     const proId = linkElement.querySelector('.hidden-content').innerHTML;
     console.log('bookId: ' + proId);
     //Hiển thị sản phẩm ở order
@@ -362,7 +364,7 @@ function getBookInfo(linkElement) {
             </td>
             <td>
                 <div class="input-group">
-                    <input name="UnitPriceList" class="form-control price" step="1" min="0" value="0" type='number' class="num">
+                    <input name="UnitPriceList" class="form-control price" step="1" min="0" value="${purchasePrice}" type='number' class="num">
                 </div>
             </td>
             <td>
@@ -491,6 +493,7 @@ function addProductByAPI() {
                         <div class="col-6 d-flex align-items-center">
                             <div class="flex-shrink-0 cover">
                                <div class="hidden-content">${response.productId}</div>
+                                <div class="hidden-content purchaseprice">${response.purchasePrice}</div>
                                 <img src="${response.presentImage}" class="productImg" >
                             </div>
                             <div class="flex-grow-1 ms-3">

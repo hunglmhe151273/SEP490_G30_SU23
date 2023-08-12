@@ -44,6 +44,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             SignInManager<IdentityUser> signInManager,
             //ILogger<RegisterModel> logger,
             IEmailSender emailSender,
+            IShippingInfoRepository shippingInfoRepository,
             IApplicationUserRespository applicationUserRespository,
             IWebHostEnvironment webHostEnvironment,
             VBookHavenDBContext dbContext)
@@ -57,6 +58,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _IApplicationUserRespository = applicationUserRespository;
             _webHostEnvironment = webHostEnvironment;
             _dbContext = dbContext;
+            _shippingInfoRepository= shippingInfoRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -230,9 +232,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             if (shippingInfo != null && shippingInfo.Customers.Count == 0)
             {
                 await _shippingInfoRepository.DeleteShipInfoAsync(shippingInfo);
-                return Ok();
+                TempData["success"] = "Xóa thành công";
+                return RedirectToAction(nameof(Index));
             }
-            return StatusCode(400, new { Message = "Không thể xóa địa chỉ mặc định"});
+            //return StatusCode(400, new { Message = "Không thể xóa địa chỉ mặc định"});
+            TempData["error"] = "Không thể xóa địa chỉ mặc định";
+            return RedirectToAction(nameof(Index));
         }
         #endregion
     }
