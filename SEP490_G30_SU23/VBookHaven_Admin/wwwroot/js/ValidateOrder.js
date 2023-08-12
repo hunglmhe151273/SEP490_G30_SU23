@@ -122,6 +122,7 @@ $(document).on('keyup', '#address', function () {
         validInput(this, $('#address-feedback'))
     }
 });
+
 //-----------------------------------------------------------------------------------------------------------------
 
 // Reset form
@@ -138,4 +139,5 @@ $(document).on('keyup click', '.addForm', function () {
 $(document).ready(function () {
     $('#submitProduct').attr('disabled', 'disabled');
     $('#submitcustomer').attr('disabled', 'disabled');
+    $('#submitOrder').attr('disabled', 'disabled');
 })

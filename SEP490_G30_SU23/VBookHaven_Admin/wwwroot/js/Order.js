@@ -101,6 +101,8 @@ $("#customerSelect").change(() => {
         customerSelect.value = ''; 
         customerContainer.style.display = 'block';
     }
+
+    validateOrder()
 });
 
 // Function to show the customer info
@@ -207,17 +209,17 @@ function getProductInfo(linkElement) {
         <td>${unit}</td>
         <td>
             <div class="input-group">
-                <input name="QuantityList" type="number" value="1" min="1" step="1" class="form-control num">
+                <input name="QuantityList" required type="number" value="1" min="1" step="1" class="form-control num">
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input name="PriceList" class="form-control price num" step="1000" min="0" value="${price}" type='number' />
+                <input name="PriceList" required class="form-control price num" step="1000" min="0" value="${price}" type='number' />
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input name="DiscountList" class="form-control discount num" step="0.1" min="0" value="${discount}" type='number' />
+                <input name="DiscountList" required class="form-control discount num" step="0.1" min="0" value="${discount}" type='number' />
                 <span class="input-group-text">%</span>
             </div>
         </td>
@@ -403,8 +405,8 @@ var updateOrder = function () {
     $('#totalPay').text('0');
     var vatValue = $('#totalVat').val();
     if (isNaN(vatValue) || vatValue >= 100 || !isNotNullOrEmpty(vatValue)) {
-        $('#totalVat').val(5);
-        vatValue = 5;
+        $('#totalVat').val(0);
+        vatValue = 0;
     }
     vat = vatValue;
 
@@ -443,6 +445,8 @@ var updateOrder = function () {
     }
     totalPrice = 0;
     totalPay = 0;
+
+    validateOrder();
 }
 
 $(document).ready(function () {
@@ -477,3 +481,23 @@ $(document).ready(function () {
 function isNotNullOrEmpty(value) {
     return value !== null && value !== undefined && value !== '';
 }
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// Has customer and at least 1 product in order to add new
+function validateOrder() {
+    var hasCustomer = $("#customerInfoContainer").has("div").length > 0;
+    var hasProduct = $("#orderContainer").has("tr").length > 0;
+
+    console.log(hasCustomer, hasProduct);
+
+    if (hasCustomer && hasProduct) {
+        $("#submitOrder").removeAttr("disabled");
+    } else {
+        $('#submitOrder').attr('disabled', 'disabled');
+    }
+};
+
+$(document).ready(function () {
+    $('#submitOrder').attr('disabled', 'disabled');
+});

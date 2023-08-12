@@ -9,22 +9,19 @@ using Microsoft.AspNetCore.Hosting;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
 	// Step mismatch validation
-	// Warning khi gia ban thap hon gia nhap
-	// Add author, category... la 1 pop up o add product
+	// Add category la 1 pop up o add product?
 	// Show so luong trong kho & so luong co the ban
-
-	// Kiem tra xem paging front end hoat dong ko??
-	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)??
-	// Sort o index - loi o cac cot gia (+ cot ten) -> Do gia bi coi la string, ko phai number (va ten co
-	//		chua ki tu Tieng Viet
-
 	// Cho subcategories vao select list group
+	// Category / Author bi disabled -> de text do, nhung van show het -> Show het category (ke ca bi 
+	//		disabled) de filter
+	// Chua co placeholder cho author khi add/edit book
+
 	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi change status product - khong luu lai thong tin thay doi o tren
-	// Add anh - dung cach khac de tao random name?
-
+	// Kiem tra xem paging front end hoat dong ko??
+	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)??
+	// Sort o index - loi o cot ten -> Do ten co chua ki tu Tieng Viet
 	// Authorize - lay user info tu session(?)
-	// Khi author bi disabled thi tinh sao?
 
 	public class ProductManagementViewModel
 	{
@@ -155,7 +152,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var addAuthorTask = _productRespository.AddAuthorsToBookAsync(model.Product.ProductId, model.AuthorIdList);
 			var uploadImageTask = imageRepository.UploadImagesAsync(model.Product.ProductId, model.AddImageList);
 
-			Task.WaitAll(addAuthorTask, uploadImageTask);
+			await Task.WhenAll(addAuthorTask, uploadImageTask);
 
 			return RedirectToAction("Index");
 		}
@@ -298,7 +295,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			await _productRespository.UpdateBookAsync(model.Book);
 			await _productRespository.UpdateBookAuthorsAsync(id, model.AuthorIdList);
 
-			Task.WaitAll(deleteImageTask, uploadImageTask, updateProductTask);
+			await Task.WhenAll(deleteImageTask, uploadImageTask, updateProductTask);
 
 			return RedirectToAction("Index");
 		}
@@ -370,7 +367,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var updateProductTask = _productRespository.UpdateProductAsync(model.Product);
 			var updateStationeryTask = _productRespository.UpdateStationeryAsync(model.Stationery);
 
-			Task.WaitAll(deleteImageTask, uploadImageTask, updateProductTask, updateStationeryTask);
+			await Task.WhenAll(deleteImageTask, uploadImageTask, updateProductTask, updateStationeryTask);
 
 			return RedirectToAction("Index");
 		}
@@ -490,6 +487,20 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			}
 
 			return "";
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddAuthorAPI([FromBody] Author author)
+		{
+			try
+			{
+				await authorRepository.AddAuthorAsync(author);
+				return Ok(author);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(400, "Có lỗi xảy ra...");
+			}
 		}
 
 		#endregion

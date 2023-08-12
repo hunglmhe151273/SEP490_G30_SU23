@@ -7,6 +7,8 @@ using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {
+	// Ko dung cookie cho cart khach hang da login nua (nhieu van de) -> lay thang tu DB luon
+	//		(se cham hon mot chut). Cart 
 	// Neu ko co default shipping info -> Chon dia chi dau tien?
 	// Khong dat duoc qua so luong hang trong kho
 	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
@@ -426,8 +428,27 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		void AddCartToCookies(List<CartDetail> cart)
 		{
-			string cartJson = JsonSerializer.Serialize(cart);
+			var cookieCart = new List<CartDetail>();
+			foreach (var detail in cart)
+			{
+				cookieCart.Add(new CartDetail
+				{
+					CustomerId = detail.CustomerId,
+					ProductId = detail.ProductId,
+					Quantity = detail.Quantity,
+					Product = new Product
+					{
+						ProductId = detail.ProductId,
+						Name = detail.Product.Name,
+						RetailPrice = detail.Product.RetailPrice,
+						RetailDiscount = detail.Product.RetailDiscount
+					}
+				});
+			}
+
+			string cartJson = JsonSerializer.Serialize(cookieCart);
 			var options = new CookieOptions();
+			
 			if (GetLoginCustomerIdAsync().GetAwaiter().GetResult() != null)
 			{
 				// Never expires, only remove when logout
@@ -438,6 +459,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 				// Expires after 1 month if not login
 				options.Expires = DateTime.Now.AddMonths(1);
 			}
+
 			Response.Cookies.Append("Cart", cartJson, options);
 		}
 

@@ -2,7 +2,6 @@
 @{
 }
 
-
 <!--page-wrapper-->
 <div class="page-wrapper">
 	<!--page-content-wrapper-->
@@ -104,9 +103,13 @@
 									<div class="col-md-12">
 										<label class="form-label">Tác giả</label>
 										<div class="input-group">
-											<select class="multiple-select" data-placeholder="Choose anything" multiple="multiple"
+											<select class="multiple-select" data-placeholder="Chọn tác giả..." multiple="multiple"
 													asp-for="AuthorIdList" asp-items="ViewBag.authors">
 											</select>
+										</div>
+										<div class="btn btn-outline-success w-100 mt-2" data-bs-toggle="modal"
+											 data-bs-target="#addAuthor">
+											<i class='bx bx-plus-circle fs-5'></i> Thêm tác giả
 										</div>
 									</div>
 								</div>
@@ -121,6 +124,7 @@
 								</div>
 								<hr>
 								<div class="row g-3">
+									<div class="col-md-12 text-warning" id="warningPrice"></div>
 									<div class="col-md-8">
 										<label class="form-label">Giá nhập *</label>
 										<div class="input-group">
@@ -178,6 +182,43 @@
 				<input hidden id="Product_ProductId" value="" />
 
 			</form>
+
+			<div class="modal fade" id="addAuthor" tabindex="-1" aria-labelledby="exampleModalLabel"
+				 aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<form action="#" class="addForm">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">
+									Thêm tác giả mới
+								</h5>
+							</div>
+							<div class="modal-body row">
+								<div class="col-12 mb-3">
+									<label class="form-label">Tên tác giả *</label>
+									<input type="text" class="form-control validate important" id="authorName"
+										   placeholder="Nhập tên tác giả">
+									<div id="authorName-feedback" class="feedback"></div>
+								</div>
+								<div class="col-12 mb-3">
+									<label class="form-label">Mô tả</label><br>
+									<textarea id="authorDescription" class="form-control"
+											  cols="30" rows="3" placeholder="Nhập mô tả"></textarea>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<input type="button" class="btn btn-primary reset add submit" value="Lưu"
+									   id="submitAuthor" data-bs-dismiss="modal">
+								<input type="reset" class="btn btn-secondary reset" value="Đặt lại">
+								<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">
+									Hủy
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--end page-content-wrapper-->
@@ -186,5 +227,6 @@
 
 @section Scripts
 {
+	<script src="~/js/Product.js"></script>
 	<script src="~/js/ValidateProduct.js"></script>
 }
