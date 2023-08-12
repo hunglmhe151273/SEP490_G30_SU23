@@ -35,7 +35,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _IApplicationUserRespository = applicationUserRespository;
             _purchaseOrderRepository = purchaseOrderRepository;
         }
-        public async Task<IActionResult> Index(string? query, string? fromDate, string? toDate, string? supplier)
+        public async Task<IActionResult> Index()
         {
             var purchaseOrders = await _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();
             return View(purchaseOrders);
@@ -393,6 +393,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 product.WholesalePrice = 0;
                 product.WholesaleDiscount = 0;
                 product.RetailDiscount = 0;
+                product.UnitInStock = 0;
                 _dbContext.Products.Add(product);
                 
                 await _dbContext.SaveChangesAsync();

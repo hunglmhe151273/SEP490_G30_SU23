@@ -14,9 +14,9 @@ public partial class ShippingInfo
     [StringLength(10, MinimumLength = 10, ErrorMessage = "Số điện thoại phải có đúng 10 kí tự.")]
     [RegularExpression(@"^\d+$", ErrorMessage = "Số điện thoại chỉ được chứa chữ số.")]
     public string? Phone { get; set; }
-    [Display(Name = "Địa chỉ nhận hàng  *")]
-    [Required(ErrorMessage = "Địa chỉ nhận hàng là bắt buộc")]
-    [StringLength(100, ErrorMessage = "Địa chỉ nhận hàng không được vượt quá 100 kí tự.")]
+    [Display(Name = "Địa chỉ chi tiết  *")]
+    [Required(ErrorMessage = "Địa chỉ chi tiết là bắt buộc")]
+    [StringLength(100, ErrorMessage = "Địa chỉ chi tiết không được vượt quá 100 kí tự.")]
     public string? ShipAddress { get; set; }
     public int? CustomerId { get; set; }
     public bool? Status { get; set; }

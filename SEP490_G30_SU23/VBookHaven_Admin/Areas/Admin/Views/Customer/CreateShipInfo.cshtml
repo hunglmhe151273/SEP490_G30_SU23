@@ -1,0 +1,130 @@
+﻿@model VBookHaven.Models.ViewModels.Manage_ShippingInfoVM
+@{
+    ViewData["Title"] = "Địa chỉ nhận hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Khách hàng</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="mx-auto">
+                <h3 class="mb-0 text-uppercase">Thêm khách hàng</h3>
+                <hr>
+                <div class="card border-top border-0 border-4 border-primary">
+                    <div class="card-body p-5">
+                        <div class="card-title d-flex align-items-center">
+                            <div>
+                                <i class="bx bxs-user me-1 font-22 text-primary"></i>
+                            </div>
+                            <h4 class="mb-0 text-primary">Thêm mới khách hàng</h4>
+                        </div>
+                        <hr>
+                        <form class="row" asp-action="CreateShipInfo" method="post" enctype="multipart/form-data">
+
+                            <div class="col-7 mb-5 ">
+                                <div class="row d-flex align-items-center ">
+                                    <div class="col-7 ps-0 ">
+                                       <p>ID: @Model.Customer.CustomerId</p>
+                                        <p>Tên: @Model.Customer.FullName</p>
+                                        <input hidden asp-for="@Model.Customer.CustomerId">
+                                        <input hidden asp-for="@Model.Customer.FullName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7 mb-5 ">
+                                <div class="row d-flex align-items-center ">
+                                    <label asp-for="@Model.ShippingInfo.CustomerName" class="label-control col-3 pe-0 ">Họ và tên</label>
+                                    <div class="col-7 ps-0 ">
+                                        <input asp-for="@Model.ShippingInfo.CustomerName" class="form-control mb-0 " placeholder="Thêm họ và tên ">
+                                        <span asp-validation-for="@Model.ShippingInfo.CustomerName" class="text-danger "></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-10 mb-5 ">
+                                <div class="row d-flex align-items-center ">
+                                    <label asp-for="@Model.ShippingInfo.Phone" class="label-control col-3 pe-0 ">Số điện thoại</label>
+                                    <div class="col-7 ">
+                                        <input asp-for="@Model.ShippingInfo.Phone" class="form-control mb-0" placeholder="Thêm số điện thoại ">
+                                        <span asp-validation-for="@Model.ShippingInfo.Phone" class="text-danger "></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tỉnh/Thành Phố</label>
+                                <select asp-for="ShippingInfo.ProvinceCode" class="single-select" id="province">
+                                    <option value="" selected>Chọn Tỉnh/Thành Phố</option>
+                                </select>
+                                <span asp-validation-for="ShippingInfo.ProvinceCode" class="text-danger"></span>
+                                <input id="provinceString" asp-for="ShippingInfo.Province" hidden class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="ShippingInfo.DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
+                                <select asp-for="ShippingInfo.DistrictCode" class="single-select" id="district">
+                                    <option value="" selected>Chọn Quận/Huyện</option>
+                                </select>
+                                <span asp-validation-for="ShippingInfo.DistrictCode" class="text-danger"></span>
+                                <input id="districtString" asp-for="ShippingInfo.District" hidden class="form-control" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="ShippingInfo.WardCode" for="inputCity" class="form-label">Phường/Xã</label>
+                                <select asp-for="ShippingInfo.WardCode" class="single-select" id="ward">
+                                    <option selected value="">Chọn Phường/Xã</option>
+                                </select>
+                                <span asp-validation-for="ShippingInfo.WardCode" class="text-danger"></span>
+
+                                <input id="wardString" asp-for="ShippingInfo.Ward" hidden class="form-control" />
+                            </div>
+                            <div class="col-10 mb-5 ">
+                                <div class="row d-flex align-items-center ">
+                                    <label asp-for="ShippingInfo.ShipAddress" class="label-control col-3 pe-0 ">Địa chỉ chi tiết</label>
+                                    <div class="col-7 ">
+                                        <input asp-for="ShippingInfo.ShipAddress" class="form-control mb-0" placeholder="Thêm địa chỉ chi tiết ">
+                                        <span asp-validation-for="ShippingInfo.ShipAddress" class="text-danger "></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @*delete when test ok*@
+                            @*<input asp-for="Customer.DefaultShippingInfo.Phone" value="" hidden class="form-control" />
+                            <input asp-for="Customer.DefaultShippingInfo.CustomerName" hidden class="form-control" />
+                            <input asp-for="Customer.DefaultShippingInfo.Ward" hidden class="form-control" />*@
+                            <div class="col-10 d-flex justify-content-center ">
+                                <button type="submit" class="submit-btn-1 btn-hover-1 ">Lưu thay đổi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end page-content-wrapper-->
+</div>
+
+<!--end page-wrapper-->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript" src="~/js/editProfile.js"></script>
+    <script src="~/js/address.js"></script>
+}
+
+

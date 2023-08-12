@@ -155,6 +155,8 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     c.FullName = Input.FullName;
                     c.DOB = Input.DOB;
                     c.IsMale = Input.IsMale;
+                    c.IsWholesale = false;
+                    c.Status = true;
                     user.Customer = c;
                 }
                 

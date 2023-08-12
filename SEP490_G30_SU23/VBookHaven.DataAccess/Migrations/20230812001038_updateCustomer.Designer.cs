@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230812001038_updateCustomer")]
+    partial class updateCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,16 +404,13 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<bool?>("IsMale")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsWholesale")
+                    b.Property<bool>("IsRetail")
                         .HasColumnType("bit");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(10)
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
-
-                    b.Property<bool?>("Status")
-                        .HasColumnType("bit");
 
                     b.HasKey("CustomerId");
 

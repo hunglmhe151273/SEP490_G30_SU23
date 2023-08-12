@@ -20,6 +20,9 @@ public partial class Customer
     [Display(Name = "Giới tính")]
     public bool? IsMale { get; set; }
     public string? Image { get; set; }
+    public bool? Status { get; set; }
+    [Display(Name = "Nhóm Khách Hàng")]
+    public bool IsWholesale { get; set; }
 
     public string? AccountId { get; set; }
     public virtual ApplicationUser? Account { get; set; }

@@ -172,9 +172,9 @@ namespace VBookHaven.Areas.Customer.Controllers
                 int cid = applicationUser.Customer.CustomerId;
 
                 var shippingInfo = await _shippingInfoRepository.GetShipInfoByCusIdAndShipInfoIdAsync(cid, shipInfoId);
-                if(shippingInfo != null && shippingInfo.Customers.Count == 0)
+                //kiểm tra shipinfo đấy có nhiều list cus hay không - kiểm tra default shippingInfo
+                if (shippingInfo != null && shippingInfo.Customers.Count == 0)
                 {
-                    //kiểm tra shipinfo đấy có nhiều list cus hay không
                     await _shippingInfoRepository.DeleteShipInfoAsync(shippingInfo);
                 }
 
