@@ -20,7 +20,7 @@ namespace VBookHaven.Utility
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, false);
-                await client.AuthenticateAsync("quoctkhe150544@fpt.edu.vn", "");
+                await client.AuthenticateAsync("quoctkhe150544@fpt.edu.vn", "fkdokciqgktfqlta");
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }

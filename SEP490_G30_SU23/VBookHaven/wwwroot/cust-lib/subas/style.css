@@ -759,13 +759,17 @@ transform: scale(1);
 ------------------------------------- */
 .breadcrumbs-section {}
 .breadcrumbs {
-  background: #f6f6f6 url("img/breadcrumb/1.png") no-repeat scroll center center; 
+    /*background: #f6f6f6 url("img/breadcrumb/1.png") no-repeat scroll center center;*/
+    
+    /* Custom */
+    background: url("/images/banner.png") no-repeat scroll center center;
+    background-size: 100% 100%;
 }
 .overlay-bg { 
   position: relative;
 }
 .overlay-bg::before {
-  background: #f6f6f6 none repeat scroll 0 0;
+  background: /*#f6f6f6*/ none repeat scroll 0 0;
   content: "";
   height: 100%;
   left: 0;
