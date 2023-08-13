@@ -10,7 +10,8 @@
 @inject ICategoryRepository CategoryRepository;
 
 @{
-    List<CartDetail> cartDetail = OrderFunctions.GetCartFromCookies();
+    var custId = await OrderFunctions.GetLoginCustomerIdAsync();
+    List<CartDetail> cartDetail = await OrderFunctions.GetCartAsync(custId);
     int total = 0;
 
     List<Category> categories = await CategoryRepository.GetAllCategoriesAllInfoAsync();
