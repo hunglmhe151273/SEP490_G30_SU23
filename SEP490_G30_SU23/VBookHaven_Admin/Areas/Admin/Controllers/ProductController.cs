@@ -16,10 +16,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	//		disabled) de filter
 	// Chua co placeholder cho author khi add/edit book
 
-	// Add product con mat thoi gian, trang khong show la dang load
 	// Khi change status product - khong luu lai thong tin thay doi o tren
-	// Kiem tra xem paging front end hoat dong ko??
-	// Sort o index - hinh nhu chi co tac dung sort trang dang hien (ko phai sort tat ca list product)??
 	// Sort o index - loi o cot ten -> Do ten co chua ki tu Tieng Viet
 	// Authorize - lay user info tu session(?)
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VBookHaven.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    partial class VBookHavenDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230813112507_changeProductCustomer")]
+    partial class changeProductCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

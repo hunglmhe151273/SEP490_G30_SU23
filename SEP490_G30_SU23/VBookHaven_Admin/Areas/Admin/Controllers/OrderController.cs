@@ -8,12 +8,8 @@ using VBookHaven.Models.DTO;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
-	// Chua kiem tra da chon khach hang, da chon it nhat 1 san pham chua khi add don hang (check lai?)
-	// Chua co validate du lieu khi add don hang (?)
-	// Khong dat duoc qua so luong hang trong kho
 	// Gui email khi update trang thai don hang
-
-	// Show thong tin staff xu li order? (da xong?)
+	// Them trang thai Xuat kho
 
 	public class ViewOrderManagementModel
 	{
@@ -350,6 +346,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			{
 				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
 				product.UnitInStock += detail.Quantity;
+				product.AvailableUnit += detail.Quantity;
 				await productRespository.UpdateProductAsync(product);
 			}
 		}

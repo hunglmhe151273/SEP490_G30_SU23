@@ -49,8 +49,12 @@
 										<td>@Model.Product.Name</td>
 									</tr>
 									<tr>
-										<th>Số lượng</th>
+										<th>Số lượng tồn kho</th>
 										<td>@Model.Product.UnitInStock.Value.ToString("#,0")</td>
+									</tr>
+									<tr>
+										<th>Số lượng có thể bán</th>
+										<td>@Model.Product.AvailableUnit.Value.ToString("#,0")</td>
 									</tr>
 									<tr>
 										<th>Loại sản phẩm</th>

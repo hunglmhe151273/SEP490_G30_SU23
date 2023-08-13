@@ -92,10 +92,11 @@
 										<th>Mã vạch</th>
 										<th>Tên sản phẩm</th>
 										<th hidden>Loại</th>
-										<th>Số lượng</th>
+										<th>Tồn kho</th>
+										<th>Có thể bán</th>
 										<th>Giá nhập (VNĐ)</th>
 										<th>Giá lẻ (VNĐ)</th>
-										<th>Giá buôn (VNĐ)</th>
+										<th>Giá sỉ (VNĐ)</th>
 										<th>Chi tiết</th>
 										<th>Trạng thái</th>
 										<th>Hành động</th>
@@ -117,6 +118,7 @@
 											<td>@p.Name</td>
 											<td hidden>@p.SubCategoryId</td>
 											<td>@p.UnitInStock.Value.ToString("#,0")</td>
+											<td>@p.AvailableUnit.Value.ToString("#,0")</td>
 											<td>@p.PurchasePrice.Value.ToString("#,0")</td>
 											<td>@p.RetailPrice.Value.ToString("#,0")</td>
 											<td>@p.WholesalePrice.Value.ToString("#,0")</td>
@@ -209,7 +211,7 @@
 						statusSearch = true;
 					}
 					else {
-						statusSearch = $(this).find('td:eq(9) > span:eq(1)').text() == status;
+						statusSearch = $(this).find('td:eq(10) > span:eq(1)').text() == status;
 					}
 
 					$(this).toggle(

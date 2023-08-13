@@ -143,8 +143,10 @@ function populateProductsSelect() {
     productList.innerHTML = `
         ${products
             .map(
-                product => `<a href="javascript:;" class="list-group-item item" onclick="getProductInfo(this)">
-                                <div class="row d-flex align-items-center">
+                product => `<a href="javascript:;" class="list-group-item item"
+                               ${product.availableUnit <= 0 ? "" : "onclick='getProductInfo(this)'"}>
+                                <div class="row d-flex align-items-center"
+                                     ${product.availableUnit <= 0 ? "style='background: white; opacity: 0.5'" : ""}>
                                     <div class="col-6 d-flex align-items-center">
                                         <div class="flex-shrink-0 cover">
                                             <img src="${product.presentImage}" class="productImg">
@@ -168,7 +170,7 @@ function populateProductsSelect() {
                                         <p class="wholesalePrice" hidden>${product.wholesalePrice}</p>
                                         <p class="wholesaleDiscount" hidden>${product.wholesaleDiscount}</p>
 
-                                        <p class="m-0 text-info fw-bold">Tồn: ${product.unitInStock}</p>
+                                        <p class="m-0 text-info fw-bold">Có thể bán: <span class="availableUnit">${product.availableUnit}</span></p>
                                     </div>
                                 </div>
                             </a>`
@@ -193,6 +195,8 @@ function getProductInfo(linkElement) {
     const wholesalePrice = linkElement.querySelector('.wholesalePrice').textContent;
     const wholesaleDiscount = linkElement.querySelector('.wholesaleDiscount').textContent;
 
+    const availableUnit = linkElement.querySelector('.availableUnit').textContent;
+
     //Hiển thị sản phẩm ở order
     var isRetail = $("#price-type").val() == "Giá lẻ";
     var price = isRetail ? retailPrice : wholesalePrice;
@@ -209,18 +213,24 @@ function getProductInfo(linkElement) {
         <td>${unit}</td>
         <td>
             <div class="input-group">
-                <input name="QuantityList" required type="number" value="1" min="1" step="1" class="form-control num">
+                <input name="QuantityList" required type="number" value="1" min="1" max="${availableUnit}" step="1" class="form-control num">
             </div>
         </td>
         <td>
             <div class="input-group">
                 <input name="PriceList" required class="form-control price num" step="1000" min="0" value="${price}" type='number' />
+
+                <input hidden value="${retailPrice}" />
+                <input hidden value="${wholesalePrice}" />
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input name="DiscountList" required class="form-control discount num" step="0.1" min="0" value="${discount}" type='number' />
+                <input name="DiscountList" required class="form-control discount num" step="0.1" min="0" max="100" value="${discount}" type='number' />
                 <span class="input-group-text">%</span>
+                
+                <input hidden value="${retailDiscount}" />
+                <input hidden value="${wholesaleDiscount}" />
             </div>
         </td>
         <td><span class="sum"></span> VNĐ</td>
@@ -500,4 +510,31 @@ function validateOrder() {
 
 $(document).ready(function () {
     $('#submitOrder').attr('disabled', 'disabled');
+});
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// Change between retail - wholesale price
+$("#price-type").on("change", function () {
+    $(orderContainer).children("tr").each(function () {
+        var priceRow = $(this).children("td").eq(5);
+        var priceInput = $(priceRow).find("input").eq(0);
+        var retailPrice = $(priceRow).find("input").eq(1).val();
+        var wholesalePrice = $(priceRow).find("input").eq(2).val();
+
+        var discountRow = $(this).children("td").eq(6);
+        var discountInput = $(discountRow).find("input").eq(0);
+        var retailDiscount = $(discountRow).find("input").eq(1).val();
+        var wholesaleDiscount = $(discountRow).find("input").eq(2).val();
+
+        if ($("#price-type").val() == "Giá lẻ") {
+            priceInput.val(retailPrice);
+            discountInput.val(retailDiscount);
+        } else {
+            priceInput.val(wholesalePrice);
+            discountInput.val(wholesaleDiscount);
+		}
+    });
+
+    updateOrder();
 });
