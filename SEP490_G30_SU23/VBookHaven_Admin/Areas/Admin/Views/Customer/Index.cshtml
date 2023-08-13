@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<VBookHaven.Models.Customer>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh sách khách hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <!--page-wrapper-->
@@ -48,30 +48,32 @@
                                         <th data-orderable="false">Số điện thoại</th>
                                         <th> Nhóm khách hàng</th>
                                         <th>Tổng SL đơn hàng</th>
+                                        <th data-orderable="false">Chi tiết</th>
                                     </tr>
                                 </thead>
-                                <tbody id="myTable">
+                                <tbody>
                                     @foreach (var item in Model)
                                     {
                                         <tr>
                                             <td>@item.CustomerId</td>
                                             <td>@item.FullName</td>
                                             <td>@item.Phone</td>
-                                            <td>
-                                                @if (@item.IsWholesale)
-                                                {
-                                                    <span class="badge bg-success">Khách sỉ</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-danger">Khách lẻ</span>
-                                                }
-                                            </td>
+
+                                            @if (@item.IsWholesale)
+                                            {
+                                                <td>
+                                                    Khách sỉ
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    Khách lẻ
+                                                </td>
+                                            }
+
                                             <td>@item.Orders.Count()</td>
                                             <td>
-                                                <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-default">
-                                                    <i class="lni lni-pencil-alt"></i>
-                                                </a>
                                                 <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-sm btn-default">
                                                     <i class="lni lni-eye"></i>
                                                 </a>

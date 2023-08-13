@@ -27,7 +27,7 @@
             </div>
             <!--end breadcrumb-->
             <div class="mx-auto">
-                <h3 class="mb-0 text-uppercase">Thêm khách hàng</h3>
+                <h3 class="mb-0 text-uppercase">Tạo khách hàng mới</h3>
                 <hr>
                 <div class="card border-top border-0 border-4 border-primary">
                     <div class="card-body p-5">
@@ -35,118 +35,88 @@
                             <div>
                                 <i class="bx bxs-user me-1 font-22 text-primary"></i>
                             </div>
-                            <h4 class="mb-0 text-primary">Thêm mới khách hàng</h4>
+                            <h4 class="mb-0 text-primary">Thông tin khách hàng</h4>
                         </div>
                         <hr>
-                        <form class="row" asp-action="Create" method="post" enctype="multipart/form-data">
-                            <div class="col-3 mb-5 ">
-                                <div class="avatar-wrapper ">
-                                    <img class="profile-pic" src="~/images/img/default_image.png" />
-                                    <div class="upload-button ">
-                                        <i class="bx bx-upload" aria-hidden="true"></i>
-                                    </div>
-                                    <input class="file-upload" asp-for="@Model.Customer_ImageFile" type="file" accept="image/*" />
+                        <form class="row" asp-action="Create" method="post">
+                            <div class="col-md-9 row g-3 mt-0">
+                                <div class="col-6">
+                                    <label asp-for="Customer.FullName" for="inputName" class="form-label">Họ và tên</label>
+                                    <input asp-for="Customer.FullName" class="form-control" id="inputName" placeholder="Nhập tên">
+                                    <span asp-validation-for="@Model.Customer.FullName" class="text-danger "></span>
                                 </div>
-                            </div>
-                            <div class="col-7 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label asp-for="Customer.FullName" class="label-control col-3 pe-0 ">Họ và tên</label>
-                                    <div class="col-7 ps-0 ">
-                                        <input asp-for="Customer.FullName" class="form-control mb-0 " placeholder="Thêm họ và tên ">
-                                        <span asp-validation-for="@Model.Customer.FullName" class="text-danger "></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-10 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label asp-for="Customer.DOB" class="label-control col-3 pe-0 "></label>
-                                    <div class="col-7">
-                                        <input asp-for="Customer.DOB" type="date" class="form-control mb-0 ">
-                                        <span asp-validation-for="@Model.Customer.DOB" class="text-danger "></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-10 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label class="label-control col-3 ">Giới tính</label>
-                                    <div class="col-7">
-                                        <div class="form-check form-check-inline ms-3 ">
-                                            <input asp-for="Customer.IsMale" class="form-check-input" type="radio" value="true">
-                                            <label class="form-check-label " for="inlineRadio1">Nam</label>
-                                        </div>
-                                        <div class="form-check form-check-inline ms-3 ">
-                                            <input asp-for="Customer.IsMale" class="form-check-input" type="radio" value="false">
-                                            <label class="form-check-label" for="inlineRadio1">Nữ</label>
-                                        </div>
-                                        <span asp-validation-for="@Model.Customer.IsMale" class="text-danger "></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-10 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label asp-for="Customer.DefaultShippingInfo.Phone" class="label-control col-3 pe-0 ">Số điện thoại</label>
-                                    <div class="col-7 ">
-                                        <input asp-for="Customer.DefaultShippingInfo.Phone" class="form-control mb-0" placeholder="Thêm số điện thoại ">
-                                        <span asp-validation-for="@Model.Customer.DefaultShippingInfo.Phone" class="text-danger "></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-10 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label class="label-control col-3 ">Nhóm khách hàng</label>
-                                    <div class="col-7">
-                                        <div class="form-check form-check-inline ms-3 ">
-                                            <input asp-for="Customer.IsWholesale" class="form-check-input" type="radio" value="true">
-                                            <label class="form-check-label" for="inlineRadio1">Khách sỉ</label>
-                                        </div>
-                                        <div class="form-check form-check-inline ms-3 ">
+                                <div class="col-6">
+                                    <label for="inputCity" class="form-label">Nhóm khách hàng</label>
+                                    <div class="input-group mt-1">
+                                        <div class="form-check-inline">
                                             <input asp-for="Customer.IsWholesale" class="form-check-input" type="radio" value="false" checked>
-                                            <label class="form-check-label" for="inlineRadio1">Khách lẻ</label>
+                                            <label class="form-check-label">Khách lẻ</label>
                                         </div>
-                                        <span asp-validation-for="@Model.Customer.IsWholesale" class="text-danger "></span>
+                                        <div class="form-check-inline">
+                                            <input asp-for="Customer.IsWholesale" class="form-check-input" type="radio" value="true">
+                                            <label class="form-check-label">Khách sỉ</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Tỉnh/Thành Phố</label>
-                                <select asp-for="Customer.DefaultShippingInfo.ProvinceCode" class="single-select" id="province">
-                                    <option value="" selected>Chọn Tỉnh/Thành Phố</option>
-                                </select>
-                                <span asp-validation-for="Customer.DefaultShippingInfo.ProvinceCode" class="text-danger"></span>
-                                <input id="provinceString" asp-for="Customer.DefaultShippingInfo.Province" hidden class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="Customer.DefaultShippingInfo.DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
-                                <select asp-for="Customer.DefaultShippingInfo.DistrictCode" class="single-select" id="district">
-                                    <option value="" selected>Chọn Quận/Huyện</option>
-                                </select>
-                                <span asp-validation-for="Customer.DefaultShippingInfo.DistrictCode" class="text-danger"></span>
-                                <input id="districtString" asp-for="Customer.DefaultShippingInfo.District" hidden class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label asp-for="Customer.DefaultShippingInfo.WardCode" for="inputCity" class="form-label">Phường/Xã</label>
-                                <select asp-for="Customer.DefaultShippingInfo.WardCode" class="single-select" id="ward">
-                                    <option selected value="">Chọn Phường/Xã</option>
-                                </select>
-                                <span asp-validation-for="Customer.DefaultShippingInfo.WardCode" class="text-danger"></span>
+                                <div class="col-4">
+                                    <label asp-for="Customer.DOB" for="inputDob" class="form-label">Ngày sinh</label>
+                                    <input asp-for="Customer.DOB" type="date" class="form-control" id="inputBob">
+                                    <span asp-validation-for="@Model.Customer.DOB" class="text-danger "></span>
+                                </div>
+                                <div class="col-5">
+                                    <label asp-for="Customer.DefaultShippingInfo.Phone" for="inputPhone" class="form-label">Số điện thoại</label>
+                                    <input asp-for="Customer.DefaultShippingInfo.Phone" type="text" class="form-control" id="inputPhone" placeholder="Nhập số điện thoại">
+                                    <span asp-validation-for="@Model.Customer.DefaultShippingInfo.Phone" class="text-danger "></span>
+                                </div>
+                                <div class="col-3">
+                                    <label for="inputCity" class="form-label">Giới tính</label>
+                                    <div class="input-group mt-1">
+                                        <div class="form-check-inline">
+                                            <input asp-for="Customer.IsMale" class="form-check-input" type="radio" value="true">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nam</label>
+                                        </div>
+                                        <div class="form-check-inline">
+                                            <input asp-for="Customer.IsMale" class="form-check-input" type="radio" value="false">
+                                            <label class="form-check-label" for="flexRadioDefault2">Nữ</label>
+                                            <span asp-validation-for="@Model.Customer.IsMale" class="text-danger "></span>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="col-md-4">
+                                    <label class="form-label">Tỉnh/Thành Phố</label>
+                                    <select asp-for="Customer.DefaultShippingInfo.ProvinceCode" class="single-select" id="province">
+                                        <option value="" selected>Chọn Tỉnh/Thành Phố</option>
+                                    </select>
+                                    <span asp-validation-for="Customer.DefaultShippingInfo.ProvinceCode" class="text-danger"></span>
+                                    <input id="provinceString" asp-for="Customer.DefaultShippingInfo.Province" hidden class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Customer.DefaultShippingInfo.DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
+                                    <select asp-for="Customer.DefaultShippingInfo.DistrictCode" class="single-select" id="district">
+                                        <option value="" selected>Chọn Quận/Huyện</option>
+                                    </select>
+                                    <span asp-validation-for="Customer.DefaultShippingInfo.DistrictCode" class="text-danger"></span>
+                                    <input id="districtString" asp-for="Customer.DefaultShippingInfo.District" hidden class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label asp-for="Customer.DefaultShippingInfo.WardCode" for="inputCity" class="form-label">Phường/Xã</label>
+                                    <select asp-for="Customer.DefaultShippingInfo.WardCode" class="single-select" id="ward">
+                                        <option selected value="">Chọn Phường/Xã</option>
+                                    </select>
+                                    <span asp-validation-for="Customer.DefaultShippingInfo.WardCode" class="text-danger"></span>
 
-                                <input id="wardString" asp-for="Customer.DefaultShippingInfo.Ward" hidden class="form-control" />
-                            </div>
-                            <div class="col-10 mb-5 ">
-                                <div class="row d-flex align-items-center ">
-                                    <label asp-for="Customer.DefaultShippingInfo.ShipAddress" class="label-control col-3 pe-0 ">Địa chỉ chi tiết</label>
-                                    <div class="col-7 ">
-                                        <input asp-for="Customer.DefaultShippingInfo.ShipAddress" class="form-control mb-0" placeholder="Thêm địa chỉ chi tiết ">
-                                        <span asp-validation-for="Customer.DefaultShippingInfo.ShipAddress" class="text-danger "></span>
-                                    </div>
+                                    <input id="wardString" asp-for="Customer.DefaultShippingInfo.Ward" hidden class="form-control" />
                                 </div>
-                            </div>
-                            @*delete when test ok*@
-                            @*<input asp-for="Customer.DefaultShippingInfo.Phone" value="" hidden class="form-control" />
-                             <input asp-for="Customer.DefaultShippingInfo.CustomerName" hidden class="form-control" />
-                            <input asp-for="Customer.DefaultShippingInfo.Ward" hidden class="form-control" />*@
-                            <div class="col-10 d-flex justify-content-center ">
-                                <button type="submit" class="submit-btn-1 btn-hover-1 ">Lưu thay đổi</button>
+                                <div class="col-md-12">
+                                    <label asp-for="Customer.DefaultShippingInfo.ShipAddress" class="form-label">Địa chỉ chi tiết</label>
+                                    <textarea asp-for="Customer.DefaultShippingInfo.ShipAddress" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                    <span asp-validation-for="Customer.DefaultShippingInfo.ShipAddress" class="text-danger "></span>
+                                </div>
+                                <div class="col-md-8">
+                                    <button type="submit" class="btn btn-success px-4">Thêm mới</button>
+                                    <button type="button" onclick="window.location.href='/Admin/Customer/Index'" class="btn btn-secondary px-4">Thoát</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -156,7 +126,6 @@
     </div>
     <!--end page-content-wrapper-->
 </div>
-
 <!--end page-wrapper-->
 @section Scripts {
     @{

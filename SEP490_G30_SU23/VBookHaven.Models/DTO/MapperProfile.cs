@@ -20,6 +20,25 @@ namespace VBookHaven.Models.DTO
             CreateMap<ProductDTO, Product>();
             CreateMap<Customer, CustomerDTO>();
             CreateMap<CustomerDTO, Customer>();
+            CreateMap<Order, OrderDTO>()
+                  .ForMember(dest => dest.ToTalPayment, opt => opt.MapFrom(src => Math.Ceiling((decimal)totalPayment(src.OrderDetails))))
+                  .ForMember(dest => dest.StaffName, opt => opt.MapFrom(src => src.Staff.FullName))
+                ;
+            CreateMap<OrderDTO, Order>();
+        }
+
+        // Tổng tiền của đơn hàng - tham số purchasorder.purchaseOrderDetails
+        private decimal? totalPayment(ICollection<OrderDetail> orderDetails)
+        {
+            decimal sum = 0;
+            foreach (var detail in orderDetails)
+            {
+                if (detail.Quantity.HasValue && detail.UnitPrice.HasValue && detail.Discount.HasValue)
+                {
+                    sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount / 100));
+                }
+            }
+            return sum;
         }
     }
 }

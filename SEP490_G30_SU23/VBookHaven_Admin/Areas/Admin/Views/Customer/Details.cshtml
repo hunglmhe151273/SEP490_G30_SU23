@@ -1,0 +1,314 @@
+﻿@model VBookHaven.Models.ViewModels.DetailsCustomerVM
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+
+    .payment-items {
+        padding: 10px 10px;
+        margin: 0 15px;
+        border-bottom: 1px solid lightgray;
+    }
+
+        .payment-items p {
+            animation: forwards;
+            margin-bottom: 0;
+            font-size: 16px;
+        }
+
+    .payment-title {
+        color: black;
+    }
+
+    .payment-date {
+        font-size: 13px;
+        color: gray;
+    }
+
+    .payment-detail {
+        display: none;
+        padding: 7px 35px;
+        font-size: 15px !important;
+    }
+
+    .payment-items:first-child {
+        background-color: lightsteelblue;
+    }
+
+    .title {
+        color: gray;
+        font-size: medium;
+        margin-bottom: 0;
+    }
+
+    .content {
+        color: black;
+        font-size: large;
+    }
+    /* Custom CSS for text overflow ellipsis */
+</style>
+
+<!--page-wrapper-->
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                <div class="breadcrumb-title pe-3">Quản trị</div>
+                <div class="ps-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item">
+                                <a href="javascript:;">
+                                    <i class="bx bx-home-alt"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Khách hàng</li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết khách hàng</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="row">
+                <div class="col-12 my-3">
+                    <h3>Khách Hàng: @Model.Customer.FullName</h3>
+                </div>
+                <div class="col-12 col-md-8 mx-auto">
+                    <div class="card">
+                        <div class="pt-4 px-4">
+                            <div class="card-title d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
+                                    </div>
+                                    <h5 class="mb-0 fw-bold">Thông tin cá nhân</h5>
+
+                                    @if (Model.Customer.Status == true || Model.Customer.Status == null)
+                                    {
+                                        <span class="badge bg-info rounded-pill fs-6 ms-2">
+                                            Đang giao dịch
+                                        </span>
+                                    }
+                                    else if (Model.Customer.Status == false)
+                                    {
+                                        <span class="badge bg-warning rounded-pill fs-6 ms-2">
+                                            Ngưng hoạt động
+                                        </span>
+                                    }
+                                </div>
+                                <div>
+                                    <a asp-action="Edit" asp-route-id="@Model.Customer.CustomerId" class="btn fw-bold text-primary">Cập nhật</a>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="card-body row g-3">
+                                <div class="col-sm-6 row">
+                                    <p class="title col-sm-6">Ngày sinh</p>
+                                    <p class="content col-sm-6">: @Model.Customer.DOB.Value.ToString("dd-MM-yyyy")</p>
+                                </div>
+                                <div class="col-sm-6 row">
+                                    <p class="title col-sm-6">Giới tính</p>
+                                    @if (Model.Customer.IsMale == true)
+                                    {
+                                        <p class="content col-sm-6">:Nam</p>
+                                    }else if(@Model.Customer.IsMale == false){
+                                        <p class="content col-sm-6">: Nữ</p>
+                                    }else{
+                                    <p class="content col-sm-6">: </p>
+                                    }
+                                </div>
+                                <div class="col-sm-6 row">
+                                    <p class="title col-sm-6">Số điện thoại</p>
+                                    <p class="content col-sm-6">: @Model.Customer.Phone</p>
+                                </div>
+                                <div class="col-sm-6 row">
+                                    <p class="title col-sm-6">Nhóm khách hàng</p>
+                                    @if (Model.Customer.IsWholesale == true)
+                                    {
+                                        <p class="content col-sm-6">:Khách sỉ</p>
+                                    }
+                                    else if (@Model.Customer.IsWholesale == false)
+                                    {
+                                        <p class="content col-sm-6">:Khách lẻ</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="content col-sm-6"></p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mx-auto">
+                    <div class="card">
+                        <div class="pt-4 px-4">
+                            <div class="card-title d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <i class='bx bxs-cart-alt bx-tada me-2 fs-4'></i>
+                                    </div>
+                                    <h5 class="mb-0 fw-bold">Thông tin mua hàng</h5>
+                                </div>
+                                <div>
+                                    <!-- <a href="" class="btn fw-bold text-primary">Chi tiết</a> -->
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="card-body row g-3">
+                                <div class="col-12 row">
+                                    <p class="title col-8">Tổng số đơn hàng</p>
+                                    <p class="content col-4">: @Model.totalOrderQuantity</p>
+                                </div>
+                                <div class="col-12 row">
+                                    <p class="title col-8">Tổng số sản phẩm đã mua</p>
+                                    <p class="content col-4">:@Model.totalBuyProduct</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 mx-auto pe-0">
+                    <div class="card">
+                        <div class="card-title">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="nav-link active fw-bold fs-6" data-bs-toggle="tab" href="#History">Lịch sử mua hàng</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-bold fs-6" data-bs-toggle="tab" href="#Address">Địa chỉ</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="History">
+                                    <div class="table-responsive">
+                                        <table id="orderTable" class="table table-hover dataTable">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th scope="col">Mã đơn hàng</th>
+                                                    <th scope="col">Trạng thái</th>
+                                                    <th scope="col">Giá trị</th>
+                                                    <th scope="col">Nhân viên xử lí đơn</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach(var order in Model.OrderDTOs)
+                                                {
+                                                    <tr>
+                                                        <td>@order.OrderId</td>
+                                                        <td>
+                                                            @switch (order.Status)
+                                                            {
+                                                                case OrderStatus.Wait:
+                                                                    @:<span class="badge bg-warning">@OrderStatus.Wait</span>
+                                                                    break;
+                                                                case OrderStatus.Process:
+                                                                    @:<span class="badge bg-warning">@OrderStatus.Process</span>
+                                                                    break;
+                                                                case OrderStatus.Shipping:
+                                                                    @:<span class="badge bg-info">@OrderStatus.Shipping</span>
+                                                                    break;
+                                                                case OrderStatus.Shipped:
+                                                                    @:<span class="badge bg-info">@OrderStatus.Shipped</span>
+                                                                    break;
+                                                                case OrderStatus.Done:
+                                                                    @:<span class="badge bg-success">@OrderStatus.Done</span>
+                                                                    break;
+                                                                case OrderStatus.Cancel:
+                                                                    @:<span class="badge bg-danger">@OrderStatus.Cancel</span>
+                                                                    break;
+                                                            }
+                                                        </td>
+                                                        <td>@order.ToTalPayment VNĐ</td>
+                                                        <td>@order.StaffName</td>
+                                                        <td>
+                                                            <a asp-controller="Order" asp-action="Detail" asp-route-id="@order.OrderId" class="btn btn-sm btn-default">
+                                                                <i class="lni lni-eye"></i>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="Address">
+                                    <div class="d-flex justify-content-end">
+                                        <a asp-action="CreateShipInfo" asp-route-cid="@Model.Customer.CustomerId" class="btn btn-outline-info d-flex align-items-center">
+                                            <i class='bx bx-plus-circle'></i>
+                                            Thêm địa chỉ mới
+                                        </a>
+                                    </div>
+                                    <div class="table-responsive mt-3">
+                                        <table id="shippingInfoTable" class="table table-hover dataTable">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th scope="col">Số điện thoại</th>
+                                                    <th scope="col">Địa chỉ</th>
+                                                    <th scope="col">Phường xã</th>
+                                                    <th scope="col">Quận huyện</th>
+                                                    <th scope="col">Tỉnh thành phố</th>
+                                                    <th scope="col">Hành Động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var shipInfo in Model.ShippingInfos)
+                                                {
+                                                    <tr>
+                                                        <td>@shipInfo.Phone</td>
+                                                        <td>@shipInfo.ShipAddress</td>
+                                                        <td>@shipInfo.Ward</td>
+                                                        <td>@shipInfo.District</td>
+                                                        <td>@shipInfo.Province</td>
+                                                        <td>
+                                                            <a asp-action="EditShipInfo" asp-route-shipId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
+                                                                <i class="lni lni-pencil-alt"></i>
+                                                            </a>
+                                                            <!-- Check IsDefault Address -->
+                                                            @if (shipInfo.Customers.Count() == 0)
+                                                            {
+                                                                <a asp-action="DeleteShipInfo" asp-route-shipInfoId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
+                                                                    <i class='bx bx-trash'></i>
+                                                                </a>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pe-0 mx-auto" style="bottom: 0;">
+                    <div class="card border-top border-0 border-4 border-primary py-2">
+                        <div class="card-body text-end">
+                            <a asp-action="Index" class="btn btn-outline-info px-4 mx-2">Thoát</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end page-content-wrapper-->
+</div>
+<!--end page-wrapper-->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var table = $('#orderTable').DataTable({});
+            table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+            var table2 = $('#shippingInfoTable').DataTable({});
+            table2.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+}

@@ -109,169 +109,120 @@
                     <!--end breadcrumb-->
                     <div class="row">
                         <div class="col-12 my-3">
-                            <h3>Anh Lê Mạnh Hùng</h3>
+                            <h3>
+                                Thêm mới địa chỉ giao hàng
+                            </h3>
                         </div>
-                        <div class="col-12 col-md-8 mx-auto">
+                        <div class="col-12 col-md-12 mx-auto">
                             <div class="card">
                                 <div class="pt-4 px-4">
                                     <div class="card-title d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <div><i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
                                             </div>
-                                            <h5 class="mb-0 fw-bold">Thông tin cá nhân</h5>
+                                            <h5 class="mb-0 fw-bold">Thông tin khách hàng</h5>
                                             <span class="badge bg-warning rounded-pill fs-6 ms-2">Đang giao dịch</span>
                                         </div>
-                                        <div>
-                                            <a href="" class="btn fw-bold text-primary">Cập nhật</a>
-                                        </div>
+
                                     </div>
                                     <hr>
-                                    <div class="card-body row g-3">
+                                    <div class="card-body row">
+                                        <div class="col-sm-6 row">
+                                            <p class="title col-sm-6">Tên khách hàng</p>
+                                            <p class="content col-sm-6">: @Model.Customer.FullName</p>
+                                        </div>
+                                        <div class="col-sm-6 row">
+                                            <p class="title col-sm-6"></p>
+                                            <p class="content col-sm-6"></p>
+                                        </div>
                                         <div class="col-sm-6 row">
                                             <p class="title col-sm-6">Ngày sinh</p>
-                                            <p class="content col-sm-6">:01/01/2001</p>
+                                            <p class="content col-sm-6">: @Model.Customer.DOB</p>
                                         </div>
                                         <div class="col-sm-6 row">
                                             <p class="title col-sm-6">Giới tính</p>
-                                            <p class="content col-sm-6">:Nam</p>
+                                            <p class="content col-sm-6">: @Model.Customer.IsMale</p>
                                         </div>
                                         <div class="col-sm-6 row">
                                             <p class="title col-sm-6">Số điện thoại</p>
-                                            <p class="content col-sm-6">:19001001</p>
+                                            <p class="content col-sm-6">: @Model.Customer.Phone</p>
                                         </div>
                                         <div class="col-sm-6 row">
                                             <p class="title col-sm-6">Nhóm khách hàng</p>
-                                            <p class="content col-sm-6">:Khách sỉ</p>
+                                            <p class="content col-sm-6">: @Model.Customer.IsWholesale</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-4 mx-auto">
+
+                        <div class="col-12 mx-auto pe-0">
                             <div class="card">
-                                <div class="pt-4 px-4">
+                                <div class="card-title pt-4 px-4 mb-0">
                                     <div class="card-title d-flex align-items-center justify-content-between">
                                         <div class="d-flex align-items-center">
-                                            <div>
-                                                <i class='bx bxs-cart-alt bx-tada me-2 fs-4'></i>
+                                            <div><i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
                                             </div>
-                                            <h5 class="mb-0 fw-bold">Thông tin mua hàng</h5>
-                                        </div>
-                                        <div>
-                                            <!-- <a href="" class="btn fw-bold text-primary">Chi tiết</a> -->
+                                            <h5 class="mb-0 fw-bold">Địa chỉ giao hàng mới</h5>
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class="card-body row g-3">
-                                        <div class="col-12 row">
-                                            <p class="title col-8">Tổng số đơn hàng</p>
-                                            <p class="content col-4">: 3</p>
-                                        </div>
-                                        <div class="col-12 row">
-                                            <p class="title col-8">Tổng số sản phẩm đã mua</p>
-                                            <p class="content col-4">: 12</p>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-12 mx-auto pe-0">
-                            <div class="card">
-                                <div class="card-title">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item"> <a class="nav-link active fw-bold fs-6" data-bs-toggle="tab" href="#History">Lịch sử mua hàng</span></a>
-                                        </li>
-                                        <li class="nav-item"> <a class="nav-link fw-bold fs-6" data-bs-toggle="tab" href="#Address">Địa chỉ</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="card-body">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade active show" id="History">
-                                            <div class="table-responsive">
-                                                <table class="table table-hover dataTable">
-                                                    <thead class="bg-light">
-                                                        <tr>
-                                                            <th scope="col">Mã đơn hàng</th>
-                                                            <th scope="col">Trạng thái</th>
-                                                            <th scope="col">Giá trị</th>
-                                                            <th scope="col">Nhân viên xử lí đơn</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>ORD0001</td>
-                                                            <td><span class="badge bg-warning rounded-pill">Đang giao dịch</span></td>
-                                                            <td>130000 VNĐ</td>
-                                                            <td>ChinhLK</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>ORD0002</td>
-                                                            <td><span class="badge bg-success rounded-pill">Hoàn thành</span></td>
-                                                            <td>310000 VNĐ</td>
-                                                            <td>ChinhLK</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>ORD0003</td>
-                                                            <td><span class="badge bg-success rounded-pill">Hoàn thành</span></td>
-                                                            <td>1300000 VNĐ</td>
-                                                            <td>ChinhLK</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                <form class="row" asp-action="EditShipInfo" method="post">
+                                    <input hidden asp-for="@Model.ShippingInfo.ShipInfoId">
+                                    <div class="card-body row ps-3">
+                                        <div class="col-md-12 row g-3 mt-0 ms-2">
+                                            <div class="col-12">
+                                                <label asp-for="@Model.ShippingInfo.CustomerName" for="inputName" class="form-label mt-0">Tên người nhận</label>
+                                                <input asp-for="@Model.ShippingInfo.CustomerName" class="form-control" id="inputName" placeholder="Nhập tên">
+                                                <span asp-validation-for="@Model.ShippingInfo.CustomerName" class="text-danger "></span>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="Address">
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-outline-info d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addAddress">
-                                                    <i class='bx bx-plus-circle'></i>
-                                                    Thêm địa chỉ mới
-                                                </button>
+                                            <div class="col-12">
+                                                <label asp-for="@Model.ShippingInfo.Phone" for="inputPhone" class="form-label">Số điện thoại</label>
+                                                <input asp-for="@Model.ShippingInfo.Phone" type="text" class="form-control" id="inputPhone" placeholder="Nhập số điện thoại">
+                                                <span asp-validation-for="@Model.ShippingInfo.Phone" class="text-danger "></span>
                                             </div>
-                                            <div class="table-responsive mt-3">
-                                                <table class="table table-hover dataTable">
-                                                    <thead class="bg-light">
-                                                        <tr>
-                                                            <th scope="col">Số điện thoại</th>
-                                                            <th scope="col">Địa chỉ</th>
-                                                            <th scope="col">Phường xã</th>
-                                                            <th scope="col">Quận huyện</th>
-                                                            <th scope="col">Tỉnh thành phố</th>
-                                                            <th scope="col">Hành Động</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>19001001</td>
-                                                            <td>Số nhà 3, ngách 19, ngõ 179</td>
-                                                            <td>Dịch Vọng</td>
-                                                            <td>Cầu Giấy</td>
-                                                            <td>Hà Nội</td>
-                                                            <th>
-                                                                <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-sm btn-default">
-                                                                    <i class="lni lni-pencil-alt"></i>
-                                                                </a>
-                                                                <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-sm btn-default">
-                                                                    Delete
-                                                                </a>
-                                                            </th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Tỉnh/Thành Phố</label>
+                                                <select asp-for="ShippingInfo.ProvinceCode" class="single-select" id="province">
+                                                    <option value="" selected>Chọn Tỉnh/Thành Phố</option>
+                                                </select>
+                                                <span asp-validation-for="ShippingInfo.ProvinceCode" class="text-danger"></span>
+                                                <input id="provinceString" asp-for="ShippingInfo.Province" hidden class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label asp-for="ShippingInfo.DistrictCode" for="inputDob" class="form-label">Quận/Huyện</label>
+                                                <select asp-for="ShippingInfo.DistrictCode" class="single-select" id="district">
+                                                    <option value="" selected>Chọn Quận/Huyện</option>
+                                                </select>
+                                                <span asp-validation-for="ShippingInfo.DistrictCode" class="text-danger"></span>
+                                                <input id="districtString" asp-for="ShippingInfo.District" hidden class="form-control" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label asp-for="ShippingInfo.WardCode" for="inputCity" class="form-label">Phường/Xã</label>
+                                                <select asp-for="ShippingInfo.WardCode" class="single-select" id="ward">
+                                                    <option selected value="">Chọn Phường/Xã</option>
+                                                </select>
+                                                <span asp-validation-for="ShippingInfo.WardCode" class="text-danger"></span>
+
+                                                <input id="wardString" asp-for="ShippingInfo.Ward" hidden class="form-control" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label asp-for="ShippingInfo.ShipAddress" class="form-label">Địa chỉ chi tiết</label>
+                                                <textarea asp-for="ShippingInfo.ShipAddress" class="form-control" placeholder="Nhập địa chỉ chi tiết"></textarea>
+                                                <span asp-validation-for="ShippingInfo.ShipAddress" class="text-danger "></span>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-success px-4">Lưu thay đổi</button>
+                                                <button type="button" onclick="history.back()" class="btn btn-primary px-4">Quay lại</button>
+                                                <button type="button" onclick="window.location.href='/Admin/Customer/Index'" class="btn btn-secondary px-4">Thoát</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <form>
                             </div>
                         </div>
-                        <div class="col-12 pe-0 mx-auto" style="position: sticky; bottom: 0;">
-                            <div class="card border-top border-0 border-4 border-primary py-2">
-                                <div class="card-body text-end">
-                                    <button class="btn btn-outline-danger px-4 mx-2">Thoát</button>
-                                    <button class="btn btn-outline-danger px-4 mx-2">Xóa khách hàng</button>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
