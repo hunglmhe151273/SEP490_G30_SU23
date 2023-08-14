@@ -13,6 +13,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 	
 	// Cart khi chua login chi chua duoc ~20-30 item (gioi han size cookie)
 	// Cho khach hang them ghi chu khi dat hang?
+	// Them toaster khi dat hang xong va redirect ve home
 
 	public class OrderPurchaseModel
 	{

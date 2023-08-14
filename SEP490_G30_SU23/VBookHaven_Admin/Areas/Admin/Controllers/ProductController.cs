@@ -15,6 +15,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	// Category / Author bi disabled -> de text do, nhung van show het -> Show het category (ke ca bi 
 	//		disabled) de filter
 	// Chua co placeholder cho author khi add/edit book
+	// Them hon 4 anh cung luc -> chua thong bao?
 
 	// Khi change status product - khong luu lai thong tin thay doi o tren
 	// Sort o index - loi o cot ten -> Do ten co chua ki tu Tieng Viet
@@ -141,6 +142,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			//}
 
 			model.Product.UnitInStock = 0;
+			model.Product.AvailableUnit = 0;
 			model.Product.IsBook = true;
 			model.Product.Status = true;
 
@@ -195,6 +197,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			//}
 
 			model.Product.UnitInStock = 0;
+			model.Product.AvailableUnit = 0;
 			model.Product.IsBook = false;
 			model.Product.Status = true;
 
