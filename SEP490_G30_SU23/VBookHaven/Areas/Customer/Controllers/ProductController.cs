@@ -7,6 +7,7 @@ using Org.BouncyCastle.Crypto.Generators;
 namespace VBookHaven.Areas.Customer.Controllers
 {
 	// Giau inactivated product - o ca nhung cho khac (cart,...)
+	// Giau inactivated category?
 	// San pham het hang -> xu li trong cart
 
 	// Trang detail product - Khi chuyen anh khac va zoom - bi cat mat mot it ben phai?

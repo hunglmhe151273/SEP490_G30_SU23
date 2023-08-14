@@ -11,6 +11,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	// Chua chon duoc tinh thanh khi them dia chi giao hang
 	// Gui email khi update trang thai don hang
 	// Them trang thai Xuat kho?
+	// Index: Ten nguoi nhan hang -> Ten khach hang
+	// Index: Default don moi nhat len dau
 
 	public class ViewOrderManagementModel
 	{
