@@ -4,8 +4,6 @@ using VBookHaven.Models;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {
-    // Giau san pham het hang
-	
 	public class HomeViewModel
 	{
 		public List<Product> FamousProducts { get; set; }
@@ -45,18 +43,18 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			var model = new HomeViewModel();
 			var allProducts = await productRepository.GetAllProductsAsync();
+			allProducts = allProducts.Where(p => p.Status == true && p.AvailableUnit > 0).ToList();
 
-			model.FamousProducts = allProducts.Where(p => p.Status == true).ToList();
+			model.FamousProducts = allProducts.ToList();
 			model.FamousProducts.Sort((a, b) => productRepository.GetTimesBoughtProductById(a.ProductId).CompareTo(productRepository.GetTimesBoughtProductById(b.ProductId)));
-			model.FamousProducts = model.FamousProducts.GetRange(0, Math.Min(allProducts.Count, 4));
+			model.FamousProducts = model.FamousProducts.GetRange(0, Math.Min(model.FamousProducts.Count, 4));
 
-			model.DiscountProducts = allProducts.Where(p => p.Status == true && p.RetailDiscount > 0)
-				.OrderByDescending(p => p.RetailDiscount).ToList()
-				.GetRange(0, Math.Min(allProducts.Count, 4));
+			model.DiscountProducts = allProducts.Where(p => p.RetailDiscount > 0)
+				.OrderByDescending(p => p.RetailDiscount).ToList();
+			model.DiscountProducts = model.DiscountProducts.GetRange(0, Math.Min(model.DiscountProducts.Count, 4));
 
-			model.NewProducts = allProducts.Where(p => p.Status == true)
-				.OrderByDescending(p => p.ProductId).ToList()
-				.GetRange(0, Math.Min(allProducts.Count, 8));
+			model.NewProducts = allProducts.OrderByDescending(p => p.ProductId).ToList();
+			model.NewProducts = model.NewProducts.GetRange(0, Math.Min(model.NewProducts.Count, 8));
 
 			foreach (var product in allProducts)
 			{

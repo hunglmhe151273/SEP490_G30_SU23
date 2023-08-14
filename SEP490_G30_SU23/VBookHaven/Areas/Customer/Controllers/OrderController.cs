@@ -9,6 +9,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 {
 	// Khong dat duoc qua so luong hang trong kho
 	// Khi tao shipping info moi luc check out -> Neu chua co shipping info nao -> De default luon
+	//		(can test lai)
 	
 	// Cart khi chua login chi chua duoc ~20-30 item (gioi han size cookie)
 	// Cho khach hang them ghi chu khi dat hang?
@@ -49,14 +50,17 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		private readonly OrderFunctions functions;
 
+		private readonly ICustomerRespository customerRespository;
+
 		public OrderController(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository,
 			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository,
-			IOrderRepository orderRepository, IImageRepository imageRepository)
+			IOrderRepository orderRepository, IImageRepository imageRepository, ICustomerRespository customerRespository)
 		{
 			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor, imageRepository);
 			this.shippingInfoRepository = shippingInfoRepository;
 			this.orderRepository = orderRepository;
+			this.customerRespository = customerRespository;
 		}
 
 		[HttpPost]
@@ -186,9 +190,10 @@ namespace VBookHaven.Areas.Customer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAddress(AddAddressModel model)
 		{
-			var custId = await functions.GetLoginCustomerIdAsync();
-			if (custId == null)
+			var cust = await functions.GetLoginCustomerAsync();
+			if (cust == null)
 				return Unauthorized();
+			var custId = cust.CustomerId;
 
 			if (model.Method.Equals("get"))
 			{
@@ -205,6 +210,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 				model.ShipInfo.Status = true;
 
 				int latestShipInfoId = await shippingInfoRepository.AddShippingInfoAsync(model.ShipInfo);
+				if (cust.DefaultShippingInfoId == null)
+					await customerRespository.UpdateCustomerDefaultShipInfoAsync(custId, latestShipInfoId);
 				
 				// Khong phai cach lam tot nhat, nhung tam the vay :v
 				return await ChangeAddress(latestShipInfoId);
