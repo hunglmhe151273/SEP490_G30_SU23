@@ -7,39 +7,82 @@ using VBookHaven.Models.DTO;
 using VBookHaven.Models;
 using VBookHaven.Models.ViewModels;
 using System.Runtime.Intrinsics.X86;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using VBookHaven.Utility;
+using System.Data;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class HomeController : Controller
     {
-        private readonly IOrderRepository orderRepository;
-        private readonly IShippingInfoRepository shippingInfoRepository;
-        private readonly IProductRespository productRespository;
-        private readonly IMapper mapper;
-        private readonly IApplicationUserRespository userRepository;
-        private readonly IImageRepository imageRepository;
-        private readonly ICustomerRespository customerRespository;
-        private readonly VBookHavenDBContext _dbContext;
 
-        public HomeController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,VBookHavenDBContext dbContext,
-            IProductRespository productRespository, IMapper mapper, IApplicationUserRespository userRepository,
-            IImageRepository imageRepository, ICustomerRespository customerRespository)
+        private readonly VBookHavenDBContext _dbContext;
+        //use
+        private readonly IApplicationUserRespository _IApplicationUserRespository;
+        private readonly UserManager<IdentityUser> _userManager;
+        public HomeController(IApplicationUserRespository applicationUserRespository,
+            UserManager<IdentityUser> userManager,VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
-            this.orderRepository = orderRepository;
-            this.shippingInfoRepository = shippingInfoRepository;
-            this.productRespository = productRespository;
-            this.mapper = mapper;
-            this.userRepository = userRepository;
-            this.imageRepository = imageRepository;
-            this.customerRespository = customerRespository;
+            //use
+            _userManager = userManager;
+            _IApplicationUserRespository = applicationUserRespository;
         }
-
+     
         public async Task<IActionResult> Dashboard()
         {
-            return View();
+            DashboardVM vm = new DashboardVM();
+            //set list year all order
+            vm.DefaultYear = DateTime.Now.Year;
+            vm.YearList = GetYearList(vm.DefaultYear);
+            vm.TotalCustomer = _dbContext.Customers.Where(c => c.Status != false).Count();
+            vm.TotalOrders = _dbContext.Orders.Where(o => o.Status.Equals(OrderStatus.Done)).Count();
+            vm.TotalPurchaseOrders = _dbContext.PurchaseOrders.Where(o => o.Status.Equals(SD.PurchaseOrder_Complete)).Count();
+            vm.TotalStaff = await getStaffQuantity();
+            return View(vm);
         }
+
+        //-------My Function-------
+        private async Task<int> getStaffQuantity()
+        {
+            List<ApplicationUser> objUserList = await _IApplicationUserRespository.GetAllStaffAsync();
+            foreach (var user in objUserList)
+            {
+                user.Role = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
+            }
+            objUserList = objUserList.Where(x => x.Role != SD.Role_Owner).ToList();
+            return objUserList.Count;
+        }
+
+        private IEnumerable<SelectListItem> GetYearList(int defaultYear)
+        {
+            var yearWithDefaults = new List<SelectListItem>();
+
+            var yearList = _dbContext.Orders
+               .Where(o => o.OrderDate.HasValue) // Filter out records with null OrderDate
+               .Select(o => o.OrderDate.Value.Year)
+               .Distinct()
+               .ToList();
+            yearWithDefaults.AddRange(yearList.Select(year => new SelectListItem
+            {
+                Text = year.ToString(),
+                Value = year.ToString()
+            }));
+
+            // Set the selected role as the default option
+            foreach (var year in yearWithDefaults)
+            {
+                if (year.Value == defaultYear.ToString())
+                {
+                    year.Selected = true;
+                    break;
+                }
+            }
+            return yearWithDefaults;
+        }
+
         #region CallAPI
         [HttpGet]
         public async Task<IActionResult> Chart(int? year)
