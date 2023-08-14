@@ -318,6 +318,7 @@ namespace VBookHaven.DataAccess.Migrations
                     Barcode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Unit = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UnitInStock = table.Column<int>(type: "int", nullable: true),
+                    AvailableUnit = table.Column<int>(type: "int", nullable: true),
                     PurchasePrice = table.Column<decimal>(type: "decimal(7,0)", nullable: true),
                     RetailPrice = table.Column<int>(type: "int", nullable: true),
                     RetailDiscount = table.Column<double>(type: "float", nullable: true),
@@ -548,7 +549,9 @@ namespace VBookHaven.DataAccess.Migrations
                     Phone = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
                     DOB = table.Column<DateTime>(type: "date", nullable: true),
                     IsMale = table.Column<bool>(type: "bit", nullable: true),
+                    IsWholesale = table.Column<bool>(type: "bit", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: true),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DefaultShippingInfoId = table.Column<int>(type: "int", nullable: true)
                 },

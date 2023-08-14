@@ -145,24 +145,24 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             DailyReportVM vm = new DailyReportVM();
             if (selectValue.Equals("Hôm nay"))
             {
-                vm.Revenue = 1;
-                vm.NewOrder = 2;
-                vm.DoneOrder = 3;
-                vm.CancelledOrder = 4;
+                vm.Revenue = 7850000;
+                vm.NewOrder = 27;
+                vm.DoneOrder = 33;
+                vm.CancelledOrder = 23;
             }
             else if (selectValue.Equals("Tuần này"))
             {
-                vm.Revenue = 5;
-                vm.NewOrder = 6;
-                vm.DoneOrder = 7;
-                vm.CancelledOrder = 8;
+                vm.Revenue = 970000;
+                vm.NewOrder = 50;
+                vm.DoneOrder = 65;
+                vm.CancelledOrder = 70;
             }
             else if (selectValue.Equals("Tháng này"))
             {
-                vm.Revenue = 9;
-                vm.NewOrder = 10;
-                vm.DoneOrder = 11;
-                vm.CancelledOrder = 12;
+                vm.Revenue = 9750000;
+                vm.NewOrder = 105;
+                vm.DoneOrder = 150;
+                vm.CancelledOrder = 87;
             }
 
             return Ok(vm);

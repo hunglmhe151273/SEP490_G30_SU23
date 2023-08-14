@@ -12,8 +12,8 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230812001418_updateCus")]
-    partial class updateCus
+    [Migration("20230814150937_initDB")]
+    partial class initDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -404,12 +404,15 @@ namespace VBookHaven.DataAccess.Migrations
                     b.Property<bool?>("IsMale")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsWholesale")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Phone")
                         .HasMaxLength(10)
                         .HasColumnType("nchar(10)")
                         .IsFixedLength();
 
-                    b.Property<bool>("Wholesale")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("CustomerId");
@@ -592,6 +595,9 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<int?>("AvailableUnit")
+                        .HasColumnType("int");
 
                     b.Property<string>("Barcode")
                         .HasMaxLength(50)
