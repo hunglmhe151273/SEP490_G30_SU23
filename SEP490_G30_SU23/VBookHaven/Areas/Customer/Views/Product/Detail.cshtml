@@ -116,7 +116,8 @@
     }
 </style>
 
-<!-- BREADCRUMBS SETCTION START -->
+<!-- Breadcrump -->
+@*<!-- BREADCRUMBS SETCTION START -->
 <div class="breadcrumbs-section plr-200 mb-80 section">
     <div class="breadcrumbs overlay-bg">
         <div class="container">
@@ -135,7 +136,8 @@
         </div>
     </div>
 </div>
-<!-- BREADCRUMBS SETCTION END -->
+<!-- BREADCRUMBS SETCTION END -->*@
+
 <!-- Start page content -->
 <section id="page-content" class="page-wrapper section">
 
@@ -229,25 +231,34 @@
                                                     <li class="color-4"><a href="#"></a></li>
                                                 </ul>
                                             </div>*@
-                                            @if (Model.Product.RetailDiscount != 0)
+                                            @if (Model.Product.Status == true)
                                             {
-                                                <h6 class="pro-price" style="display: inline-block; color: #bbbbbb"><s>@Model.Product.RetailPrice</s></h6>
-                                                <h3 class="pro-price" style="display: inline-block">@(Model.Product.RetailPrice * (100 - Model.Product.RetailDiscount) / 100) VNĐ</h3>
+                                                if (Model.Product.RetailDiscount != 0)
+                                                {
+                                                    <h6 class="pro-price" style="display: inline-block; color: #bbbbbb"><s>@Model.Product.RetailPrice</s></h6>
+                                                    <h3 class="pro-price" style="display: inline-block">@(Model.Product.RetailPrice * (100 - Model.Product.RetailDiscount) / 100) VNĐ</h3>
+                                                }
+                                                else
+                                                {
+                                                    <h3 class="pro-price" style="display: inline-block">@Model.Product.RetailPrice VNĐ</h3>
+                                                }
                                             }
                                             else
                                             {
-                                                <h3 class="pro-price" style="display: inline-block">@Model.Product.RetailPrice VNĐ</h3>
+                                                <h3 class="pro-price text-danger" style="display: inline-block">Sản phẩm ngừng kinh doanh</h3>
                                             }
+                                            
                                             @*<h3 class="pro-price" style="display: inline-block">Price: $ 869.00</h3>*@
                                         </div>
-                                        <div class="pro-rating sin-pro-rating f-right">
+                                        <!-- Review -->
+                                        @*<div class="pro-rating sin-pro-rating f-right">
                                             <a href="#" tabindex="0"><i class="zmdi zmdi-star"></i></a>
                                             <a href="#" tabindex="0"><i class="zmdi zmdi-star"></i></a>
                                             <a href="#" tabindex="0"><i class="zmdi zmdi-star"></i></a>
                                             <a href="#" tabindex="0"><i class="zmdi zmdi-star-half"></i></a>
                                             <a href="#" tabindex="0"><i class="zmdi zmdi-star-outline"></i></a>
                                             <span class="text-black-5">( 27 Rating )</span>
-                                        </div>
+                                        </div>*@
                                     </div>
                                     <!-- hr -->
                                     <hr>
@@ -258,8 +269,12 @@
                                             <form id="add-to-cart" method="post" style="display: inline-block"
                                                 action="/Customer/Order/BuyNow">
                                                 <div class="cart-plus-minus f-left">
-                                                    <input type="number" value="1" name="number"
-                                                        class="cart-plus-minus-box" min="1" step="1">
+                                                    <input type="number" name="number" class="cart-plus-minus-box validate-number" step="1"
+                                                           value="@((Model.Product.AvailableUnit - @Model.UnitInCart > 0)
+                                                                  && (Model.Product.Status == true) ? 1 : 0)"
+                                                           min="@((Model.Product.AvailableUnit - @Model.UnitInCart > 0) 
+                                                                && (Model.Product.Status == true) ? 1 : 0)"
+                                                           max="@(Model.Product.Status == true ? Model.Product.AvailableUnit - @Model.UnitInCart : 0)">
                                                 </div>
                                                 <input hidden name="id" value="@Model.Product.ProductId" />
                                             </form>    
@@ -288,7 +303,15 @@
                                                     </a>
                                                 </li>
                                             </ul>*@
-                                            <h6 class="brand-name-2">Còn @Model.Product.UnitInStock sản phẩm</h6>
+                                            @if (Model.Product.Status == true)
+                                            {
+                                                <h6 class="brand-name-2">
+                                                    <b>Còn @Model.Product.AvailableUnit sản phẩm</b>
+                                                </h6>
+                                                <h6 class="brand-name-2">
+                                                    (@Model.UnitInCart trong giỏ hàng)
+                                                </h6>
+                                            }
                                         </div>
                                     </div>
                                     <!-- plus-minus-pro-action end -->
@@ -299,14 +322,28 @@
                                     <!--  hr -->
                                     <hr>
                                     <div>
-                                        <a href="javascript:void(0);" class="button extra-small button-black" tabindex="-1"
-                                            onclick="AddToCart()">
-                                            <span class="text-uppercase">Thêm vào giỏ hàng</span>
-                                        </a>    
-                                        <a href="javascript:void(0);" class="button extra-small button-blue" tabindex="-1"
-                                            onclick="BuyNow()">
-                                            <span class="text-uppercase">Mua ngay</span>
-                                        </a>
+                                        @if ((Model.Product.AvailableUnit - Model.UnitInCart > 0) && (Model.Product.Status == true))
+                                        {
+                                            <a href="javascript:void(0);" class="button extra-small button-black" tabindex="-1"
+                                                onclick="AddToCart()">
+                                                <span class="text-uppercase">Thêm vào giỏ hàng</span>
+                                            </a>    
+                                            <a href="javascript:void(0);" class="button extra-small button-blue" tabindex="-1"
+                                                onclick="BuyNow()">
+                                                <span class="text-uppercase">Mua ngay</span>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascript:void(0);" class="button extra-small button-black" tabindex="-1"
+                                               disabled style="opacity: 0.75">
+                                                <span class="text-uppercase">Thêm vào giỏ hàng</span>
+                                            </a>    
+                                            <a href="javascript:void(0);" class="button extra-small button-blue" tabindex="-1"
+                                               disabled style="opacity: 0.75">
+                                                <span class="text-uppercase">Mua ngay</span>
+                                            </a>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -319,9 +356,9 @@
                                 <hr>
                                 <div class="single-product-tab reviews-tab">
                                     <ul class="nav mb-20">
-                                        <li><a class="active" href="#description" data-bs-toggle="tab">description</a></li>
-                                        <li><a href="#information" data-bs-toggle="tab">information</a></li>
-                                        <li><a href="#reviews" data-bs-toggle="tab">reviews</a></li>
+                                        <li><a class="active" href="#description" data-bs-toggle="tab">Mô tả</a></li>
+                                        <li><a href="#information" data-bs-toggle="tab">Thông tin</a></li>
+                                        @*<li><a href="#reviews" data-bs-toggle="tab">reviews</a></li>*@
                                     </ul>
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane active show" id="description">
@@ -342,7 +379,8 @@
                                                 <p><b>Chất liệu:</b> @Model.Stationery.Material</p>
                                             }
                                         </div>
-                                        <div role="tabpanel" class="tab-pane" id="reviews">
+                                        <!-- Review tab -->
+                                        @*<div role="tabpanel" class="tab-pane" id="reviews">
                                             <!-- reviews-tab-desc -->
                                             <div class="reviews-tab-desc">
                                                 <!-- single comments -->
@@ -406,7 +444,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
                                 <!--  hr -->
@@ -580,3 +618,7 @@
 </section>
 <!-- End page content -->
 
+@section Scripts
+{
+    <script src="~/js/ValidateUnitInCart.js"></script>
+}

@@ -7,6 +7,7 @@ namespace VBookHaven.DataAccess.Respository
 	public interface ICartRepository
 	{
 		Task<List<CartDetail>> GetCartByCustomerIdAsync(int customerId);
+		Task<CartDetail?> GetCartItemAsync(int customerId, int productId);
 
 		Task AddItemToCartAsync(CartDetail item);
 		Task AddCartFromCookieToDbAsync(List<CartDetail> items);
@@ -63,8 +64,8 @@ namespace VBookHaven.DataAccess.Respository
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
-				var cart = await dbContext.CartDetails.Where(c => c.CustomerId == customerId)
-					.ToListAsync();
+				var cart = await dbContext.CartDetails.Include(c => c.Product)
+					.Where(c => c.CustomerId == customerId).ToListAsync();
 				return cart;
 			}
 		}
@@ -90,6 +91,14 @@ namespace VBookHaven.DataAccess.Respository
 				var cart = await dbContext.CartDetails.Where(c => c.CustomerId == customerId).ToListAsync();
 				dbContext.CartDetails.RemoveRange(cart);
 				await dbContext.SaveChangesAsync();
+			}
+		}
+
+		public async Task<CartDetail?> GetCartItemAsync(int customerId, int productId)
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.CartDetails.FindAsync(customerId, productId);
 			}
 		}
 	}

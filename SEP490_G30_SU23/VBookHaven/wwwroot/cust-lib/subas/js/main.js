@@ -327,7 +327,13 @@
         var $button = $(this);
         var oldValue = $button.parent().find("input").val();
         if ($button.text() == "+") {
+            //var newVal = parseFloat(oldValue) + 1;
+
+            // Custom - Don't allow increasing over max
+            var max = $button.parent().find("input").attr("max");
             var newVal = parseFloat(oldValue) + 1;
+
+            if (newVal > max) newVal = max;
         } 
         else {
             // Don't allow decrementing below zero
@@ -338,13 +344,11 @@
             //    newVal = 0;
             //}
 
-            // Custom - Don't allow decrementing below 1
-            if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
-            }
-            else {
-                newVal = 1;
-            }
+            // Custom - Don't allow decrementing below min
+            var min = $button.parent().find("input").attr("min");
+            var newVal = parseFloat(oldValue) - 1;
+
+            if (newVal < min) newVal = min;
         }
         $button.parent().find("input").val(newVal);
     });

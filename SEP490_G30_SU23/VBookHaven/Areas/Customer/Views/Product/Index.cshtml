@@ -44,7 +44,8 @@
 	}
 </table>*@
 
-<!-- BREADCRUMBS SETCTION START -->
+<!-- Breadcrump -->
+@*<!-- BREADCRUMBS SETCTION START -->
 <div class="breadcrumbs-section plr-200 mb-80 section">
     <div class="breadcrumbs overlay-bg">
         <div class="container">
@@ -62,7 +63,7 @@
         </div>
     </div>
 </div>
-<!-- BREADCRUMBS SETCTION END -->
+<!-- BREADCRUMBS SETCTION END -->*@
 
 <!-- Start page content -->
 <div id="page-content" class="page-wrapper section">
@@ -101,7 +102,7 @@
                                         int id = p.ProductId;
                                         <!-- product-item start -->
                                         <div class="col-lg-4 col-md-6">
-                                            <div class="product-item">
+                                            <div class="product-item" style="@(p.AvailableUnit > 0 ? "" : "opacity: 0.5")">
                                                 <div class="product-img">
                                                     <a href="/customer/product/detail/@id">
                                                         @if (Model.Thumbnails[id] != null)
@@ -117,6 +118,9 @@
                                                 <div class="product-info">
                                                     <h6 class="product-title">
                                                         <a href="/customer/product/detail/@id">@p.Name </a>
+                                                    </h6>
+                                                    <h6 class="product-title text-danger" style="height: 1em; font-size: 20px">
+                                                        @(p.AvailableUnit > 0 ? " " : "Hết hàng")
                                                     </h6>
                                                     @*<div class="pro-rating">
                                                         <a href="#"><i class="zmdi zmdi-star"></i></a>

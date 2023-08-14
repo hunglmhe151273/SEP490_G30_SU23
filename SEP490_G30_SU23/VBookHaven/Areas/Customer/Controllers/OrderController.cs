@@ -7,13 +7,11 @@ using VBookHaven.DataAccess.Respository;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {
-	// Neu ko co default shipping info -> Chon dia chi dau tien?
 	// Khong dat duoc qua so luong hang trong kho
-	// Neu khach ko Remember me -> RemoveCartAtLogout luon khi tat browser
-
 	// Khi tao shipping info moi luc check out -> Neu chua co shipping info nao -> De default luon
-
-	// Dung Observer pattern cho AddCartAtLogin, RemoveCartAtLogout? -> HOW???
+	//		(can test lai)
+	
+	// Cart khi chua login chi chua duoc ~20-30 item (gioi han size cookie)
 	// Cho khach hang them ghi chu khi dat hang?
 
 	public class OrderPurchaseModel
@@ -52,14 +50,17 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		private readonly OrderFunctions functions;
 
+		private readonly ICustomerRespository customerRespository;
+
 		public OrderController(IProductRespository productRespository, 
 			IApplicationUserRespository userRepository, ICartRepository cartRepository,
 			IHttpContextAccessor httpContextAccessor, IShippingInfoRepository shippingInfoRepository,
-			IOrderRepository orderRepository, IImageRepository imageRepository)
+			IOrderRepository orderRepository, IImageRepository imageRepository, ICustomerRespository customerRespository)
 		{
 			functions = new OrderFunctions(productRespository, userRepository, cartRepository, httpContextAccessor, imageRepository);
 			this.shippingInfoRepository = shippingInfoRepository;
 			this.orderRepository = orderRepository;
+			this.customerRespository = customerRespository;
 		}
 
 		[HttpPost]
@@ -86,11 +87,14 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public async Task<IActionResult> Cart()
 		{
-			var cart = functions.GetCartFromCookies();
+			var customerId = await functions.GetLoginCustomerIdAsync();
+			
+			var cartTask = functions.GetCartAsync(customerId);
 
 			var thumbnails = await functions.GetThumbnailsAsync();
 			ViewData["thumbnails"] = thumbnails;
-			
+
+			var cart = await cartTask;
 			return View(cart);
 		}
 
@@ -116,7 +120,9 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 		public async Task<IActionResult> RemoveItemFromCart(int id)
 		{
-			var cart = functions.GetCartFromCookies();
+			var customerId = await functions.GetLoginCustomerIdAsync();
+			
+			var cart = await functions.GetCartAsync(customerId);
 			var detail = cart.SingleOrDefault(d => d.ProductId == id);
 			if (detail == null)
 				return NotFound();
@@ -133,7 +139,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 				return Unauthorized();
 
 			var model = new OrderPurchaseModel();
-			model.Cart = functions.GetCartFromCookies();
+			model.Cart = await functions.GetCartAsync(customer.CustomerId);
 			if (model.Cart.Count <= 0)
 				return BadRequest();
 
@@ -151,7 +157,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 		public async Task<IActionResult> Purchase(int shipInfoId)
 		{
 			var model = new OrderPurchaseModel();
-			model.Cart = functions.GetCartFromCookies();
+			model.Cart = await functions.GetCartAsync(await functions.GetLoginCustomerIdAsync());
 			if (model.Cart.Count <= 0)
 				return BadRequest();
 
@@ -184,9 +190,10 @@ namespace VBookHaven.Areas.Customer.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddAddress(AddAddressModel model)
 		{
-			var custId = await functions.GetLoginCustomerIdAsync();
-			if (custId == null)
+			var cust = await functions.GetLoginCustomerAsync();
+			if (cust == null)
 				return Unauthorized();
+			var custId = cust.CustomerId;
 
 			if (model.Method.Equals("get"))
 			{
@@ -203,6 +210,8 @@ namespace VBookHaven.Areas.Customer.Controllers
 				model.ShipInfo.Status = true;
 
 				int latestShipInfoId = await shippingInfoRepository.AddShippingInfoAsync(model.ShipInfo);
+				if (cust.DefaultShippingInfoId == null)
+					await customerRespository.UpdateCustomerDefaultShipInfoAsync(custId, latestShipInfoId);
 				
 				// Khong phai cach lam tot nhat, nhung tam the vay :v
 				return await ChangeAddress(latestShipInfoId);
@@ -228,7 +237,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (custId == null)
 				return Unauthorized();
 
-			var cart = functions.GetCartFromCookies();
+			var cart = await functions.GetCartAsync(custId);
 			if (cart.Count <= 0)
 				return BadRequest();
 
@@ -319,90 +328,29 @@ namespace VBookHaven.Areas.Customer.Controllers
 			return customer.CustomerId;
 		}
 
-		public async Task<bool> AddToCartFunctionAsync(int number, int id)
+		public async Task<List<CartDetail>> GetCartAsync(int? customerId)
 		{
-			var cart = GetCartFromCookies();
-			var customerIdTask = GetLoginCustomerIdAsync();
-
-			var detail = cart.SingleOrDefault(c => c.ProductId == id);
-			if (detail != null)
+			if (customerId == null)
 			{
-				var customerId = await customerIdTask;
-
-				// Update cart in cookie
-				detail.Quantity += number;
-
-				if (detail.Quantity == 0)
+				if (Request.Cookies["Cart"] == null)
 				{
-					// Remove item from cart in cookie
-					cart.Remove(detail);
-
-					// Remove item from cart in DB
-					if (customerId != null)
-					{
-						await cartRepository.DeleteItemFromCartAsync((int)customerId, id);
-					}
+					return new List<CartDetail>();
 				}
 				else
 				{
-					// Update cart in DB
-					if (customerId != null)
+					string cartJson = Request.Cookies["Cart"];
+					List<CartDetail> cart = JsonSerializer.Deserialize<List<CartDetail>>(cartJson);
+					foreach (var detail in cart)
 					{
-						await cartRepository.UpdateCartAsync(new CartDetail
-						{
-							CustomerId = (int)customerId,
-							ProductId = id,
-							Quantity = detail.Quantity
-						});
+						var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+						detail.Product = product;
 					}
+					return cart;
 				}
 			}
 			else
 			{
-				if (number < 0)
-					return false;
-
-				var product = await productRespository.GetProductByIdAsync(id);
-				if (product == null)
-					return false;
-
-				// Add to cart in cookie
-				cart.Add(new CartDetail
-				{
-					ProductId = id,
-					Quantity = number,
-
-					Product = product
-				});
-
-				// Add to cart in DB
-				var customerId = await customerIdTask;
-				if (customerId != null)
-				{
-					await cartRepository.AddItemToCartAsync(new CartDetail
-					{
-						ProductId = id,
-						CustomerId = (int)customerId,
-						Quantity = number
-					});
-				}
-			}
-
-			AddCartToCookies(cart);
-			return true;
-		}
-
-		public List<CartDetail> GetCartFromCookies()
-		{
-			if (Request.Cookies["Cart"] == null)
-			{
-				return new List<CartDetail>();
-			}
-			else
-			{
-				string cartJson = Request.Cookies["Cart"];
-				List<CartDetail> cart = JsonSerializer.Deserialize<List<CartDetail>>(cartJson);
-				return cart;
+				return await cartRepository.GetCartByCustomerIdAsync(customerId.Value);
 			}
 		}
 
@@ -424,20 +372,85 @@ namespace VBookHaven.Areas.Customer.Controllers
 			return thumbnails;
 		}
 
-		void AddCartToCookies(List<CartDetail> cart)
+		public async Task<bool> AddToCartFunctionAsync(int number, int id)
 		{
-			string cartJson = JsonSerializer.Serialize(cart);
-			var options = new CookieOptions();
-			if (GetLoginCustomerIdAsync().GetAwaiter().GetResult() != null)
+			var customerId = await GetLoginCustomerIdAsync();
+			
+			if (customerId == null)
 			{
-				// Never expires, only remove when logout
-				options.Expires = DateTime.Now.AddYears(50);
+				var cart = await GetCartAsync(customerId);
+				var detail = cart.SingleOrDefault(c => c.ProductId == id);
+
+				if (detail != null)
+				{
+					detail.Quantity += number;
+
+					if (detail.Quantity <= 0)
+					{
+						// Remove item from cart in cookie
+						cart.Remove(detail);
+					}
+				}
+				else
+				{
+					cart.Add(new CartDetail
+					{
+						Quantity = number,
+						ProductId = id
+					});
+				}
+				
+				AddCartToCookies(cart);
 			}
 			else
 			{
-				// Expires after 1 month if not login
-				options.Expires = DateTime.Now.AddMonths(1);
+				var detail = await cartRepository.GetCartItemAsync(customerId.Value, id);
+				if (detail != null)
+				{
+					detail.Quantity += number;
+					
+					if (detail.Quantity <= 0)
+					{
+						// Remove item from cart in DB
+						await cartRepository.DeleteItemFromCartAsync(customerId.Value, id);
+					}
+					else
+					{
+						// Update cart in DB
+						await cartRepository.UpdateCartAsync(detail);
+					}
+				}
+				else
+				{
+					if (number < 0)
+						return false;
+
+					// Add to cart in DB
+					await cartRepository.AddItemToCartAsync(new CartDetail
+					{
+						ProductId = id,
+						CustomerId = customerId.Value,
+						Quantity = number
+					});
+				}
 			}
+
+			return true;
+		}
+
+		void AddCartToCookies(List<CartDetail> cart)
+		{
+			foreach (var item in cart)
+			{
+				item.Product = null;
+			}
+
+			string cartJson = JsonSerializer.Serialize(cart);
+			var options = new CookieOptions();
+
+			// Expires after 1 month if not login
+			options.Expires = DateTime.Now.AddMonths(1);
+
 			Response.Cookies.Append("Cart", cartJson, options);
 		}
 
@@ -456,54 +469,30 @@ namespace VBookHaven.Areas.Customer.Controllers
 			var customerId = await GetLoginCustomerIdAsync();
 			if (customerId == null) return;
 
-			// Get current cart in cookie
-			var cart = GetCartFromCookies();
-			var cartInCookie = new List<CartDetail>();
-			foreach (var item in cart)
+			// Get current cart in cookie;
+			var cookieCart = await GetCartAsync(null);
+
+			// Get current customer cart in DB
+			var dbCart = await cartRepository.GetCartByCustomerIdAsync(customerId.Value);
+
+			// Add cookie cart to DB cart
+			foreach (var item in cookieCart)
 			{
-				cartInCookie.Add(new CartDetail
+				var detail = dbCart.SingleOrDefault(c => c.ProductId == item.ProductId);
+				if (detail == null)
 				{
-					ProductId = item.ProductId,
-					CustomerId = (int)customerId,
-					Quantity = item.Quantity
-				});
-			}
-
-			// Get current cart in DB
-			var customerCart = await cartRepository.GetCartByCustomerIdAsync((int)customerId);
-
-			// Add cart from cookie to DB;
-			var updateDbTask = cartRepository.AddCartFromCookieToDbAsync(cartInCookie);
-
-			// Add cart from DB to cookie
-			foreach (var cartItem in customerCart)
-			{
-				var detail = cart.SingleOrDefault(c => c.ProductId == cartItem.ProductId);
-				if (detail != null)
-				{
-					detail.Quantity += cartItem.Quantity;
+					item.CustomerId = customerId.Value;
+					item.Product = null;
+					await cartRepository.AddItemToCartAsync(item);
 				}
 				else
 				{
-					var product = await productRespository.GetProductByIdAsync(cartItem.ProductId);
-					if (product == null) return;
-
-					cart.Add(new CartDetail
-					{
-						ProductId = cartItem.ProductId,
-						Quantity = cartItem.Quantity,
-
-						Product = product
-					});
+					detail.Quantity += item.Quantity;
+					await cartRepository.UpdateCartAsync(detail);
 				}
 			}
-			AddCartToCookies(cart);
 
-			await updateDbTask;
-		}
-
-		public void RemoveCartAtLogout()
-		{
+			// Remove cart in cookie
 			Response.Cookies.Delete("Cart");
 		}
 	}

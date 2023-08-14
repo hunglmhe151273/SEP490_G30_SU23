@@ -6,12 +6,10 @@ using Org.BouncyCastle.Crypto.Generators;
 
 namespace VBookHaven.Areas.Customer.Controllers
 {
-	// Giau inactivated product
-	// Khi dat hang -> Chi cho max la so luong con lai
-	// San pham het hang
+	// Giau inactivated product - o ca nhung cho khac (cart,...)
+	// San pham het hang -> xu li trong cart
 
 	// Trang detail product - Khi chuyen anh khac va zoom - bi cat mat mot it ben phai?
-	// Chua co list view cua trang product list
 	// Recommended new product o ben trai trang index
 
 	// Input filter min max price - ko co border - trong dang xau
@@ -67,6 +65,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 	public class ProductDetailViewModel
 	{
 		public Product Product { get; set; }
+		public int UnitInCart { get; set; }
 		public Book Book { get; set; }
 		public Stationery Stationery { get; set; }
 		public List<Image> Images { get; set; }
@@ -74,6 +73,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 		public ProductDetailViewModel()
 		{
 			Product = new Product();
+			UnitInCart = 0;
 			Book = new Book();
 			Stationery = new Stationery();
 			Images = new List<Image>();
@@ -87,14 +87,16 @@ namespace VBookHaven.Areas.Customer.Controllers
 		private readonly ICategoryRepository categoryRepository;
 		private readonly IAuthorRepository authorRepository;
 		private readonly IImageRepository imageRepository;
+		private readonly OrderFunctions orderFunctions;
 
 		public ProductController(IProductRespository productRespository, ICategoryRepository categoryRepository, 
-			IAuthorRepository authorRepository, IImageRepository imageRepository)
+			IAuthorRepository authorRepository, IImageRepository imageRepository, OrderFunctions orderFunctions)
 		{
 			this.productRespository = productRespository;
 			this.categoryRepository = categoryRepository;
 			this.authorRepository = authorRepository;
 			this.imageRepository = imageRepository;
+			this.orderFunctions = orderFunctions;
 		}
 
 		public async Task<IActionResult> Index(string? search, int? minPrice, int? maxPrice, 
@@ -223,8 +225,13 @@ namespace VBookHaven.Areas.Customer.Controllers
 			var product = await productRespository.GetProductMoreInfoByIdAsync(id);
 			if (product == null)
 				return NotFound();
-			else if (product.Status != true)
-				return NotFound();
+
+			var custId = await orderFunctions.GetLoginCustomerIdAsync();
+			var cart = await orderFunctions.GetCartAsync(custId);
+			var detail = cart.SingleOrDefault(c => c.ProductId == id);
+			if (detail == null)
+				model.UnitInCart = 0;
+			else model.UnitInCart = detail.Quantity.Value;
 
 			model.Product = product;
 			if (product.IsBook == true)

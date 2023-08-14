@@ -4,8 +4,14 @@ let customers = [{
     "shipAddress": null,
     "customerId": null,
     "status": null,
-    "customerName": null
-    }
+    "customerName": null,
+    "province": null,
+    "district": null,
+    "ward": null,
+    "customer": {
+        isWholesale: false
+	}
+}
 ];
 let products = [{
         "productId": 0,
@@ -26,7 +32,15 @@ let products = [{
         "subCategoryId": null
     }
 ];
+let customer0s = [{
+    "customerId": 0,
+    "fullName": null,
+    "phone": null,
+    "isWholesale": false,
+}
+];
 const customerSelect = document.getElementById('customerSelect');
+const customer0Select = document.getElementById('customer-0');
 const customerInfoContainer = document.getElementById('customerInfoContainer');
 const customerContainer = document.getElementById('customerContainer');
 const productList = document.getElementById('list-product');
@@ -42,7 +56,7 @@ fetchDataFromAPIs();
 // Function to fetch customers and products data using AJAX
 function fetchDataFromAPIs() {
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllCustomers',
+        url: 'https://localhost:7123/Admin/Order/GetAllShipInfos',
         type: 'GET',
         dataType: 'json',
         success: function(customersData) {
@@ -53,6 +67,21 @@ function fetchDataFromAPIs() {
             populatecustomersSelect();
         },
         error: function(error) {
+            console.log('Error fetching customers data:', error);
+        }
+    });
+    $.ajax({
+        url: 'https://localhost:7123/Admin/Order/GetAllCustomers',
+        type: 'GET',
+        dataType: 'json',
+        success: function (customersData) {
+            customer0s = customersData; // Update the customers array with fetched data
+            //customers.forEach(customer => {
+            //    console.log(customer);
+            //});
+            populatecustomer0sSelect();
+        },
+        error: function (error) {
             console.log('Error fetching customers data:', error);
         }
     });
@@ -76,19 +105,34 @@ function fetchDataFromAPIs() {
 // Function to populate customers select list
 function populatecustomersSelect() {
     customerSelect.innerHTML = `
-    <option value="">Chọn khách hàng...</option>
+    <option value="">Chọn địa chỉ giao hàng...</option>
     ${customers
         .map(
             customer => `
                 <option value="${customer.shipInfoId}"
-                    title="Địa chỉ: ${customer.shipAddress}">
-                    ${customer.customerName} - ${customer.phone}
+                    title="Địa chỉ: ${customer.shipAddress}${customer.ward == null ? "" : ", " + customer.ward}${customer.district == null ? "" : ", " + customer.district}${customer.province == null ? "" : ", " + customer.province}">
+                    ${customer.customerName} - ${customer.phone} - ${customer.shipAddress}${customer.ward == null ? "" : ", " + customer.ward}${customer.district == null ? "" : ", " + customer.district}${customer.province == null ? "" : ", " + customer.province}
                 </option>
             `
         )
         .join('')
     }
 `;
+}
+
+function populatecustomer0sSelect() {
+    $(customer0Select).append(`
+    ${customer0s
+            .map(
+                customer => `
+                <option value="${customer.customerId}">
+                    ${customer.fullName} - ${customer.phone}
+                </option>
+            `
+            )
+            .join('')
+        }
+`);
 }
 
 $("#customerSelect").change(() => {
@@ -101,11 +145,24 @@ $("#customerSelect").change(() => {
         customerSelect.value = ''; 
         customerContainer.style.display = 'block';
     }
+
+    validateOrder()
 });
 
 // Function to show the customer info
 function showcustomerInfo(customer) {
     // Clear customer info container
+
+    var address = customer.shipAddress;
+    if (customer.ward != null) {
+        address = address + ", " + customer.ward;
+    }
+    if (customer.district != null) {
+        address = address + ", " + customer.district;
+    }
+    if (customer.province != null) {
+        address = address + ", " + customer.province;
+    }
 
         var showcustomerInfoDiv =  `
         <div class="customer-info">
@@ -113,7 +170,7 @@ function showcustomerInfo(customer) {
             <label class="fw-bold">Số điện thoại: ${customer.phone}</label></br>
         `;
     if (customer.shipAddress !== null) {
-        showcustomerInfoDiv += `<label class="fw-bold">Địa chỉ: ${customer.shipAddress}</label>`;
+        showcustomerInfoDiv += `<label class="fw-bold">Địa chỉ: ${address}</label>`;
         }
     showcustomerInfoDiv += `</div>`;
 
@@ -121,7 +178,8 @@ function showcustomerInfo(customer) {
     showcustomerInfoDiv += `
         <input hidden name="Order.CustomerName" value="${customer.customerName}" />
         <input hidden name="Order.Phone" value="${customer.phone}" />
-        <input hidden name="Order.ShipAddress" value="${customer.shipAddress}" />
+        <input hidden name="Order.ShipAddress" value="${address}" />
+        <input hidden name="Order.CustomerId" value="${customer.customerId}" />
     `
 
     customerInfoContainer.innerHTML = showcustomerInfoDiv;
@@ -134,6 +192,13 @@ function showcustomerInfo(customer) {
         console.log("customerSelect VALUE: " + customerSelect.value)
         customerContainer.style.display = 'block'; // Show the customer container
     });
+
+    // Change retail-wholesale price
+    if (customer.customer.isWholesale) {
+        $("#price-type").val("Giá sỉ").trigger("change");
+    } else {
+        $("#price-type").val("Giá lẻ").trigger("change");
+	}
 }
 
 // Function to populate products select list
@@ -141,8 +206,10 @@ function populateProductsSelect() {
     productList.innerHTML = `
         ${products
             .map(
-                product => `<a href="javascript:;" class="list-group-item item" onclick="getProductInfo(this)">
-                                <div class="row d-flex align-items-center">
+                product => `<a href="javascript:;" class="list-group-item item"
+                               ${product.availableUnit <= 0 ? "" : "onclick='getProductInfo(this)'"}>
+                                <div class="row d-flex align-items-center"
+                                     ${product.availableUnit <= 0 ? "style='background: white; opacity: 0.5'" : ""}>
                                     <div class="col-6 d-flex align-items-center">
                                         <div class="flex-shrink-0 cover">
                                             <img src="${product.presentImage}" class="productImg">
@@ -166,7 +233,7 @@ function populateProductsSelect() {
                                         <p class="wholesalePrice" hidden>${product.wholesalePrice}</p>
                                         <p class="wholesaleDiscount" hidden>${product.wholesaleDiscount}</p>
 
-                                        <p class="m-0 text-info fw-bold">Tồn: ${product.unitInStock}</p>
+                                        <p class="m-0 text-info fw-bold">Có thể bán: <span class="availableUnit">${product.availableUnit}</span></p>
                                     </div>
                                 </div>
                             </a>`
@@ -191,6 +258,8 @@ function getProductInfo(linkElement) {
     const wholesalePrice = linkElement.querySelector('.wholesalePrice').textContent;
     const wholesaleDiscount = linkElement.querySelector('.wholesaleDiscount').textContent;
 
+    const availableUnit = linkElement.querySelector('.availableUnit').textContent;
+
     //Hiển thị sản phẩm ở order
     var isRetail = $("#price-type").val() == "Giá lẻ";
     var price = isRetail ? retailPrice : wholesalePrice;
@@ -207,18 +276,24 @@ function getProductInfo(linkElement) {
         <td>${unit}</td>
         <td>
             <div class="input-group">
-                <input name="QuantityList" type="number" value="1" min="1" step="1" class="form-control num">
+                <input name="QuantityList" required type="number" value="1" min="1" max="${availableUnit}" step="1" class="form-control num">
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input name="PriceList" class="form-control price num" step="1000" min="0" value="${price}" type='number' />
+                <input name="PriceList" required class="form-control price num" step="1000" min="0" value="${price}" type='number' />
+
+                <input hidden value="${retailPrice}" />
+                <input hidden value="${wholesalePrice}" />
             </div>
         </td>
         <td>
             <div class="input-group">
-                <input name="DiscountList" class="form-control discount num" step="0.1" min="0" value="${discount}" type='number' />
+                <input name="DiscountList" required class="form-control discount num" step="0.1" min="0" max="100" value="${discount}" type='number' />
                 <span class="input-group-text">%</span>
+                
+                <input hidden value="${retailDiscount}" />
+                <input hidden value="${wholesaleDiscount}" />
             </div>
         </td>
         <td><span class="sum"></span> VNĐ</td>
@@ -266,6 +341,7 @@ function addcustomerByAPI() {
     var name = $('#customer').val();
     var phone = $('#phone').val();
     var address = $('#address').val();
+    var customerId = $("#customer-0").val();
     var customerLength = customers.length;
     var customerDTO = {
         "shipInfoId": 0,
@@ -273,8 +349,30 @@ function addcustomerByAPI() {
         "shipAddress": address,
         "customerId": null,
         "status": true,
-        "customerName": name
+        "customerName": name,
+        "customer": {
+            "customerId": 0,
+            "fullName": null,
+            "phone": null,
+            "isWholesale": null
+		}
     }
+
+    if (customerId == "new-retail") {
+        customerDTO.customer.customerId = 0;
+        customerDTO.customer.fullName = name;
+        customerDTO.customer.phone = phone;
+        customerDTO.customer.isWholesale = false;
+    } else if (customerId == "new-wholesale") {
+        customerDTO.customer.customerId = 0;
+        customerDTO.customer.fullName = name;
+        customerDTO.customer.phone = phone;
+        customerDTO.customer.isWholesale = true;
+    } else {
+        customerDTO.customerId = customerId;
+        customerDTO.customer = null;
+	}
+
     $.ajax({
         url: "https://localhost:7123/Admin/Order/AddNewShippingInfo", // Replace with the correct API endpoint URL
         type: "POST",
@@ -288,7 +386,7 @@ function addcustomerByAPI() {
             var customerOption = `
                 <option value="${response.shipInfoId}"
                     title="Địa chỉ: ${response.shipAddress}">
-                    ${response.customerName} - ${response.phone}
+                    ${response.customerName} - ${response.phone} - ${response.shipAddress}
                 </option>
             `
             // Thêm select list customer mới -- giá trị là customer vừa tạo
@@ -302,7 +400,7 @@ function addcustomerByAPI() {
 
             //reset form
             resetAddAuthorForm();
-            round_success_noti("Thêm khách hàng thành công");
+            round_success_noti("Thêm địa chỉ giao hàng thành công");
 
         },
         error: function(error) {
@@ -374,6 +472,7 @@ function addcustomerByAPI() {
 
 function resetAddAuthorForm(){
     // Clear input fields (set their values to empty strings)
+    $("#customer-0").val('new-retail');
     $("#customer").val('');
     $("#phone").val('');
     $("#address").val('');
@@ -403,8 +502,8 @@ var updateOrder = function () {
     $('#totalPay').text('0');
     var vatValue = $('#totalVat').val();
     if (isNaN(vatValue) || vatValue >= 100 || !isNotNullOrEmpty(vatValue)) {
-        $('#totalVat').val(5);
-        vatValue = 5;
+        $('#totalVat').val(0);
+        vatValue = 0;
     }
     vat = vatValue;
 
@@ -443,6 +542,8 @@ var updateOrder = function () {
     }
     totalPrice = 0;
     totalPay = 0;
+
+    validateOrder();
 }
 
 $(document).ready(function () {
@@ -477,3 +578,50 @@ $(document).ready(function () {
 function isNotNullOrEmpty(value) {
     return value !== null && value !== undefined && value !== '';
 }
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// Has customer and at least 1 product in order to add new
+function validateOrder() {
+    var hasCustomer = $("#customerInfoContainer").has("div").length > 0;
+    var hasProduct = $("#orderContainer").has("tr").length > 0;
+
+    console.log(hasCustomer, hasProduct);
+
+    if (hasCustomer && hasProduct) {
+        $("#submitOrder").removeAttr("disabled");
+    } else {
+        $('#submitOrder').attr('disabled', 'disabled');
+    }
+};
+
+$(document).ready(function () {
+    $('#submitOrder').attr('disabled', 'disabled');
+});
+
+//-----------------------------------------------------------------------------------------------------------------
+
+// Change between retail - wholesale price
+$("#price-type").on("change", function () {
+    $(orderContainer).children("tr").each(function () {
+        var priceRow = $(this).children("td").eq(5);
+        var priceInput = $(priceRow).find("input").eq(0);
+        var retailPrice = $(priceRow).find("input").eq(1).val();
+        var wholesalePrice = $(priceRow).find("input").eq(2).val();
+
+        var discountRow = $(this).children("td").eq(6);
+        var discountInput = $(discountRow).find("input").eq(0);
+        var retailDiscount = $(discountRow).find("input").eq(1).val();
+        var wholesaleDiscount = $(discountRow).find("input").eq(2).val();
+
+        if ($("#price-type").val() == "Giá lẻ") {
+            priceInput.val(retailPrice);
+            discountInput.val(retailDiscount);
+        } else {
+            priceInput.val(wholesalePrice);
+            discountInput.val(wholesaleDiscount);
+		}
+    });
+
+    updateOrder();
+});

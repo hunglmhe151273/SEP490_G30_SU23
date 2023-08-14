@@ -29,7 +29,13 @@ namespace VBookHaven.DataAccess.Respository
 				await dbContext.SaveChangesAsync();
 
 				foreach (var detail in details)
+				{
 					detail.OrderId = order.OrderId;
+
+					var product = await dbContext.Products.FindAsync(detail.ProductId);
+					product.AvailableUnit -= detail.Quantity;
+					dbContext.Entry(product).State = EntityState.Modified;
+				}
 
 				dbContext.OrderDetails.AddRange(details);
 				await dbContext.SaveChangesAsync();

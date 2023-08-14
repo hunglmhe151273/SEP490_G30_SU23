@@ -19,6 +19,8 @@ public partial class Customer
     public DateTime? DOB {  get; set; }
     [Display(Name = "Giới tính")]
     public bool? IsMale { get; set; }
+    [Display(Name = "Nhóm khách hàng")]
+    public bool IsWholesale { get; set; }
     public string? Image { get; set; }
     public bool? Status { get; set; }
     [Display(Name = "Nhóm Khách Hàng")]

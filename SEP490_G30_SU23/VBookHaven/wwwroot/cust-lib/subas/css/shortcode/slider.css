@@ -14,10 +14,12 @@
   position: relative;
 }
 .slider-img {
-  width: 53%;
+  width: /*53%*/ 100%;
 }
 .slider-img > img {
   width: 100%;
+  /* Custom */
+  aspect-ratio: 7/1;
 }
 .slider-info {
   height: calc(100% - 100px);

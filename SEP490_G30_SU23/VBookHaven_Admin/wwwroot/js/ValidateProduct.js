@@ -130,6 +130,54 @@ $(document).on('change', '#Product_WholesaleDiscount', function () {
     }
 });
 
+// Warning when selling price is lower than buying price
+function warningPrice() {
+    var purchasePrice = $("#Product_PurchasePrice").val();
+    var retailPrice = $("#Product_RetailPrice").val() * (1 - $("#Product_RetailDiscount").val() / 100);
+    var wholesalePrice = $("#Product_WholesalePrice").val() * (1 - $("#Product_WholesaleDiscount").val() / 100);
+
+    if ($("#Product_PurchasePrice").hasClass("is-valid")
+        && $("#Product_RetailPrice").hasClass("is-valid")
+        && $("#Product_RetailDiscount").hasClass("is-valid")
+        && $("#Product_WholesalePrice").hasClass("is-valid")
+        && $("#Product_WholesaleDiscount").hasClass("is-valid")) {
+
+        //console.log(purchasePrice, retailPrice, wholesalePrice);
+
+        if (retailPrice <= purchasePrice && wholesalePrice <= purchasePrice) {
+            $("#warningPrice").text("Giá lẻ và giá sỉ không lớn hơn giá nhập");
+        } else if (retailPrice <= purchasePrice) {
+            $("#warningPrice").text("Giá lẻ không lớn hơn giá nhập");
+        } else if (wholesalePrice <= purchasePrice) {
+            $("#warningPrice").text("Giá sỉ không lớn hơn giá nhập");
+        } else {
+            $("#warningPrice").text("");
+        }
+    } else {
+        $("#warningPrice").text("");
+    }
+}
+
+$(document).ready(function () {
+    warningPrice();
+})
+
+$(document).on('change', '#Product_PurchasePrice, #Product_RetailPrice, #Product_RetailDiscount, #Product_WholesalePrice, #Product_WholesaleDiscount', function () {
+    warningPrice();
+});
+
+/*-----------------------------------------------------------------------------------------------------------------*/
+
+// Add author
+$(document).on('change', '#authorName', function () {
+    console.log("validate author");
+    if ($(this).val() == "") {
+        invalidInput(this, $("#authorName-feedback"), "Tên tác giả là bắt buộc");
+    } else {
+        validInput(this, $("#authorName-feedback"));
+    }
+});
+
 //-----------------------------------------------------------------------------------------------------------------
 
 // Validate form
