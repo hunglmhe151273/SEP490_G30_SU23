@@ -93,9 +93,9 @@ function validateSubmit(form) {
 // Add customer
 $(document).on('keyup', '#customer', function () {
     if ($(this).val().length >= 50) {
-        invalidInput(this, $('#customer-feedback'), "Tên khách hàng không được vượt quá 50 kí tự");
+        invalidInput(this, $('#customer-feedback'), "Tên người nhận không được vượt quá 50 kí tự");
     } else if ($(this).val() == "") {
-        invalidInput(this, $('#customer-feedback'), "Tên khách hàng là bắt buộc");
+        invalidInput(this, $('#customer-feedback'), "Tên người nhận là bắt buộc");
     } else {
         validInput(this, $('#customer-feedback'))
     }

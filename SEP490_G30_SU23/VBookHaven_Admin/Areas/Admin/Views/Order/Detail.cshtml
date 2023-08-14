@@ -186,9 +186,51 @@
                                 <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
                                 <div id="customerInfoContainer" class="mb-4">
                                     <div class="customer-info">
-                                        <h6 class="text-primary fw-bold">@Model.Order.CustomerName</h6>
+                                        <table>
+                                            <tr>
+                                                <td><h6 class="text-primary fw-bold">Tên khách hàng:&nbsp;</h6></td>
+                                                <td><h6 class="text-primary">@Model.Order.Customer.FullName </h6></td>
+                                            </tr>
+                                            <tr>
+                                                <td><h6 class="text-primary fw-bold">Số điện thoại:&nbsp;</h6></td>
+                                                <td><h6 class="text-primary">@Model.Order.Customer.Phone </h6></td>
+                                            </tr>
+                                        </table>
+                                        @*<label class="fw-bold">Tên người nhận: @Model.Order.CustomerName</label><br />
                                         <label class="fw-bold">Số điện thoại: @Model.Order.Phone</label><br />
-                                        <label class="fw-bold">Địa chỉ: @Model.Order.ShipAddress</label>
+                                        <label class="fw-bold">Địa chỉ: @Model.Order.ShipAddress</label>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 card border-top border-0 border-4 border-primary">
+                        <div class="pt-4 px-5">
+                            <div class="card-title d-flex align-items-center">
+                                <div>
+                                    <i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
+                                </div>
+                                <h4 class="mb-0 fw-bold">Địa chỉ giao hàng</h4>
+                            </div>
+                            <hr>
+                            <div class="card-body row g-3">
+                                <!-- không fix code >> chú ý id div này >> id liên quan đến js -->
+                                <div id="customerInfoContainer" class="mb-4">
+                                    <div class="customer-info">
+                                        <table>
+                                            <tr>
+                                                <td><h6 class="text-primary fw-bold">Tên người nhận:&nbsp;</h6></td>
+                                                <td><h6 class="text-primary">@Model.Order.CustomerName </h6></td>
+                                            </tr>
+                                            <tr>
+                                                <td><h6 class="text-primary fw-bold">Số điện thoại:&nbsp;</h6></td>
+                                                <td><h6 class="text-primary">@Model.Order.Phone </h6></td>
+                                            </tr>
+                                            <tr>
+                                                <td><h6 class="text-primary fw-bold">Địa chỉ:&nbsp;</h6></td>
+                                                <td><h6 class="text-primary">@Model.Order.ShipAddress </h6></td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +273,7 @@
                             @if (OrderStatus.ToNum(Model.Order.Status) < 5 && total > Model.Order.AmountPaid)
                             {
                                 <div class="col-4 d-flex align-items-center justify-content-end">
-                                    <button class=" btn btn-info" data-bs-toggle="modal" data-bs0-target="#addPayment">Thanh toán</button>
+                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
                                 </div>
                             }
                         </div>

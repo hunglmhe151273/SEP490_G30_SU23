@@ -8,8 +8,9 @@ using VBookHaven.Models.DTO;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
+	// Chua chon duoc tinh thanh khi them dia chi giao hang
 	// Gui email khi update trang thai don hang
-	// Them trang thai Xuat kho
+	// Them trang thai Xuat kho?
 
 	public class ViewOrderManagementModel
 	{
@@ -362,17 +363,17 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<ShippingInfo>>> GetAllCustomers()
+		public async Task<ActionResult<List<ShippingInfo>>> GetAllShipInfos()
+		{
+			var shipInfos = await customerRespository.GetAllNoAccountShippingInfoAsync();
+			return shipInfos;
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<List<VBookHaven.Models.Customer>>> GetAllCustomers()
 		{
 			var customers = await customerRespository.GetAllNoAccountCustomersAsync();
-
-			var shipInfos = new List<ShippingInfo>();
-			foreach (VBookHaven.Models.Customer c in customers)
-			{
-				shipInfos.Add(c.DefaultShippingInfo);
-			}
-
-			return shipInfos;
+			return customers;
 		}
 
 		[HttpPost]
@@ -388,13 +389,15 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			try
 			{
 				await shippingInfoRepository.AddShippingInfoAsync(shipInfo);
-
-				var customer = new VBookHaven.Models.Customer()
+				if (shipInfo.Customer != null)
 				{
-					FullName = "",
-					DefaultShippingInfoId = shipInfo.ShipInfoId
-				};
-				await customerRespository.AddCustomerNoAccountAsync(customer);
+					await customerRespository.UpdateCustomerDefaultShipInfoAsync(shipInfo.Customer.CustomerId, shipInfo.ShipInfoId);
+				}	
+				
+				if (shipInfo.Customer == null)
+				{
+					shipInfo.Customer = await customerRespository.GetCustomerByIdAsync(shipInfo.CustomerId.Value);
+				}	
 				
 				return Ok(shipInfo);
 			}

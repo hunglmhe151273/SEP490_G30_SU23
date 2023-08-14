@@ -16,6 +16,7 @@ namespace VBookHaven.DataAccess.Respository
         Task UpdateCustomerProfile(Customer c);
 
         Task<List<Customer>> GetAllNoAccountCustomersAsync();
+        Task<List<ShippingInfo>> GetAllNoAccountShippingInfoAsync();
         Task AddCustomerNoAccountAsync(Customer customer);
     }
 
@@ -44,6 +45,18 @@ namespace VBookHaven.DataAccess.Respository
                     .Include(c => c.DefaultShippingInfo).ToListAsync();
             }
         }
+
+        public async Task<List<ShippingInfo>> GetAllNoAccountShippingInfoAsync()
+        {
+			using (var dbContext = new VBookHavenDBContext())
+            {
+                var shipInfo = await dbContext.ShippingInfos.Include(s => s.Customer)
+                    .Where(s => s.Customer != null).Where(s => s.Customer.AccountId == null)
+                    .ToListAsync();
+
+                return shipInfo;
+            }    
+		}
 
         public async Task<Customer?> GetCustomerByIdAsync(int customerId)
         {
