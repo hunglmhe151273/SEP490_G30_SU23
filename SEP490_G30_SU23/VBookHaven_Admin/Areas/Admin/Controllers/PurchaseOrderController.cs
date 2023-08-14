@@ -276,6 +276,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
                 product.PurchasePrice = Math.Ceiling((totalNewPrice + totalOldPrice) / totalInStock);
                 product.UnitInStock += detail.Quantity;
+                product.AvailableUnit += detail.Quantity;
                 await _productRespository.UpdateProductAsync(product);
             }
         }
@@ -394,6 +395,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 product.WholesaleDiscount = 0;
                 product.RetailDiscount = 0;
                 product.UnitInStock = 0;
+                product.AvailableUnit = 0;
+                //To fix: add
+                product.SubCategoryId = 1;
                 _dbContext.Products.Add(product);
                 
                 await _dbContext.SaveChangesAsync();

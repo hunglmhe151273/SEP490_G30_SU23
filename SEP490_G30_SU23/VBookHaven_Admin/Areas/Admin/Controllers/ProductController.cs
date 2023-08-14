@@ -143,8 +143,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			model.Product.UnitInStock = 0;
 			model.Product.IsBook = true;
 			model.Product.Status = true;
-
-			await _productRespository.AddBookAsync(model.Product, model.Book);
+            model.Product.AvailableUnit = 0;
+            await _productRespository.AddBookAsync(model.Product, model.Book);
 
 			var addAuthorTask = _productRespository.AddAuthorsToBookAsync(model.Product.ProductId, model.AuthorIdList);
 			var uploadImageTask = imageRepository.UploadImagesAsync(model.Product.ProductId, model.AddImageList);
@@ -195,7 +195,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			//}
 
 			model.Product.UnitInStock = 0;
-			model.Product.IsBook = false;
+            model.Product.AvailableUnit = 0;
+            model.Product.IsBook = false;
 			model.Product.Status = true;
 
 			await _productRespository.AddStationeryAsync(model.Product, model.Stationery);
