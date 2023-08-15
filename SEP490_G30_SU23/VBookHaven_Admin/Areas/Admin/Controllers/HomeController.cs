@@ -87,47 +87,38 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Chart(int? year)
         {
-            if(year == 0)
+            if (year == 0)
             {
                 return BadRequest();
             }
-            //tổng tiền nhận được trong tháng ... của năm
-
-            //tổng tiền phải chi trong tháng ... của năm
-
-            // Lợi thuận của tháng ... của năm
-
-            //test hoạt động của json
+            //----------------------Doanh thu----------------------
+            //Tổng doanh thu theo năm
             ChartByYearVM vm = new ChartByYearVM();
-            if (year == 2021) {
-                vm.Jan = 100000;
-                vm.Feb = 200000;
-                vm.Mar = 300000;
-            }else if(year == 2022)
-            {
-                vm.Jan = 100000;
-                vm.Feb = 200000;
-                vm.Mar = 300000;
-                vm.Apr = 400000;
-                vm.May = 500000;
-                vm.Jun = 600000;
-            }
-            else if (year == 2023)
-            {
-                vm.Jan = 100000;
-                vm.Feb = 200000;
-                vm.Mar = 300000;
-                vm.Apr = 400000;
-                vm.May = 500000;
-                vm.Jun = 600000;
-                vm.Jul = 700000;
-                vm.Aug = 800000;
-                vm.Sep = 900000;
-            }
-
+            vm = GetChartByYear(vm, year);
             return Ok(vm);
         }
-
+        private ChartByYearVM GetChartByYear(ChartByYearVM vm,int? year)
+        {
+            vm.Jan = ToTalOrderPriceInMonthInYear(1, year);
+            vm.Feb = ToTalOrderPriceInMonthInYear(2, year);
+            vm.Mar = ToTalOrderPriceInMonthInYear(3, year);
+            vm.Apr = ToTalOrderPriceInMonthInYear(4, year);
+            vm.May = ToTalOrderPriceInMonthInYear(5, year);
+            vm.Jun = ToTalOrderPriceInMonthInYear(6, year);
+            vm.Jul = ToTalOrderPriceInMonthInYear(7, year);
+            vm.Aug = ToTalOrderPriceInMonthInYear(8, year);
+            vm.Sep = ToTalOrderPriceInMonthInYear(9, year);
+            vm.Oct = ToTalOrderPriceInMonthInYear(10, year);
+            vm.Nov = ToTalOrderPriceInMonthInYear(11, year);
+            vm.Dec = ToTalOrderPriceInMonthInYear(12, year);
+            return vm;
+        }
+        private decimal ToTalOrderPriceInMonthInYear(int month, int? year)
+        {
+            return (decimal)_dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year && od.Order.OrderDate.Value.Month == month && od.Order.Status == OrderStatus.Done)
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+        }
         [HttpPost]
         public async Task<IActionResult> DailyReport(string? selectValue)
         {
@@ -135,34 +126,80 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
-            //tổng tiền nhận được trong tháng ... của năm
-
-            //tổng tiền phải chi trong tháng ... của năm
-
-            // Lợi thuận của tháng ... của năm
-
-            //test hoạt động của json
+            //Test hoạt động của json
             DailyReportVM vm = new DailyReportVM();
             if (selectValue.Equals("Hôm nay"))
             {
-                vm.Revenue = 7850000;
-                vm.NewOrder = 27;
-                vm.DoneOrder = 33;
-                vm.CancelledOrder = 23;
+                DateTime today = DateTime.Today;
+                //Doanh thu hôm nay
+                vm.Revenue =  _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Date == today)
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                //Đơn hàng cần xử lý
+                vm.NewOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date == today 
+                                && o.Status != OrderStatus.Done 
+                                && o.Status != OrderStatus.Cancel);
+                //Đơn hàng đã hoàn thành
+                vm.DoneOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null && o.OrderDate.Value.Date == today && o.Status == OrderStatus.Done);
+                //Đơn hàng đã hủy
+                vm.CancelledOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null && o.OrderDate.Value.Date == today && o.Status == OrderStatus.Cancel);
             }
-            else if (selectValue.Equals("Tuần này"))
+            else if (selectValue.Equals("7 ngày"))
             {
-                vm.Revenue = 970000;
-                vm.NewOrder = 50;
-                vm.DoneOrder = 65;
-                vm.CancelledOrder = 70;
+                DateTime today = DateTime.Today;
+                DateTime last7Days = today.AddDays(-6);
+
+                vm.Revenue = _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Date >= last7Days 
+                                                            && od.Order.OrderDate.Value.Date <= today)
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                vm.NewOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date >= last7Days 
+                                && o.OrderDate.Value.Date <= today
+                                && o.Status != OrderStatus.Done 
+                                && o.Status != OrderStatus.Cancel);
+                vm.DoneOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date >= last7Days
+                                && o.OrderDate.Value.Date <= today
+                                && o.Status == OrderStatus.Done);
+                vm.CancelledOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                            && o.OrderDate.Value.Date >= last7Days
+                            && o.OrderDate.Value.Date <= today
+                            && o.Status == OrderStatus.Cancel);
             }
-            else if (selectValue.Equals("Tháng này"))
+            else if (selectValue.Equals("30 ngày"))
             {
-                vm.Revenue = 9750000;
-                vm.NewOrder = 105;
-                vm.DoneOrder = 150;
-                vm.CancelledOrder = 87;
+                DateTime today = DateTime.Today;
+                DateTime last30Days = today.AddDays(-29);
+
+                vm.Revenue = _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null 
+                                && od.Order.OrderDate.Value.Date >= last30Days
+                                && od.Order.OrderDate.Value.Date <= today)
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                vm.NewOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date >= last30Days
+                                && o.OrderDate.Value.Date <= today
+                                && o.Status != OrderStatus.Done
+                                && o.Status != OrderStatus.Cancel);
+                vm.DoneOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date >= last30Days
+                                && o.OrderDate.Value.Date <= today
+                                && o.Status == OrderStatus.Done);
+                vm.CancelledOrder = _dbContext.Orders
+                    .Count(o => o.OrderDate != null 
+                                && o.OrderDate.Value.Date >= last30Days
+                                && o.OrderDate.Value.Date <= today
+                                && o.Status == OrderStatus.Cancel);
             }
 
             return Ok(vm);

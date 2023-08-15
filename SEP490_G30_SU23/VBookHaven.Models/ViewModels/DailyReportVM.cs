@@ -8,7 +8,7 @@ namespace VBookHaven.Models.ViewModels
 {
     public class DailyReportVM
     {
-        public int Revenue { get; set; }
+        public decimal Revenue { get; set; }
         public int NewOrder { get; set; }
         public int DoneOrder { get; set; }
         public int CancelledOrder { get; set; }

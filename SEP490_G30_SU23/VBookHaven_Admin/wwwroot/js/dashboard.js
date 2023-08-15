@@ -117,18 +117,18 @@ function clearChart() {
 //-------------------------------Daily tracking report-----------------------------
 function defaultDailyReport(selectValue) {
     //to fix
-    let api = `https://localhost:7123/Admin/Home/DailyReport/?selectValue=${selectValue}`;
-    callApiDailyReport(api);
+    let api = `https://localhost:7123/Admin/Home/DailyReport`;
+    callApiDailyReport(api, selectValue);
 }
 
 $("#DailyReport").change(() => {
     //set paramenter to api url
     console.log("Set paramenter dayly report:" + $("#DailyReport").val());
-    callApiDailyReport("https://localhost:7123/Admin/Home/DailyReport/?selectValue=" + $("#DailyReport").val());
+    callApiDailyReport("https://localhost:7123/Admin/Home/DailyReport", $("#DailyReport").val());
 });
 
 
-function callApiDailyReport(api, selectedValue) { //api
+function callApiDailyReport(api, selectedValue) {
     $.ajax({
         url: api,
         method: "POST",
@@ -137,7 +137,7 @@ function callApiDailyReport(api, selectedValue) { //api
         success: function(data) {
             //Gọi hàm set value
             SetDailyReportValue(data.revenue, data.newOrder, data.doneOrder, data.cancelledOrder);
-            console.log("DailyReport" + data);
+            console.log("DailyReport revenue" + data.revenue);
         },
         error: function(error) {
             console.error('Error:', error);
