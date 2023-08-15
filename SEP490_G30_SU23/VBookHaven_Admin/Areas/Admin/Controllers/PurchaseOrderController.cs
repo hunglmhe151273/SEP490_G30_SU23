@@ -350,7 +350,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var subCategories = new List<SubCategory>();
             try
             {
-                subCategories = await _dbContext.SubCategories.ToListAsync();
+                subCategories = await _dbContext.SubCategories.Where(sub => sub.Status != false).ToListAsync();
             }
             catch (Exception ex)
             {

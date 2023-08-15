@@ -68,12 +68,12 @@ var updateInvoice = function () {
             isNotNullOrEmpty(price)) {
             sum = (parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
             totalPrice += parseFloat(sum);
-            totalPay = totalPrice * (100 + parseFloat(vat)) / 100;
+            totalPay = parseFloat(totalPrice * (100 + parseFloat(vat)) / 100);
             //totalPrice += parseFloat(parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
             //totalPay += parseFloat(parseFloat(price) * (100 - parseFloat(discount) + parseFloat(vat)) / 100 * num)
-            $(this).find($('.sum')).text(sum.toLocaleString('en'));
-            $('#totalPrice').text(totalPrice.toLocaleString('en'));
-            $('#totalPay').text(totalPay.toLocaleString('en'));
+            $(this).find($('.sum')).text(Math.ceil(sum).toLocaleString('en'));
+            $('#totalPrice').text(Math.ceil(totalPrice).toLocaleString('en'));
+            $('#totalPay').text(Math.ceil(totalPay).toLocaleString('en'));
             $('#totalPayToCompare').text(totalPay);
         }
     });
@@ -84,7 +84,7 @@ var updateInvoice = function () {
     var debt = parseFloat(totalPay) - paid;
     console.log(debt);
     if (parseFloat(totalPay) >= paid) {
-        $('#debt').text(debt.toLocaleString('en'));
+        $('#debt').text(Math.ceil(debt).toLocaleString('en'));
     } else {
         $('#paid').val(totalPay)
         $('#debt').text('0');
