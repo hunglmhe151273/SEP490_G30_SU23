@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using VBookHaven.Utility;
 using System.Data;
+using System.Linq;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -113,11 +114,15 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             vm.Dec = ToTalOrderPriceInMonthInYear(12, year);
             return vm;
         }
-        private decimal ToTalOrderPriceInMonthInYear(int month, int? year)
+        private decimal? ToTalOrderPriceInMonthInYear(int month, int? year)
         {
-            return (decimal)_dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year && od.Order.OrderDate.Value.Month == month && od.Order.Status == OrderStatus.Done)
+            DateTime today = DateTime.Today;
+            if(month > today.Month && year == today.Year) { return null; }
+            return _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year 
+                    && od.Order.OrderDate.Value.Month == month && od.Order.Status == OrderStatus.Done)
                     .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+             
         }
         [HttpPost]
         public async Task<IActionResult> DailyReport(string? selectValue)
@@ -126,17 +131,18 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
-            //Test hoạt động của json
             DailyReportVM vm = new DailyReportVM();
             if (selectValue.Equals("Hôm nay"))
             {
                 DateTime today = DateTime.Today;
                 //Doanh thu hôm nay
                 vm.Revenue =  _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Date == today)
+                    .Where(od => od.Order.OrderDate != null 
+                            && od.Order.OrderDate.Value.Date == today
+                            && od.Order.Status == OrderStatus.Done)
                     .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
                 //Đơn hàng cần xử lý
-                vm.NewOrder = _dbContext.Orders
+                vm.ProcessOrder = _dbContext.Orders
                     .Count(o => o.OrderDate != null 
                                 && o.OrderDate.Value.Date == today 
                                 && o.Status != OrderStatus.Done 
@@ -154,10 +160,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 DateTime last7Days = today.AddDays(-6);
 
                 vm.Revenue = _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Date >= last7Days 
-                                                            && od.Order.OrderDate.Value.Date <= today)
+                    .Where(od => od.Order.OrderDate != null
+                     && od.Order.Status == OrderStatus.Done
+                    && od.Order.OrderDate.Value.Date >= last7Days 
+                     && od.Order.OrderDate.Value.Date <= today)
                     .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
-                vm.NewOrder = _dbContext.Orders
+                vm.ProcessOrder = _dbContext.Orders
                     .Count(o => o.OrderDate != null 
                                 && o.OrderDate.Value.Date >= last7Days 
                                 && o.OrderDate.Value.Date <= today
@@ -180,11 +188,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 DateTime last30Days = today.AddDays(-29);
 
                 vm.Revenue = _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null 
+                    .Where(od => od.Order.OrderDate != null
+                                && od.Order.Status == OrderStatus.Done
                                 && od.Order.OrderDate.Value.Date >= last30Days
                                 && od.Order.OrderDate.Value.Date <= today)
                     .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
-                vm.NewOrder = _dbContext.Orders
+                vm.ProcessOrder = _dbContext.Orders
                     .Count(o => o.OrderDate != null 
                                 && o.OrderDate.Value.Date >= last30Days
                                 && o.OrderDate.Value.Date <= today

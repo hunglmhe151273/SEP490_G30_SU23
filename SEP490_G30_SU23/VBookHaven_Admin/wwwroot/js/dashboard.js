@@ -136,7 +136,7 @@ function callApiDailyReport(api, selectedValue) {
         dataType: "json",
         success: function(data) {
             //Gọi hàm set value
-            SetDailyReportValue(data.revenue, data.newOrder, data.doneOrder, data.cancelledOrder);
+            SetDailyReportValue(data.revenue, data.processOrder, data.doneOrder, data.cancelledOrder);
             console.log("DailyReport revenue" + data.revenue);
         },
         error: function(error) {
@@ -146,9 +146,9 @@ function callApiDailyReport(api, selectedValue) {
 }
 
 
-function SetDailyReportValue(revenue, newOrder, doneOrder, cancelledOrder) {
+function SetDailyReportValue(revenue, processOrder, doneOrder, cancelledOrder) {
     $("#revenue").text(revenue + "VND");
-    $("#newOrder").text(newOrder);
+    $("#processOrder").text(processOrder);
     $("#doneOrder").text(doneOrder);
     $("#cancelledOrder").text(cancelledOrder);
 }
