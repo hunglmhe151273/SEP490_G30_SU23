@@ -12,7 +12,7 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230814150937_initDB")]
+    [Migration("20230815162510_initDB")]
     partial class initDB
     {
         /// <inheritdoc />
@@ -365,9 +365,6 @@ namespace VBookHaven.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.HasKey("CategoryId");
 
@@ -937,9 +934,6 @@ namespace VBookHaven.DataAccess.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<string>("SubCategoryName")
                         .IsRequired()

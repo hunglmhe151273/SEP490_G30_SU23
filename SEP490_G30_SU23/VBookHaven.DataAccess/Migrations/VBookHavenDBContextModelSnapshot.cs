@@ -363,9 +363,6 @@ namespace VBookHaven.DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
                     b.HasKey("CategoryId");
 
                     b.ToTable("Category", (string)null);
@@ -934,9 +931,6 @@ namespace VBookHaven.DataAccess.Migrations
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
 
                     b.Property<string>("SubCategoryName")
                         .IsRequired()

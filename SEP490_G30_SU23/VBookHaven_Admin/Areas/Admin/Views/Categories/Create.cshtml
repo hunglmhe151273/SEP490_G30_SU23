@@ -1,7 +1,7 @@
 ﻿@model VBookHaven.Models.Category
 
 @{
-    ViewData["Title"] = "CreateCategory";
+    ViewData["Title"] = "Tạo nhóm hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -40,7 +40,7 @@
                                 <input asp-for="CategoryName" class="form-control" id="inputName">
                                 <span asp-validation-for="CategoryName" class="text-danger"></span>
                             </div>
-                            <div class="col-md-6"></div>
+                          @*  <div class="col-md-6"></div>
                             <div class="col-md-6">
                                 <label for="inputStatus" class="form-label" asp-for="Status"></label>
                                 <div>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6"></div>*@
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary px-5">Lưu</button>
                             </div>

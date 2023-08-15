@@ -91,7 +91,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SubCategoryId,SubCategoryName,CategoryId,Status")] SubCategory subCategory)
+        public async Task<IActionResult> Edit(int id, [Bind("SubCategoryId,SubCategoryName,CategoryId")] SubCategory subCategory)
         {
             if (id != subCategory.SubCategoryId)
             {
@@ -151,13 +151,18 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'VBookHavenDBContext.SubCategories'  is null.");
             }
-            var subCategory = await _context.SubCategories.FindAsync(id);
+            var subCategory = await _context.SubCategories.Include(sub => sub.Products).SingleOrDefaultAsync(sub => sub.CategoryId == id);
             if (subCategory != null)
             {
+                if (subCategory.Products.Count() > 0)
+                {
+                    TempData["error"] = "Không thể xóa dữ liệu đang được sử dụng";
+                    return RedirectToAction("Index", "Categories");
+                }
                 _context.SubCategories.Remove(subCategory);
             }
-
             await _context.SaveChangesAsync();
+            TempData["success"] = "Xóa thành công";
             return RedirectToAction("Index", "Categories");
         }
 

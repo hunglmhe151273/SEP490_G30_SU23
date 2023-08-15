@@ -206,7 +206,7 @@
                                                     <td> @detail.Quantity</td>
                                                     <td> @detail.UnitPrice VNĐ</td>
                                                     <td>@detail.Discount %</td>
-                                                    <td>@((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value) VNĐ</td>
+                                                    <td>@(Math.Ceiling((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value)) VNĐ</td>
                                                 </tr>
                                             }
                                         </tbody>
