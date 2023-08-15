@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using VBookHaven.Utility;
 using System.Data;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
     public class HomeController : Controller
     {
 

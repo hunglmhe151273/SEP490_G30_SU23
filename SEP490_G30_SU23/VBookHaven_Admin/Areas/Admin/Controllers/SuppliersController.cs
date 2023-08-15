@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +13,12 @@ using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.DTO;
 using VBookHaven.Models.ViewModels;
+using VBookHaven.Utility;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
     public class SuppliersController : Controller
     {
         private readonly VBookHavenDBContext _context;
