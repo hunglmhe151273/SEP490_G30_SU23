@@ -13,3 +13,138 @@ Note: This is the file where you can add your custom styles to change the look o
 /* ----------------------------------------------------
 	You can put your custom css code here: 
 -------------------------------------------------------*/
+.widget-filter {
+	position: relative;
+}
+
+	.widget-filter input {
+		height: 30px;
+		margin-bottom: 0;
+		padding-right: 20px;
+	}
+
+.list-group-item {
+	border: 0;
+	padding: 8px 15px;
+}
+
+.address .card-title {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+	.address .card-title span {
+		font-weight: normal;
+		text-transform: none;
+		font-size: small;
+		color: limegreen;
+		margin-left: 3%;
+	}
+
+.address .card-text {
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.address {
+	border: 0;
+	margin-bottom: 10px;
+}
+
+a .btn-address {
+	background-color: #ff7f00;
+}
+
+#add-address a {
+	text-align: center;
+}
+
+label {
+	color: black;
+}
+
+	.form-check-input, label .form-check-input {
+		font-size: large;
+	}
+
+.info {
+	padding: 15px 20px;
+	border: 0;
+}
+
+.input-icons i {
+	position: absolute;
+}
+
+.input-icons {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.icon {
+	padding: 10px;
+	min-width: 40px;
+}
+
+.input-field {
+	padding-left: 36px !important;
+}
+
+#btn-search {
+	height: 40px;
+	color: white;
+	background-color: #ff7f00;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.order-items {
+	padding: 10px 5px;
+	display: flex;
+	border-bottom: 1px solid #ff7f00;
+}
+
+.item-img {
+	width: 15%;
+}
+
+	.item-img img {
+		padding: 0 10px;
+		width: 100%;
+		height: 100px;
+		object-fit: contain;
+	}
+
+.item-info {
+	width: 75%;
+}
+
+.item-total {
+	width: 10%;
+}
+
+.item-info-name {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.order-footer p {
+	font-size: 15px;
+	font-weight: bold;
+	color: black;
+}
+
+.detail-content {
+	border-top: 2px solid #ff7f00;
+	background-color: #f8f9fa;
+	height: 150px;
+	max-height: 200px;
+}
+
+	.detail-content p {
+		font-weight: bolder;
+	}
+
+td img {
+	width: 15%;
+}

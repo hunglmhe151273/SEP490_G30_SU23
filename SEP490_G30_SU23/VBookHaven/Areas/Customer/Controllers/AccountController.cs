@@ -25,11 +25,18 @@ namespace VBookHaven.Areas.Customer.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IApplicationUserRespository _applicationUserRespository;
         IMapper _mapper;
+        private readonly IOrderRepository orderRepository;
+        private readonly IImageRepository imageRepository;
+        private readonly IProductRespository productRespository;
+
         public AccountController(IShippingInfoRepository shippingInfoRespository,
             UserManager<IdentityUser> userManager,
             IMapper mapper,
             IApplicationUserRespository applicationUserRespository,
-            ICustomerRespository customerRespository)
+            ICustomerRespository customerRespository,
+            IOrderRepository orderRepository,
+            IImageRepository imageRepository,
+            IProductRespository productRespository)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -38,6 +45,9 @@ namespace VBookHaven.Areas.Customer.Controllers
             _customerRespository = customerRespository;
             client = new HttpClient();
             profileApiUrl = "https://localhost:7123/api/customer/profile/update";
+            this.orderRepository = orderRepository;
+            this.imageRepository = imageRepository;
+            this.productRespository = productRespository;
         }
         public async Task<IActionResult> ShipInfo()
         {
@@ -298,5 +308,157 @@ namespace VBookHaven.Areas.Customer.Controllers
                 return null;
             }
         }
+
+        //---------- Phần của Quốc ----------
+        public async Task<IActionResult> Orders()
+        {
+			ApplicationUser applicationUser = await getCustomerFromIdentity();
+			if (applicationUser == null) { return Unauthorized(); }
+			int custId = applicationUser.Customer.CustomerId;
+
+            var model = new AccountOrdersViewModel();
+            model.AllOrders = await orderRepository.GetAllOrdersByCustomerAsync(custId);
+            model.AllOrders = model.AllOrders.OrderByDescending(o => o.OrderId).ToList();
+            model.OrderDetails = await orderRepository.GetAllOrderDetailByCustomerAllInfoAsync(custId);
+
+            model.WaitingOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Wait)).ToList();
+			model.ProcessingOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Process)).ToList();
+			model.ShippingOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Shipping)).ToList();
+			model.ShippedOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Shipped)
+                || o.Status.Equals(OrderStatus.Done)).ToList();
+
+            foreach (OrderDetail detail in model.OrderDetails)
+            {
+                var productId = detail.ProductId;
+                if (!model.Thumbnails.ContainsKey(productId))
+                {
+                    var thumbnail = await imageRepository.GetThumbnailByProductIdAsync(productId);
+                    string? thumbnailName;
+                    if (thumbnail != null)
+                        thumbnailName = thumbnail.ImageName;
+                    else thumbnailName = null;
+                    model.Thumbnails.Add(productId, thumbnailName);
+                }
+            }
+
+            return View(model);
+		}
+
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+			ApplicationUser applicationUser = await getCustomerFromIdentity();
+			if (applicationUser == null) { return Unauthorized(); }
+			int custId = applicationUser.Customer.CustomerId;
+
+            var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
+            if (order == null) { return NotFound(); }
+            if (order.CustomerId != custId)
+                return Unauthorized();
+
+            var model = new AccountOrderDetailViewModel();
+            model.Order = order;
+            model.Details = await orderRepository.GetOrderDetailByIdFullInfoAsync(id);
+            foreach (var detail in model.Details)
+            {
+				var productId = detail.ProductId;
+				var thumbnail = await imageRepository.GetThumbnailByProductIdAsync(productId);
+				string? thumbnailName;
+				if (thumbnail != null)
+					thumbnailName = thumbnail.ImageName;
+				else thumbnailName = null;
+				model.Thumbnails.Add(productId, thumbnailName);
+			}
+
+            return View(model);
+		}
+
+        [HttpPost]
+        public async Task<IActionResult> CancelOrderFromList(int id)
+        {
+            var success = await CancelOrderFunction(id);
+            if (success)
+                return RedirectToAction("Orders");
+            else return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelOrderFromDetail(int id)
+        {
+			var success = await CancelOrderFunction(id);
+            if (success)
+                return RedirectToAction("OrderDetail", new { id = id });
+			else return BadRequest();
+		}
+
+        //---------- Other functions ----------
+        private async Task<bool> CancelOrderFunction(int orderId)
+        {
+			ApplicationUser applicationUser = await getCustomerFromIdentity();
+			if (applicationUser == null) { return false; }
+			int custId = applicationUser.Customer.CustomerId;
+
+            var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+            if (order == null)
+                return false;
+            if (order.CustomerId != custId)
+                return false;
+
+            if (!order.Status.Equals(OrderStatus.Wait))
+                return false;
+
+			order.Status = OrderStatus.Cancel;
+			await orderRepository.UpdateOrderAsync(order);
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.AvailableUnit += detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
+			}
+			
+            return true;
+        }
     }
+
+    #region Class của Quốc
+    public class AccountOrdersViewModel
+    {
+        public List<Order> AllOrders { get; set; }
+        public List<Order> WaitingOrders { get; set; }
+        public List<Order> ProcessingOrders { get; set; }
+        public List<Order> ShippingOrders { get; set; }
+        public List<Order> ShippedOrders { get; set; }
+        public List<Order> CanceledOrders { get; set; }
+
+        public List<OrderDetail> OrderDetails { get; set; }
+        public Dictionary<int, string?> Thumbnails { get; set; }
+
+		public AccountOrdersViewModel()
+		{
+			AllOrders = new List<Order>();
+            WaitingOrders = new List<Order>();
+            ProcessingOrders = new List<Order>();
+            ShippingOrders = new List<Order>();
+            ShippedOrders = new List<Order>();
+            CanceledOrders = new List<Order>();
+
+            OrderDetails = new List<OrderDetail>();
+            Thumbnails = new Dictionary<int, string?>();
+		}
+	}
+
+    public class AccountOrderDetailViewModel
+    {
+        public Order Order { get; set; }
+        public List<OrderDetail> Details { get; set; }
+        public Dictionary<int, string?> Thumbnails { get; set; }
+
+        public AccountOrderDetailViewModel()
+        {
+            Order = new Order();
+            Details = new List<OrderDetail>();
+            Thumbnails = new Dictionary<int, string?>();
+        }
+    }
+
+	#endregion
 }

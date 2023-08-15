@@ -248,6 +248,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			if (staff == null)
 				return Unauthorized();
 
+			foreach (var detail in order.OrderDetails)
+			{
+				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
+				product.AvailableUnit += detail.Quantity;
+				await productRespository.UpdateProductAsync(product);
+			}
+
 			if (order.Status.Equals(OrderStatus.Wait))
 			{
 				order.StaffId = staff.StaffId;
@@ -349,7 +356,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			{
 				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
 				product.UnitInStock += detail.Quantity;
-				product.AvailableUnit += detail.Quantity;
 				await productRespository.UpdateProductAsync(product);
 			}
 		}
