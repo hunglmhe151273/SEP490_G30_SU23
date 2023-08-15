@@ -260,7 +260,7 @@
                                     <div id="product-feedback" class="feedback"></div>
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
-                                    <label for="inputCity" class="form-label">Loại sản phẩm</label>
+                                    <label for="inputCity" class="form-label">Phân loại</label>
                                     <div class="input-group mt-1">
                                         <div class="form-check-inline">
                                             <input class="form-check-input" type="radio" name="IsBook" value="true" checked>
@@ -273,6 +273,11 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 mb-3">
+                                    <label class="form-label">Loại sản phẩm</label>
+                                    <select class="form-control" id="subCategorySelect">
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Mã vạch</label>
                                     <input type="text" class="form-control validate is-valid" id="barCode" onchange="validateBarcode(this)" placeholder="Nhập mã vạch">
                                     <div id="barCode-feedback" class="feedback"></div>
@@ -282,16 +287,12 @@
                                     <input type="text" class="form-control validate important" id="price" placeholder="Nhập giá" required>
                                     <div id="price-feedback" class="feedback"></div>
                                 </div>
-       @*                         <div class="col-12 col-md-6 mb-3">
-                                    <label class="form-label">Số lượng nhập *</label>
-                                    <input type="text" class="form-control validate important" id="quantity" placeholder="Nhập số lượng" required>
-                                    <div id="quantity-feedback" class="feedback"></div>
-                                </div>*@
                                 <div class="col-12 col-md-6 mb-3">
                                     <label class="form-label">Đơn vị tính *</label>
                                     <input type="text" class="form-control validate important" id="unit" placeholder="Nhập đơn vị" required>
                                     <div id="unit-feedback" class="feedback"></div>
                                 </div>
+                                
                             </div>
                             <div class="modal-footer">
                                 <input type="button" class="btn btn-primary reset submit" value="Lưu" id="submitProduct" data-bs-dismiss="modal">

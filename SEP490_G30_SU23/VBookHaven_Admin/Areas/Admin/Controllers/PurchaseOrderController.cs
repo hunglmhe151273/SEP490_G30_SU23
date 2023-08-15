@@ -336,7 +336,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var listSuppliers = new List<Supplier>();
             try
             {
-                listSuppliers = await _dbContext.Suppliers.ToListAsync();
+                listSuppliers = await _dbContext.Suppliers.Where(s => s.Status != false).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -345,13 +345,27 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return listSuppliers.Select(_mapper.Map<Supplier, SupplierDTO>).ToList();
         }
         [HttpGet]
+        public async Task<ActionResult<IEnumerable<SubCategory>>> GetAllSubCategories()
+        {
+            var subCategories = new List<SubCategory>();
+            try
+            {
+                subCategories = await _dbContext.SubCategories.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return Ok(subCategories.Select(_mapper.Map<SubCategory, SubCategoryDTO>).ToList());
+        }
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
         {
             //get list product and return list
             var listProducts = new List<Product>();
             try
             {
-                listProducts = await _dbContext.Products.Include(x => x.Images).ToListAsync();
+                listProducts = await _dbContext.Products.Include(x => x.Images).Where(p => p.Status != false).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -370,7 +384,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var listProducts = new List<Product>();
             try
             {
-                listProducts = await _dbContext.Products.Where(p => !p.PurchaseOrderDetails.Where(pd => pd.PurchaseOrderId == purchaseId).Any()).Include(x => x.Images).ToListAsync();
+                listProducts = await _dbContext.Products.Where(p => !p.PurchaseOrderDetails.Where(pd => pd.PurchaseOrderId == purchaseId).Any() && p.Status != false).Include(x => x.Images).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -396,8 +410,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 product.RetailDiscount = 0;
                 product.UnitInStock = 0;
                 product.AvailableUnit = 0;
-                //To fix: add
-                product.SubCategoryId = 1;
+
                 _dbContext.Products.Add(product);
                 
                 await _dbContext.SaveChangesAsync();
@@ -406,6 +419,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     product.Barcode = "PVN" + product.ProductId;
                 }
 
+                //check subcategory isBook or vpp
                 if (productDTO.IsBook)
                 {
                     Book book = new Book();

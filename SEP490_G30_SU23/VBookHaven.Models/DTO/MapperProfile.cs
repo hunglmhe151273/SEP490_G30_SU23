@@ -25,6 +25,8 @@ namespace VBookHaven.Models.DTO
                   .ForMember(dest => dest.StaffName, opt => opt.MapFrom(src => src.Staff.FullName))
                 ;
             CreateMap<OrderDTO, Order>();
+            CreateMap<SubCategory, SubCategoryDTO>();
+            CreateMap<SubCategoryDTO, SubCategory>();
         }
 
         // Tổng tiền của đơn hàng - tham số purchasorder.purchaseOrderDetails

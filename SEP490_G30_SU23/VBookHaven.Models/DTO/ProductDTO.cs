@@ -32,7 +32,10 @@ namespace VBookHaven.Models.DTO
 		public int? UnitInStock { get; set; }
         public int? AvailableUnit { get; set; }
         public bool IsBook { get; set; }
+
         [StringLength(200, ErrorMessage = "Tên sản phẩm không được vượt quá 100 kí tự.")]
         public string? PresentImage { get; set; }
+
+        public int? SubCategoryId { get; set; }
     }
 }

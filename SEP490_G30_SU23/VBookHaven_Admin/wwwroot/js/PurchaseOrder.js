@@ -210,11 +210,21 @@ let products = [{
     "subCategoryId": 2
 }
 ];
+//to do: 1 done
+let subcategories = [
+    {
+        "subCategoryId": 1,
+        "subCategoryName": "Văn học"
+    }
+]
+//set subcategories and call api to set
 const supplierSelect = document.getElementById('supplierSelect');
 const supplierInfoContainer = document.getElementById('supplierInfoContainer');
 const supplierContainer = document.getElementById('supplierContainer');
 const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
+const subCategorySelect = document.getElementById('subCategorySelect');
+
 
 //Call API
 fetchDataFromAPIs();
@@ -251,7 +261,19 @@ function fetchDataFromAPIs() {
             console.log('Error fetching products data:', error);
         }
     });
-
+    //to do: 2 call api to list all subcategory
+    $.ajax({
+        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSubCategories',
+        type: 'GET',
+        dataType: 'json',
+        success: function (subcategoriesData) {
+            subcategories = subcategoriesData;
+            populateSubcategoriesSelect();
+        },
+        error: function (error) {
+            console.log('Error fetching suppliers data:', error);
+        }
+    });
 }
 
 function populateSuppliersSelect() {
@@ -279,6 +301,19 @@ $("#supplierSelect").change(() => {
         supplierContainer.style.display = 'block';
     }
 });
+
+//to do 3: fix --> select subcategory -- populated
+function populateSubcategoriesSelect() {
+    console.log('Danh sách subcategories' + subcategories);
+    subCategorySelect.innerHTML = `
+    ${subcategories
+            .map(
+                subcategory => `<option value="${subcategory.subCategoryId}">${subcategory.subCategoryName}</option>`
+            )
+            .join('')
+        }
+`;
+}
 
 function showSupplierInfo(supplier) {
     // Clear supplier info container
@@ -467,10 +502,13 @@ function addProductByAPI() {
     var barCode = $('#barCode').val();
     var price = $('#price').val();
     var unit = $('#unit').val();
+    var subcategory = $('#subCategorySelect').val();
     // lấy giá trị radio button
     const radioButtons = document.getElementsByName('IsBook');
     const selectedValue = radioButtons[0].checked.toString();
     var isBook = JSON.parse(selectedValue);
+
+    //to do 4: fix bookDTO
     var bookDTO = {
         "productId": null,
         "name": productName,
@@ -478,9 +516,11 @@ function addProductByAPI() {
         "unit": unit,
         "purchasePrice": price,
         "isBook": isBook,
+        "subCategoryId": subcategory,
         "presentImage": null
     }
-    console.log('bookDTO' + JSON.stringify(bookDTO));
+
+    //to do: fix api in back-end receive new bookDTO
     $.ajax({
         url: "https://localhost:7123/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
         type: "POST",

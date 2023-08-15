@@ -210,14 +210,21 @@ let productExists = [{
     "isBook": true,
     "subCategoryId": 1
 }];
-
+//to do: 1 done
+let subcategories = [
+    {
+        "subCategoryId": 1,
+        "subCategoryName": "Văn học"
+    }
+]
+//set subcategories and call api to set
 
 const supplierSelect = document.getElementById('supplierSelect');
 const supplierInfoContainer = document.getElementById('supplierInfoContainer');
 const supplierContainer = document.getElementById('supplierContainer');
 const productList = document.getElementById('list-product');
 const orderContainer = document.getElementById('orderContainer');
-
+const subCategorySelect = document.getElementById('subCategorySelect');
 
 //display product list
 function displayProductList() {
@@ -268,7 +275,19 @@ function fetchDataFromAPIs(purchaseId) {
             console.log('Error fetching products data:', error);
         }
     });
-
+    //to do: 2 call api to list all subcategory
+    $.ajax({
+        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSubCategories',
+        type: 'GET',
+        dataType: 'json',
+        success: function (subcategoriesData) {
+            subcategories = subcategoriesData;
+            populateSubcategoriesSelect();
+        },
+        error: function (error) {
+            console.log('Error fetching suppliers data:', error);
+        }
+    });
 }
 // Function to populate suppliers select list
 function populateSuppliersSelect() {
@@ -297,6 +316,18 @@ $("#supplierSelect").change(() => {
     }
 });
 
+//to do 3: fix --> select subcategory -- populated
+function populateSubcategoriesSelect() {
+    console.log('Danh sách subcategories' + subcategories);
+    subCategorySelect.innerHTML = `
+    ${subcategories
+            .map(
+                subcategory => `<option value="${subcategory.subCategoryId}">${subcategory.subCategoryName}</option>`
+            )
+            .join('')
+        }
+`;
+}
 // Function to show the supplier info
 function showSupplierInfo(supplier) {
     // Clear supplier info container
@@ -393,7 +424,7 @@ function getBookInfo(linkElement) {
             </td>
             <td>
                 <div class="input-group">
-                    <input name="UnitPriceList" class="form-control price num" step="1000" min="0" value="0" type='number'>
+                    <input name="UnitPriceList" value="${purchasePrice}" class="form-control price num" step="1" min="0" type='number'>
                 </div>
             </td>
             <td>
@@ -436,7 +467,7 @@ function getBookInfo(linkElement) {
 
 $(document).on('click', '#submitProduct', function () {
     //call api to add
-    addProductByAPI();
+    addProductByAPI_EditPO();
 });
 
 $(document).on('click', '#submitSupplier', function () {
@@ -494,11 +525,12 @@ function addSupplierByAPI() {
         },
     });
 }
-function addProductByAPI() {
+function addProductByAPI_EditPO() {
     var productName = $('#productName').val();
     var barCode = $('#barCode').val();
     var price = $('#price').val();
     var unit = $('#unit').val();
+    var subcategory = $('#subCategorySelect').val();
     // lấy giá trị radio button
     const radioButtons = document.getElementsByName('IsBook');
     const selectedValue = radioButtons[0].checked.toString();
@@ -510,6 +542,7 @@ function addProductByAPI() {
         "unit": unit,
         "purchasePrice": price,
         "isBook": isBook,
+        "subCategoryId": subcategory,
         "presentImage": null
     }
     console.log('bookDTO' + JSON.stringify(bookDTO));
