@@ -76,14 +76,14 @@
             <div class="header-top-bar plr-185">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-lg-6 col-md-6 d-none d-md-block">
+                        <div class="col-lg-3 col-md-3 d-none d-md-block">
                             <div class="call-us">
-                                <p class="mb-0 roboto">0123456789</p>
+                                <p class="mb-0 roboto"></p>
                             </div>
                         </div>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <div class="col-lg-6 col-md-6">
+                            <div class="col-lg-9 col-md-9">
                                 <div class="top-link clearfix">
                                     <ul class="link f-right">
                                         <li>
@@ -115,7 +115,7 @@
                         }
                         else
                         {
-                            <div class="col-lg-6 col-md-6">
+                            <div class="col-lg-9 col-md-9">
                                 <div class="top-link clearfix">
                                     <ul class="link f-right">
                                         <li>
@@ -140,7 +140,6 @@
                                 </div>
                             </div>
                         }
-
                     </div>
                 </div>
             </div>
@@ -154,7 +153,7 @@
                             <div class="col-lg-2 col-md-4">
                                 <div class="logo">
                                     <a href="/Customer/Home">
-                                        <img src="~/images/header_logo.png" style="width:100px;height:90px;" alt="main logo">
+                                        <img src="~/images/header_logo.png" style="width:60px;height:50px;" alt="main logo">
                                     </a>
                                 </div>
                             </div>
@@ -237,7 +236,7 @@
                                                                 <div class="cart-img f-left">
                                                                     <a href="#">
                                                                         <img src="@imageRoot/images/img/@thumbnails[detail.ProductId]" alt="Cart Product"
-                                                                         style="width: 100px; aspect-ratio: 100/111; object-fit: contain;" />
+                                                                             style="width: 100px; aspect-ratio: 100/111; object-fit: contain;" />
                                                                     </a>
                                                                     @*<div class="del-icon">
                                                                 <a href="#">
@@ -389,17 +388,17 @@
                                 <a class="list-group-item list-group-item-action" href="~/customer/account/ShipInfo">
                                     <i class="zmdi zmdi-hc-lg zmdi-pin py-3 pe-4"></i>Số địa chỉ
                                 </a>
-                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                <a class="list-group-item list-group-item-action" href="#">
                                     <i class="zmdi zmdi-hc-lg zmdi-card py-3 pe-4"></i>Thông tin thanh toán
                                 </a>
-                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                <a class="list-group-item list-group-item-action" href="#">
                                     <i class="zmdi zmdi-hc-lg zmdi-favorite py-3 pe-4"></i>Sản phẩm yêu thích
                                 </a>
                             </div>
                         </div>
                         <!-- to add -->
                         <div class="col-lg-9">
-                        @RenderBody()
+                            @RenderBody()
                         </div>
                         <!-- to add -->
                     </div>
@@ -666,7 +665,7 @@
     </script>
     <!--Address-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-     @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

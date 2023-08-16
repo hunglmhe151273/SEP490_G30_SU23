@@ -1,7 +1,7 @@
 ﻿@model CustomerProfileVM
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Areas/Customer/Views/Shared/_LayoutCustomerManage.cshtml";
+    Layout = "~/Areas/Customer/Views/Shared/_CustomerManageLayout.cshtml";
     var displayImage = Root.ImageRoot + Model.Customer.Image;
     if (Model.Customer.Image == null)
     {
