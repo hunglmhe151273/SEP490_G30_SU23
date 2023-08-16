@@ -123,9 +123,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		{
 			var staff = await GetCurrentLoggedInStaffAsync();
 			if (staff == null)
-				return Unauthorized();
-			
-			model.Order.OrderDate = DateTime.Now;
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+
+            model.Order.OrderDate = DateTime.Now;
 			model.Order.StaffId = staff.StaffId;
 
 			var detailList = new List<OrderDetail>();
@@ -246,16 +246,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			var staff = await GetCurrentLoggedInStaffAsync();
 			if (staff == null)
-				return Unauthorized();
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
 
-			foreach (var detail in order.OrderDetails)
-			{
-				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
-				product.AvailableUnit += detail.Quantity;
-				await productRespository.UpdateProductAsync(product);
-			}
-
-			if (order.Status.Equals(OrderStatus.Wait))
+            if (order.Status.Equals(OrderStatus.Wait))
 			{
 				order.StaffId = staff.StaffId;
 				order.Status = OrderStatus.Cancel;
@@ -356,6 +349,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			{
 				var product = await productRespository.GetProductByIdAsync(detail.ProductId);
 				product.UnitInStock += detail.Quantity;
+				product.AvailableUnit += detail.Quantity;
 				await productRespository.UpdateProductAsync(product);
 			}
 		}
