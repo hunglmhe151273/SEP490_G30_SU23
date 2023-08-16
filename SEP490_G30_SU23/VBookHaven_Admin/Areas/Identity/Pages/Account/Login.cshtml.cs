@@ -138,17 +138,17 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                     if (roles.Contains(SD.Role_Owner))
                     {
                         // Redirect to the admin page
-                        return RedirectToAction("Profile", "User", new { area = "Admin" });
+                        return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
                     }
                     else if (roles.Contains(SD.Role_Seller))
                     {
                         // Redirect to the user page
-                        return RedirectToAction("Profile", "User", new { area = "Admin" });
+                        return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
                     }
                     else if (roles.Contains(SD.Role_Storekeeper))
                     {
                         // Redirect to the user page
-                        return RedirectToAction("Profile", "User", new { area = "Admin" });
+                        return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
                     }
                     else
                     {
@@ -157,7 +157,7 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
 
 						// Redirect to the user page
 						//return RedirectToAction("Index", "Home", new { area = "Customer" });
-						return RedirectToAction("IndexFromLogin", "Home", new { area = "Customer" });
+						return RedirectToAction("Login", "Account", new { area = "Identity" });
 					}
                     //return LocalRedirect(returnUrl);
                 }
