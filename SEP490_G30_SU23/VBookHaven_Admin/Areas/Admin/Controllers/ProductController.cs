@@ -5,9 +5,6 @@ using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using VBookHaven.Utility;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -40,13 +37,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			Stationery = new Stationery();
 			AuthorIdList = new List<int>();
 			AddImageList = new List<IFormFile>();
-            DeleteImageIdList = new List<int>();
-        }
+			DeleteImageIdList = new List<int>();
+		}
 	}
 	
 	[Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
-    public class ProductController : Controller
+	public class ProductController : Controller
 	{
 		private readonly IProductRespository _productRespository;
 		private readonly IAuthorRepository authorRepository;
@@ -61,7 +57,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			this.categoryRepository = categoryRepository;
 			this.imageRepository = imageRepository;
 		}
-        public async Task<IActionResult> Index()
+
+		public async Task<IActionResult> Index()
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 
@@ -97,9 +94,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return View(products);
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
 
-        public async Task<IActionResult> AddBook()
+		public async Task<IActionResult> AddBook()
 		{
 			var authorsTask = authorRepository.GetAllAuthorsAsync();
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
@@ -114,9 +110,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-
-        public async Task<IActionResult> AddBook(ProductManagementViewModel model)
+		public async Task<IActionResult> AddBook(ProductManagementViewModel model)
 		{
 			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 			
@@ -161,9 +155,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
 
-        public async Task<IActionResult> AddStationery()
+		public async Task<IActionResult> AddStationery()
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 
@@ -175,8 +168,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        public async Task<IActionResult> AddStationery(ProductManagementViewModel model)
+		public async Task<IActionResult> AddStationery(ProductManagementViewModel model)
 		{
 			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode);
 
@@ -215,8 +207,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        public async Task<IActionResult> EditBook(int id)
+
+		public async Task<IActionResult> EditBook(int id)
 		{
 			var product = await _productRespository.GetProductByIdAsync(id);
 			var book = await _productRespository.GetBookByIdAsync(id);
@@ -255,8 +247,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        public async Task<IActionResult> EditBook(int id, ProductManagementViewModel model)
+		public async Task<IActionResult> EditBook(int id, ProductManagementViewModel model)
 		{
 			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
@@ -308,8 +299,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        public async Task<IActionResult> EditStationery(int id)
+
+		public async Task<IActionResult> EditStationery(int id)
 		{
 			var product = await _productRespository.GetProductByIdAsync(id);
 			var stationery = await _productRespository.GetStationeryByIdAsync(id);
@@ -335,8 +326,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        public async Task<IActionResult> EditStationery(int id, ProductManagementViewModel model)
+		public async Task<IActionResult> EditStationery(int id, ProductManagementViewModel model)
 		{
 			//var validateBarcodeTask = ValidateBarcodeAsync(model.Product.Barcode, id);
 
@@ -421,9 +411,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return View(model);
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
 
-        public async Task<IActionResult> ChangeStatusProduct(int id)
+		public async Task<IActionResult> ChangeStatusProduct(int id)
 		{
 			var success = await _productRespository.ChangeStatusProductAsync(id);
 			if (!success)
@@ -499,8 +488,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			return "";
 		}
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
-        [HttpPost]
+
+		[HttpPost]
 		public async Task<IActionResult> AddAuthorAPI([FromBody] Author author)
 		{
 			try

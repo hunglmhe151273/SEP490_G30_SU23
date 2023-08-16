@@ -23,7 +23,7 @@ using AutoMapper;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+    
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
