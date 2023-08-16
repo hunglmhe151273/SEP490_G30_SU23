@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.DTO;
+using VBookHaven.Utility;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -67,12 +70,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			Order = new Order();
 			Details = new List<OrderDetail>();
 			Thumbnails = new List<string?>();
-			Payments = new List<OrderPaymentHistory>();
-		}
-	}
+            Payments = new List<OrderPaymentHistory>();
+        }
+    }
 
 	[Area("Admin")]
-	public class OrderController : Controller
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Seller + "," + SD.Role_Storekeeper)]
+    public class OrderController : Controller
 	{
 		private readonly IOrderRepository orderRepository;
 		private readonly IShippingInfoRepository shippingInfoRepository;
