@@ -1,4 +1,27 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@using VBookHaven.Areas.Customer.Controllers;
+@using VBookHaven.Models;
+@using VBookHaven.DataAccess.Respository;
+@using VBookHaven;
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@inject OrderFunctions OrderFunctions;
+@inject ICategoryRepository CategoryRepository;
+
+@{
+    var custId = await OrderFunctions.GetLoginCustomerIdAsync();
+    List<CartDetail> cartDetail = await OrderFunctions.GetCartAsync(custId);
+    int total = 0;
+
+    List<Category> categories = await CategoryRepository.GetAllCategoriesAllInfoAsync();
+
+    var thumbnails = await OrderFunctions.GetThumbnailsAsync();
+
+    string imageRoot = Config.ImageRoot;
+}
+
+<!doctype html>
 <html class="no-js" lang="en">
 
 <head>
@@ -58,40 +81,80 @@
                                 <p class="mb-0 roboto">0123456789</p>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="top-link clearfix">
-                                <ul class="link f-right">
-                                    <li>
-                                        <a href="~/cust-lib/subas/my-account.html">
-                                            <i class="zmdi zmdi-account"></i> My Account
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/wishlist.html">
-                                            <i class="zmdi zmdi-favorite"></i> Wish List (0)
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/login.html">
-                                            <i class="zmdi zmdi-lock"></i> Login
-                                        </a>
-                                    </li>
-                                </ul>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <div class="col-lg-6 col-md-6">
+                                <div class="top-link clearfix">
+                                    <ul class="link f-right">
+                                        <li>
+                                            <a disabled style="text-transform: none">Xin chào @UserManager.GetUserName(User)</a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="Customer" asp-controller="account" asp-action="shipinfo">
+                                                <i class="zmdi zmdi-account"></i>
+                                                My Account
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="wishlist.html">
+                                                <i class="zmdi zmdi-favorite"></i>
+                                                Wish List (0)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a onclick="document.getElementById('logout-form').submit()" href="javascript:void(0);">
+                                                <i class="zmdi zmdi-lock"></i>
+                                                Đăng xuất
+                                            </a>
+                                            <form id="logout-form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-lg-6 col-md-6">
+                                <div class="top-link clearfix">
+                                    <ul class="link f-right">
+                                        <li>
+                                            <a href="wishlist.html">
+                                                <i class="zmdi zmdi-favorite"></i>
+                                                Wish List (0)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="Identity" asp-page="/Account/Login">
+                                                <i class="zmdi zmdi-lock"></i>
+                                                Đăng nhập
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="Identity" asp-page="/Account/Register">
+                                                <i class="zmdi zmdi-lock"></i>
+                                                Đăng kí
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
                     </div>
                 </div>
             </div>
             <!-- header-middle-area -->
-            <div class="header-middle-area plr-185"> @*id="sticky-header"*@
+            <div class="header-middle-area plr-185">
+                @*id="sticky-header"*@
                 <div class="container-fluid">
                     <div class="full-width-mega-dropdown">
                         <div class="row">
                             <!-- logo -->
                             <div class="col-lg-2 col-md-4">
                                 <div class="logo">
-                                    <a href="/Customer/Product">
-                                        <img src="~/images/header_logo.png" style="width:60px;height:50px;" alt="main logo">
+                                    <a href="/Customer/Home">
+                                        <img src="~/images/header_logo.png" style="width:100px;height:90px;" alt="main logo">
                                     </a>
                                 </div>
                             </div>
@@ -100,391 +163,43 @@
                                 <nav id="primary-menu">
                                     <ul class="main-menu text-center">
                                         <li>
-                                            <a href="~/cust-lib/subas/index.html">Home</a>
-                                            <ul class="dropdwn">
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index.html">Home Version 1</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-2.html">Home Version 2</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-3.html">Home Version 3</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-4.html">Home 4 Animated Text</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-5.html">Home 5 Animated Text Ovlerlay</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-6.html">Home 6 Background Video</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-7.html">Home 7 BG-Video Ovlerlay</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-8.html">Home 8 Boxed</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-9.html">Home 9 Gradient</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/index-10.html">Home 10 Boxed-2</a>
-                                                </li>
-                                            </ul>
+                                            <a href="/Customer/Home">Trang chủ</a>
                                         </li>
                                         <li class="mega-parent">
-                                            <a href="~/cust-lib/subas/#">elements</a>
+                                            <a href="/Customer/Product">Sản phẩm</a>
                                             <div class="mega-menu-area clearfix">
                                                 <div class="mega-menu-link mega-menu-link-4  f-left">
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Elements 1</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-header-1-sticky.html">header-1-sticky</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-header-1-no-sticky.html">header-1-no-sticky</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-header-2-sticky.html">header-2-sticky</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-header-2-no-sticky.html">header-2-no-sticky</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-footer-1.html">footer-1</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-footer-2.html">footer-2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-footer-3.html">footer-3</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-contact-form.html">Dynamic Contact Form</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-map.html">Google Map</a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Elements 2</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-featured-product-1.html">featured-product-1</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-featured-product-2.html">featured-product-2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-product-tab-1.html">product-tab-1</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-product-tab-2.html">product-tab-2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-up-comming-product-1.html">up-comming-product-1</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-up-comming-product-2.html">up-comming-product-2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-single-product.html">single-product</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-sidebar-left.html">sidebar-left</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-sidebar-right.html">sidebar-right</a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Elements 3</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-section-title.html">section-title</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-pagination.html">pagination</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-banner.html">Banner</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-brands.html">Brands</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-breadcrumbs.html">Breadcrumbs</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-newsletter.html">Newsletter</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-team.html">team</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-audio.html">Audio</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-video.html">Video</a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Elements 4</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-typography.html">typography</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-buttons.html">Buttons</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-call-to-action.html">Call to Action</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-accordion.html">Accordion</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-alerts.html">Alerts</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-progress-bars.html">progress-bars</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-tab.html">tab</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-toggles.html">toggles</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/elements-toggles.html">toggles</a>
-                                                        </li>
-                                                    </ul>
+                                                    @foreach (Category cat in categories)
+                                                    {
+                                                        float width = 100 / categories.Count;
+                                                        <ul class="single-mega-item" style="width: @width%; text-align: center">
+                                                            <li class="menu-title">@cat.CategoryName</li>
+                                                            @foreach (SubCategory sub in cat.SubCategories)
+                                                            {
+                                                                <li>
+                                                                    <a href="/Customer/Product/?subCat=@sub.SubCategoryId">@sub.SubCategoryName</a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    }
                                                 </div>
                                             </div>
-                                        </li>
-                                        <li class="mega-parent">
-                                            <a href="~/cust-lib/subas/shop.html">Products</a>
-                                            <div class="mega-menu-area clearfix">
-                                                <div class="mega-menu-link f-left">
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Smart Phone</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">All Mobile Phones</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">Smart phones</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">Android Mobiles</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">Windows Mobiles</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">Refurbished Mobiles</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">All Mobile Accessories</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/#">Cases & Covers</a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Note Book</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">All Note Books</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Smart notebooks</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Android Note Book</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Windows Note Books</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Refurbished Note Books</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Note Books Accessories</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Cases & Covers</a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">Tablets</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">All Tablets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Smart tablets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Android Tablets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Windows Tablets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Refurbished Tablets</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Tablets Accessories</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/">Cases & Covers</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mega-menu-photo f-left">
-                                                    <a href="~/cust-lib/subas/#">
-                                                        <img src="~/cust-lib/subas/img/mega-menu/1.jpg" alt="mega menu image">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="mega-parent">
-                                            <a href="~/cust-lib/subas/#">Pages</a>
-                                            <div class="mega-menu-area mega-menu-area-2 clearfix">
-                                                <div class="mega-menu-link mega-menu-link-2  f-left">
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">page list</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/shop.html">Shop</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/shop-left-sidebar.html">Shop Left Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/shop-right-sidebar.html">Shop Right Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/shop-list.html">Shop List</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/shop-list-right-sidebar.html">Shop List Right Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/single-product.html">Single Product</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/single-product-left-sidebar.html">
-                                                                Single Product Left
-                                                                Sidebar
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/single-product-no-sidebar.html">
-                                                                Single Product No
-                                                                Sidebar
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <ul class="single-mega-item">
-                                                        <li class="menu-title">page list</li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/cart.html">Shopping Cart</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/wishlist.html">Wishlist</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/checkout.html">Checkout</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/order.html">Order</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/login.html">Login</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/my-account.html">My Account</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/about.html">About us</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/404.html">404</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="~/cust-lib/subas/blog.html">Blog</a>
-                                            <ul class="dropdwn">
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-left-sidebar.html">Dropdown Repeat</a>
-                                                    <ul class="dropdwn-repeat">
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog.html">Blog</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog-left-sidebar.html">Blog Left Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog-right-sidebar.html">Blog Right Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog-2.html">Blog style 2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog-2-left-sidebar.html">Blog 2 Left Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/blog-2-right-sidebar.html">Blog 2 Right Sidebar</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="~/cust-lib/subas/single-blog.html">Blog Details</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog.html">Blog</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-left-sidebar.html">Blog Left Sidebar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-right-sidebar.html">Blog Right Sidebar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-2.html">Blog style 2</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-2-left-sidebar.html">Blog 2 Left Sidebar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/blog-2-right-sidebar.html">Blog 2 Right Sidebar</a>
-                                                </li>
-                                                <li>
-                                                    <a href="~/cust-lib/subas/single-blog.html">Blog Details</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="~/cust-lib/subas/about.html">About us</a>
-                                        </li>
-                                        <li>
-                                            <a href="~/cust-lib/subas/contact.html">Contact</a>
                                         </li>
                                     </ul>
                                 </nav>
                             </div>
                             <!-- header-search & total-cart -->
                             <div class="col-lg-2 col-md-8">
-                                <div class="search-top-cart  f-right">
+                                <div class="search-top-cart f-right">
                                     <!-- header-search -->
                                     <div class="header-search f-left">
                                         <div class="header-search-inner">
                                             <button class="search-toggle">
                                                 <i class="zmdi zmdi-search"></i>
                                             </button>
-                                            <form action="#">
+                                            <form action="/Customer/Product/Index" method="get">
                                                 <div class="top-search-box">
-                                                    <input type="text" placeholder="Search here your product...">
+                                                    <input type="text" name="search" placeholder="Tìm kiếm sản phẩm...">
                                                     <button type="submit">
                                                         <i class="zmdi zmdi-search"></i>
                                                     </button>
@@ -496,8 +211,8 @@
                                     <div class="total-cart f-left">
                                         <div class="total-cart-in">
                                             <div class="cart-toggler">
-                                                <a href="~/cust-lib/subas/#">
-                                                    <span class="cart-quantity">02</span><br>
+                                                <a href="/Customer/Order/Cart">
+                                                    <span class="cart-quantity">@cartDetail.Count</span><br>
                                                     <span class="cart-icon">
                                                         <i class="zmdi zmdi-shopping-cart-plus"></i>
                                                     </span>
@@ -506,86 +221,68 @@
                                             <ul>
                                                 <li>
                                                     <div class="top-cart-inner your-cart">
-                                                        <h5 class="text-capitalize">Your Cart</h5>
+                                                        <h5 class="text-capitalize">Giỏ hàng</h5>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="total-cart-pro">
-                                                        <!-- single-cart -->
-                                                        <div class="single-cart clearfix">
-                                                            <div class="cart-img f-left">
-                                                                <a href="~/cust-lib/subas/#">
-                                                                    <img src="~/cust-lib/subas/img/cart/1.jpg" alt="Cart Product" />
-                                                                </a>
-                                                                <div class="del-icon">
-                                                                    <a href="~/cust-lib/subas/#">
-                                                                        <i class="zmdi zmdi-close"></i>
+                                                        @foreach (CartDetail detail in cartDetail)
+                                                        {
+                                                            int price = (int)(detail.Product.RetailPrice.Value * (1 - detail.Product.RetailDiscount.Value / 100)
+                                                            * detail.Quantity.Value);
+                                                            total += price;
+
+                                                            <!-- single-cart -->
+                                                            <div class="single-cart clearfix">
+                                                                <div class="cart-img f-left">
+                                                                    <a href="#">
+                                                                        <img src="@imageRoot/images/img/@thumbnails[detail.ProductId]" alt="Cart Product"
+                                                                         style="width: 100px; aspect-ratio: 100/111; object-fit: contain;" />
                                                                     </a>
+                                                                    @*<div class="del-icon">
+                                                                <a href="#">
+                                                                <i class="zmdi zmdi-close"></i>
+                                                                </a>
+                                                                </div>*@
+                                                                </div>
+                                                                <div class="cart-info f-left">
+                                                                    <h6 class="text-capitalize">
+                                                                        <a href="/Customer/Product/Detail/@detail.ProductId">
+                                                                            @detail.Product.Name x @detail.Quantity
+                                                                        </a>
+                                                                    </h6>
+                                                                    <p>@price VNĐ</p>
                                                                 </div>
                                                             </div>
-                                                            <div class="cart-info f-left">
-                                                                <h6 class="text-capitalize">
-                                                                    <a href="~/cust-lib/subas/#">Dummy Product Name</a>
-                                                                </h6>
-                                                                <p>
-                                                                    <span>Brand <strong>:</strong></span>Brand Name
-                                                                </p>
-                                                                <p>
-                                                                    <span>Model <strong>:</strong></span>Grand s2
-                                                                </p>
-                                                                <p>
-                                                                    <span>Color <strong>:</strong></span>Black, White
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-cart -->
-                                                        <div class="single-cart clearfix">
-                                                            <div class="cart-img f-left">
-                                                                <a href="~/cust-lib/subas/#">
-                                                                    <img src="~/cust-lib/subas/img/cart/1.jpg" alt="Cart Product" />
-                                                                </a>
-                                                                <div class="del-icon">
-                                                                    <a href="~/cust-lib/subas/#">
-                                                                        <i class="zmdi zmdi-close"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <div class="cart-info f-left">
-                                                                <h6 class="text-capitalize">
-                                                                    <a href="~/cust-lib/subas/#">Dummy Product Name</a>
-                                                                </h6>
-                                                                <p>
-                                                                    <span>Brand <strong>:</strong></span>Brand Name
-                                                                </p>
-                                                                <p>
-                                                                    <span>Model <strong>:</strong></span>Grand s2
-                                                                </p>
-                                                                <p>
-                                                                    <span>Color <strong>:</strong></span>Black, White
-                                                                </p>
-                                                            </div>
-                                                        </div>
+                                                        }
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="top-cart-inner subtotal">
                                                         <h4 class="text-uppercase g-font-2">
                                                             Total =
-                                                            <span>$ 500.00</span>
+                                                            <span>@total VNĐ</span>
                                                         </h4>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="top-cart-inner view-cart">
                                                         <h4 class="text-uppercase">
-                                                            <a href="~/cust-lib/subas/#">View cart</a>
+                                                            <a href="/Customer/Order/Cart">Xem giỏ hàng</a>
                                                         </h4>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <div class="top-cart-inner check-out">
                                                         <h4 class="text-uppercase">
-                                                            <a href="~/cust-lib/subas/#">Check out</a>
+                                                            @if (SignInManager.IsSignedIn(User) && cartDetail.Count > 0)
+                                                            {
+                                                                <a href="/Customer/Order/Purchase">Thanh toán</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a disabled style="color: #bbbbbb">Thanh toán</a>
+                                                            }
                                                         </h4>
                                                     </div>
                                                 </li>
@@ -609,127 +306,60 @@
                             <nav id="dropdown">
                                 <ul>
                                     <li>
-                                        <a href="~/cust-lib/subas/index.html">Home</a>
-                                        <ul>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index.html">Home Version 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-2.html">Home Version 2</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-3.html">Home Version 3</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-4.html">Home 4 Animated Text</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-5.html">Home 5 Animated Text Ovlerlay</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-6.html">Home 6 Background Video</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-7.html">Home 7 BG-Video Ovlerlay</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-8.html">Home 8 Boxed-1</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-9.html">Home 9 Gradient</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/index-10.html">Home 10 Boxed-2</a>
-                                            </li>
-                                        </ul>
+                                        <a href="/Customer/Home">Trang chủ</a>
                                     </li>
                                     <li>
-                                        <a href="~/cust-lib/subas/shop.html">Products</a>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/#">Pages</a>
-                                        <ul>
-                                            <li>
-                                                <a href="~/cust-lib/subas/shop.html">Shop</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/shop-left-sidebar.html">Shop Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/shop-right-sidebar.html">Shop Right Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/shop-list.html">Shop List</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/shop-list-right-sidebar.html">Shop List Right Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/single-product.html">Single Product</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/single-product-left-sidebar.html">Single Product Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/single-product-no-sidebar.html">Single Product No Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/cart.html">Shopping Cart</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/wishlist.html">Wishlist</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/checkout.html">Checkout</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/order.html">Order</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/login.html">Login</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/my-account.html">My Account</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/about.html">About us</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/404.html">404</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/blog.html">Blog</a>
-                                        <ul>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog.html">Blog</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog-left-sidebar.html">Blog Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog-right-sidebar.html">Blog Right Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog-2.html">Blog style 2</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog-2-left-sidebar.html">Blog 2 Left Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/blog-2-right-sidebar.html">Blog 2 Right Sidebar</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/cust-lib/subas/single-blog.html">Blog Details</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/about.html">About Us</a>
-                                    </li>
-                                    <li>
-                                        <a href="~/cust-lib/subas/contact.html">Contact</a>
+                                        <a href="/Customer/Product">Sản phẩm</a>
+                                        @*<ul>
+                                        <li>
+                                        <a href="shop.html">Shop</a>
+                                        </li>
+                                        <li>
+                                        <a href="shop-left-sidebar.html">Shop Left Sidebar</a>
+                                        </li>
+                                        <li>
+                                        <a href="shop-right-sidebar.html">Shop Right Sidebar</a>
+                                        </li>
+                                        <li>
+                                        <a href="shop-list.html">Shop List</a>
+                                        </li>
+                                        <li>
+                                        <a href="shop-list-right-sidebar.html">Shop List Right Sidebar</a>
+                                        </li>
+                                        <li>
+                                        <a href="single-product.html">Single Product</a>
+                                        </li>
+                                        <li>
+                                        <a href="single-product-left-sidebar.html">Single Product Left Sidebar</a>
+                                        </li>
+                                        <li>
+                                        <a href="single-product-no-sidebar.html">Single Product No Sidebar</a>
+                                        </li>
+                                        <li>
+                                        <a href="cart.html">Shopping Cart</a>
+                                        </li>
+                                        <li>
+                                        <a href="wishlist.html">Wishlist</a>
+                                        </li>
+                                        <li>
+                                        <a href="checkout.html">Checkout</a>
+                                        </li>
+                                        <li>
+                                        <a href="order.html">Order</a>
+                                        </li>
+                                        <li>
+                                        <a href="login.html">Login</a>
+                                        </li>
+                                        <li>
+                                        <a href="my-account.html">My Account</a>
+                                        </li>
+                                        <li>
+                                        <a href="about.html">About us</a>
+                                        </li>
+                                        <li>
+                                        <a href="404.html">404</a>
+                                        </li>
+                                        </ul>*@
                                     </li>
                                 </ul>
                             </nav>
@@ -753,7 +383,7 @@
                                 <a class="list-group-item list-group-item-action" href="/customer/account/edit">
                                     <i class="zmdi zmdi-hc-lg zmdi-account py-3 pe-4"></i>Thông tin tài khoản
                                 </a>
-                                <a class="list-group-item list-group-item-action" href="~/cust-lib/subas/">
+                                <a class="list-group-item list-group-item-action" href="/Customer/Account/Orders">
                                     <i class="zmdi zmdi-hc-lg zmdi-receipt py-3 pe-4"></i>Quản lí đơn hàng
                                 </a>
                                 <a class="list-group-item list-group-item-action" href="~/customer/account/ShipInfo">
