@@ -157,10 +157,12 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
 
 						// Redirect to the user page
 						//return RedirectToAction("Index", "Home", new { area = "Customer" });
+
 						return RedirectToAction("Login", "Account", new { area = "Identity" });
+
 					}
-                    //return LocalRedirect(returnUrl);
-                }
+					//return LocalRedirect(returnUrl);
+				}
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

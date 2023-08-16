@@ -326,8 +326,9 @@ namespace VBookHaven.Areas.Customer.Controllers
 			model.ShippingOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Shipping)).ToList();
 			model.ShippedOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Shipped)
                 || o.Status.Equals(OrderStatus.Done)).ToList();
+            model.CanceledOrders = model.AllOrders.Where(o => o.Status.Equals(OrderStatus.Cancel)).ToList();
 
-            foreach (OrderDetail detail in model.OrderDetails)
+			foreach (OrderDetail detail in model.OrderDetails)
             {
                 var productId = detail.ProductId;
                 if (!model.Thumbnails.ContainsKey(productId))

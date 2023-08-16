@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VBookHaven.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class initDB : Migration
+    public partial class initialNewDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,7 +72,8 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,7 +242,8 @@ namespace VBookHaven.DataAccess.Migrations
                     SubCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubCategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -312,11 +314,10 @@ namespace VBookHaven.DataAccess.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, collation: "SQL_Latin1_General_CP1_CI_AI"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Barcode = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Unit = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UnitInStock = table.Column<int>(type: "int", nullable: true),
-                    AvailableUnit = table.Column<int>(type: "int", nullable: true),
                     PurchasePrice = table.Column<decimal>(type: "decimal(7,0)", nullable: true),
                     RetailPrice = table.Column<int>(type: "int", nullable: true),
                     RetailDiscount = table.Column<double>(type: "float", nullable: true),
@@ -547,9 +548,7 @@ namespace VBookHaven.DataAccess.Migrations
                     Phone = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
                     DOB = table.Column<DateTime>(type: "date", nullable: true),
                     IsMale = table.Column<bool>(type: "bit", nullable: true),
-                    IsWholesale = table.Column<bool>(type: "bit", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
-                    Status = table.Column<bool>(type: "bit", nullable: true),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     DefaultShippingInfoId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -648,33 +647,6 @@ namespace VBookHaven.DataAccess.Migrations
                         principalColumn: "ProductId");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "OrderPaymentHistory",
-                columns: table => new
-                {
-                    PaymentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    PaymentAmount = table.Column<decimal>(type: "decimal(15,0)", nullable: true),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true),
-                    StaffId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderPaymentHistory", x => x.PaymentId);
-                    table.ForeignKey(
-                        name: "FK_OrderPaymentHistory_Order",
-                        column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "OrderId");
-                    table.ForeignKey(
-                        name: "FK_OrderPaymentHistory_Staff",
-                        column: x => x.StaffId,
-                        principalTable: "Staff",
-                        principalColumn: "StaffId");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ActivityLog_ActorID",
                 table: "ActivityLog",
@@ -734,7 +706,7 @@ namespace VBookHaven.DataAccess.Migrations
                 table: "Customer",
                 column: "AccountId",
                 unique: true,
-                filter: "AccountId IS NOT NULL");
+                filter: "[AccountId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_DefaultShippingInfoId",
@@ -772,16 +744,6 @@ namespace VBookHaven.DataAccess.Migrations
                 name: "IX_OrderDetail_ProductId",
                 table: "OrderDetail",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderPaymentHistory_OrderId",
-                table: "OrderPaymentHistory",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderPaymentHistory_StaffId",
-                table: "OrderPaymentHistory",
-                column: "StaffId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_SubCategoryId",
@@ -900,9 +862,6 @@ namespace VBookHaven.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrderDetail");
-
-            migrationBuilder.DropTable(
-                name: "OrderPaymentHistory");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrderDetail");

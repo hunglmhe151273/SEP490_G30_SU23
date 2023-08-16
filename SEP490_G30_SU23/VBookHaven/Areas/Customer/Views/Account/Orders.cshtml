@@ -299,7 +299,7 @@
         }
     </div>
     <div class="tab-pane fade" id="Shipped">
-        @foreach (var order in Model.ShippingOrders)
+        @foreach (var order in Model.ShippedOrders)
         {
             int total = 0;
 
@@ -354,7 +354,7 @@
         }
     </div>
     <div class="tab-pane fade" id="Cancel">
-        @foreach (var order in Model.ShippingOrders)
+        @foreach (var order in Model.CanceledOrders)
         {
             int total = 0;
 
