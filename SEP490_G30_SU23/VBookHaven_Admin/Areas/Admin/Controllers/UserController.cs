@@ -137,7 +137,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
-                        $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
+                        $"Bạn được chủ cửa hàng Bookstore Management System tạo tài khoản với vị trí: {model.Role}. Mật khẩu tạm thời của bạn là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
                     TempData["success"] = "Thêm nhân viên thành công";
                     return RedirectToAction("Index", "User");
                 }

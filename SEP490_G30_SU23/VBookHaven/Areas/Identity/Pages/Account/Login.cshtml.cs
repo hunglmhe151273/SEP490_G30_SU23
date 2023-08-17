@@ -82,7 +82,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Chưa điền thông tin đăng nhập")]
             [EmailAddress(ErrorMessage = "Chưa đúng định dạng Email")]
             public string Email { get; set; }
 
@@ -90,7 +90,7 @@ namespace VBookHaven.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Chưa điền mật khẩu")]
             [DataType(DataType.Password)]
             [Display(Name = "Mật khẩu")]
             public string Password { get; set; }

@@ -32,7 +32,7 @@
                                         <form class="row g-3" method="post">
                                             <div class="col-12">
                                                 <label asp-for="Input.Email" for="inputEmailAddress" class="form-label"></label>
-                                                <input asp-for="Input.Email" type="email" class="form-control" id="inputEmailAddress" placeholder="Example@gmail.com">
+                                                <input asp-for="Input.Email" class="form-control" id="inputEmailAddress" placeholder="Example@gmail.com">
                                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                                             </div>
                                             <div class="col-12">
@@ -77,3 +77,8 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
