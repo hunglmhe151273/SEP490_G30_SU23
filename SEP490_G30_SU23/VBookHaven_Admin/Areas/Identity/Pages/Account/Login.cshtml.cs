@@ -140,12 +140,7 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                         // Redirect to the admin page
                         return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
                     }
-                    else if (roles.Contains(SD.Role_Seller))
-                    {
-                        // Redirect to the user page
-                        return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
-                    }
-                    else if (roles.Contains(SD.Role_Storekeeper))
+                    else if (roles.Contains(SD.Role_Staff))
                     {
                         // Redirect to the user page
                         return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
@@ -159,7 +154,6 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
 						//return RedirectToAction("Index", "Home", new { area = "Customer" });
 
 						return RedirectToAction("Login", "Account", new { area = "Identity" });
-
 					}
 					//return LocalRedirect(returnUrl);
 				}

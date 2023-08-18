@@ -37,8 +37,7 @@ namespace VBookHaven.DataAccess.DbInitializer
             {
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Customer)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole(SD.Role_Owner)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Seller)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole(SD.Role_Storekeeper)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(SD.Role_Staff)).GetAwaiter().GetResult();
                 //if roles are not created, then we will create admin user as well
                 _userManager.CreateAsync(new ApplicationUser
                 {
@@ -80,7 +79,7 @@ namespace VBookHaven.DataAccess.DbInitializer
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
                 ApplicationUser user1 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "storekeeper1@gmail.com");
-                _userManager.AddToRoleAsync(user1, SD.Role_Storekeeper).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user1, SD.Role_Staff).GetAwaiter().GetResult();
                 //Staff2 - seller
                 _userManager.CreateAsync(new ApplicationUser
                 {
@@ -99,7 +98,7 @@ namespace VBookHaven.DataAccess.DbInitializer
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
                 ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "seller1@gmail.com");
-                _userManager.AddToRoleAsync(user2, SD.Role_Seller).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user2, SD.Role_Staff).GetAwaiter().GetResult();
             }
             //1.Author
 
