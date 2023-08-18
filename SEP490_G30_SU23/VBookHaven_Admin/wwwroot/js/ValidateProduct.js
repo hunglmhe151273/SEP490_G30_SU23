@@ -145,11 +145,11 @@ function warningPrice() {
         //console.log(purchasePrice, retailPrice, wholesalePrice);
 
         if (retailPrice <= purchasePrice && wholesalePrice <= purchasePrice) {
-            $("#warningPrice").text("Giá lẻ và giá sỉ không lớn hơn giá nhập");
+            $("#warningPrice").text("Giá lẻ và giá sỉ đang lớn hơn giá nhập");
         } else if (retailPrice <= purchasePrice) {
-            $("#warningPrice").text("Giá lẻ không lớn hơn giá nhập");
+            $("#warningPrice").text("Giá lẻ đang lớn hơn giá nhập");
         } else if (wholesalePrice <= purchasePrice) {
-            $("#warningPrice").text("Giá sỉ không lớn hơn giá nhập");
+            $("#warningPrice").text("Giá sỉ đang lớn hơn giá nhập");
         } else {
             $("#warningPrice").text("");
         }

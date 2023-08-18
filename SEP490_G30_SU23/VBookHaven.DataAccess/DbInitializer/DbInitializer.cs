@@ -61,14 +61,14 @@ namespace VBookHaven.DataAccess.DbInitializer
             }
             if (_db.Staff.Count() < 2)
             {
-                //Staff1 - storekeeper
+                //Staff1
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "storekeeper1@gmail.com",
-                    Email = "storekeeper1@gmail.com",
+                    UserName = "staff1@gmail.com",
+                    Email = "staff1@gmail.com",
                     Staff = new Staff
                     {
-                        FullName = "storekeeper1FullName",
+                        FullName = "Staff1FullName",
                         Dob = new DateTime(2002, 2, 2),
                         IdCard = "123456789101",
                         Address = "123 Example Street, City, Country",
@@ -78,16 +78,16 @@ namespace VBookHaven.DataAccess.DbInitializer
                     },
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
-                ApplicationUser user1 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "storekeeper1@gmail.com");
+                ApplicationUser user1 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "staff1@gmail.com");
                 _userManager.AddToRoleAsync(user1, SD.Role_Staff).GetAwaiter().GetResult();
-                //Staff2 - seller
+                //Staff2
                 _userManager.CreateAsync(new ApplicationUser
                 {
-                    UserName = "seller1@gmail.com",
-                    Email = "seller1@gmail.com",
+                    UserName = "staff2@gmail.com",
+                    Email = "staff2@gmail.com",
                     Staff = new Staff
                     {
-                        FullName = "seller1FullName",
+                        FullName = "Staff2FullName",
                         Dob = new DateTime(2003, 3, 3),
                         IdCard = "123456789101",
                         Address = "123 Example Street, City, Country",
@@ -97,7 +97,7 @@ namespace VBookHaven.DataAccess.DbInitializer
                     },
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
-                ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "seller1@gmail.com");
+                ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "staff1@gmail.com");
                 _userManager.AddToRoleAsync(user2, SD.Role_Staff).GetAwaiter().GetResult();
             }
             //1.Author
