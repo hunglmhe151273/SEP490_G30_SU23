@@ -155,7 +155,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'VBookHavenDBContext.SubCategories'  is null.");
             }
-            var subCategory = await _context.SubCategories.Include(sub => sub.Products).SingleOrDefaultAsync(sub => sub.CategoryId == id);
+            var subCategory = await _context.SubCategories.Include(sub => sub.Products).SingleOrDefaultAsync(sub => sub.SubCategoryId == id);
             if (subCategory != null)
             {
                 if (subCategory.Products.Count() > 0)
