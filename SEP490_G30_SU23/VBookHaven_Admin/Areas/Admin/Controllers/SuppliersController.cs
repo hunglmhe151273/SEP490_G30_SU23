@@ -18,7 +18,7 @@ using VBookHaven.Utility;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize]
     public class SuppliersController : Controller
     {
         private readonly VBookHavenDBContext _context;
@@ -58,6 +58,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         var products = _context.Products
             .Where(product => productIds.Contains(product.ProductId))
             .Include(product => product.Images)
+            .Include(product => product.SubCategory)
             .ToList();
             SupplierDetailsVM model = new SupplierDetailsVM();
             model.Supplier = supplier;

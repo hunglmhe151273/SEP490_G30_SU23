@@ -38,7 +38,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <form class="row" enctype="multipart/form-data" asp-controller="User" asp-action="Create" asp-area="Admin" asp-route-returnUrl="/admin/home/index" method="post">
                             <div class="col-md-8 row g-3 mt-0">
-                                <div class="col-md-4">
+                                <div class="col-md-8">
                                     <label asp-for="@Model.Staff_FullName" for="inputName" class="form-label"></label>
                                     <input asp-for="@Model.Staff_FullName" class="form-control" id="inputName" placeholder="Nhập tên">
                                     <span asp-validation-for="@Model.Staff_FullName" class="text-danger"></span>

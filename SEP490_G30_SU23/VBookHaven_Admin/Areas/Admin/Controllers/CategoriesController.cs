@@ -14,7 +14,7 @@ using VBookHaven.Utility;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly VBookHavenDBContext _context;

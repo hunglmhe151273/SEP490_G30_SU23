@@ -15,7 +15,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item">
-                                <a href="javascript:;">
+                                <a asp-action="Index">
                                     <i class="bx bx-home-alt"></i>
                                 </a>
                             </li>
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
-                                <button type="button" onclick="window.location.href='/Admin/Suppliers/Index" class="btn btn-danger px-5 py-2">Trở lại</button>
+                                <button type="button" onclick="history.back()" class="btn btn-danger px-5 py-2">Trở lại</button>
                                 <button type="submit" class="btn btn-success px-5 py-2">Tạo</button>
                             </div>
                         </form>

@@ -23,7 +23,7 @@ using AutoMapper;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    
+    [Authorize]
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -59,7 +59,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _dbContext = dbContext;
         }
         [HttpGet]
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public IActionResult Create()
         {
             UserVM userVM = new()
@@ -69,15 +69,15 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return View(userVM);
         }
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> Create(UserVM model, string? returnUrl)
         {
             returnUrl ??= Url.Content("~/");
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (String.IsNullOrEmpty(model.Role))
-            {
-                model.RoleValidate = "Hãy chọn vị trí của nhân viên";
-            }
+            //if (String.IsNullOrEmpty(model.Role))
+            //{
+            //    model.RoleValidate = "Hãy chọn vị trí của nhân viên";
+            //}
             if (model.Staff_IsMale == null)
             {
                 model.GenderValidate = "Hãy chọn giới tính của nhân viên";
@@ -159,7 +159,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             try
@@ -180,7 +180,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
       
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize]
         public async Task<IActionResult> Profile(ProfileVM profileVM)
         {
             //To do: Validate user and model?
@@ -233,7 +233,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return RedirectToAction(nameof(Profile));
         }
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(ProfileVM profileVM)
         {
             ModelState.Clear();
@@ -316,12 +316,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View();
         }
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> Edit(String userId)
         {
             UpdateStaffVM VM = new UpdateStaffVM();
@@ -334,7 +334,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return View(VM);
         }
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> Edit(UpdateStaffVM model, string? returnUrl)
         {
 
@@ -402,7 +402,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
         #region API CALLS
         [HttpGet]
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> GetAllStaff()
         {
             //respository
@@ -416,7 +416,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner)]
+        [Authorize]
         public async Task<IActionResult> LockUnlock([FromBody] string id)
         {
 

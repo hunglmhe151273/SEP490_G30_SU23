@@ -75,7 +75,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
     }
 
 	[Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Seller + "," + SD.Role_Storekeeper)]
+	[Authorize]
     public class OrderController : Controller
 	{
 		private readonly IOrderRepository orderRepository;

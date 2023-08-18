@@ -382,11 +382,14 @@
                                             Hủy đơn
                                         </button>
                                     }
-                                    <button type="button" class="btn btn-secondary px-4 mx-1"
+                                   @* <button type="button" class="btn btn-secondary px-4 mx-1"
                                             onclick="window.location.href='/Admin/Order/Index'">
+                                        Trở lại danh sách
+                                    </button>*@
+                                    <button type="button" class="btn btn-secondary px-4 mx-1"
+                                            onclick="history.back()">
                                         Quay lại
                                     </button>
-
                                     <form hidden id="updateOrder" action="/Admin/Order/Update" method="post">
                                         <input name="id" value="@Model.Order.OrderId" />
                                     </form>

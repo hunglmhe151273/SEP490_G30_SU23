@@ -5,203 +5,188 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<style>
+    .title {
+        color: gray;
+        font-size: medium;
+        margin-bottom: 0;
+    }
 
-<!--page-wrapper-->
-<div class="page-wrapper">
-    <!--page-content-wrapper-->
-    <div class="page-content-wrapper">
-        <div class="page-content">
-            <!--breadcrumb-->
-            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Nhà cung cấp</div>
-                <div class="ps-3">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item">
-                                <a href="javascript:;">
-                                    <i class="bx bx-home-alt"></i>
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">Quản lý nhà cung cấp</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <!--end breadcrumb-->
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h4 class="mb-0">Danh sách nhà cung cấp</h4>
+    .content {
+        color: black;
+        font-size: large;
+    }
+
+    .productImg {
+        width: 65px;
+        height: 70px;
+    }
+
+    h4,
+    h5 {
+        font-weight: bold;
+    }
+</style>
+ <!--page-wrapper-->
+        <div class="page-wrapper">
+            <!--page-content-wrapper-->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <!--breadcrumb-->
+                    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                        <div class="breadcrumb-title pe-3">Nhà cung cấp</div>
+                        <div class="ps-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0 p-0">
+                                    <li class="breadcrumb-item"><a asp-action="Index"><i
+												class="bx bx-home-alt"></i></a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Chi tiết nhà cung cấp</li>
+                                </ol>
+                            </nav>
+                        </div>
                     </div>
-                    <hr />
-                    <div>
-                        <h4>Supplier</h4>
-                        <hr />
-                        <dl class="row">
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Address)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Address)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.SupplierName)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.SupplierName)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Phone)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Phone)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Status)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Status)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Description)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Description)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Email)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Email)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.ProvinceCode)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.ProvinceCode)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Province)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Province)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.DistrictCode)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.DistrictCode)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.District)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.District)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.WardCode)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.WardCode)
-                            </dd>
-                            <dt class="col-sm-2">
-                                @Html.DisplayNameFor(model => model.Supplier.Ward)
-                            </dt>
-                            <dd class="col-sm-10">
-                                @Html.DisplayFor(model => model.Supplier.Ward)
-                            </dd>
-                        </dl>
-                    </div>
-                    <div>
-                        <h4>Supplier</h4>
-                        <hr />
-                        @foreach (var product in Model.SupplierProducts)
+                    <!--end breadcrumb-->
+                    <div class="card border-top border-0 border-4 border-info">
+                        <div class="card-body p-4">
+                            <div class="card-title mb-3 row">
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <div><i class="bx bxs-detail bx-tada me-2 font-24"></i>
+                                    </div>
+                                    <h4 class="mb-0">Thông tin chung</h4>
+                                </div>
+                                <div class="col-md-6 d-flex justify-content-end">
+                            <a asp-action="Edit" asp-route-id="@Model.Supplier.SupplierId" class="btn btn-primary px-3 py-2">Sửa thông tin nhà cung cấp</a>
+                                </div>
+                            </div>
+                            <div class="card-body px-0">
+                        @if (Model.Supplier.Status)
                         {
-                            <dl class="row">
-                                <dt class="col-sm-2">
-                                    ProductName
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @product.Name
-                                </dd>
-                                <dt class="col-sm-2">
-                                    Image
-                                </dt>
-                                <dd class="col-sm-10">
-                                    @product.Images.FirstOrDefault().ImageName;
-                                </dd>
-                            </dl>
+                            <h5 class="mb-3"><span class="badge bg-success px-3">Đang giao dịch</span></h5>
+                        }else{
+
+                            <h5 class="mb-3"><span class="badge bg-light-warning px-3">Ngừng hoạt động</span></h5>
                         }
-
+                                <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <p class="title">Tên nhà cung cấp</p>
+                                        <p class="content">@Model.Supplier.SupplierName</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="title">Số điện thoại</p>
+                                        <p class="content">@Model.Supplier.Phone</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="title">Email</p>
+                                        <p class="content">@Model.Supplier.Email</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="title">Địa chỉ</p>
+                                        <p class="content">
+                                    @if(Model.Supplier.Address != null)
+                                    {
+                                        @Model.Supplier.Address
+                                    }
+                                    @if (Model.Supplier.Ward != null)
+                                    {
+                                        @(", " + @Model.Supplier.Ward)
+                                    }
+                                    @if (Model.Supplier.District != null)
+                                    {
+                                        @(", " + @Model.Supplier.District)
+                                    }
+                                    @if (Model.Supplier.Province != null)
+                                    {
+                                        @(", " + @Model.Supplier.Province)
+                                    }
+                                </p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p class="title">Ghi chú</p>
+                                        <p class="content">@Model.Supplier.Description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@Model.Supplier.SupplierId">Edit</a> |
-                        <a asp-action="Index">Back to List</a>
-                    </div>
+                    <div class="card border-top border-0 border-4 border-info">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <div><i class="bx bxs-package bx-tada me-2 font-24"></i>
+                                    </div>
+                                    <h4 class="mb-0">Các sản phẩm cung cấp</h4>
+                                </div>
+                            </div>
+                            <hr />
 
+                            <div class="mb-3 row">
+                                <div class="table-responsive mt-3">
+                                    <table id="example2" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã sản phẩm</th>
+                                                <th>Ảnh</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Loại</th>
+                                                <th>Đơn vị</th>
+                                                <th>Chi tiết</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="myTable">
+                                        @foreach (var product in Model.SupplierProducts)
+                                        {
+                                            <tr>
+                                            <td> @product.Barcode</td>
+                                            @if (product.Images.Where(i => i.Status != false).Count() <= 0)
+                                            {
+                                                <td>
+                                                    <img class="productImg" src="/images/img/default_image.png" alt="">
+                                                </td>
+                                            }else
+                                            {
+                                            <td>
+                                                    <img class="productImg" src="/images/img/@product.Images.Where(i => i.Status != false).FirstOrDefault().ImageName" alt="">
+                                            </td>
+                                            }
+                                            <td>@product.Name</td>
+                                            <td>@product.SubCategory.SubCategoryName</td>
+                                            <td>
+                                                @product.Unit
+                                            </td>
+                                            <td class="text-center">
+                                                @if (product.IsBook == true)
+                                                {
+                                                    <a href="/admin/product/viewbook/@product.ProductId" class="btn btn-sm btn-default">
+                                                        <i class="lni lni-eye"></i>
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="/admin/product/viewstationery/@product.ProductId" class="btn btn-sm btn-default">
+                                                        <i class="lni lni-eye"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!--end page-content-wrapper-->
             </div>
+            <!--end page-wrapper-->
         </div>
-        <!--end page-content-wrapper-->
-    </div>
-    <!--end page-wrapper-->
-
-</div>
-<!-- end wrapper -->
+        <!-- end wrapper -->
 @section Scripts {
     <script>
         $(document).ready(function () {
             var table = $('#example2').DataTable({});
             table.buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
-        });
-        var fromDate;
-        var toDate;
-
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-        toDate = yyyy + '-' + mm + '-' + dd;
-        document.getElementById("to").value = toDate;
-
-        document.getElementById("from").addEventListener("change", function () {
-            fromDate = this.value;
-            toDate = document.getElementById("to").value;
-            if (toDate != "" && fromDate > toDate) {
-                document.getElementById("to").value = fromDate;
-                document.getElementById("from").value = toDate;
-            }
-        });
-        document.getElementById("to").addEventListener("change", function () {
-            toDate = this.value;
-            fromDate = document.getElementById("from").value;
-            if (fromDate != "" && fromDate > toDate) {
-                document.getElementById("from").value = toDate;
-                document.getElementById("to").value = fromDate;
-            }
-        });
-
-        $(document).ready(function () {
-            $(".filter").on("input", function () {
-                var cust = $("#customer").val().toLowerCase();
-                var from = $("#from").val();
-                var to = $("#to").val();
-                var status = $("#status").val();
-                if (from > to) {
-                    var temp = from
-                    from = to
-                    to = temp
-                }
-                console.log("3) From: " + from + " To: " + to)
-                $("#myTable tr").filter(function () {
-                    $(this).toggle(
-                        $(this).find('td:eq(1)').text().toLowerCase().indexOf(cust) > -1 &&
-                        $(this).find('td:eq(3) > span').text().indexOf(status) > -1 &&
-                        $(this).find('td:eq(2)').text() <= to &&
-                        $(this).find('td:eq(2)').text() >= from
-                    );
-                })
-            });
         });
     </script>
 }
