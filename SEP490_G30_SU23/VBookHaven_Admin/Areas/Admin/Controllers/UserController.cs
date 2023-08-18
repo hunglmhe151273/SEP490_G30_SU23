@@ -264,6 +264,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            TempData["error"] = "Thay đổi mật khẩu thất bại";
             return RedirectToAction(nameof(Profile));
 
         }

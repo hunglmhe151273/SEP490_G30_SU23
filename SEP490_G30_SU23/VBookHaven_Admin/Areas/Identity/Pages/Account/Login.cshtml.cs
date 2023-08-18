@@ -169,11 +169,13 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    TempData["error"] = "Đăng nhập không thành công";
                     return Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
+            TempData["error"] = "Đăng nhập không thành công";
             return Page();
         }
     }
