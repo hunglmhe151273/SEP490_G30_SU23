@@ -27,7 +27,7 @@ using System.Net.WebSockets;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class CustomerController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;

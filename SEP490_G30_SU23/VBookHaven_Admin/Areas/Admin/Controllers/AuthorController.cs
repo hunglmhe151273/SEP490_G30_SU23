@@ -5,6 +5,9 @@ using VBookHaven.DataAccess.Data;
 using VBookHaven.DataAccess.Respository;
 using Microsoft.EntityFrameworkCore;
 using VBookHaven.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using VBookHaven.Utility;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -19,6 +22,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
     }
 
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class AuthorController : Controller
     {
         private readonly IAuthorRepository authorRepository;

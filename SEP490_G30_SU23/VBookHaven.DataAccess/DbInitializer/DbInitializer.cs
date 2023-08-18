@@ -97,7 +97,7 @@ namespace VBookHaven.DataAccess.DbInitializer
                     },
                     EmailConfirmed = true,
                 }, "Pass123@").GetAwaiter().GetResult();
-                ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "staff1@gmail.com");
+                ApplicationUser user2 = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "staff2@gmail.com");
                 _userManager.AddToRoleAsync(user2, SD.Role_Staff).GetAwaiter().GetResult();
             }
             //1.Author

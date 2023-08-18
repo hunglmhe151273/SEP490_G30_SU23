@@ -18,7 +18,7 @@ using VBookHaven.ViewModels;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class PurchaseOrderController : Controller
     {
         private readonly VBookHavenDBContext _dbContext;

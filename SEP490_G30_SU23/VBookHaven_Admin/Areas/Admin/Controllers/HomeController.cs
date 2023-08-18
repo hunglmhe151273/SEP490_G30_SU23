@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class HomeController : Controller
     {
 
