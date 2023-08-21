@@ -51,12 +51,12 @@ namespace VBookHaven.DataAccess.DbInitializer
                         Image = "\\images\\Staff\\330352f8-a5c6-4d11-8a6d-3e2f0ca09ff0.png", 
                         IsMale = true 
                     },
-                    UserName = "acchunglmhe151273@gmail.com",
-                    Email = "acchunglmhe151273@gmail.com",
+                    UserName = "owner@gmail.com",
+                    Email = "owner@gmail.com",
                     EmailConfirmed = true,
                 },"Pass123@").GetAwaiter().GetResult();
 
-                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "acchunglmhe151273@gmail.com");
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "owner@gmail.com");
                 _userManager.AddToRoleAsync(user, SD.Role_Owner).GetAwaiter().GetResult();
             }
             if (_db.Staff.Count() < 2)

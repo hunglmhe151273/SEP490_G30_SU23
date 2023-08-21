@@ -26,6 +26,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly IProductRespository _productRespository;
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
         IMapper _mapper;
+        [ActivatorUtilitiesConstructor]
         public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository, 
             VBookHavenDBContext dbContext, IProductRespository productRespository, IPurchaseOrderRepository purchaseOrderRepository)
         {

@@ -26,7 +26,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
     public class AuthorController : Controller
     {
         private readonly IAuthorRepository authorRepository;
-
+        [ActivatorUtilitiesConstructor]
         public AuthorController(IAuthorRepository authorRepository)
         {
             this.authorRepository = authorRepository;

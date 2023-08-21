@@ -52,8 +52,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		private readonly IAuthorRepository authorRepository;
 		private readonly ICategoryRepository categoryRepository;
 		private readonly IImageRepository imageRepository;
-
-		public ProductController(IProductRespository productRespository, IAuthorRepository authorRepository, 
+        [ActivatorUtilitiesConstructor]
+        public ProductController(IProductRespository productRespository, IAuthorRepository authorRepository, 
 			ICategoryRepository categoryRepository, IImageRepository imageRepository)
 		{
 			_productRespository = productRespository;

@@ -24,6 +24,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly VBookHavenDBContext _context;
 
         IMapper _mapper;
+        [ActivatorUtilitiesConstructor]
         public SuppliersController(VBookHavenDBContext context, IMapper mapper)
         {
 

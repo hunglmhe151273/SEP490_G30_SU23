@@ -18,7 +18,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
     public class CategoriesController : Controller
     {
         private readonly VBookHavenDBContext _context;
-
+        [ActivatorUtilitiesConstructor]
         public CategoriesController(VBookHavenDBContext context)
         {
             _context = context;
