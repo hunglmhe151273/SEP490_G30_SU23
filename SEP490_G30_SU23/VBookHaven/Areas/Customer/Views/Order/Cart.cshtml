@@ -149,9 +149,17 @@ else
                                                     <td class="product-discount">@o.Product.RetailDiscount%</td>
                                                     <td class="product-quantity">
                                                         <div class="cart-plus-minus-2 f-left">
-                                                            <div class="dec qtybutton" onclick="window.location.replace('/Customer/Order/MinusOneFromCart/@o.ProductId')">-</div>
+                                                            <div class="dec qtybutton" onclick="document.getElementById('minus-one-cart').submit();">-</div>
                                                             <input readonly value="@o.Quantity" class="cart-plus-minus-box">
-                                                            <div class="inc qtybutton" onclick="window.location.replace('/Customer/Order/PlusOneToCart/@o.ProductId')">+</div>
+                                                            <div class="inc qtybutton" onclick="document.getElementById('add-one-cart').submit();">+</div>
+                                                            <form hidden action="/Customer/Order/UpdateCart" method="post" id="add-one-cart">
+                                                                <input name="number" value="1" />
+                                                                <input name="id" value="@o.ProductId" />
+                                                            </form>
+                                                            <form hidden action="/Customer/Order/UpdateCart" method="post" id="minus-one-cart">
+                                                                <input name="number" value="-1" />
+                                                                <input name="id" value="@o.ProductId" />
+                                                            </form>
                                                         </div>
                                                     </td>
                                                     <td class="product-subtotal">

@@ -99,19 +99,31 @@ namespace VBookHaven.Areas.Customer.Controllers
 			return View(cart);
 		}
 
-		public async Task<IActionResult> PlusOneToCart(int id)
+		//public async Task<IActionResult> PlusOneToCart(int id)
+		//{
+		//	bool success = await functions.AddToCartFunctionAsync(1, id);
+
+		//	if (!success)
+		//		return NotFound();
+
+		//	return RedirectToAction("Cart");
+		//}
+
+		//public async Task<IActionResult> MinusOneFromCart(int id)
+		//{
+		//	bool success = await functions.AddToCartFunctionAsync(-1, id);
+
+		//	if (!success)
+		//		return NotFound();
+
+		//	return RedirectToAction("Cart");
+		//}
+
+		/* Add "number" item co id "id" vao cart ("number" co the <0 de xoa bot item khoi cart) */
+		[HttpPost]
+		public async Task<IActionResult> UpdateCart(int number, int id)
 		{
-			bool success = await functions.AddToCartFunctionAsync(1, id);
-
-			if (!success)
-				return NotFound();
-
-			return RedirectToAction("Cart");
-		}
-
-		public async Task<IActionResult> MinusOneFromCart(int id)
-		{
-			bool success = await functions.AddToCartFunctionAsync(-1, id);
+			bool success = await functions.AddToCartFunctionAsync(number, id);
 
 			if (!success)
 				return NotFound();
