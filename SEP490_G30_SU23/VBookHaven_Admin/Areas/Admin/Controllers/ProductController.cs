@@ -62,7 +62,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			this.imageRepository = imageRepository;
 		}
 
-		public async Task<IActionResult> Index()
+        public ProductController()
+        {
+        }
+
+        public async Task<IActionResult> Index()
 		{
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 

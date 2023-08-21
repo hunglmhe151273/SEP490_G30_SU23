@@ -31,6 +31,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
+        public SuppliersController()
+        {
+        }
+
         // GET: Admin/Suppliers
         public async Task<IActionResult> Index()
         {

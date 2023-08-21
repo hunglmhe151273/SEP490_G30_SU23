@@ -39,7 +39,6 @@ namespace VBookHaven.Test
             {
                 SubCategoryName = "Test1",
                 CategoryId = 1,
-                Status = true
             };
             var data = subCategoryController.Create(test);
             Assert.IsTrue(data != null);

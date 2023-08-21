@@ -32,6 +32,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             this.authorRepository = authorRepository;
         }
 
+        public AuthorController()
+        {
+        }
+
         public async Task<IActionResult> Index()
         {
             var authors = await authorRepository.GetAllAuthorsAsync();

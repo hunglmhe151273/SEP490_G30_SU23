@@ -40,9 +40,7 @@ namespace VBookHaven.Test
             var categoryController = new CategoriesController();
             Category test = new Category
             {
-                CategoryName = "Test1",
-                Status = true,
-                
+                CategoryName = "Test1",               
             };
             var data = categoryController.Create(test);
             Assert.IsTrue(data != null);

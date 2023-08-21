@@ -35,6 +35,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _IApplicationUserRespository = applicationUserRespository;
             _purchaseOrderRepository = purchaseOrderRepository;
         }
+
+        public PurchaseOrderController()
+        {
+        }
+
         public async Task<IActionResult> Index()
         {
             var purchaseOrders = await _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();

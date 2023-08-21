@@ -24,6 +24,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _context = context;
         }
 
+        public SubCategoriesController()
+        {
+        }
+
         //// GET: Admin/SubCategories
         public async Task<IActionResult> Index()
         {
