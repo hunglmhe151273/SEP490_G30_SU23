@@ -12,8 +12,8 @@ using VBookHaven.DataAccess.Data;
 namespace VBookHaven.DataAccess.Migrations
 {
     [DbContext(typeof(VBookHavenDBContext))]
-    [Migration("20230818072052_initdb")]
-    partial class initdb
+    [Migration("20230816023544_editCategory")]
+    partial class editCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
