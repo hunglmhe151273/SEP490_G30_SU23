@@ -18,7 +18,7 @@ using VBookHaven.ViewModels;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class PurchaseOrderController : Controller
     {
         private readonly VBookHavenDBContext _dbContext;
@@ -26,6 +26,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly IProductRespository _productRespository;
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
         IMapper _mapper;
+        [ActivatorUtilitiesConstructor]
         public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository, 
             VBookHavenDBContext dbContext, IProductRespository productRespository, IPurchaseOrderRepository purchaseOrderRepository)
         {
@@ -35,6 +36,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _IApplicationUserRespository = applicationUserRespository;
             _purchaseOrderRepository = purchaseOrderRepository;
         }
+
+        public PurchaseOrderController()
+        {
+        }
+
         public async Task<IActionResult> Index()
         {
             var purchaseOrders = await _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();

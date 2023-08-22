@@ -14,14 +14,18 @@ using VBookHaven.Utility;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class CategoriesController : Controller
     {
         private readonly VBookHavenDBContext _context;
-
+        [ActivatorUtilitiesConstructor]
         public CategoriesController(VBookHavenDBContext context)
         {
             _context = context;
+        }
+
+        public CategoriesController()
+        {
         }
 
         // GET: Admin/Categories -- done

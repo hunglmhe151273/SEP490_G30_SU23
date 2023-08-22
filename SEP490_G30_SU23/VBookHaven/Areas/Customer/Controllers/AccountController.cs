@@ -55,7 +55,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             {
                 //getCustomerIDFromIdentity
                 ApplicationUser applicationUser = await getCustomerFromIdentity();
-                if (applicationUser == null) { return NotFound(); }
+                if (applicationUser == null) { return RedirectToAction("Login", "Account", new { area = "Identity" });}
                 int cid = applicationUser.Customer.CustomerId;
 
                 var shippingInfos = await _shippingInfoRepository.GetAllShipInfoByCusIDAsync(cid);
@@ -76,7 +76,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             {
                 //getCustomerIDFromIdentity
                 ApplicationUser applicationUser = await getCustomerFromIdentity();
-                if (applicationUser == null) { return NotFound(); }
+                if (applicationUser == null) { return RedirectToAction("Login", "Account", new { area = "Identity" }); }
                 int cid = applicationUser.Customer.CustomerId;
 
                 ShippingInfoVM model = new ShippingInfoVM();
@@ -93,7 +93,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound();
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
         }
         [HttpGet]
@@ -102,7 +102,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             try
             {
                 ApplicationUser applicationUser = await getCustomerFromIdentity();
-                if (applicationUser == null) { return NotFound(); }
+                if (applicationUser == null) { return RedirectToAction("Login", "Account", new { area = "Identity" });}
                 int cid = applicationUser.Customer.CustomerId;
 
                 ShippingInfoVM model = new ShippingInfoVM();
@@ -178,7 +178,7 @@ namespace VBookHaven.Areas.Customer.Controllers
                 //shippid đấy là của customer đấy  --> tìm theo id, nếu customer == cus identity thì xóa
                 //getCustomerIDFromIdentity
                 ApplicationUser applicationUser = await getCustomerFromIdentity();
-                if (applicationUser == null) { return NotFound(); }
+                if (applicationUser == null) { return RedirectToAction("Login", "Account", new { area = "Identity" });}
                 int cid = applicationUser.Customer.CustomerId;
 
                 var shippingInfo = await _shippingInfoRepository.GetShipInfoByCusIdAndShipInfoIdAsync(cid, shipInfoId);
@@ -202,7 +202,7 @@ namespace VBookHaven.Areas.Customer.Controllers
             try
             {
                 ApplicationUser applicationUser = await getCustomerFromIdentity();
-                if (applicationUser == null) { return NotFound(); }
+                if (applicationUser == null) { return RedirectToAction("Login", "Account", new { area = "Identity" });}
                 int cid = applicationUser.Customer.CustomerId;
 
                 CustomerProfileVM c = new CustomerProfileVM();
@@ -352,7 +352,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			int custId = applicationUser.Customer.CustomerId;
 
             var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
-            if (order == null) { return NotFound(); }
+            if (order == null) { return RedirectToAction("Login", "Account", new { area = "Identity" });}
             if (order.CustomerId != custId)
                 return Unauthorized();
 
@@ -378,8 +378,14 @@ namespace VBookHaven.Areas.Customer.Controllers
         {
             var success = await CancelOrderFunction(id);
             if (success)
+            {
+                //To do: Add noti
                 return RedirectToAction("Orders");
-            else return BadRequest();
+            }
+            else
+            {
+                return RedirectToAction("Orders");
+            }
         }
 
         [HttpPost]
@@ -387,8 +393,15 @@ namespace VBookHaven.Areas.Customer.Controllers
         {
 			var success = await CancelOrderFunction(id);
             if (success)
+            {
+                //To do: Add noti
                 return RedirectToAction("OrderDetail", new { id = id });
-			else return BadRequest();
+            }
+            else {
+                //To do: Add noti
+                return RedirectToAction("OrderDetail", new { id = id });
+            }
+            
 		}
 
         //---------- Other functions ----------

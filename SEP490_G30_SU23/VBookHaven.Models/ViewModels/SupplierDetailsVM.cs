@@ -13,6 +13,10 @@ namespace VBookHaven.Models.ViewModels
         {
             Supplier = new Supplier();
             SupplierProducts = new List<Product>();
+            foreach(var product in SupplierProducts)
+            {
+                product.Images = new List<Image>();
+            }
         }
         public Supplier Supplier { get; set; }
         public List<Product> SupplierProducts { get; set; }

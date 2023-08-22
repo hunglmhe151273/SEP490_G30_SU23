@@ -23,7 +23,7 @@ using AutoMapper;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class UserController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -74,10 +74,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
             returnUrl ??= Url.Content("~/");
             //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (String.IsNullOrEmpty(model.Role))
-            {
-                model.RoleValidate = "Hãy chọn vị trí của nhân viên";
-            }
+            //if (String.IsNullOrEmpty(model.Role))
+            //{
+            //    model.RoleValidate = "Hãy chọn vị trí của nhân viên";
+            //}
+            model.Role = SD.Role_Staff;
             if (model.Staff_IsMale == null)
             {
                 model.GenderValidate = "Hãy chọn giới tính của nhân viên";
@@ -137,7 +138,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Xác nhận tài khoản nhân viên",
-                        $"Bạn được mời làm nhân viên công ty VBookHaven ở vị trí {model.Role}. Với mật khẩu tạm thời là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
+                        $"Bạn được chủ cửa hàng Bookstore Management System tạo tài khoản với vị trí: {model.Role}. Mật khẩu tạm thời của bạn là: {model.Password}. Để kích hoạt tài khoản bằng cách <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>click vào đây</a>.");
                     TempData["success"] = "Thêm nhân viên thành công";
                     return RedirectToAction("Index", "User");
                 }
@@ -159,7 +160,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return View(model);
         }
         [HttpGet]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
         public async Task<IActionResult> Profile()
         {
             try
@@ -180,7 +181,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         }
       
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
         public async Task<IActionResult> Profile(ProfileVM profileVM)
         {
             //To do: Validate user and model?
@@ -233,7 +234,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             return RedirectToAction(nameof(Profile));
         }
         [HttpPost]
-        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper + "," + SD.Role_Seller)]
+        [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
         public async Task<IActionResult> ChangePassword(ProfileVM profileVM)
         {
             ModelState.Clear();
@@ -263,6 +264,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+            TempData["error"] = "Thay đổi mật khẩu thất bại";
             return RedirectToAction(nameof(Profile));
 
         }
@@ -339,17 +341,17 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
 
             returnUrl ??= Url.Content("~/");
-            if (String.IsNullOrEmpty(model.Role))
-            {
-                model.RoleList = GetRoleListToUpdateStaff(model.Role);
-                ModelState.AddModelError("Role", "Hãy chọn vị trí của nhân viên");
-            }
+            //if (String.IsNullOrEmpty(model.Role))
+            //{
+            //    model.RoleList = GetRoleListToUpdateStaff(model.Role);
+            //    ModelState.AddModelError("Role", "Hãy chọn vị trí của nhân viên");
+            //}
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
             //update role
-            await updateRoleByUIDAsync(model.ApplicationUser.Id, model.Role);
+            //await updateRoleByUIDAsync(model.ApplicationUser.Id, model.Role);
 
             string wwwRootPath = _webHostEnvironment.WebRootPath;
             if (model.Staff_ImageFile != null)

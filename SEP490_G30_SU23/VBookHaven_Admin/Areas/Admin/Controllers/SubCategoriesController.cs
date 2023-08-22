@@ -14,14 +14,18 @@ using VBookHaven.Utility;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class SubCategoriesController : Controller
     {
         private readonly VBookHavenDBContext _context;
-
+        [ActivatorUtilitiesConstructor]
         public SubCategoriesController(VBookHavenDBContext context)
         {
             _context = context;
+        }
+
+        public SubCategoriesController()
+        {
         }
 
         //// GET: Admin/SubCategories
@@ -155,7 +159,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'VBookHavenDBContext.SubCategories'  is null.");
             }
-            var subCategory = await _context.SubCategories.Include(sub => sub.Products).SingleOrDefaultAsync(sub => sub.CategoryId == id);
+            var subCategory = await _context.SubCategories.Include(sub => sub.Products).SingleOrDefaultAsync(sub => sub.SubCategoryId == id);
             if (subCategory != null)
             {
                 if (subCategory.Products.Count() > 0)

@@ -45,14 +45,6 @@
                                     <input asp-for="@Model.ApplicationUser.Staff.FullName" class="form-control" id="inputName" placeholder="Nhập tên">
                                     <span asp-validation-for="@Model.ApplicationUser.Staff.FullName" class="text-danger"></span>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="inputRole" class="form-label">Chức vụ</label>
-                                    <select asp-for="Role" asp-items="@Model.RoleList" id="inputRole" class="form-select">
-                                        <option disabled selected>-Select Role-</option>
-                                    </select>
-                                    <span asp-validation-for="Role" class="text-danger"></span>
-                                </div>
-                               
                                 <div class="col-md-6">
                                     <label asp-for="@Model.ApplicationUser.Email" for="inputUserName" class="form-label">Email</label>
                                     <input asp-for="@Model.ApplicationUser.Email" disabled type="text" class="form-control" id="inputUserName" placeholder="Nhập tên đăng nhập">

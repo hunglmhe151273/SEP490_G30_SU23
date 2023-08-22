@@ -81,15 +81,15 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Chưa điền thông tin đăng nhập")]
+            [EmailAddress(ErrorMessage = "Chưa đúng định dạng email")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Chưa điền mật khẩu đăng nhập")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -140,12 +140,7 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                         // Redirect to the admin page
                         return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
                     }
-                    else if (roles.Contains(SD.Role_Seller))
-                    {
-                        // Redirect to the user page
-                        return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
-                    }
-                    else if (roles.Contains(SD.Role_Storekeeper))
+                    else if (roles.Contains(SD.Role_Staff))
                     {
                         // Redirect to the user page
                         return RedirectToAction("Dashboard", "Home", new { area = "Admin" });
@@ -157,7 +152,8 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
 
 						// Redirect to the user page
 						//return RedirectToAction("Index", "Home", new { area = "Customer" });
-						//return RedirectToAction("IndexFromLogin", "Home", new { area = "Customer" });
+
+						return RedirectToAction("Login", "Account", new { area = "Identity" });
 					}
 					//return LocalRedirect(returnUrl);
 				}
@@ -173,11 +169,13 @@ namespace VBookHaven_Admin.Areas.Identity.Pages.Account
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    TempData["error"] = "Đăng nhập không thành công";
                     return Page();
                 }
             }
 
             // If we got this far, something failed, redisplay form
+            TempData["error"] = "Đăng nhập không thành công";
             return Page();
         }
     }

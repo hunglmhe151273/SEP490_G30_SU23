@@ -18,17 +18,22 @@ using VBookHaven.Utility;
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Storekeeper)]
+    [Authorize(Roles = SD.Role_Owner + "," + SD.Role_Staff)]
     public class SuppliersController : Controller
     {
         private readonly VBookHavenDBContext _context;
 
         IMapper _mapper;
+        [ActivatorUtilitiesConstructor]
         public SuppliersController(VBookHavenDBContext context, IMapper mapper)
         {
 
             _context = context;
             _mapper = mapper;
+        }
+
+        public SuppliersController()
+        {
         }
 
         // GET: Admin/Suppliers
@@ -58,6 +63,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         var products = _context.Products
             .Where(product => productIds.Contains(product.ProductId))
             .Include(product => product.Images)
+            .Include(product => product.SubCategory)
             .ToList();
             SupplierDetailsVM model = new SupplierDetailsVM();
             model.Supplier = supplier;

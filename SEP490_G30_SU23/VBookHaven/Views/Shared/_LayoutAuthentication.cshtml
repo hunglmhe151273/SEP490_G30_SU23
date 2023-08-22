@@ -14,7 +14,7 @@
     <!--favicon-->
     <link rel="icon" href="~/mgmt-lib/images/favicon-32x32.png" type="image/png" />
     <!-- loader-->
-@*    <link href="~/mgmt-lib/css/pace.min.css" rel="stylesheet" />
+    @*    <link href="~/mgmt-lib/css/pace.min.css" rel="stylesheet" />
     <script src="~/mgmt-lib/js/pace.min.js"></script>*@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/mgmt-lib/css/bootstrap.min.css" />
@@ -23,9 +23,13 @@
     <link rel="stylesheet" href="~/mgmt-lib/css/icons.css" />
     <!-- App CSS -->
     <link rel="stylesheet" href="~/mgmt-lib/css/app.css" />
+    <link rel="stylesheet" href="~/mgmt-lib/plugins/notifications/css/lobibox.min.css" />
+    <!-- Notification -->
+    <link href="~/mgmt-lib/css/animate.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="bg-register">
+    <partial name="_Notification" />
     <!-- wrapper -->
     @RenderBody()
     <!-- end wrapper -->
@@ -53,3 +57,7 @@
 </body>
 
 </html>
+<!--notification js -->
+<script src="~/mgmt-lib/plugins/notifications/js/lobibox.min.js"></script>
+<script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
+<script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>

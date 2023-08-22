@@ -1,5 +1,5 @@
-  /* Default Notifications */
-  function default_noti() {
+/* Default Notifications */
+function default_noti() {
 	Lobibox.notify('default', {
 		pauseDelayOnHover: true,
 		continueDelayOnInactiveTab: false,
@@ -258,7 +258,7 @@ function anim3_noti() {
 	});
 }
 
-function anim4_noti() {
+function anim4_noti(errorMsg) {
 	Lobibox.notify('error', {
 		pauseDelayOnHover: true,
 		continueDelayOnInactiveTab: false,
@@ -268,7 +268,7 @@ function anim4_noti() {
 		hideClass: 'lightSpeedOut',
 		icon: 'bx bx-x-circle',
 		width: 600,
-		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+		msg: errorMsg
 	});
 }
 

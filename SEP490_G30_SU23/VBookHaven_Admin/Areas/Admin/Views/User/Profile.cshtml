@@ -21,13 +21,9 @@
                 {
                     <div class="breadcrumb-title pe-3">Chủ cửa hàng</div>
                 }
-                else if (role == SD.Role_Seller)
+                else if (role == SD.Role_Staff)
                 {
-                    <div class="breadcrumb-title pe-3">Nhân viên bán hàng</div>
-                }
-                else if (role == SD.Role_Storekeeper)
-                {
-                    <div class="breadcrumb-title pe-3">Thủ kho</div>
+                    <div class="breadcrumb-title pe-3">Nhân viên</div>
                 }
                 else
                 {
@@ -92,13 +88,9 @@
                                     {
                                         <input disabled value="@SD.Role_Owner" class="form-control" />
                                     }
-                                    else if (User.IsInRole(SD.Role_Storekeeper))
+                                    else if (User.IsInRole(SD.Role_Staff))
                                     {
-                                        <input disabled value="@SD.Role_Storekeeper" class="form-control" />
-                                    }
-                                    else if (User.IsInRole(SD.Role_Seller))
-                                    {
-                                        <input disabled value="@SD.Role_Seller" class="form-control" />
+                                        <input disabled value="@SD.Role_Staff" class="form-control" />
                                     }
                                 </div>
                                 <div class="col-md-4">
