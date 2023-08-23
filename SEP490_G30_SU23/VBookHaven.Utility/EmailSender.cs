@@ -24,7 +24,6 @@ namespace VBookHaven.Utility
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
-
             //return Task.CompletedTask;
             //c2
         }
