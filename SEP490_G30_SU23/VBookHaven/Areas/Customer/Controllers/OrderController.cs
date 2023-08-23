@@ -99,25 +99,58 @@ namespace VBookHaven.Areas.Customer.Controllers
 			return View(cart);
 		}
 
-		public async Task<IActionResult> PlusOneToCart(int id)
+		//public async Task<IActionResult> PlusOneToCart(int id)
+		//{
+		//	bool success = await functions.AddToCartFunctionAsync(1, id);
+
+		//	if (!success)
+		//		return NotFound();
+
+		//	return RedirectToAction("Cart");
+		//}
+
+		//public async Task<IActionResult> MinusOneFromCart(int id)
+		//{
+		//	bool success = await functions.AddToCartFunctionAsync(-1, id);
+
+		//	if (!success)
+		//		return NotFound();
+
+		//	return RedirectToAction("Cart");
+		//}
+
+		#region UpdateCartAPI
+
+		[HttpPost]
+		public async Task<IActionResult> UpdateCart(int number, int id)
 		{
-			bool success = await functions.AddToCartFunctionAsync(1, id);
+			try
+			{
+				var custId = await functions.GetLoginCustomerIdAsync();
+				var cart = await functions.GetCartAsync(custId);
 
-			if (!success)
-				return NotFound();
+				var item = cart.FirstOrDefault(c => c.ProductId == id);
 
-			return RedirectToAction("Cart");
+				if (item == null)
+				{
+					return StatusCode(400, "Item not in cart");
+				}	
+				else
+				{
+					int delta = number - item.Quantity.Value;
+					bool success = await functions.AddToCartFunctionAsync(delta, id);
+					if (success)
+						return Ok();
+					else return BadRequest("Update cart fail");
+				}	
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("Update cart fail");
+			}
 		}
 
-		public async Task<IActionResult> MinusOneFromCart(int id)
-		{
-			bool success = await functions.AddToCartFunctionAsync(-1, id);
-
-			if (!success)
-				return NotFound();
-
-			return RedirectToAction("Cart");
-		}
+		#endregion
 
 		public async Task<IActionResult> RemoveItemFromCart(int id)
 		{

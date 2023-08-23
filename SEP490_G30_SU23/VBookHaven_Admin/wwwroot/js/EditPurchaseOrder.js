@@ -251,7 +251,7 @@ if (purchaseId !== null) {
 
 function fetchDataFromAPIs(purchaseId) {
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSuppliers',
+        url: '/Admin/PurchaseOrder/GetAllSuppliers',
         type: 'GET',
         dataType: 'json',
         success: function (suppliersData) {
@@ -262,7 +262,7 @@ function fetchDataFromAPIs(purchaseId) {
             console.log('Error fetching suppliers data:', error);
         }
     });
-    let urlGetAllOtherProductsInPurchaseId = `https://localhost:7123/Admin/PurchaseOrder/GetAllOtherProductsByPurchaseId?purchaseId=${purchaseId}`;
+    let urlGetAllOtherProductsInPurchaseId = `/Admin/PurchaseOrder/GetAllOtherProductsByPurchaseId?purchaseId=${purchaseId}`;
     $.ajax({
         url: urlGetAllOtherProductsInPurchaseId,
         type: 'GET',
@@ -277,7 +277,7 @@ function fetchDataFromAPIs(purchaseId) {
     });
     //to do: 2 call api to list all subcategory
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSubCategories',
+        url: '/Admin/PurchaseOrder/GetAllSubCategories',
         type: 'GET',
         dataType: 'json',
         success: function (subcategoriesData) {
@@ -495,7 +495,7 @@ function addSupplierByAPI() {
         "ward": null
     }
     $.ajax({
-        url: "https://localhost:7123/Admin/Suppliers/AddSupplier", // Replace with the correct API endpoint URL
+        url: "/Admin/Suppliers/AddSupplier", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(supplierDTO),
@@ -547,7 +547,7 @@ function addProductByAPI_EditPO() {
     }
     console.log('bookDTO' + JSON.stringify(bookDTO));
     $.ajax({
-        url: "https://localhost:7123/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
+        url: "/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(bookDTO),

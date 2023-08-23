@@ -56,7 +56,7 @@ fetchDataFromAPIs();
 // Function to fetch customers and products data using AJAX
 function fetchDataFromAPIs() {
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllShipInfos',
+        url: '/Admin/Order/GetAllShipInfos',
         type: 'GET',
         dataType: 'json',
         success: function(customersData) {
@@ -71,7 +71,7 @@ function fetchDataFromAPIs() {
         }
     });
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllCustomers',
+        url: '/Admin/Order/GetAllCustomers',
         type: 'GET',
         dataType: 'json',
         success: function (customersData) {
@@ -86,7 +86,7 @@ function fetchDataFromAPIs() {
         }
     });
     $.ajax({
-        url: 'https://localhost:7123/Admin/Order/GetAllActiveProducts',
+        url: '/Admin/Order/GetAllActiveProducts',
         type: 'GET',
         dataType: 'json',
         success: function(productsData) {
@@ -374,7 +374,7 @@ function addcustomerByAPI() {
 	}
 
     $.ajax({
-        url: "https://localhost:7123/Admin/Order/AddNewShippingInfo", // Replace with the correct API endpoint URL
+        url: "/Admin/Order/AddNewShippingInfo", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(customerDTO),
@@ -429,7 +429,7 @@ function addcustomerByAPI() {
 //            "presentImage": null
 //            }
 //    $.ajax({
-//        url: "https://localhost:7123/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
+//        url: "/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
 //        type: "POST",
 //        contentType: "application/json",
 //        data: JSON.stringify(bookDTO),

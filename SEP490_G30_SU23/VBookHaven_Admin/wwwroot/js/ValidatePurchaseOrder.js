@@ -136,7 +136,7 @@ $(document).on('keyup', '#barCode', function () {
     var barcode = $(this).val();
     var id = $("#Product_ProductId").val();
     $.ajax({
-        url: "https://localhost:7123/Admin/Product/ValidateBarcodeAsyncAPI",
+        url: "/Admin/Product/ValidateBarcodeAsyncAPI",
         type: "GET",
         contentType: "application/json",
         data: { barcode: barcode, id: id },
