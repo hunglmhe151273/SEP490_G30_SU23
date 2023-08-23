@@ -350,7 +350,14 @@
 
             if (newVal < min) newVal = min;
         }
+
+        var oldVal = $button.parent().find("input").val();
         $button.parent().find("input").val(newVal);
+
+        // Custom: if value change, trigger onChange()
+        if (newVal != oldVal) {
+            $button.parent().find("input").trigger("change");
+		}
     });
 
 	/* ********************************************

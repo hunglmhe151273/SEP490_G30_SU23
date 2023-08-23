@@ -1,5 +1,5 @@
 function defaultChartInYear(year) {
-    let api = `https://localhost:7123/Admin/Home/Chart/?year=${year}`;
+    let api = `/Admin/Home/Chart/?year=${year}`;
     callApiChartWithYear(api);
 }
 var chart;
@@ -87,7 +87,7 @@ function showYearChart(Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, De
 $("#Year").change(() => {
     //set paramenter to api url
     console.log("set paramenter:" + $("#Year").val());
-    callApiChartWithYear("https://localhost:7123/Admin/Home/Chart/?year=" + $("#Year").val());
+    callApiChartWithYear("/Admin/Home/Chart/?year=" + $("#Year").val());
 });
 
 function callApiChartWithYear(api) {
@@ -117,14 +117,14 @@ function clearChart() {
 //-------------------------------Daily tracking report-----------------------------
 function defaultDailyReport(selectValue) {
     //to fix
-    let api = `https://localhost:7123/Admin/Home/DailyReport`;
+    let api = `/Admin/Home/DailyReport`;
     callApiDailyReport(api, selectValue);
 }
 
 $("#DailyReport").change(() => {
     //set paramenter to api url
     console.log("Set paramenter dayly report:" + $("#DailyReport").val());
-    callApiDailyReport("https://localhost:7123/Admin/Home/DailyReport", $("#DailyReport").val());
+    callApiDailyReport("/Admin/Home/DailyReport", $("#DailyReport").val());
 });
 
 

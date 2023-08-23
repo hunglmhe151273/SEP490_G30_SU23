@@ -14,7 +14,7 @@ function addAuthorByAPI() {
         "status": true
     }
     $.ajax({
-        url: "https://localhost:7123/Admin/Product/AddAuthorAPI", // Replace with the correct API endpoint URL
+        url: "/Admin/Product/AddAuthorAPI", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(author),

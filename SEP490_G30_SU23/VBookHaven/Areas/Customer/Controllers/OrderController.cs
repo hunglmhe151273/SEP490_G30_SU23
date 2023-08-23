@@ -119,17 +119,38 @@ namespace VBookHaven.Areas.Customer.Controllers
 		//	return RedirectToAction("Cart");
 		//}
 
-		/* Add "number" item co id "id" vao cart ("number" co the <0 de xoa bot item khoi cart) */
+		#region UpdateCartAPI
+
 		[HttpPost]
 		public async Task<IActionResult> UpdateCart(int number, int id)
 		{
-			bool success = await functions.AddToCartFunctionAsync(number, id);
+			try
+			{
+				var custId = await functions.GetLoginCustomerIdAsync();
+				var cart = await functions.GetCartAsync(custId);
 
-			if (!success)
-				return NotFound();
+				var item = cart.FirstOrDefault(c => c.ProductId == id);
 
-			return RedirectToAction("Cart");
+				if (item == null)
+				{
+					return StatusCode(400, "Item not in cart");
+				}	
+				else
+				{
+					int delta = number - item.Quantity.Value;
+					bool success = await functions.AddToCartFunctionAsync(delta, id);
+					if (success)
+						return Ok();
+					else return BadRequest("Update cart fail");
+				}	
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("Update cart fail");
+			}
 		}
+
+		#endregion
 
 		public async Task<IActionResult> RemoveItemFromCart(int id)
 		{

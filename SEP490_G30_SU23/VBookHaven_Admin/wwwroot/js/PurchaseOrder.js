@@ -235,7 +235,7 @@ fetchDataFromAPIs();
 
 function fetchDataFromAPIs() {
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSuppliers',
+        url: '/Admin/PurchaseOrder/GetAllSuppliers',
         type: 'GET',
         dataType: 'json',
         success: function (suppliersData) {
@@ -247,7 +247,7 @@ function fetchDataFromAPIs() {
         }
     });
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/getallproducts',
+        url: '/Admin/PurchaseOrder/getallproducts',
         type: 'GET',
         dataType: 'json',
         success: function (productsData) {
@@ -263,7 +263,7 @@ function fetchDataFromAPIs() {
     });
     //to do: 2 call api to list all subcategory
     $.ajax({
-        url: 'https://localhost:7123/Admin/PurchaseOrder/GetAllSubCategories',
+        url: '/Admin/PurchaseOrder/GetAllSubCategories',
         type: 'GET',
         dataType: 'json',
         success: function (subcategoriesData) {
@@ -468,7 +468,7 @@ function addSupplierByAPI() {
         "ward": null
     }
     $.ajax({
-        url: "https://localhost:7123/Admin/Suppliers/AddSupplier", // Replace with the correct API endpoint URL
+        url: "/Admin/Suppliers/AddSupplier", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(supplierDTO),
@@ -522,7 +522,7 @@ function addProductByAPI() {
 
     //to do: fix api in back-end receive new bookDTO
     $.ajax({
-        url: "https://localhost:7123/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
+        url: "/Admin/PurchaseOrder/AddProduct", // Replace with the correct API endpoint URL
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(bookDTO),

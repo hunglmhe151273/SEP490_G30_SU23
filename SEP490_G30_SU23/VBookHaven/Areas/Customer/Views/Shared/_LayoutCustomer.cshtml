@@ -250,7 +250,7 @@
                                                                 <div class="cart-info f-left">
                                                                     <h6 class="text-capitalize">
                                                                         <a href="/Customer/Product/Detail/@detail.ProductId">
-                                                                            @detail.Product.Name x @detail.Quantity
+                                                                            @detail.Product.Name x <span id="cart-quantity-@detail.ProductId">@detail.Quantity</span>
                                                                         </a>
                                                                     </h6>
                                                                     <p>@price VNĐ</p>

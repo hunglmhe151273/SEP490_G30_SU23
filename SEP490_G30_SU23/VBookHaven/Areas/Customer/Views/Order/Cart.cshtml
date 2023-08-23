@@ -148,18 +148,20 @@ else
                                                     <td class="product-price">@o.Product.RetailPrice VNĐ</td>
                                                     <td class="product-discount">@o.Product.RetailDiscount%</td>
                                                     <td class="product-quantity">
-                                                        <div class="cart-plus-minus-2 f-left">
-                                                            <div class="dec qtybutton" onclick="document.getElementById('minus-one-cart').submit();">-</div>
-                                                            <input readonly value="@o.Quantity" class="cart-plus-minus-box">
-                                                            <div class="inc qtybutton" onclick="document.getElementById('add-one-cart').submit();">+</div>
-                                                            <form hidden action="/Customer/Order/UpdateCart" method="post" id="add-one-cart">
+                                                        @*<div class="cart-plus-minus-2 f-left">*@
+                                                        <div class="cart-plus-minus f-left">
+                                                            <div class="product-id" hidden>@o.ProductId</div>
+                                                            @*<div class="dec qtybutton" onclick="document.getElementById('minus-one-cart').submit();">-</div>*@
+                                                            <input value="@o.Quantity" min="1" max="@o.Product.AvailableUnit" class="cart-plus-minus-box validate-number change-cart">
+                                                            @*<div class="inc qtybutton" onclick="document.getElementById('add-one-cart').submit();">+</div>*@
+                                                            @*<form hidden action="/Customer/Order/UpdateCart" method="post" id="add-one-cart">
                                                                 <input name="number" value="1" />
                                                                 <input name="id" value="@o.ProductId" />
                                                             </form>
                                                             <form hidden action="/Customer/Order/UpdateCart" method="post" id="minus-one-cart">
                                                                 <input name="number" value="-1" />
                                                                 <input name="id" value="@o.ProductId" />
-                                                            </form>
+                                                            </form>*@
                                                         </div>
                                                     </td>
                                                     <td class="product-subtotal">
@@ -220,3 +222,9 @@ else
 
 </section>
 <!-- End page content -->
+
+@section Scripts
+{
+    <script src="~/js/ValidateUnitInCart.js"></script>
+    <script src="~/js/ChangeUnitInCart.js"></script>
+}
