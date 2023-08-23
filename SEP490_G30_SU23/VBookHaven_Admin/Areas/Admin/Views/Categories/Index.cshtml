@@ -84,16 +84,24 @@
 
                                         </td>*@
                                             <td>
-                                                <!-- Button trigger modal -->
-                                                <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-default">
-                                                    <i class="lni lni-pencil-alt"></i>
-                                                </a>
+                                                @if (User.IsInRole(SD.Role_Staff))
+                                                {
+
+                                                    <!-- Button trigger modal -->
+                                                    <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-default">
+                                                        <i class="lni lni-pencil-alt"></i>
+                                                    </a>
+                                                }
+
                                                 <button type="button" class="btn btn-sm btn-default show-sub">
                                                     <i class="lni lni-eye"></i>
                                                 </button>
-                                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-default">
-                                                    <i class='bx bx-trash'></i>
-                                                </a>
+                                                @if (User.IsInRole(SD.Role_Staff))
+                                                {
+                                                    <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-default">
+                                                        <i class='bx bx-trash'></i>
+                                                    </a>
+                                                }
                                             </td>
                                         </tr>
                                         @foreach (var sub in item.SubCategories)
@@ -113,13 +121,16 @@
                                         }
                                         </td>*@
                                                 <td>
-                                                    <!-- Button trigger modal -->
-                                                    <a asp-controller="SubCategories" asp-action="Edit" asp-route-id="@sub.SubCategoryId" class="btn btn-sm btn-default">
-                                                        <i class="lni lni-pencil-alt"></i>
-                                                    </a>
-                                                    <a asp-controller="SubCategories" asp-action="Delete" asp-route-id="@sub.SubCategoryId" class="btn btn-sm btn-default">
-                                                        <i class='bx bx-trash'></i>
-                                                    </a>
+                                                    @if (User.IsInRole(SD.Role_Staff))
+                                                    {
+                                                        <!-- Button trigger modal -->
+                                                        <a asp-controller="SubCategories" asp-action="Edit" asp-route-id="@sub.SubCategoryId" class="btn btn-sm btn-default">
+                                                            <i class="lni lni-pencil-alt"></i>
+                                                        </a>
+                                                        <a asp-controller="SubCategories" asp-action="Delete" asp-route-id="@sub.SubCategoryId" class="btn btn-sm btn-default">
+                                                            <i class='bx bx-trash'></i>
+                                                        </a>
+                                                    }
                                                 </td>
                                             </tr>
                                         } }

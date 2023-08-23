@@ -13,6 +13,7 @@ using VBookHaven.Utility;
 using System.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -36,14 +37,26 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
      
         public async Task<IActionResult> Dashboard()
         {
+            var staffToView = await GetStaffAccountByUserID();
+            var staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
             DashboardVM vm = new DashboardVM();
             //set list year all order
             vm.DefaultYear = DateTime.Now.Year;
             vm.YearList = GetYearList(vm.DefaultYear);
             vm.TotalCustomer = _dbContext.Customers.Where(c => c.Status != false).Count();
-            vm.TotalOrders = _dbContext.Orders.Where(o => o.Status.Equals(OrderStatus.Done)).Count();
-            vm.TotalPurchaseOrders = _dbContext.PurchaseOrders.Where(o => o.Status.Equals(SD.PurchaseOrder_Complete)).Count();
             vm.TotalStaff = await getStaffQuantity();
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                vm.TotalOrders = _dbContext.Orders.Where(o => o.Status.Equals(OrderStatus.Done)).Count();
+                vm.TotalPurchaseOrders = _dbContext.PurchaseOrders.Where(o => o.Status.Equals(SD.PurchaseOrder_Complete)).Count();
+            }
+            else
+            {
+                vm.TotalOrders = _dbContext.Orders.Where(o => o.Status.Equals(OrderStatus.Done) && o.StaffId == staffId).Count();
+                vm.TotalPurchaseOrders = _dbContext.PurchaseOrders.Where(o => o.Status.Equals(SD.PurchaseOrder_Complete) && o.StaffId == staffId).Count();
+            }
+           
             return View(vm);
         }
 
@@ -85,6 +98,128 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             }
             return yearWithDefaults;
         }
+        private async Task<ApplicationUser> GetStaffAccountByUserID()
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get application user by id
+                var appUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+                //view application user
+                return appUser;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<decimal> GetRevenueAsync(DateTime startDate, DateTime endDate)
+        {
+            var staffToView = await GetStaffAccountByUserID();
+            var staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+
+
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                return _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null
+                     && od.Order.Status == OrderStatus.Done
+                    && od.Order.OrderDate.Value.Date >= startDate
+                     && od.Order.OrderDate.Value.Date <= endDate)
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+            }
+            else
+            {
+                return _dbContext.OrderDetails
+                   .Where(od => od.Order.OrderDate != null
+                    && od.Order.Status == OrderStatus.Done
+                   && od.Order.OrderDate.Value.Date >= startDate
+                    && od.Order.OrderDate.Value.Date <= endDate && od.Order.StaffId == staffId)
+                   .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+            }
+        }
+        private async Task<int> GetProcessOrder(DateTime startDate, DateTime endDate)
+        {
+            var staffToView = await GetStaffAccountByUserID();
+            int staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+
+
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status != OrderStatus.Done
+                                && o.Status != OrderStatus.Cancel);
+            }
+            else
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status != OrderStatus.Done
+                                && o.Status != OrderStatus.Cancel
+                                && o.StaffId == staffId
+                                );
+            }
+        }
+        private async Task<int> GetDoneOrder(DateTime startDate, DateTime endDate)
+        {
+            var staffToView = await GetStaffAccountByUserID();
+            int staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+
+
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status == OrderStatus.Done);
+            }
+            else
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status == OrderStatus.Done
+                                && o.StaffId == staffId
+                                );
+            }
+        }
+        private async Task<int> GetCancelledOrder(DateTime startDate, DateTime endDate)
+        {
+            var staffToView = await GetStaffAccountByUserID();
+            int staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+
+
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status == OrderStatus.Cancel);
+            }
+            else
+            {
+                return _dbContext.Orders
+                    .Count(o => o.OrderDate != null
+                                && o.OrderDate.Value.Date >= startDate
+                                && o.OrderDate.Value.Date <= endDate
+                                && o.Status == OrderStatus.Cancel
+                                && o.StaffId == staffId
+                                );
+            }
+        }
 
         #region CallAPI
         [HttpGet]
@@ -94,41 +229,63 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
+            var staffToView = await GetStaffAccountByUserID();
+            if (staffToView == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            
             //----------------------Doanh thu----------------------
             //Tổng doanh thu theo năm
             ChartByYearVM vm = new ChartByYearVM();
-            vm = GetChartByYear(vm, year);
+            vm =  await GetChartByYear(vm, year);
             return Ok(vm);
         }
-        private ChartByYearVM GetChartByYear(ChartByYearVM vm,int? year)
+        private async Task<ChartByYearVM> GetChartByYear(ChartByYearVM vm,int? year)
         {
-            vm.Jan = ToTalOrderPriceInMonthInYear(1, year);
-            vm.Feb = ToTalOrderPriceInMonthInYear(2, year);
-            vm.Mar = ToTalOrderPriceInMonthInYear(3, year);
-            vm.Apr = ToTalOrderPriceInMonthInYear(4, year);
-            vm.May = ToTalOrderPriceInMonthInYear(5, year);
-            vm.Jun = ToTalOrderPriceInMonthInYear(6, year);
-            vm.Jul = ToTalOrderPriceInMonthInYear(7, year);
-            vm.Aug = ToTalOrderPriceInMonthInYear(8, year);
-            vm.Sep = ToTalOrderPriceInMonthInYear(9, year);
-            vm.Oct = ToTalOrderPriceInMonthInYear(10, year);
-            vm.Nov = ToTalOrderPriceInMonthInYear(11, year);
-            vm.Dec = ToTalOrderPriceInMonthInYear(12, year);
+                vm.Jan = await ToTalOrderPriceInMonthInYearAsync(1, year);
+                vm.Feb = await ToTalOrderPriceInMonthInYearAsync(2, year);
+                vm.Mar = await ToTalOrderPriceInMonthInYearAsync(3, year);
+                vm.Apr = await ToTalOrderPriceInMonthInYearAsync(4, year);
+                vm.May = await ToTalOrderPriceInMonthInYearAsync(5, year);
+                vm.Jun = await ToTalOrderPriceInMonthInYearAsync(6, year);
+                vm.Jul = await ToTalOrderPriceInMonthInYearAsync(7, year);
+                vm.Aug = await ToTalOrderPriceInMonthInYearAsync(8, year);
+                vm.Sep = await ToTalOrderPriceInMonthInYearAsync(9, year);
+                vm.Oct = await ToTalOrderPriceInMonthInYearAsync(10, year);
+                vm.Nov = await ToTalOrderPriceInMonthInYearAsync(11, year);
+                vm.Dec = await ToTalOrderPriceInMonthInYearAsync(12, year);
             return vm;
         }
-        private decimal? ToTalOrderPriceInMonthInYear(int month, int? year)
+        private async Task<decimal?> ToTalOrderPriceInMonthInYearAsync(int month, int? year)
         {
+            var staffToView = await GetStaffAccountByUserID();
+            var staffId = staffToView.Staff.StaffId;
+            string staffRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+            
             DateTime today = DateTime.Today;
             if(month > today.Month && year == today.Year) { return null; }
-            return _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year 
+
+            if (staffRole.Equals(SD.Role_Owner))
+            {
+                return _dbContext.OrderDetails
+                    .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year
                     && od.Order.OrderDate.Value.Month == month && od.Order.Status == OrderStatus.Done)
                     .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
-             
+            }
+            else
+            {
+                return _dbContext.OrderDetails
+                  .Where(od => od.Order.OrderDate != null && od.Order.OrderDate.Value.Year == year
+                  && od.Order.OrderDate.Value.Month == month && od.Order.Status == OrderStatus.Done && od.Order.Staff.StaffId == staffId)
+                  .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+            }
         }
         [HttpPost]
         public async Task<IActionResult> DailyReport(string? selectValue)
         {
+            var staffToView = await GetStaffAccountByUserID();
+            if (staffToView == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+
             if (string.IsNullOrEmpty(selectValue))
             {
                 return BadRequest();
@@ -137,84 +294,49 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             if (selectValue.Equals("Hôm nay"))
             {
                 DateTime today = DateTime.Today;
+                DateTime startDate = DateTime.Today;
                 //Doanh thu hôm nay
-                vm.Revenue =  _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null 
-                            && od.Order.OrderDate.Value.Date == today
-                            && od.Order.Status == OrderStatus.Done)
-                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                vm.Revenue = await GetRevenueAsync(startDate,today);
                 //Đơn hàng cần xử lý
-                vm.ProcessOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date == today 
-                                && o.Status != OrderStatus.Done 
-                                && o.Status != OrderStatus.Cancel);
+                vm.ProcessOrder = await GetProcessOrder(startDate, today);
                 //Đơn hàng đã hoàn thành
-                vm.DoneOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null && o.OrderDate.Value.Date == today && o.Status == OrderStatus.Done);
+                vm.DoneOrder = await GetDoneOrder(startDate, today);
                 //Đơn hàng đã hủy
-                vm.CancelledOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null && o.OrderDate.Value.Date == today && o.Status == OrderStatus.Cancel);
+                vm.CancelledOrder = await GetCancelledOrder(startDate, today);
             }
             else if (selectValue.Equals("7 ngày"))
             {
                 DateTime today = DateTime.Today;
-                DateTime last7Days = today.AddDays(-6);
+                DateTime startDate = today.AddDays(-6);
 
-                vm.Revenue = _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null
-                     && od.Order.Status == OrderStatus.Done
-                    && od.Order.OrderDate.Value.Date >= last7Days 
-                     && od.Order.OrderDate.Value.Date <= today)
-                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
-                vm.ProcessOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date >= last7Days 
-                                && o.OrderDate.Value.Date <= today
-                                && o.Status != OrderStatus.Done 
-                                && o.Status != OrderStatus.Cancel);
-                vm.DoneOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date >= last7Days
-                                && o.OrderDate.Value.Date <= today
-                                && o.Status == OrderStatus.Done);
-                vm.CancelledOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                            && o.OrderDate.Value.Date >= last7Days
-                            && o.OrderDate.Value.Date <= today
-                            && o.Status == OrderStatus.Cancel);
+                //Doanh thu hôm nay
+                vm.Revenue = await GetRevenueAsync(startDate, today);
+                //Đơn hàng cần xử lý
+                vm.ProcessOrder = await GetProcessOrder(startDate, today);
+                //Đơn hàng đã hoàn thành
+                vm.DoneOrder = await GetDoneOrder(startDate, today);
+                //Đơn hàng đã hủy
+                vm.CancelledOrder = await GetCancelledOrder(startDate, today);
             }
             else if (selectValue.Equals("30 ngày"))
             {
                 DateTime today = DateTime.Today;
-                DateTime last30Days = today.AddDays(-29);
+                DateTime startDate = today.AddDays(-29);
 
-                vm.Revenue = _dbContext.OrderDetails
-                    .Where(od => od.Order.OrderDate != null
-                                && od.Order.Status == OrderStatus.Done
-                                && od.Order.OrderDate.Value.Date >= last30Days
-                                && od.Order.OrderDate.Value.Date <= today)
-                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
-                vm.ProcessOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date >= last30Days
-                                && o.OrderDate.Value.Date <= today
-                                && o.Status != OrderStatus.Done
-                                && o.Status != OrderStatus.Cancel);
-                vm.DoneOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date >= last30Days
-                                && o.OrderDate.Value.Date <= today
-                                && o.Status == OrderStatus.Done);
-                vm.CancelledOrder = _dbContext.Orders
-                    .Count(o => o.OrderDate != null 
-                                && o.OrderDate.Value.Date >= last30Days
-                                && o.OrderDate.Value.Date <= today
-                                && o.Status == OrderStatus.Cancel);
+                //Doanh thu hôm nay
+                vm.Revenue = await GetRevenueAsync(startDate, today);
+                //Đơn hàng cần xử lý
+                vm.ProcessOrder = await GetProcessOrder(startDate, today);
+                //Đơn hàng đã hoàn thành
+                vm.DoneOrder = await GetDoneOrder(startDate, today);
+                //Đơn hàng đã hủy
+                vm.CancelledOrder = await GetCancelledOrder(startDate, today);
             }
 
             return Ok(vm);
         }
         #endregion
+
+    
     }
 }
