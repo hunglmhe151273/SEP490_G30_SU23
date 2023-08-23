@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -85,10 +86,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		private readonly IApplicationUserRespository userRepository;
 		private readonly IImageRepository imageRepository;
 		private readonly ICustomerRespository customerRespository;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IApplicationUserRespository _IApplicationUserRespository;
 
-		public OrderController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,
+        public OrderController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,
 			IProductRespository productRespository, IMapper mapper, IApplicationUserRespository userRepository,
-			IImageRepository imageRepository, ICustomerRespository customerRespository)
+			IImageRepository imageRepository, ICustomerRespository customerRespository, 
+			IApplicationUserRespository applicationUserRespository, UserManager<IdentityUser> userManager)
 		{
 			this.orderRepository = orderRepository;
 			this.shippingInfoRepository = shippingInfoRepository;
@@ -97,17 +101,41 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			this.userRepository = userRepository;
 			this.imageRepository = imageRepository;
 			this.customerRespository = customerRespository;
+			_IApplicationUserRespository = applicationUserRespository;
+			_userManager = userManager;
 		}
 
 		public async Task<IActionResult> Index()
 		{
 			var model = new ViewOrderManagementModel();
-			
-			model.Orders = await orderRepository.GetAllOrdersFullInfoAsync();
+
+            var staffToView = await GetStaffAccountByUserID();
+            if (staffToView == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            var staffId = staffToView.Staff.StaffId;
+            string userRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+
+            model.Orders = await orderRepository.GetAllOrdersFullInfoByStaffAsync(staffId,userRole);
 			return View(model);
 		}
+        private async Task<ApplicationUser> GetStaffAccountByUserID()
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get application user by id
+                var appUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+                //view application user
+                return appUser;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
-		public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add()
 		{
 			if (await GetCurrentLoggedInStaffAsync() == null)
                 return RedirectToAction("Login", "Account", new { area = "Identity" });

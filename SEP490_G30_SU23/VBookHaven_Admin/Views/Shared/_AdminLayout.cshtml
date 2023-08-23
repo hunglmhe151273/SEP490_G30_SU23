@@ -151,9 +151,12 @@
                         <li>
                             <a href="/admin/customer/index"><i class="bx bx-right-arrow-alt"></i>Danh sách khách hàng</a>
                         </li>
-                        <li>
-                            <a href="/admin/customer/create"><i class="bx bx-right-arrow-alt"></i>Thêm khách hàng</a>
-                        </li>
+                         @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li>
+                                <a href="/admin/customer/create"><i class="bx bx-right-arrow-alt"></i>Thêm khách hàng</a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li>
@@ -165,8 +168,11 @@
                     <ul>
                         <li> <a href="/admin/order/index"><i class="bx bx-right-arrow-alt"></i>Danh sách đơn hàng</a>
                         </li>
-                        <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
-                        </li>
+                           @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li>
@@ -178,9 +184,13 @@
                     <ul>
                         <li> <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Index"><i class="bx bx-right-arrow-alt"></i>Danh sách hóa đơn nhập</a>
                         </li>
-                        <li>
-                            <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Create"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
-                        </li>
+                           @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li>
+                                <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Create"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
+                            </li>
+                        }
+                     
                         <li> <a href="/admin/suppliers/index"><i class="bx bx-right-arrow-alt"></i>Nhà cung cấp</a>
                         </li>
                     </ul>
