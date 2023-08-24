@@ -115,10 +115,21 @@
 												<label class="form-label">Đến ngày</label>
 												<input type="date" class="form-control filter" id="to">
 											</div>
-											<div class="col-md-12 mb-2">
+											<div class="col-md-6 mb-2">
+												<label class="form-label">Nhân viên xử lí</label>
+												<select class="form-select filter" id="staff">
+													<option value="-1" selected>--Tất cả--</option>
+													<option value="0">--Không--</option>
+													@foreach (var staff in Model.Staffs)
+													{
+														<option value="@staff.StaffId">@staff.FullName</option>
+													}
+												</select>
+											</div>
+											<div class="col-md-6 mb-2">
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="status">
-													<option value="" selected>--Không--</option>
+													<option value="" selected>--Tất cả--</option>
 													<option value=@OrderStatus.Wait>@OrderStatus.Wait</option>
 													<option value=@OrderStatus.Process>@OrderStatus.Process</option>
 													<option value=@OrderStatus.Shipping>@OrderStatus.Shipping</option>
@@ -147,6 +158,8 @@
 										<th>ID</th>
 										<th>Khách hàng</th>
 										<th>Ngày tạo</th>
+										<th>Nhân viên xử lí</th>
+										<th hidden>StaffId</th>
 										<th>Trạng thái</th>
 										<th>Tổng tiền</th>
 										<th>Chi tiết đơn hàng</th>
@@ -166,6 +179,20 @@
 											<td>@o.OrderId</td>
 											<td>@o.CustomerName</td>
 											<td>@o.OrderDate.Value.ToString("yyyy-MM-dd")</td>
+											<td>
+												@if (o.Staff != null)
+												{
+													@:@o.Staff.FullName
+												}
+											</td>
+											<td hidden>@if (o.StaffId != null)
+												{
+													@:@o.StaffId
+												}
+												else
+												{
+													@:0
+												}</td>
 											<td>
 												@switch (o.Status)
 												{
@@ -189,7 +216,7 @@
 														break;
 												}
 											</td>
-											<td>@total VNĐ</td>
+											<td>@total.ToString("#,0") VNĐ</td>
 											<td>
 												<a href="/Admin/Order/Detail/@o.OrderId" class="btn btn-sm btn-default">
 													<i class="lni lni-eye"></i>
@@ -284,6 +311,7 @@
 				var search = $("#search").val().toLowerCase();
 				var from = $("#from").val();
 				var to = $("#to").val();
+				var staff = $("#staff").val();
 				var status = $("#status").val();
 				if (from > to) {
 					var temp = from
@@ -292,12 +320,23 @@
 				}
 				console.log(search, "3) From: " + from + " To: " + to, status)
 				$("#myTable tr").filter(function () {
+					var staffSearch;
+					if (staff == -1)
+					{
+						staffSearch = true;
+					}
+					else
+					{
+						staffSearch = $(this).find('td:eq(4)').text().trim() == staff;
+					}
+					
 					$(this).toggle(
 						($(this).find('td:eq(0)').text().toLowerCase().indexOf(search) > -1
 							|| $(this).find('td:eq(1)').text().toLowerCase().indexOf(search) > -1)
-						&& $(this).find('td:eq(3) > span').text().indexOf(status) > -1
+						&& $(this).find('td:eq(5) > span').text().indexOf(status) > -1
 						&& $(this).find('td:eq(2)').text() <= to
 						&& $(this).find('td:eq(2)').text() >= from
+						&& staffSearch
 					);
 				})
 			});

@@ -20,6 +20,8 @@ namespace VBookHaven.DataAccess.Respository
 		Task AddOrderPaymentHistoryAsync(OrderPaymentHistory payment);
 		Task<List<OrderPaymentHistory>> GetOrderPaymentHistoryByIdFullInfoAsync(int orderId);
 		Task<decimal?> GetOrderTotalCostAsync(int orderId);
+
+		Task<List<Staff>> GetAllStaffAsync();
 	}
 
 	public class OrderRepository : IOrderRepository
@@ -76,8 +78,16 @@ namespace VBookHaven.DataAccess.Respository
 			using (var dbContext = new VBookHavenDBContext())
 			{
 				return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
-					.ToListAsync();
+					.Include(o => o.Staff).ToListAsync();
 			}
+		}
+
+		public async Task<List<Staff>> GetAllStaffAsync()
+		{
+			using (var dbContext = new VBookHavenDBContext())
+			{
+				return await dbContext.Staff.ToListAsync();
+			}	
 		}
 
 		public async Task<Order?> GetOrderByIdFullInfoAsync(int id)
