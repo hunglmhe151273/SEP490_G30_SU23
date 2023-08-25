@@ -204,9 +204,9 @@
                                                     </td>
                                                     <td> @detail.Product.Unit</td>
                                                     <td> @detail.Quantity</td>
-                                                    <td> @detail.UnitPrice VNĐ</td>
+                                                    <td>@string.Format("{0:N0}", detail.UnitPrice) VNĐ</td>
                                                     <td>@detail.Discount %</td>
-                                                    <td>@(Math.Ceiling((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value)) VNĐ</td>
+                                                    <td>@string.Format("{0:N0}",(Math.Ceiling((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value))) VNĐ</td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -217,7 +217,7 @@
                                     <table class="w-75 ">
                                         <tr>
                                             <td>Tổng tiền hàng</td>
-                                            <td>@Model.TotalPayment</td>
+                                            <td>@string.Format("{0:N0}",Model.TotalPayment)</td>
                                         </tr>
                                         <tr>
                                             <td>Thuế GTGT</td>
@@ -227,11 +227,11 @@
                                         </tr>
                                         <tr>
                                             <th>Tổng tiền đã thanh toán</th>
-                                            <td>@Model.Paid</td>
+                                            <td>@string.Format("{0:N0}",@Model.Paid)</td>
                                         </tr>
                                         <tr>
                                             <th>Còn phải trả</th>
-                                            <td>@Model.Unpaid</td>
+                                                <td>@string.Format("{0:N0}",@Model.Unpaid)</td>
                                         </tr>
                                     </table>
                                 </div>
