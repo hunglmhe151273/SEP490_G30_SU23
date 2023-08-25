@@ -9,6 +9,7 @@ namespace VBookHaven.DataAccess.Respository
     public interface IProductRespository
     {
         Task<List<Product>> GetAllProductsAsync();
+        Task<List<Product>> GetAllProductsWithImageAsync();
         Task<Product?> GetProductByIdAsync(int id);
         Task<Book?> GetBookByIdAsync(int id);
         Task<Stationery?> GetStationeryByIdAsync(int id);
@@ -226,6 +227,15 @@ namespace VBookHaven.DataAccess.Respository
 
                 return total;
             }
+		}
+
+        public async Task<List<Product>> GetAllProductsWithImageAsync()
+        {
+			using (var dbContext = new VBookHavenDBContext())
+            {
+                return await dbContext.Products.Include(p => p.Images)
+                    .Where(p => p.Images.Count > 0).ToListAsync();
+            }    
 		}
     }
 }

@@ -9,6 +9,11 @@ using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.DTO;
 using VBookHaven.Utility;
+using PdfSharpCore;
+using PdfSharpCore.Pdf;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Printing;
 
 namespace VBookHaven_Admin.Areas.Admin.Controllers
 {
@@ -111,6 +116,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		//[Authorize(Roles = SD.Role_Staff)]
 		public async Task<IActionResult> Add()
 		{
 			if (await GetCurrentLoggedInStaffAsync() == null)
@@ -321,25 +327,22 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return RedirectToAction("Detail", new { id = id });
 		}
 
-		public async Task<IActionResult> ExportBill(int id)
+		public async Task<IActionResult> ExportInvoice(int id)
 		{
 			var body = await PdfBody(id);
 			if (body != null)
 			{
-				// Instantiate Renderer
-				// TBD: This line runs REALLY slow
-				var renderer = new ChromePdfRenderer();
-
-				// Create a PDF from a HTML string using C#
-				var pdf = renderer.RenderHtmlAsPdf(body);
-
-				// Export to a Stream
-				var stream = pdf.Stream;
-
-				stream.Position = 0;
-				string fileName = "Order" + id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss");
-				return File(stream, "application/pdf", fileName);
-			}	
+				var document = new PdfDocument();
+				PdfGenerator.AddPdfPages(document, body, PageSize.Letter);
+				byte[]? response = null;
+				using (MemoryStream stream = new MemoryStream())
+				{
+					document.Save(stream);
+					response = stream.ToArray();
+				}
+				string fileName = "Invoice_" + id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+				return File(response, "application/pdf", fileName);
+			}
 			else
 			{
 				return NotFound();
@@ -405,19 +408,57 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				staffName = order.Staff.FullName;
 			string firstPart = $@"
 				<style>
-					table, tr, th, td{{
+					table.main{{
+						width: 100%;
+					}}
+					table.main, table.main th, table.main td{{
 						border: 1px solid;
 						border-collapse: collapse;
 						text-align: center;
+					}}
+					table.end{{
+						width: 100%;
+						text-align: right;
+						margin-top: 20px;
+					}}
+					table.end td{{
+						width: 15%;
+					}}
+					table.end th, table.end td{{
+						font-weight: bold;
+						font-size: 1.17em;
+						text-align: right;
+					}}
+					table.start{{
+						width: 100%;
+						text-align: left;
+						margin-bottom: 20px;
+					}}
+					table.start th{{
+						width: 15%;
+					}}
+					table.start th, table.start td{{
+						text-align: left;
 					}}
 				</style>
 				
 				<h1 style=""text-align: center"">HÓA ĐƠN BÁN HÀNG</h1>
 				<p style=""text-align: center"">{order.OrderDate.Value.ToString("dd/MM/yyyy")}</p>
-				<p><b>Mã hóa đơn:</b> #{order.OrderId}</p>
-				<p><b>Nhân viên:</b> {staffName}</p>
-				<p><b>Khách hàng:</b> {order.Customer.FullName}</h3>
-				<table style=""width: 100%"">
+				<table class=""start"">
+					<tr>
+						<th>Mã hóa đơn: </th>
+						<td>#{order.OrderId}</td>
+					</tr>
+					<tr>
+						<th>Nhân viên: </th>
+						<td>{staffName}</td>
+					</tr>
+					<tr>
+						<th>Khách hàng: </th>
+						<td>{order.Customer.FullName}</td>
+					</tr>
+				</table>
+				<table class=""main"">
 					<tr>
 						<th style=""width: 10%"">STT</th>
 						<th style=""width: 40%"">Hàng hóa</th>
@@ -428,7 +469,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 					</tr>						
 				";
 
-			double total = 0;
+			double totalAfter = 0;
+			double totalDiscount = 0;
 			StringBuilder sb = new StringBuilder();
 			int stt = 0;
 			foreach (var item in details)
@@ -446,15 +488,35 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 						<td>{itemPrice.ToString("#,0")}</td>
 					</tr>
 					");
-				total += itemPrice;
+				totalDiscount += item.UnitPrice.Value * (item.Discount.Value / 100);
+				totalAfter += itemPrice;
 			}
 			string middlePart = sb.ToString();
 
 			string lastPart = $@"
 				</table>
-				<h3 style=""text-align: right; width: 100%; margin-top: 10px"">
-					Tổng tiền: {total.ToString("#,0")}
-				</h3>
+				<table class=""end"">
+					<tr>
+						<th>Tổng tiền:</th>
+						<td>{(totalAfter + totalDiscount).ToString("#,0")}</td>
+					</tr>
+					<tr>
+						<th>Tổng KM:</th>
+						<td>{totalDiscount.ToString("#,0")}</td>
+					</tr>
+					<tr>
+						<th>Thanh toán:</th>
+						<td>{totalAfter.ToString("#,0")}</td>
+					</tr>
+					<tr>
+						<th>Khách trả:</th>
+						<td>{order.AmountPaid.Value.ToString("#,0")}</td>
+					</tr>
+					<tr>
+						<th>Còn lại:</th>
+						<td>{(totalAfter - order.AmountPaid.Value).ToString("#,0")}</td>
+					</tr>
+				</table>
 				";
 
 			return firstPart + middlePart + lastPart;

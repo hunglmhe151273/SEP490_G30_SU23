@@ -72,7 +72,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (!success)
 				return NotFound();
 			
-			return RedirectToAction("Detail", "Product", new { id = id });
+			return RedirectToAction("DetailAfterAddCart", "Product", new { id = id });
 		}
 
 		[HttpPost]
@@ -83,7 +83,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			if (!success)
 				return NotFound();
 
-			return RedirectToAction("Cart");
+			return RedirectToAction("Cart", new { successCart = true });
 		}
 
 		public async Task<IActionResult> Cart()

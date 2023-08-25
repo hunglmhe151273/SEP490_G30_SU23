@@ -8,6 +8,8 @@
 @model List<CartDetail>
 
 @{
+    ViewData["Title"] = "Giỏ hàng";
+
     double total = 0;
     foreach (CartDetail item in Model)
     {
@@ -151,8 +153,13 @@ else
                                                         @*<div class="cart-plus-minus-2 f-left">*@
                                                         <div class="cart-plus-minus f-left">
                                                             <div class="product-id" hidden>@o.ProductId</div>
+                                                            <div class="product-unit-price" hidden>@o.Product.RetailPrice</div>
+                                                            <div class="product-discount" hidden>@o.Product.RetailDiscount</div>
+
                                                             @*<div class="dec qtybutton" onclick="document.getElementById('minus-one-cart').submit();">-</div>*@
+                                                            
                                                             <input value="@o.Quantity" min="1" max="@o.Product.AvailableUnit" class="cart-plus-minus-box validate-number change-cart">
+                                                            
                                                             @*<div class="inc qtybutton" onclick="document.getElementById('add-one-cart').submit();">+</div>*@
                                                             @*<form hidden action="/Customer/Order/UpdateCart" method="post" id="add-one-cart">
                                                                 <input name="number" value="1" />
@@ -185,7 +192,7 @@ else
                                             <table>
                                                 <tr>
                                                     <td class="order-total"></td>
-                                                    <td class="order-total-price" style="font-size: x-large">@string.Format("{0:N0}",total) VNĐ</td>
+                                                    <td id="page-cart-total-price" class="order-total-price" style="font-size: x-large">@string.Format("{0:N0}",total) VNĐ</td>
                                                 </tr>
                                             </table>
                                             @if (SignInManager.IsSignedIn(User))

@@ -4,6 +4,9 @@
 	Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 @{
+	ViewData["Title"] = "Chi tiết sách";
+}
+@{
 	string authors = "";
 	foreach (Author a in Model.Book.Authors)
 	{
