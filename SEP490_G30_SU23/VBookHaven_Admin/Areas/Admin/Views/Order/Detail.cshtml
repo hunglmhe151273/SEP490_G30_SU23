@@ -241,7 +241,17 @@
                     <div class="card-title text-center pt-4">
                         <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                     </div>
-                    <a href="/Admin/Order/ExportBill/@Model.Order.OrderId">Xuất hóa đơn</a>
+
+                    <div class="row">
+                        <div class="col-3"></div>
+                        <div class="col-6">
+                            <button class="btn btn-info" onclick="window.location.href='/Admin/Order/ExportInvoice/@Model.Order.OrderId'">
+                                Xuất hóa đơn
+                            </button>
+                        </div>
+                        <div class="col-3"></div>
+                    </div>
+                    
                     <div class="card-body">
                         <p><strong>Nhân viên xử lí đơn: </strong>
                             @if (Model.Order.Staff != null)
