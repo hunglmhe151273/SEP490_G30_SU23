@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
+﻿using Microsoft.EntityFrameworkCore;
 using VBookHaven.DataAccess.Data;
 using VBookHaven.Models;
-using VBookHaven.Utility;
 
 namespace VBookHaven.DataAccess.Respository
 {
@@ -13,8 +9,7 @@ namespace VBookHaven.DataAccess.Respository
 		Task AddOrderAsync(Order order, List<OrderDetail> details);
 
 		Task<List<Order>> GetAllOrdersFullInfoAsync();
-        Task<List<Order>> GetAllOrdersFullInfoByStaffAsync(int staffId, string userRole);
-        Task<Order?> GetOrderByIdFullInfoAsync(int id);
+		Task<Order?> GetOrderByIdFullInfoAsync(int id);
 		Task<List<OrderDetail>> GetOrderDetailByIdFullInfoAsync(int id);
 		
 		Task<List<Order>> GetAllOrdersByCustomerAsync(int customerId);
@@ -25,12 +20,13 @@ namespace VBookHaven.DataAccess.Respository
 		Task AddOrderPaymentHistoryAsync(OrderPaymentHistory payment);
 		Task<List<OrderPaymentHistory>> GetOrderPaymentHistoryByIdFullInfoAsync(int orderId);
 		Task<decimal?> GetOrderTotalCostAsync(int orderId);
+
+		Task<List<Staff>> GetAllStaffAsync();
 	}
 
 	public class OrderRepository : IOrderRepository
 	{
-     
-        public async Task AddOrderAsync(Order order, List<OrderDetail> details)
+		public async Task AddOrderAsync(Order order, List<OrderDetail> details)
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
@@ -82,33 +78,19 @@ namespace VBookHaven.DataAccess.Respository
 			using (var dbContext = new VBookHavenDBContext())
 			{
 				return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
-					.ToListAsync();
+					.Include(o => o.Staff).ToListAsync();
 			}
 		}
 
-        public async Task<List<Order>> GetAllOrdersFullInfoByStaffAsync(int staffId, string userRole)
-        {
-			if (userRole.Equals(SD.Role_Owner))
+		public async Task<List<Staff>> GetAllStaffAsync()
+		{
+			using (var dbContext = new VBookHavenDBContext())
 			{
-                using (var dbContext = new VBookHavenDBContext())
-                {
-                    return await dbContext.Orders.Include(o => o.Customer).Include(o => o.OrderDetails)
-                        .ToListAsync();
-                }
-			}
-			else
-			{
-                using (var dbContext = new VBookHavenDBContext())
-                {
-                    return await dbContext.Orders.Where(s => s.StaffId == staffId)
-												.Include(o => o.Customer)
-												.Include(o => o.OrderDetails)
-												.ToListAsync();
-                }
-            }
-        }
+				return await dbContext.Staff.ToListAsync();
+			}	
+		}
 
-        public async Task<Order?> GetOrderByIdFullInfoAsync(int id)
+		public async Task<Order?> GetOrderByIdFullInfoAsync(int id)
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
@@ -165,6 +147,5 @@ namespace VBookHaven.DataAccess.Respository
 				await dbContext.SaveChangesAsync();
 			}
 		}
-       
-    }
+	}
 }

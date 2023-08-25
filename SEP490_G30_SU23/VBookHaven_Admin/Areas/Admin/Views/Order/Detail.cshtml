@@ -241,8 +241,9 @@
                     <div class="card-title text-center pt-4">
                         <h4 class="mb-0 fw-bold">Thông tin bổ sung</h4>
                     </div>
+                    <a href="/Admin/Order/ExportBill/@Model.Order.OrderId">Xuất hóa đơn</a>
                     <div class="card-body">
-                        <p><strong>Nhân viên xác nhận đơn: </strong>
+                        <p><strong>Nhân viên xử lí đơn: </strong>
                             @if (Model.Order.Staff != null)
                             {
                                 @Model.Order.Staff.FullName
@@ -284,7 +285,7 @@
                                     <span>Tiền khách cần trả : <strong>@total VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-center">
-                                    <span>Đã trả: <strong>@Model.Order.AmountPaid VNĐ</strong></span>
+                                    <span>Đã trả: <strong>@Model.Order.AmountPaid.Value.ToString("#,0") VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-end">
                                     <span>Còn phải trả: <strong class="text-danger" id="debt">@(total - Model.Order.AmountPaid) VNĐ</strong></span>
@@ -341,7 +342,7 @@
                                                 OrderDetail o = Model.Details[i];
 
                                                 <tr>
-                                                    <td></td>
+                                                    <td>@(i+1)</td>
                                                     <td><img src="~/images/img/@Model.Thumbnails[i]" style="aspect-ratio: 1/1"></td>
                                                     <td>
                                                         <div class="ellipsis">
@@ -349,10 +350,10 @@
                                                         </div>
                                                     </td>
                                                     <td>@o.Product.Unit</td>
-                                                    <td>@o.Quantity</td>
-                                                    <td>@o.UnitPrice VNĐ</td>
+                                                    <td>@o.Quantity.Value.ToString("#,0")</td>
+                                                    <td>@o.UnitPrice.Value.ToString("#,0") VNĐ</td>
                                                     <td>@o.Discount%</td>
-                                                    <td>@(o.UnitPrice.Value * (1 - o.Discount.Value / 100) * o.Quantity.Value) VNĐ</td>
+                                                    <td>@((o.UnitPrice.Value * (1 - o.Discount.Value / 100) * o.Quantity.Value).ToString("#,0")) VNĐ</td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -401,7 +402,7 @@
                                     <table class="table" id="countTable">
                                         <tr>
                                             <td>Cộng tiền hàng</td>
-                                            <td class="text-end">@total VNĐ</td>
+                                            <td class="text-end">@total.ToString("#,0") VNĐ</td>
                                         </tr>
                                         <tr>
                                             <td>Thuế GTGT</td>
@@ -411,18 +412,18 @@
                                             <th><strong>Tổng tiền thanh toán</strong></th>
                                             <td class="text-end">
                                                 <strong>
-                                                    <span id="totalPay">@(total * (1 + Model.Order.VAT / 100))</span>
+                                                    <span id="totalPay">@((total * (1 + Model.Order.VAT / 100)).Value.ToString("#,0"))</span>
                                                     VNĐ
                                                 </strong>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Số tiền khách đã trả</td>
-                                            <td class="text-end">@Model.Order.AmountPaid VNĐ</td>
+                                            <td class="text-end">@Model.Order.AmountPaid.Value.ToString("#,0") VNĐ</td>
                                         </tr>
                                         <tr>
                                             <td>Số tiền còn thiếu</td>
-                                            <td class="text-end">@(total * (1 + Model.Order.VAT / 100) - Model.Order.AmountPaid) VNĐ</td>
+                                            <td class="text-end">@((total * (1 + Model.Order.VAT / 100) - Model.Order.AmountPaid).Value.ToString("#,0")) VNĐ</td>
                                         </tr>
                                     </table>
                                 </div>

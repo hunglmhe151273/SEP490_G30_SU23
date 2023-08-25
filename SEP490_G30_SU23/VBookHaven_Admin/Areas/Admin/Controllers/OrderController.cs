@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Security.Claims;
+using System.Text;
 using VBookHaven.DataAccess.Respository;
 using VBookHaven.Models;
 using VBookHaven.Models.DTO;
@@ -21,10 +21,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 	public class ViewOrderManagementModel
 	{
 		public List<Order> Orders { get; set; }
+		public List<Staff> Staffs { get; set; }
 
 		public ViewOrderManagementModel()
 		{
 			Orders = new List<Order>();
+			Staffs = new List<Staff>();
 		}
 	}
 
@@ -86,13 +88,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 		private readonly IApplicationUserRespository userRepository;
 		private readonly IImageRepository imageRepository;
 		private readonly ICustomerRespository customerRespository;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IApplicationUserRespository _IApplicationUserRespository;
 
-        public OrderController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,
+		public OrderController(IOrderRepository orderRepository, IShippingInfoRepository shippingInfoRepository,
 			IProductRespository productRespository, IMapper mapper, IApplicationUserRespository userRepository,
-			IImageRepository imageRepository, ICustomerRespository customerRespository, 
-			IApplicationUserRespository applicationUserRespository, UserManager<IdentityUser> userManager)
+			IImageRepository imageRepository, ICustomerRespository customerRespository)
 		{
 			this.orderRepository = orderRepository;
 			this.shippingInfoRepository = shippingInfoRepository;
@@ -101,41 +100,18 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			this.userRepository = userRepository;
 			this.imageRepository = imageRepository;
 			this.customerRespository = customerRespository;
-			_IApplicationUserRespository = applicationUserRespository;
-			_userManager = userManager;
 		}
 
 		public async Task<IActionResult> Index()
 		{
 			var model = new ViewOrderManagementModel();
-
-            var staffToView = await GetStaffAccountByUserID();
-            if (staffToView == null)
-                return RedirectToAction("Login", "Account", new { area = "Identity" });
-            var staffId = staffToView.Staff.StaffId;
-            string userRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
-
-            model.Orders = await orderRepository.GetAllOrdersFullInfoByStaffAsync(staffId,userRole);
+			
+			model.Orders = await orderRepository.GetAllOrdersFullInfoAsync();
+			model.Staffs = await orderRepository.GetAllStaffAsync();
 			return View(model);
 		}
-        private async Task<ApplicationUser> GetStaffAccountByUserID()
-        {
-            try
-            {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                //get application user by id
-                var appUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
-                //view application user
-                return appUser;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
 
-        public async Task<IActionResult> Add()
+		public async Task<IActionResult> Add()
 		{
 			if (await GetCurrentLoggedInStaffAsync() == null)
                 return RedirectToAction("Login", "Account", new { area = "Identity" });
@@ -345,6 +321,31 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return RedirectToAction("Detail", new { id = id });
 		}
 
+		public async Task<IActionResult> ExportBill(int id)
+		{
+			var body = await PdfBody(id);
+			if (body != null)
+			{
+				// Instantiate Renderer
+				// TBD: This line runs REALLY slow
+				var renderer = new ChromePdfRenderer();
+
+				// Create a PDF from a HTML string using C#
+				var pdf = renderer.RenderHtmlAsPdf(body);
+
+				// Export to a Stream
+				var stream = pdf.Stream;
+
+				stream.Position = 0;
+				string fileName = "Order" + id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+				return File(stream, "application/pdf", fileName);
+			}	
+			else
+			{
+				return NotFound();
+			}
+		}
+
 		//---------- Other functions ----------
 
 		private async Task<Staff?> GetCurrentLoggedInStaffAsync()
@@ -390,6 +391,73 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				product.UnitInStock += detail.Quantity;
 				await productRespository.UpdateProductAsync(product);
 			}
+		}
+
+		private async Task<string?> PdfBody(int orderId)
+		{
+			var order = await orderRepository.GetOrderByIdFullInfoAsync(orderId);
+			if (order == null)
+				return null;
+			var details = await orderRepository.GetOrderDetailByIdFullInfoAsync(orderId);
+
+			string staffName = "";
+			if (order.Staff != null)
+				staffName = order.Staff.FullName;
+			string firstPart = $@"
+				<style>
+					table, tr, th, td{{
+						border: 1px solid;
+						border-collapse: collapse;
+						text-align: center;
+					}}
+				</style>
+				
+				<h1 style=""text-align: center"">HÓA ĐƠN BÁN HÀNG</h1>
+				<p style=""text-align: center"">{order.OrderDate.Value.ToString("dd/MM/yyyy")}</p>
+				<p><b>Mã hóa đơn:</b> #{order.OrderId}</p>
+				<p><b>Nhân viên:</b> {staffName}</p>
+				<p><b>Khách hàng:</b> {order.Customer.FullName}</h3>
+				<table style=""width: 100%"">
+					<tr>
+						<th style=""width: 10%"">STT</th>
+						<th style=""width: 40%"">Hàng hóa</th>
+						<th style=""width: 10%"">SL</th>
+						<th style=""width: 15%"">Đ.Giá</th>
+						<th style=""width: 10%"">KM</th>
+						<th style=""width: 15%"">T.Tiền</th>
+					</tr>						
+				";
+
+			double total = 0;
+			StringBuilder sb = new StringBuilder();
+			int stt = 0;
+			foreach (var item in details)
+			{
+				++stt;
+				var itemPrice = item.Quantity.Value * item.UnitPrice.Value * (1 - item.Discount.Value / 100);
+
+				sb.Append($@"
+					<tr>
+						<td>{stt}</td>
+						<td>{item.Product.Name}</td>
+						<td>{item.Quantity.Value.ToString("#,0")}</td>
+						<td>{item.UnitPrice.Value.ToString("#,0")}</td>
+						<td>{item.Discount}</td>
+						<td>{itemPrice.ToString("#,0")}</td>
+					</tr>
+					");
+				total += itemPrice;
+			}
+			string middlePart = sb.ToString();
+
+			string lastPart = $@"
+				</table>
+				<h3 style=""text-align: right; width: 100%; margin-top: 10px"">
+					Tổng tiền: {total.ToString("#,0")}
+				</h3>
+				";
+
+			return firstPart + middlePart + lastPart;
 		}
 
 		#region CallAPI
