@@ -55,7 +55,7 @@ function showYearChart(Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, De
             theme: 'dark',
             y: {
                 formatter: function(val) {
-                    return "" + val + " VND"
+                    return "" + val.toLocaleString() + " VND"
                 }
             }
         },
@@ -81,7 +81,7 @@ function showYearChart(Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, De
         yaxis: {
             labels: {
                 formatter: function(value) {
-                    return value + " VND";
+                    return value.toLocaleString() + " VND";
                 }
             },
         },
