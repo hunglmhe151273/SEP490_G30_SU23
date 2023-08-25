@@ -23,16 +23,17 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
     {
 
         private readonly VBookHavenDBContext _dbContext;
-        //use
         private readonly IApplicationUserRespository _IApplicationUserRespository;
         private readonly UserManager<IdentityUser> _userManager;
-        public HomeController(IApplicationUserRespository applicationUserRespository,
+        IMapper _mapper;
+        public HomeController(IMapper mapper, IApplicationUserRespository applicationUserRespository,
             UserManager<IdentityUser> userManager,VBookHavenDBContext dbContext)
         {
             _dbContext = dbContext;
             //use
             _userManager = userManager;
             _IApplicationUserRespository = applicationUserRespository;
+            _mapper = mapper;
         }
      
         public async Task<IActionResult> Dashboard()
@@ -220,7 +221,16 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                                 );
             }
         }
+        private async Task<List<StaffDTO>> GetListStaffDTOWithRevenueAsync(DateTime startDate, DateTime endDate)
+        {
+    
+          var listStaffs = await _dbContext.Staff.Include(s => s.Orders.Where(o => o.OrderDate.Value.Date >= startDate 
+                                                                         && o.OrderDate.Value.Date <= endDate)).ThenInclude(o => o.OrderDetails)
+                                                                         .Where(s => s.StaffId != 1) //to do: find owner id
+                                        .ToListAsync();
 
+            return listStaffs.Select(_mapper.Map<Staff, StaffDTO>).ToList();
+        }
         #region CallAPI
         [HttpGet]
         public async Task<IActionResult> Chart(int? year)
@@ -303,6 +313,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 vm.DoneOrder = await GetDoneOrder(startDate, today);
                 //Đơn hàng đã hủy
                 vm.CancelledOrder = await GetCancelledOrder(startDate, today);
+                //Danh sách nhân viên cùng doanh thu
+                vm.StaffDTOs = await GetListStaffDTOWithRevenueAsync(startDate, today);
             }
             else if (selectValue.Equals("7 ngày"))
             {
@@ -317,6 +329,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 vm.DoneOrder = await GetDoneOrder(startDate, today);
                 //Đơn hàng đã hủy
                 vm.CancelledOrder = await GetCancelledOrder(startDate, today);
+                //Danh sách nhân viên cùng doanh thu
+                vm.StaffDTOs = await GetListStaffDTOWithRevenueAsync(startDate, today);
+                //Danh sách nhân viên cùng doanh thu
+                vm.StaffDTOs = await GetListStaffDTOWithRevenueAsync(startDate, today);
             }
             else if (selectValue.Equals("30 ngày"))
             {
@@ -331,12 +347,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 vm.DoneOrder = await GetDoneOrder(startDate, today);
                 //Đơn hàng đã hủy
                 vm.CancelledOrder = await GetCancelledOrder(startDate, today);
+                //Danh sách nhân viên cùng doanh thu
+                vm.StaffDTOs = await GetListStaffDTOWithRevenueAsync(startDate, today);
             }
-
             return Ok(vm);
         }
         #endregion
 
-    
+
     }
 }

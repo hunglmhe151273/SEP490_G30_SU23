@@ -27,6 +27,9 @@ namespace VBookHaven.Models.DTO
             CreateMap<OrderDTO, Order>();
             CreateMap<SubCategory, SubCategoryDTO>();
             CreateMap<SubCategoryDTO, SubCategory>();
+            CreateMap<Staff, StaffDTO>()
+                .ForMember(dest => dest.StaffRevenue, opt => opt.MapFrom(src => Math.Ceiling((decimal)totalStaffRevenue(src.Orders))));
+            CreateMap<StaffDTO, Staff>();
         }
 
         // Tổng tiền của đơn hàng - tham số purchasorder.purchaseOrderDetails
@@ -39,6 +42,16 @@ namespace VBookHaven.Models.DTO
                 {
                     sum += (decimal)(detail.Quantity * detail.UnitPrice * (decimal)(1 - detail.Discount / 100));
                 }
+            }
+            return sum;
+        }
+        // Tổng tiền hàng - tham số list order của staff đó
+        private decimal? totalStaffRevenue(ICollection<Order> orders)
+        {
+            decimal? sum = 0;
+            foreach (var order in orders)
+            {
+                sum += totalPayment(order.OrderDetails);
             }
             return sum;
         }

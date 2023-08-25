@@ -1,3 +1,12 @@
+let staffs = [
+    {
+        "staffId": 1,
+        "fullName": "OwerFullName",
+        "staffRevenue": 0
+    }
+]
+
+
 function defaultChartInYear(year) {
     let api = `/Admin/Home/Chart/?year=${year}`;
     callApiChartWithYear(api);
@@ -137,17 +146,48 @@ function callApiDailyReport(api, selectedValue) {
         success: function(data) {
             //Gọi hàm set value
             SetDailyReportValue(data.revenue, data.processOrder, data.doneOrder, data.cancelledOrder);
-            console.log("DailyReport revenue" + data.revenue);
+            $('#dataContainer').empty();
+            staffs = data.staffDTOs;
+            populateStaffData(staffs)
+
         },
         error: function(error) {
             console.error('Error:', error);
         }
     });
 }
+function populateStaffData(staffDTOs) {
+    $.each(staffDTOs, function (index, staffDTO) {
+        var formattedRevenue = staffDTO.staffRevenue.toLocaleString();
+        var html = `
+                    <div class="col-12 col-lg-6">
+                        <div class="card radius-15">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="mb-0 font-35">
+                                        <i class='bx bxs-dollar-circle bx-tada text-primary'></i>
+                                    </div>
+                                    <div>
+                                        <p class="ms-auto mb-0 fs-5">Nhân viên: ${staffDTO.fullName}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div>
+                                        <h3 class="mb-0 text-primary">${formattedRevenue} VND</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
+        $('#dataContainer').append(html);
+    });
+}
 
 function SetDailyReportValue(revenue, processOrder, doneOrder, cancelledOrder) {
-    $("#revenue").text(revenue + "VND");
+    var formattedRevenue = revenue.toLocaleString();
+    $("#revenue").text(formattedRevenue + "VND");
     $("#processOrder").text(processOrder);
     $("#doneOrder").text(doneOrder);
     $("#cancelledOrder").text(cancelledOrder);
