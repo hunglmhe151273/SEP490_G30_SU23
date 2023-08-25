@@ -6,7 +6,6 @@ let staffs = [
     }
 ]
 
-
 function defaultChartInYear(year) {
     let api = `/Admin/Home/Chart/?year=${year}`;
     callApiChartWithYear(api);
@@ -108,7 +107,6 @@ function callApiChartWithYear(api) {
             //Gọi hàm chart cùng tham số chuyền vào
             clearChart();
             showYearChart(data.jan, data.feb, data.mar, data.apr, data.may, data.jun, data.jul, data.aug, data.sep, data.oct, data.nov, data.dec);
-            console.log(data);
         },
         error: function(error) {
             console.error('Error:', error);
@@ -132,7 +130,6 @@ function defaultDailyReport(selectValue) {
 
 $("#DailyReport").change(() => {
     //set paramenter to api url
-    console.log("Set paramenter dayly report:" + $("#DailyReport").val());
     callApiDailyReport("/Admin/Home/DailyReport", $("#DailyReport").val());
 });
 

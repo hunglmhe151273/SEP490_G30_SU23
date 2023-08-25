@@ -198,25 +198,25 @@ function pos3_warning_noti() {
 	});
 }
 
-function pos4_error_noti() {
+function pos4_error_noti(successMsg) {
 	Lobibox.notify('error', {
 		pauseDelayOnHover: true,
 		icon: 'bx bx-x-circle',
 		size: 'mini',
 		continueDelayOnInactiveTab: false,
 		position: 'bottom left',
-		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+		msg: successMsg
 	});
 }
 
-function pos5_success_noti() {
+function pos5_success_noti(successMsg) {
 	Lobibox.notify('success', {
 		pauseDelayOnHover: true,
 		size: 'mini',
 		icon: 'bx bx-check-circle',
 		continueDelayOnInactiveTab: false,
 		position: 'bottom right',
-		msg: 'Lorem ipsum dolor sit amet hears farmer indemnity inherent.'
+		msg: successMsg
 	});
 }
 /* Animated Notifications*/

@@ -5,7 +5,8 @@
     <script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
     <script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
     <script type="text/javascript">
-        round_success_noti('@TempData["success"]');
+        @*     round_success_noti('@TempData["success"]');*@        @*Hiển thị thông báo góc trên bên phải*@
+                pos5_success_noti('@TempData["success"]');          @*Hiển thị thông báo góc dưới bên phải*@
     </script>
 }
 @if (TempData["error"] != null)
@@ -15,6 +16,7 @@
     <script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
     <script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
     <script type="text/javascript">
-        round_error_noti('@TempData["error"]');
+    @*    round_error_noti('@TempData["error"]');*@             @*Hiển thị thông báo góc trên bên phải*@
+        pos4_error_noti('@TempData["error"]');                  @*Hiển thị thông báo góc dưới bên trái*@
     </script>
 }

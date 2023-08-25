@@ -170,13 +170,13 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 //get application user by id
                 ProfileVM profileVM = new ProfileVM();
                 profileVM.StaffProfileVM.ApplicationUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
-                if (profileVM.StaffProfileVM.ApplicationUser.Staff == null) return NotFound();
+                if (profileVM.StaffProfileVM.ApplicationUser.Staff == null) return RedirectToAction("Login", "Account", new { area = "Identity" });
                 //view application user
                 return View(profileVM);
             }
             catch (Exception ex)
             {
-                return NotFound();
+                 return RedirectToAction("Login", "Account", new { area = "Identity" });
             }
         }
       

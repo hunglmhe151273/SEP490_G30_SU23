@@ -63,6 +63,10 @@
     <!-- Select2 css-->
     <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/cust-lib/subas/lib/select2/css/select2-bootstrap4.css">
+    <!-- notifications css-->
+    <link rel="stylesheet" href="~/mgmt-lib/plugins/notifications/css/lobibox.min.css" />
+    <!-- Icons CSS -->
+    <link rel="stylesheet" href="~/mgmt-lib/css/icons.css" />
      
 </head>
 
@@ -81,7 +85,7 @@
                     <div class="row">
                         <div class="col-lg-3 col-md-3 d-none d-md-block">
                             <div class="call-us">
-                                <p class="mb-0 roboto">0123456789</p>
+                                <p class="mb-0 roboto">BookStore Management System</p>
                             </div>
                         </div>
                         @if (SignInManager.IsSignedIn(User))
@@ -762,3 +766,7 @@
 </body>
 
 </html>
+<!--notification js -->
+<script src="~/mgmt-lib/plugins/notifications/js/lobibox.min.js"></script>
+<script src="~/mgmt-lib/plugins/notifications/js/notifications.min.js"></script>
+<script src="~/mgmt-lib/plugins/notifications/js/notification-custom-script.js"></script>
