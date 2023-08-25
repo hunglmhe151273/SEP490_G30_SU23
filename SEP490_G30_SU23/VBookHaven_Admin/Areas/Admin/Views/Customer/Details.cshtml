@@ -111,7 +111,10 @@
                             <div class="card-body row g-3">
                                 <div class="col-sm-6 row">
                                     <p class="title col-sm-6">Ngày sinh</p>
-                                    <p class="content col-sm-6">: @Model.Customer.DOB.Value.ToString("dd-MM-yyyy")</p>
+                                    @if (@Model.Customer.DOB != null)
+                                    {
+                                        <p class="content col-sm-6">: @Model.Customer.DOB.Value.ToString("dd-MM-yyyy")</p>
+                                    }
                                 </div>
                                 <div class="col-sm-6 row">
                                     <p class="title col-sm-6">Giới tính</p>

@@ -137,13 +137,13 @@ else
                                         @foreach (CartDetail o in Model.Cart)
                                         {
                                             <tr>
-                                                <td class="td-title-1">@o.Product.Name x @o.Quantity</td>
-                                                <td class="td-title-2">@(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity) VNĐ</td>
+                                                <td class="td-title-1">@o.Product.Name x @string.Format("{0:N0}",o.Quantity)</td>
+                                                <td class="td-title-2">@string.Format("{0:N0}",(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity)) VNĐ</td>
                                             </tr>
                                         }
                                         <tr>
                                             <td class="order-total">Tổng cộng</td>
-                                            <td class="order-total-price">@total VNĐ</td>
+                                            <td class="order-total-price">@string.Format("{0:N0}",total) VNĐ</td>
                                         </tr>
                                     </table>
                                 </div>

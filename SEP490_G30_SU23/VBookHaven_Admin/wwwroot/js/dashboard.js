@@ -55,7 +55,7 @@ function showYearChart(Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, De
             theme: 'dark',
             y: {
                 formatter: function(val) {
-                    return "" + val.toLocaleString() + " VND"
+                    return "" + val.toLocaleString('en') + " VND"
                 }
             }
         },
@@ -81,7 +81,7 @@ function showYearChart(Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, De
         yaxis: {
             labels: {
                 formatter: function(value) {
-                    return value.toLocaleString() + " VND";
+                    return value.toLocaleString('en') + " VND";
                 }
             },
         },
@@ -158,7 +158,7 @@ function callApiDailyReport(api, selectedValue) {
 }
 function populateStaffData(staffDTOs) {
     $.each(staffDTOs, function (index, staffDTO) {
-        var formattedRevenue = staffDTO.staffRevenue.toLocaleString();
+        var formattedRevenue = staffDTO.staffRevenue.toLocaleString('en');
         var html = `
                     <div class="col-12 col-lg-6">
                         <div class="card radius-15">
@@ -186,7 +186,7 @@ function populateStaffData(staffDTOs) {
 }
 
 function SetDailyReportValue(revenue, processOrder, doneOrder, cancelledOrder) {
-    var formattedRevenue = revenue.toLocaleString();
+    var formattedRevenue = revenue.toLocaleString('en');
     $("#revenue").text(formattedRevenue + "VND");
     $("#processOrder").text(processOrder);
     $("#doneOrder").text(doneOrder);

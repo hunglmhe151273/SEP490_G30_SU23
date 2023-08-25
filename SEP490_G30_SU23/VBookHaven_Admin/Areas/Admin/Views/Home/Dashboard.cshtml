@@ -30,6 +30,31 @@
                 <div class="card-body">
                     <div class="row">
 
+                      
+                        <div class="col-12 col-lg-12">
+                            <div class="card radius-15">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="mb-0 font-35">
+                                            <i class='bx bxs-dollar-circle bx-tada text-primary'></i>
+                                        </div>
+                                        <div>
+                                            <p class="ms-auto mb-0 fs-5">Tổng Doanh thu</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div>
+                                            <h3 class="mb-0 text-primary" id="revenue"></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (User.IsInRole(SD.Role_Owner))
+                        {
+                            <div class="col-12 col-lg-12 row" id="dataContainer">
+                            </div>
+                        }
                         <div class="col-12 col-lg-4">
                             <div class="card radius-15">
                                 <div class="card-body">
@@ -87,30 +112,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-12">
-                            <div class="card radius-15">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="mb-0 font-35">
-                                            <i class='bx bxs-dollar-circle bx-tada text-primary'></i>
-                                        </div>
-                                        <div>
-                                            <p class="ms-auto mb-0 fs-5">Tổng Doanh thu</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div>
-                                            <h3 class="mb-0 text-primary" id="revenue"></h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @if (User.IsInRole(SD.Role_Owner))
-                        {
-                            <div class="col-12 col-lg-12 row" id="dataContainer">
-                            </div>
-                        }
                     </div>
                 </div>
             </div>

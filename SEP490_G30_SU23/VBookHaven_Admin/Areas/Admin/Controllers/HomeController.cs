@@ -225,7 +225,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         {
     
           var listStaffs = await _dbContext.Staff.Include(s => s.Orders.Where(o => o.OrderDate.Value.Date >= startDate 
-                                                                         && o.OrderDate.Value.Date <= endDate)).ThenInclude(o => o.OrderDetails)
+                                                                         && o.OrderDate.Value.Date <= endDate 
+                                                                         && o.Status.Equals(OrderStatus.Done)))
+                                                                            .ThenInclude(o => o.OrderDetails)
                                                                          .Where(s => s.StaffId != 1) //to do: find owner id
                                         .ToListAsync();
 
