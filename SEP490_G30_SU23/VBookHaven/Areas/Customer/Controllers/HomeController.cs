@@ -42,7 +42,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 			//return RedirectToAction("Index", "Product");
 
 			var model = new HomeViewModel();
-			var allProducts = await productRepository.GetAllProductsAsync();
+			var allProducts = await productRepository.GetAllProductsWithImageAsync();
 			allProducts = allProducts.Where(p => p.Status == true && p.AvailableUnit > 0).ToList();
 
 			model.FamousProducts = allProducts.ToList();
@@ -69,7 +69,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 				else thumbnailName = thumbnail.ImageName;
 				model.ProductsThumbnails.Add(id, thumbnailName);
 			}	
-			
+
 			return View(model);
         }
 

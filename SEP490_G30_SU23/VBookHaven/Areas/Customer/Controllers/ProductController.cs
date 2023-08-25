@@ -249,7 +249,18 @@ namespace VBookHaven.Areas.Customer.Controllers
 					model.Images.Add(i);
 			}
 
+			if (TempData["addToCartSuccess"] != null)
+			{
+				TempData["success"] = "Thêm vào giỏ hàng thành công";
+			}
+
 			return View(model);
+		}
+
+		public IActionResult DetailAfterAddCart(int id)
+		{
+			TempData["addToCartSuccess"] = true;
+			return RedirectToAction("Detail", new { id = id });
 		}
 
 		//---------- Other functions ----------

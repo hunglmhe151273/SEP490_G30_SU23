@@ -4,6 +4,8 @@
 @model OrderPurchaseModel
 
 @{
+    ViewData["Title"] = "Đặt hàng";
+
     double total = 0;
     foreach (CartDetail item in Model.Cart)
     {

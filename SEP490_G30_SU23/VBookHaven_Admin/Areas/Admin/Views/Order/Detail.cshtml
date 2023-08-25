@@ -4,6 +4,9 @@
 @using VBookHaven_Admin
 
 @model EditOrderManagementModel
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
 
 @{
     int numStatus = OrderStatus.ToNum(Model.Order.Status);

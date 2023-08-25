@@ -3,6 +3,8 @@
 @model ProductDetailViewModel
 
 @{
+    ViewData["Title"] = "Chi tiết";
+
 	string authors = "";
 	foreach (Author a in Model.Book.Authors)
 	{
