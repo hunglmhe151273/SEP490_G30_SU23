@@ -101,14 +101,20 @@
                                     }
                                 </div>
                                 <div>
-                                    <a asp-action="Edit" asp-route-id="@Model.Customer.CustomerId" class="btn fw-bold text-primary">Cập nhật</a>
+                                     @if (User.IsInRole(SD.Role_Staff))
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@Model.Customer.CustomerId" class="btn fw-bold text-primary">Cập nhật</a>
+                                    }
                                 </div>
                             </div>
                             <hr>
                             <div class="card-body row g-3">
                                 <div class="col-sm-6 row">
                                     <p class="title col-sm-6">Ngày sinh</p>
-                                    <p class="content col-sm-6">: @Model.Customer.DOB.Value.ToString("dd-MM-yyyy")</p>
+                                    @if (@Model.Customer.DOB != null)
+                                    {
+                                        <p class="content col-sm-6">: @Model.Customer.DOB.Value.ToString("dd-MM-yyyy")</p>
+                                    }
                                 </div>
                                 <div class="col-sm-6 row">
                                     <p class="title col-sm-6">Giới tính</p>
@@ -241,10 +247,13 @@
                                 </div>
                                 <div class="tab-pane fade" id="Address">
                                     <div class="d-flex justify-content-end">
+                                          @if (User.IsInRole(SD.Role_Staff))
+                                    {
                                         <a asp-action="CreateShipInfo" asp-route-cid="@Model.Customer.CustomerId" class="btn btn-outline-info d-flex align-items-center">
                                             <i class='bx bx-plus-circle'></i>
                                             Thêm địa chỉ mới
                                         </a>
+                                    }
                                     </div>
                                     <div class="table-responsive mt-3">
                                         <table id="shippingInfoTable" class="table table-hover dataTable">
@@ -255,7 +264,10 @@
                                                     <th scope="col">Phường xã</th>
                                                     <th scope="col">Quận huyện</th>
                                                     <th scope="col">Tỉnh thành phố</th>
+                                                @if (User.IsInRole(SD.Role_Staff))
+                                                {
                                                     <th scope="col">Hành Động</th>
+                                                }
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -267,18 +279,22 @@
                                                         <td>@shipInfo.Ward</td>
                                                         <td>@shipInfo.District</td>
                                                         <td>@shipInfo.Province</td>
+                                                        @if (User.IsInRole(SD.Role_Staff))
+                                                        {
                                                         <td>
-                                                            <a asp-action="EditShipInfo" asp-route-shipId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
-                                                                <i class="lni lni-pencil-alt"></i>
-                                                            </a>
-                                                            <!-- Check IsDefault Address -->
-                                                            @if (shipInfo.Customers.Count() == 0)
-                                                            {
-                                                                <a asp-action="DeleteShipInfo" asp-route-shipInfoId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
-                                                                    <i class='bx bx-trash'></i>
+                                                           
+                                                                <a asp-action="EditShipInfo" asp-route-shipId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
+                                                                    <i class="lni lni-pencil-alt"></i>
                                                                 </a>
-                                                            }
+                                                                <!-- Check IsDefault Address -->
+                                                                @if (shipInfo.Customers.Count() == 0)
+                                                                {
+                                                                    <a asp-action="DeleteShipInfo" asp-route-shipInfoId="@shipInfo.ShipInfoId" class="btn btn-sm btn-default">
+                                                                        <i class='bx bx-trash'></i>
+                                                                    </a>
+                                                                }
                                                         </td>
+                                                        }
                                                     </tr>
                                                 }
                                             </tbody>

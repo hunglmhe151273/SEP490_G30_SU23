@@ -235,12 +235,16 @@
                                             {
                                                 if (Model.Product.RetailDiscount != 0)
                                                 {
-                                                    <h6 class="pro-price" style="display: inline-block; color: #bbbbbb"><s>@Model.Product.RetailPrice</s></h6>
-                                                    <h3 class="pro-price" style="display: inline-block">@(Model.Product.RetailPrice * (100 - Model.Product.RetailDiscount) / 100) VNĐ</h3>
+                                                    <h6 class="pro-price" style="display: inline-block; color: #bbbbbb">
+                                                        <s>
+                                                            @string.Format("{0:N0}",Model.Product.RetailPrice)</s></h6>
+                                                    <h3 class="pro-price" style="display: inline-block">
+                                                        @string.Format("{0:N0}",(Model.Product.RetailPrice * (100 - Model.Product.RetailDiscount) / 100)) VNĐ</h3>
                                                 }
                                                 else
                                                 {
-                                                    <h3 class="pro-price" style="display: inline-block">@Model.Product.RetailPrice VNĐ</h3>
+                                                    <h3 class="pro-price" style="display: inline-block">
+                                                        @string.Format("{0:N0}",@Model.Product.RetailPrice) VNĐ</h3>
                                                 }
                                             }
                                             else

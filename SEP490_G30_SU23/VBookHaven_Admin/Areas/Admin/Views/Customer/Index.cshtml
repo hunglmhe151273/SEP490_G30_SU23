@@ -35,9 +35,13 @@
                         <div class="accordion col-8" id="accordionExample">
                         </div>
                         <div class="col-4">
-                            <button type="button" class="btn btn-success">Nhập file</button>
-                            <button type="button" class="btn btn-success">Xuất file</button>
-                            <a asp-action="Create" class="btn btn-primary">+ Tạo mới khách hàng</a>
+                             @if (User.IsInRole(SD.Role_Staff))
+                            {
+                                <button type="button" class="btn btn-success">Nhập file</button>
+                                <button type="button" class="btn btn-success">Xuất file</button>
+                                <a asp-action="Create" class="btn btn-primary">+ Tạo mới khách hàng</a>
+                            }
+                           
                         </div>
                         <div class="table-responsive mt-3">
                             <table id="example2" class="table table-striped table-bordered" style="width:100%">

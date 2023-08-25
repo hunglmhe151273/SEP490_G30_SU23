@@ -204,9 +204,9 @@
                                                     </td>
                                                     <td> @detail.Product.Unit</td>
                                                     <td> @detail.Quantity</td>
-                                                    <td> @detail.UnitPrice VNĐ</td>
+                                                    <td>@string.Format("{0:N0}", detail.UnitPrice) VNĐ</td>
                                                     <td>@detail.Discount %</td>
-                                                    <td>@(Math.Ceiling((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value)) VNĐ</td>
+                                                    <td>@string.Format("{0:N0}",(Math.Ceiling((double)@detail.UnitPrice.Value * (1 - @detail.Discount.Value / 100) * @detail.Quantity.Value))) VNĐ</td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -217,7 +217,7 @@
                                     <table class="w-75 ">
                                         <tr>
                                             <td>Tổng tiền hàng</td>
-                                            <td>@Model.TotalPayment</td>
+                                            <td>@string.Format("{0:N0}",Model.TotalPayment)</td>
                                         </tr>
                                         <tr>
                                             <td>Thuế GTGT</td>
@@ -227,11 +227,11 @@
                                         </tr>
                                         <tr>
                                             <th>Tổng tiền đã thanh toán</th>
-                                            <td>@Model.Paid</td>
+                                            <td>@string.Format("{0:N0}",@Model.Paid)</td>
                                         </tr>
                                         <tr>
                                             <th>Còn phải trả</th>
-                                            <td>@Model.Unpaid</td>
+                                                <td>@string.Format("{0:N0}",@Model.Unpaid)</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -248,26 +248,29 @@
                 <div class="col-12 pe-0 mx-auto " style="position: sticky; bottom: 0; ">
                     <div class="card border-top border-0 border-4 border-primary py-2">
                         <div class="card-body text-end">
-                            @if (SD.POStatusToNum(Model.pO.Status) < 3)
+                             @if (User.IsInRole(SD.Role_Staff))
                             {
-                                <button type="button" class="btn btn-primary px-4 mx-2" onclick="document.getElementById('updatePurchaseOrder').submit();">
-                                    @switch (Model.pO.Status)
-                                    {
-                                        case SD.PurchaseOrder_Created:
-                                            @:Nhập hàng
-                                            break;
-                                        case SD.PurchaseOrder_Imported:
-                                            @:Đã thanh toán
-                                            break;
-                                    }
-                                </button>
-                                @if (SD.POStatusToNum(Model.pO.Status) < 2)
+                                @if (SD.POStatusToNum(Model.pO.Status) < 3)
                                 {
-                                    <a asp-action="Edit" asp-route-purchaseId="@Model.pO.PurchaseOrderId" class="btn btn-outline-info px-4 mx-2">Sửa đơn</a>
-                                    <button type="button" class="btn btn-outline-danger px-4 mx-2"
-                                            onclick="document.getElementById('cancelPurchaseOrder').submit();">
-                                        Hủy đơn
+                                    <button type="button" class="btn btn-primary px-4 mx-2" onclick="document.getElementById('updatePurchaseOrder').submit();">
+                                        @switch (Model.pO.Status)
+                                        {
+                                            case SD.PurchaseOrder_Created:
+                                                @:Nhập hàng
+                                                break;
+                                            case SD.PurchaseOrder_Imported:
+                                                @:Đã thanh toán
+                                                break;
+                                        }
                                     </button>
+                                    @if (SD.POStatusToNum(Model.pO.Status) < 2)
+                                    {
+                                        <a asp-action="Edit" asp-route-purchaseId="@Model.pO.PurchaseOrderId" class="btn btn-outline-info px-4 mx-2">Sửa đơn</a>
+                                        <button type="button" class="btn btn-outline-danger px-4 mx-2"
+                                                onclick="document.getElementById('cancelPurchaseOrder').submit();">
+                                            Hủy đơn
+                                        </button>
+                                    }
                                 }
                             }
                             <a asp-action="Index" class="btn btn-outline-info px-5 mx-3">Thoát</a>

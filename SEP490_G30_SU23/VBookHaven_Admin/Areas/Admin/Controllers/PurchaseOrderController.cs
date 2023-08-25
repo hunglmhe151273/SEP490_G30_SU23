@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,9 +26,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         private readonly IApplicationUserRespository _IApplicationUserRespository;
         private readonly IProductRespository _productRespository;
         private readonly IPurchaseOrderRepository _purchaseOrderRepository;
+        private readonly UserManager<IdentityUser> _userManager;
         IMapper _mapper;
         [ActivatorUtilitiesConstructor]
-        public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository, 
+        public PurchaseOrderController(IMapper mapper, IApplicationUserRespository applicationUserRespository,
+            UserManager<IdentityUser> userManager,
             VBookHavenDBContext dbContext, IProductRespository productRespository, IPurchaseOrderRepository purchaseOrderRepository)
         {
             _productRespository = productRespository;
@@ -35,6 +38,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             _dbContext = dbContext;
             _IApplicationUserRespository = applicationUserRespository;
             _purchaseOrderRepository = purchaseOrderRepository;
+            _userManager = userManager;
         }
 
         public PurchaseOrderController()
@@ -43,8 +47,23 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var purchaseOrders = await _dbContext.PurchaseOrders.Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();
-            return View(purchaseOrders);
+            var staffToView = await GetStaffAccountByUserID();
+            if(staffToView == null)
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            var staffId = staffToView.Staff.StaffId;
+            string userRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+            if (userRole.Equals(SD.Role_Owner))
+            {
+                var purchaseOrders = await _dbContext.PurchaseOrders
+                                            .Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();
+                return View(purchaseOrders);
+            }
+            else
+            {
+                var purchaseOrders = await _dbContext.PurchaseOrders.Where(p => p.StaffId == staffId)
+                                             .Include(p => p.Staff).Include(p => p.Supplier).ToListAsync();
+                return View(purchaseOrders);
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -178,6 +197,22 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 var appUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
                 //view application user
                 return appUser.Staff;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        private async Task<ApplicationUser> GetStaffAccountByUserID()
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                //get application user by id
+                var appUser = await _IApplicationUserRespository.GetStaffByUIdAsync(userId);//lấy ra các thông tin liên quan đến user bằng userID(Application là bảng User)
+                //view application user
+                return appUser;
             }
             catch (Exception ex)
             {

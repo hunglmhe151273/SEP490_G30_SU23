@@ -292,13 +292,13 @@
                         <div class="card-body pt-0">
                             <div class="row payment-items">
                                 <div class="col-4">
-                                    <span>Tiền khách cần trả : <strong>@total VNĐ</strong></span>
+                                    <span>Tiền khách cần trả : <strong>@string.Format("{0:N0}",total) VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-center">
                                     <span>Đã trả: <strong>@Model.Order.AmountPaid.Value.ToString("#,0") VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <span>Còn phải trả: <strong class="text-danger" id="debt">@(total - Model.Order.AmountPaid) VNĐ</strong></span>
+                                    <span>Còn phải trả: <strong class="text-danger" id="debt">@string.Format("{0:N0}",(total - Model.Order.AmountPaid)) VNĐ</strong></span>
                                 </div>
                             </div>
                             @foreach (OrderPaymentHistory o in Model.Payments)
@@ -306,7 +306,7 @@
                                 <div class="payment-items">
                                     <p class="payment-content">
                                         <i class='bx bxs-circle text-primary pe-3'></i>
-                                        <span class="payment-title"><strong>Đã trả: </strong>@o.PaymentAmount VNĐ</span>
+                                        <span class="payment-title"><strong>Đã trả: </strong>@string.Format("{0:N0}",o.PaymentAmount) VNĐ</span>
                                         <i class='show-btn btn bx bx-caret-down p-0 pb-1'></i>
                                         <span class="payment-date">@o.PaymentDate.Value.ToString("dd/MM/yyyy")</span>
                                     </p>

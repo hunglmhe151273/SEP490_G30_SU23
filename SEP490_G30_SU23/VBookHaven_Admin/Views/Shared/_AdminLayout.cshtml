@@ -88,27 +88,30 @@
                         <div class="menu-title">Thống kê</div>
                     </a>
                 </li>
-                <li>
-                    <a class="has-arrow" href="#">
-                        <div class="parent-icon icon-color-3"><i class='bx bx-body'></i>
-                        </div>
-                        <div class="menu-title">Nhân viên</div>
-                    </a>
-                    <ul>
-                        <li> <a href="/admin/user/index"><i class="bx bx-right-arrow-alt"></i>Danh sách nhân viên</a>
-                        </li>
-                        <li> <a href="/admin/user/create"><i class="bx bx-right-arrow-alt"></i>Thêm nhân viên</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
+                @if (User.IsInRole(SD.Role_Owner))
+                {
+                    <li>
+                        <a class="has-arrow" href="#">
+                            <div class="parent-icon icon-color-3"><i class='bx bx-body'></i>
+                            </div>
+                            <div class="menu-title">Nhân viên</div>
+                        </a>
+                        <ul>
+                            <li> <a href="/admin/user/index"><i class="bx bx-right-arrow-alt"></i>Danh sách nhân viên</a>
+                            </li>
+                            <li> <a href="/admin/user/create"><i class="bx bx-right-arrow-alt"></i>Thêm nhân viên</a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @*   <li>
                     <a href="#">
                         <div class="parent-icon icon-color-4"><i class='bx bx-history'></i>
                         </div>
                         <div class="menu-title">Nhật ký hoạt động</div>
                     </a>
-                </li>
-               @* <li class="menu-label">Staff</li>*@
+                </li>*@
+                @* <li class="menu-label">Staff</li>*@
                 <li>
                     <a class="has-arrow" href="#">
                         <div class="parent-icon icon-color-5"><i class='bx bx-package'></i>
@@ -118,14 +121,20 @@
                     <ul>
                         <li> <a href="/admin/product/index"><i class="bx bx-right-arrow-alt"></i>Danh sách sản phẩm</a>
                         </li>
-                        <li> <a class="has-arrow" href="#"><i class="bx bx-right-arrow-alt"></i>Tạo sản phẩm mới</a>
-                            <ul>
-                                <li> <a href="/admin/product/addbook"><i class="bx bx-right-arrow-alt"></i>Sách</a>
-                                </li>
-                                <li> <a href="/admin/product/addstationery"><i class="bx bx-right-arrow-alt"></i>Văn phòng phẩm</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li>
+                                <a class="has-arrow" href="#"><i class="bx bx-right-arrow-alt"></i>Tạo sản phẩm mới</a>
+                                <ul>
+                                    <li>
+                                        <a href="/admin/product/addbook"><i class="bx bx-right-arrow-alt"></i>Sách</a>
+                                    </li>
+                                    <li>
+                                        <a href="/admin/product/addstationery"><i class="bx bx-right-arrow-alt"></i>Văn phòng phẩm</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                         <li> <a href="/admin/categories/index"><i class="bx bx-right-arrow-alt"></i>Loại sản phẩm</a>
                         </li>
                         <li> <a href="/admin/author/index"><i class="bx bx-right-arrow-alt"></i>Tác giả sách</a>
@@ -142,9 +151,12 @@
                         <li>
                             <a href="/admin/customer/index"><i class="bx bx-right-arrow-alt"></i>Danh sách khách hàng</a>
                         </li>
-                        <li>
-                            <a href="/admin/customer/create"><i class="bx bx-right-arrow-alt"></i>Thêm khách hàng</a>
-                        </li>
+                         @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li>
+                                <a href="/admin/customer/create"><i class="bx bx-right-arrow-alt"></i>Thêm khách hàng</a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li>
@@ -156,8 +168,11 @@
                     <ul>
                         <li> <a href="/admin/order/index"><i class="bx bx-right-arrow-alt"></i>Danh sách đơn hàng</a>
                         </li>
-                        <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
-                        </li>
+                           @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li> <a href="/admin/order/add"><i class="bx bx-right-arrow-alt"></i>Tạo đơn hàng mới</a>
+                            </li>
+                        }
                     </ul>
                 </li>
                 <li>
@@ -169,9 +184,13 @@
                     <ul>
                         <li> <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Index"><i class="bx bx-right-arrow-alt"></i>Danh sách hóa đơn nhập</a>
                         </li>
-                        <li>
-                            <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Create"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
-                        </li>
+                           @if (User.IsInRole(SD.Role_Staff))
+                        {
+                            <li>
+                                <a asp-area="admin" asp-controller="PurchaseOrder" asp-action="Create"><i class="bx bx-right-arrow-alt"></i>Thêm hóa đơn nhập</a>
+                            </li>
+                        }
+                     
                         <li> <a href="/admin/suppliers/index"><i class="bx bx-right-arrow-alt"></i>Nhà cung cấp</a>
                         </li>
                     </ul>
@@ -230,7 +249,7 @@
         <!--End Back To Top Button-->
         <!--footer -->
         <div class="footer">
-            <p class="mb-0">VMS 2023 | Developed By : <a href="#" target="_blank">SEP490_G30</a>
+            <p class="mb-0">BMS 2023 | Developed By : <a href="#" target="_blank">SEP490_G30</a>
             </p>
         </div>
         <!-- end footer -->

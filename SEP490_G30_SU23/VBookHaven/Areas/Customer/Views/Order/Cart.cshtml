@@ -145,7 +145,7 @@ else
                                                             </h6>
                                                         </div>
                                                     </td>
-                                                    <td class="product-price">@o.Product.RetailPrice VNĐ</td>
+                                                    <td class="product-price">@string.Format("{0:N0}",o.Product.RetailPrice) VNĐ</td>
                                                     <td class="product-discount">@o.Product.RetailDiscount%</td>
                                                     <td class="product-quantity">
                                                         @*<div class="cart-plus-minus-2 f-left">*@
@@ -165,7 +165,7 @@ else
                                                         </div>
                                                     </td>
                                                     <td class="product-subtotal">
-                                                        @(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity) VNĐ
+                                                        @string.Format("{0:N0}",(o.Product.RetailPrice * (1 - o.Product.RetailDiscount / 100) * o.Quantity)) VNĐ
                                                     </td>
                                                     <td class="product-remove">
                                                         <a href="javascript:void(0);" onclick="window.location.replace('/Customer/Order/RemoveItemFromCart/@o.ProductId')">
@@ -185,7 +185,7 @@ else
                                             <table>
                                                 <tr>
                                                     <td class="order-total"></td>
-                                                    <td class="order-total-price" style="font-size: x-large">@total VNĐ</td>
+                                                    <td class="order-total-price" style="font-size: x-large">@string.Format("{0:N0}",total) VNĐ</td>
                                                 </tr>
                                             </table>
                                             @if (SignInManager.IsSignedIn(User))
