@@ -46,12 +46,18 @@
                         </div>
                         <div class="col-4 row">
                             <div class="accordion col-2"></div>
-                            <div class="accordion col-5 pe-1">
-                                <a asp-controller="categories" asp-action="create" style="float: right;" class="btn btn-primary">Tạo nhóm</a>
+
+                             @if (User.IsInRole(SD.Role_Staff))
+                            {
+
+                                <div class="accordion col-5 pe-1">
+                                    <a asp-controller="categories" asp-action="create" style="float: right;" class="btn btn-primary">Tạo nhóm</a>
                                 </div>
-                            <div class="accordion col-5 p-0">
-                                <a asp-controller="SubCategories" asp-action="create" class="btn btn-primary">Tạo nhóm con</a>
+                                <div class="accordion col-5 p-0">
+                                    <a asp-controller="SubCategories" asp-action="create" class="btn btn-primary">Tạo nhóm con</a>
                                 </div>
+                            }
+                           
                       
                            
                            @* <a asp-action="Create" class="btn btn-primary">+ Tạo mới khách hàng</a>*@

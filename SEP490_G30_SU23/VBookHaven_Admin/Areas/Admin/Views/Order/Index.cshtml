@@ -150,7 +150,10 @@
 							</div>
 						</div>
 						<div class="col-4">
-							<button type="button" class="btn btn-success">Nhập file</button>
+							@if (User.IsInRole(SD.Role_Staff))
+							{
+								<button type="button" class="btn btn-success">Nhập file</button>
+							}
 							<button type="button" class="btn btn-success">Xuất file</button>
 							@if (User.IsInRole(SD.Role_Staff))
                         {

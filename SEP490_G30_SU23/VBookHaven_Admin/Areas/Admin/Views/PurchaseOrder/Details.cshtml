@@ -124,13 +124,13 @@
                                 <div>
                                     <i class="bx bxs-user-rectangle bx-tada me-2 fs-4"></i>
                                 </div>
-                                <h5 class="mb-0 fw-bold">@Model.pO.Supplier.SupplierName</h5>
+                                <h5 class="mb-0 fw-bold">Nhà cung cấp</h5>
                             </div>
                             <hr>
                             <div class="card-body row g-3">
                                 <div class="supplier-info mt-0">
                                     <h6 class="text-primary fw-bold">
-                                        <a href="">Supp1</a>
+                                        <a asp-controller="Suppliers" asp-action="Details" asp-route-id="@Model.pO.Supplier.SupplierId">@Model.pO.Supplier.SupplierName</a>
                                         <!-- Click vào để dẫn đến supplier-detail -->
                                     </h6>
                                     <label class="fw-bold">Số điện thoại: @Model.pO.Supplier.Phone</label></br>

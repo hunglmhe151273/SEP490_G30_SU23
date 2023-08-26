@@ -75,13 +75,17 @@
 							</div>
 						</div>
 						<div class="col-4">
+							@if (User.IsInRole(SD.Role_Staff))
+							{
 							<button type="button" class="btn btn-success">Nhập file</button>
 							<button type="button" class="btn btn-success">Xuất file</button>
-							<button type="button" class="btn btn-primary dropdown-toggle"
-									data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Thêm sản
-								phẩm
-							</button>
+							
+								<button type="button" class="btn btn-primary dropdown-toggle"
+										data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Thêm sản phẩm
+								</button>
+							}
+							
 							<div class="dropdown-menu">
 								<a class="dropdown-item" href="/admin/product/addbook">Thêm sách</a>
 								<a class="dropdown-item" href="/admin/product/addstationery">Thêm văn phòng phẩm</a>
@@ -102,7 +106,10 @@
 										<th>Giá sỉ (VNĐ)</th>
 										<th>Chi tiết</th>
 										<th>Trạng thái</th>
+										  @if (User.IsInRole(SD.Role_Staff))
+                                                {
 										<th>Hành động</th>
+												}
 									</tr>
 								</thead>
 								<tbody id="myTable">
@@ -151,22 +158,25 @@
 													<span hidden>0</span>
 												}
 											</td>
-											<td>
-												@if (p.IsBook == true)
+												@if (User.IsInRole(SD.Role_Staff))
 												{
-													<button type="button" class="btn btn-sm btn-default"
-															onclick="window.location.href='/admin/product/editbook/@p.ProductId'">
-														<i class="lni lni-pencil-alt"></i>
-													</button>
+												<td>
+													@if (p.IsBook == true)
+													{
+														<button type="button" class="btn btn-sm btn-default"
+																onclick="window.location.href='/admin/product/editbook/@p.ProductId'">
+															<i class="lni lni-pencil-alt"></i>
+														</button>
+													}
+													else
+													{
+														<button type="button" class="btn btn-sm btn-default"
+																onclick="window.location.href='/admin/product/editstationery/@p.ProductId'">
+															<i class="lni lni-pencil-alt"></i>
+														</button>
+													}
+												</td>
 												}
-												else
-												{
-													<button type="button" class="btn btn-sm btn-default"
-															onclick="window.location.href='/admin/product/editstationery/@p.ProductId'">
-														<i class="lni lni-pencil-alt"></i>
-													</button>
-												}
-											</td>
 										</tr>
 									}
 								</tbody>

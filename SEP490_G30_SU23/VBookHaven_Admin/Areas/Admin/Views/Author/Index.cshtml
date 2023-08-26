@@ -126,13 +126,13 @@
 							</div>
 						</div>
 						<div class="col-4">
-							<button type="button" class="btn btn-success">Nhập file</button>
-							<button type="button" class="btn btn-success">Xuất file</button>
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+							@if (User.IsInRole(SD.Role_Staff))
+							{
+									<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 									data-bs-target="#add">
-								Thêm tác giả
-							</button>
-
+									Thêm tác giả
+									</button>
+							}
 							<div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel"
 								 aria-hidden="true">
 								<div class="modal-dialog">
