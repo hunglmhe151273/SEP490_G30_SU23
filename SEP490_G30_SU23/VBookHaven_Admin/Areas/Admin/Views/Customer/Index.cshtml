@@ -34,12 +34,11 @@
                     <div class="mb-3 row">
                         <div class="accordion col-8" id="accordionExample">
                         </div>
-                        <div class="col-4">
+                        <div class="col-4 row">
                              @if (User.IsInRole(SD.Role_Staff))
                             {
-                                <button type="button" class="btn btn-success">Nhập file</button>
-                                <button type="button" class="btn btn-success">Xuất file</button>
-                                <a asp-action="Create" class="btn btn-primary">+ Tạo mới khách hàng</a>
+                                <div class="col-4" id="accordionExample"></div>
+                                <div class="col-8" id="accordionExample"> <a asp-action="Create" style="float: right;" class="btn btn-primary">+ Tạo mới khách hàng</a></div>
                             }
                            
                         </div>

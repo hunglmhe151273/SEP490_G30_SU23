@@ -156,7 +156,9 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             {
                 return Problem("Entity set 'VBookHavenDBContext.Categories'  is null.");
             }
-            var category = await _context.Categories.Include(cate => cate.SubCategories).ThenInclude(sub => sub.Products).SingleOrDefaultAsync( c => c.CategoryId == id);
+            var category = await _context.Categories.Include(cate => cate.SubCategories)
+                                                    .ThenInclude(sub => sub.Products)
+                                                    .SingleOrDefaultAsync( c => c.CategoryId == id);
             if (category != null)
             {
                 if (category.SubCategories.SelectMany(sub => sub.Products).Count() > 0)
@@ -164,12 +166,15 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     TempData["error"] = "Không thể xóa dữ liệu đang được sử dụng";
                     return RedirectToAction("Index", "Categories");
                 }
-                _context.Categories.Remove(category);
-            }
-            TempData["success"] = "Xóa thành công";
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+				_context.SubCategories.RemoveRange(category.SubCategories);
+				_context.Categories.Remove(category);
+				TempData["success"] = "Xóa thành công";
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			TempData["error"] = "Loại sản phẩm không tồn tại";
+			return RedirectToAction(nameof(Index));
+		}
 
         private bool CategoryExists(int id)
         {

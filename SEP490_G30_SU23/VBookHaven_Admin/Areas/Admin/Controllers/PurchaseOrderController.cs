@@ -144,9 +144,6 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(CreatePurchaseOrderVM model)
         {
-            //Todo: Check nếu tổng tiền, nhỏ hơn số tiền đã trả thì thông báo, trả về trang, không thể lưu
-            //Kiểm tra ở front-end
-            //Check ở back-end
             if(model.TotalPayment < model.TotalPaid) {
                 TempData["error"] = "Sửa đơn nhập thất bại";
                 return View(model);
