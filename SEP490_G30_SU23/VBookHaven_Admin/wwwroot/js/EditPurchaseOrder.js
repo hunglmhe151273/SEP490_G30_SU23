@@ -424,7 +424,7 @@ function getBookInfo(linkElement) {
             </td>
             <td>
                 <div class="input-group">
-                    <input name="UnitPriceList" value="${purchasePrice}" class="form-control price num" step="1" min="0" type='number'>
+                    <input name="UnitPriceList" value="${purchasePrice}" class="form-control price num" step="100" min="0" type='number'>
                 </div>
             </td>
             <td>

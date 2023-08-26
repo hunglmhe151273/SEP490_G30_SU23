@@ -281,7 +281,7 @@ function getProductInfo(linkElement) {
         </td>
         <td>
             <div class="input-group">
-                <input name="PriceList" required class="form-control price num" step="1000" min="0" value="${price}" type='number' />
+                <input name="PriceList" required class="form-control price num" step="100" min="0" value="${price}" type='number' />
 
                 <input hidden value="${retailPrice}" />
                 <input hidden value="${wholesalePrice}" />
@@ -527,17 +527,17 @@ var updateOrder = function () {
             //totalPrice += parseFloat(parseFloat(price) * (100 - parseFloat(discount)) / 100 * num);
             //totalPay += parseFloat(parseFloat(price) * (100 - parseFloat(discount) + parseFloat(vat)) / 100 * num)
             $(this).find($('.sum')).text(sum.toLocaleString('en'));
-            $('#totalPrice').text(totalPrice.toLocaleString('en'));
-            $('#totalPay').text(totalPay.toLocaleString('en'));
+            $('#totalPrice').text(Math.ceil(totalPrice).toLocaleString('en'));
+            $('#totalPay').text(Math.ceil(totalPay).toLocaleString('en'));
         }
     });
 
     paid = $('#paid').val();
-    var debt = parseFloat(totalPay) - paid;
-    if (parseFloat(totalPay) >= paid && !isNaN(paid)) {
+    var debt = Math.ceil(totalPay) - paid;
+    if (Math.ceil(totalPay) >= paid && !isNaN(paid)) {
         $('#debt').text(debt.toLocaleString('en'));
     } else {
-        $('#paid').val(totalPay)
+        $('#paid').val(parseInt(totalPay))
         $('#debt').text('0');
     }
     totalPrice = 0;

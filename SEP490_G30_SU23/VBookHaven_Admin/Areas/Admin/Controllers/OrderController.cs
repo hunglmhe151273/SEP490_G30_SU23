@@ -210,6 +210,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			model.Thumbnails = thumbnails;
 			model.Payments = payments;
 
+			if (TempData["justUpdate"] != null)
+			{
+				ViewData["justUpdate"] = TempData["justUpdate"];
+			}
+
 			return View(model);
 		}
 
@@ -239,7 +244,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 					break;
 				case (OrderStatus.Shipping):
 					var total = await orderRepository.GetOrderTotalCostAsync(id);
-					if (order.AmountPaid == (int)total)
+					if (order.AmountPaid.Value == total.Value)
 					{
 						order.Status = OrderStatus.Done;
 					}
@@ -248,6 +253,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 					break;
 			}
 
+			TempData["justUpdate"] = true;
 			return RedirectToAction("Detail", new { id = id }); 
 		}
 
@@ -288,6 +294,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 				await orderRepository.UpdateOrderAsync(order);
 			}
 
+			TempData["justUpdate"] = true;
 			return RedirectToAction("Detail", new { id = id });
 		}
 
@@ -317,13 +324,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 			order.AmountPaid += amount;
 			var total = await totalTask;
-			if (order.AmountPaid.Equals((int)total) && order.Status.Equals(OrderStatus.Shipped))
+			if (order.AmountPaid.Value.Equals(total.Value) && order.Status.Equals(OrderStatus.Shipped))
 			{
 				order.Status = OrderStatus.Done;
 			}
 			var orderTask = orderRepository.UpdateOrderAsync(order);
 
 			Task.WaitAll(paymentTask, orderTask);
+			TempData["justUpdate"] = true;
 			return RedirectToAction("Detail", new { id = id });
 		}
 

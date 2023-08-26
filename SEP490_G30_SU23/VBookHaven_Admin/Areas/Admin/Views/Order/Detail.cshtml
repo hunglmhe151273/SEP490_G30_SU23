@@ -15,6 +15,8 @@
     {
         total += o.UnitPrice.Value * (1 - o.Discount.Value / 100) * o.Quantity.Value;
     }
+
+    double totalVat = Math.Ceiling(total * (1 + Model.Order.VAT.Value / 100));
 }
 
 <style>
@@ -284,7 +286,7 @@
                                 <!-- <h5 class="mb-0 fw-bold">Đơn hàng đã thanh toán toàn bộ</h5> -->
                                 <!--Paid title-->
                             </div>
-                            @if (OrderStatus.ToNum(Model.Order.Status) < 5 && total > Model.Order.AmountPaid)
+                            @if (OrderStatus.ToNum(Model.Order.Status) < 5 && totalVat > Model.Order.AmountPaid)
                             {
                                 <div class="col-4 d-flex align-items-center justify-content-end">
                                     <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addPayment">Thanh toán</button>
@@ -295,13 +297,13 @@
                         <div class="card-body pt-0">
                             <div class="row payment-items">
                                 <div class="col-4">
-                                    <span>Tiền khách cần trả : <strong>@string.Format("{0:N0}",total) VNĐ</strong></span>
+                                    <span>Tiền khách cần trả : <strong>@totalVat.ToString("#,0") VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-center">
                                     <span>Đã trả: <strong>@Model.Order.AmountPaid.Value.ToString("#,0") VNĐ</strong></span>
                                 </div>
                                 <div class="col-4 text-end">
-                                    <span>Còn phải trả: <strong class="text-danger" id="debt">@string.Format("{0:N0}",(total - Model.Order.AmountPaid)) VNĐ</strong></span>
+                                    <span>Còn phải trả: <strong class="text-danger" id="debt">@string.Format("{0:N0}",(totalVat - Model.Order.AmountPaid)) VNĐ</strong></span>
                                 </div>
                             </div>
                             @foreach (OrderPaymentHistory o in Model.Payments)
@@ -396,14 +398,20 @@
                                             Hủy đơn
                                         </button>
                                     }
-                                   @* <button type="button" class="btn btn-secondary px-4 mx-1"
+                                    @if (ViewData["justUpdate"] != null)
+                                    {
+                                        <button type="button" class="btn btn-secondary px-4 mx-1"
                                             onclick="window.location.href='/Admin/Order/Index'">
-                                        Trở lại danh sách
-                                    </button>*@
-                                    <button type="button" class="btn btn-secondary px-4 mx-1"
+                                            Quay lại
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-secondary px-4 mx-1"
                                             onclick="history.back()">
-                                        Quay lại
-                                    </button>
+                                            Quay lại
+                                        </button>
+                                    }
                                     <form hidden id="updateOrder" action="/Admin/Order/Update" method="post">
                                         <input name="id" value="@Model.Order.OrderId" />
                                     </form>
@@ -425,7 +433,7 @@
                                             <th><strong>Tổng tiền thanh toán</strong></th>
                                             <td class="text-end">
                                                 <strong>
-                                                    <span id="totalPay">@((total * (1 + Model.Order.VAT / 100)).Value.ToString("#,0"))</span>
+                                                    <span id="totalPay">@totalVat.ToString("#,0"))</span>
                                                     VNĐ
                                                 </strong>
                                             </td>
@@ -436,7 +444,7 @@
                                         </tr>
                                         <tr>
                                             <td>Số tiền còn thiếu</td>
-                                            <td class="text-end">@((total * (1 + Model.Order.VAT / 100) - Model.Order.AmountPaid).Value.ToString("#,0")) VNĐ</td>
+                                            <td class="text-end">@(totalVat - Model.Order.AmountPaid).Value.ToString("#,0")) VNĐ</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -473,7 +481,7 @@
                         <div class="col-12 col-md-6 mb-3">
                             <label class="form-label">Số tiền *</label>
                             <input required type="number" class="form-control validate important" 
-                                min="1" max="@(total - Model.Order.AmountPaid)" name="amount">
+                                min="1" max="@(totalVat - Model.Order.AmountPaid)" name="amount">
                         </div>
                         <input hidden name="id" value="@Model.Order.OrderId" />
                     </div>
