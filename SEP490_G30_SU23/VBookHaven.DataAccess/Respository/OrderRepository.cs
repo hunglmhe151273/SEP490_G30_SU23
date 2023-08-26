@@ -19,7 +19,7 @@ namespace VBookHaven.DataAccess.Respository
 
 		Task AddOrderPaymentHistoryAsync(OrderPaymentHistory payment);
 		Task<List<OrderPaymentHistory>> GetOrderPaymentHistoryByIdFullInfoAsync(int orderId);
-		Task<decimal?> GetOrderTotalCostAsync(int orderId);
+		Task<int?> GetOrderTotalCostAsync(int orderId);
 
 		Task<List<Staff>> GetAllStaffAsync();
 	}
@@ -118,7 +118,7 @@ namespace VBookHaven.DataAccess.Respository
 			}
 		}
 
-		public async Task<decimal?> GetOrderTotalCostAsync(int orderId)
+		public async Task<int?> GetOrderTotalCostAsync(int orderId)
 		{
 			using (var dbContext = new VBookHavenDBContext())
 			{
@@ -135,7 +135,7 @@ namespace VBookHaven.DataAccess.Respository
 				}
 				total *= (1 + order.VAT.Value / 100);
 
-				return (decimal)total;
+				return (int)Math.Ceiling(total);
 			}
 		}
 
