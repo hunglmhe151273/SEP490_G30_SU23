@@ -169,8 +169,15 @@
 									<tr>
 										<th>ID</th>
 										<th>Tác giả</th>
-										<th>Trạng thái</th>
-										<th>Hoạt động</th>
+											@if (User.IsInRole(SD.Role_Staff))
+										{
+											<th>Trạng thái</th>
+										}
+											@if (User.IsInRole(SD.Role_Staff))
+										{
+											<th>Hoạt động</th>
+										}
+										
 										<th hidden>Status text</th>
 									</tr>
 								</thead>
@@ -180,17 +187,23 @@
 										<tr>
 											<td>@a.AuthorId</td>
 											<td>@a.AuthorName</td>
-											<td>
-												<div class="form-switch ps-0">
-													<input class="form-check-input fs-5 m-0 mx-auto authorStatus" type="checkbox"
+											@if (User.IsInRole(SD.Role_Staff))
+											{
+												<td>
+													<div class="form-switch ps-0">
+														<input class="form-check-input fs-5 m-0 mx-auto authorStatus" type="checkbox"
 														@(@a.Status == true ? "checked" : "") />
-												</div>
-											</td>
-											<td>
-												<a href="/Admin/Author/Edit/@a.AuthorId" class="btn btn-sm btn-default">
-													<i class="lni lni-pencil-alt"></i>
-												</a>
-											</td>
+													</div>
+												</td>
+											}
+											@if (User.IsInRole(SD.Role_Staff))
+											{
+												<td>
+													<a href="/Admin/Author/Edit/@a.AuthorId" class="btn btn-sm btn-default">
+														<i class="lni lni-pencil-alt"></i>
+													</a>
+												</td>
+											}
 											<td hidden>@a.Status</td>
 										</tr>
 									}
