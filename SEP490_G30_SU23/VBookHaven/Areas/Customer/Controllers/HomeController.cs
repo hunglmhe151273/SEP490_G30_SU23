@@ -70,6 +70,11 @@ namespace VBookHaven.Areas.Customer.Controllers
 				model.ProductsThumbnails.Add(id, thumbnailName);
 			}	
 
+			if (TempData["orderSuccess"] != null)
+			{
+				TempData["success"] = "Đặt hàng thành công";
+			}	
+
 			return View(model);
         }
 

@@ -89,13 +89,19 @@ namespace VBookHaven.Areas.Customer.Controllers
 		public async Task<IActionResult> Cart()
 		{
 			var customerId = await functions.GetLoginCustomerIdAsync();
-			
+
+			bool notFix = await functions.AutoFixCartAsync(customerId);
 			var cartTask = functions.GetCartAsync(customerId);
 
 			var thumbnails = await functions.GetThumbnailsAsync();
 			ViewData["thumbnails"] = thumbnails;
 
 			var cart = await cartTask;
+
+			if (!notFix || TempData["notFix"] != null)
+			{
+				TempData["error"] = "Giỏ hàng có thay đổi do sản phẩm không đủ hàng hoặc ngừng kinh doanh";
+			}
 			return View(cart);
 		}
 
@@ -173,16 +179,28 @@ namespace VBookHaven.Areas.Customer.Controllers
 				return Unauthorized();
 
 			var model = new OrderPurchaseModel();
+			var notFix = await functions.AutoFixCartAsync(customer.CustomerId);
 			model.Cart = await functions.GetCartAsync(customer.CustomerId);
 			if (model.Cart.Count <= 0)
-				return BadRequest();
-
+			{
+				if (notFix)
+					return BadRequest();
+				else
+				{
+					TempData["notFix"] = true;
+					return RedirectToAction("Cart");
+				}	
+			}	
+				
 			model.AddressId = 0;
 			if (customer.DefaultShippingInfoId != null)
 			{
 				model.AddressId = customer.DefaultShippingInfoId.Value;
 				model.Address = await shippingInfoRepository.GetShippingInfoByIdAsync(model.AddressId);
 			}
+
+			if (!notFix)
+				TempData["error"] = "Giỏ hàng có thay đổi do sản phẩm không đủ hàng hoặc ngừng kinh doanh";
 
 			return View(model);
 		}
@@ -248,7 +266,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 					await customerRespository.UpdateCustomerDefaultShipInfoAsync(custId, latestShipInfoId);
 				
 				// Khong phai cach lam tot nhat, nhung tam the vay :v
-				return await ChangeAddress(latestShipInfoId);
+				return await Purchase(latestShipInfoId);
 			}
 			else return BadRequest();
 		}
@@ -305,6 +323,7 @@ namespace VBookHaven.Areas.Customer.Controllers
 
 			Task.WaitAll(addOrderTask, clearCartTask);
 
+			TempData["orderSuccess"] = true;
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -386,6 +405,28 @@ namespace VBookHaven.Areas.Customer.Controllers
 			{
 				return await cartRepository.GetCartByCustomerIdAsync(customerId.Value);
 			}
+		}
+
+		public async Task<bool> AutoFixCartAsync(int? customerId)
+		{
+			bool notChange = true;
+
+			var cart = await GetCartAsync(customerId);
+			foreach (var item in cart)
+			{
+				if (item.Product.Status == false)
+				{
+					await AddToCartFunctionAsync(-1 * item.Quantity.Value, item.ProductId);
+					notChange = false;
+				}	
+				else if (item.Quantity.Value > item.Product.AvailableUnit.Value)
+				{
+					await AddToCartFunctionAsync(item.Product.AvailableUnit.Value - item.Quantity.Value, item.ProductId);
+					notChange = false;
+				}
+			}
+
+			return notChange;
 		}
 
 		public async Task<Dictionary<int, string?>> GetThumbnailsAsync()

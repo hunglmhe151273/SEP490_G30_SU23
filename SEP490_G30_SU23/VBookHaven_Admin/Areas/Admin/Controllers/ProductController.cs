@@ -110,6 +110,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var subCategoriesTask = categoryRepository.GetAllSubCategoriesAsync();
 
 			var authors = await authorsTask;
+			authors = authors.Where(a => a.Status == true).ToList();
 			ViewData["authors"] = new MultiSelectList(authors, "AuthorId", "AuthorName");
 			var subCategories = await subCategoriesTask;
 			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName");
@@ -237,10 +238,12 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			ViewData["subCategories"] = new SelectList(subCategories, "SubCategoryId", "SubCategoryName", product.SubCategoryId);
 
 			var bookAuthors = await bookAuthorsTask;
+			bookAuthors = bookAuthors.Where(a => a.Status == true).ToList();
 			var bookAuthorsId = new List<int>();
 			foreach (Author a in bookAuthors)
 				bookAuthorsId.Add(a.AuthorId);
 			var authors = await authorsTask;
+			authors = authors.Where(a => a.Status == true).ToList();
 			ViewData["bookAuthorsId"] = bookAuthorsId;
 			ViewData["authors"] = authors;
 

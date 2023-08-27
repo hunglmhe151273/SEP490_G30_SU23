@@ -180,16 +180,28 @@
                                             @*<textarea class="custom-textarea"
                                                       placeholder="Additional information..."></textarea>*@
                                             <div class="row">
+                                                @if (@Model.CurrentShipInfoId == 0)
+                                                {
+                                                    <div class="col-md-6">
+                                                        <button class="submit-btn-1 mt-20 btn-hover-2 black-bg"
+                                                                onclick="window.location.href='/Customer/Order/Purchase'; return false;">
+                                                            Quay lại
+                                                        </button>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-6">
+                                                        <button class="submit-btn-1 mt-20 btn-hover-2 black-bg"
+                                                                onclick="document.getElementById('return-form').submit(); return false;">
+                                                            Quay lại
+                                                        </button>
+                                                    </div>
+                                                }
                                                 <div class="col-md-6">
-                                                    <button class="submit-btn-1 mt-20 btn-hover-1" type="submit"
+                                                    <button class="submit-btn-1 mt-20 btn-hover-1 f-right" type="submit"
                                                             value="register">
                                                         Thêm địa chỉ
-                                                    </button>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <button class="submit-btn-1 mt-20 btn-hover-2 f-right black-bg"
-                                                            onclick="document.getElementById('return-form').submit(); return false;">
-                                                        Quay lại
                                                     </button>
                                                 </div>
                                             </div>

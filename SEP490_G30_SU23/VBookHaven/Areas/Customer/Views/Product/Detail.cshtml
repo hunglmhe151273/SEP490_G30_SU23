@@ -8,7 +8,8 @@
 	string authors = "";
 	foreach (Author a in Model.Book.Authors)
 	{
-		authors = authors + a.AuthorName + ", ";
+		if (a.Status == true)
+            authors = authors + a.AuthorName + ", ";
 	}
 	if (authors.EndsWith(", "))
 		authors = authors.Substring(0, authors.Length - 2);
