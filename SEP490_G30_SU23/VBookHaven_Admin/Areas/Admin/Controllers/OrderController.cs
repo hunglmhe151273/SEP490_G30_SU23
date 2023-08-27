@@ -116,7 +116,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return View(model);
 		}
 
-		//[Authorize(Roles = SD.Role_Staff)]
+		[Authorize(Roles = SD.Role_Staff)]
 		public async Task<IActionResult> Add()
 		{
 			if (await GetCurrentLoggedInStaffAsync() == null)
@@ -132,6 +132,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		[Authorize(Roles = SD.Role_Staff)]
 		[HttpPost]
 		public async Task<IActionResult> Add(AddOrderManagementModel model)
 		{
@@ -184,6 +185,16 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var order = await orderRepository.GetOrderByIdFullInfoAsync(id);
 			if (order == null)
 				return NotFound();
+
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+			else
+			{
+				var staffId = staff.StaffId;
+				if (staffId != 1 && staffId != order.StaffId)
+					return Unauthorized();
+			}	
 			
 			var detailsTask = orderRepository.GetOrderDetailByIdFullInfoAsync(id);
 			var paymentTask = orderRepository.GetOrderPaymentHistoryByIdFullInfoAsync(id);
@@ -218,6 +229,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return View(model);
 		}
 
+		[Authorize(Roles = SD.Role_Staff)]
 		[HttpPost]
 		public async Task<IActionResult> Update(int id)
 		{
@@ -228,6 +240,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var staff = await GetCurrentLoggedInStaffAsync();
 			if (staff == null)
 				return Unauthorized();
+
+			if (order.StaffId != null && order.StaffId != staff.StaffId)
+			{
+				return Unauthorized();
+			}	
 
 			switch (order.Status)
 			{
@@ -257,6 +274,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return RedirectToAction("Detail", new { id = id }); 
 		}
 
+		[Authorize(Roles = SD.Role_Staff)]
 		[HttpPost]
 		public async Task<IActionResult> Cancel(int id)
 		{
@@ -267,6 +285,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var staff = await GetCurrentLoggedInStaffAsync();
 			if (staff == null)
 				return Unauthorized();
+
+			if (order.StaffId != null && order.StaffId != staff.StaffId)
+			{
+				return Unauthorized();
+			}
 
 			foreach (var detail in order.OrderDetails)
 			{
@@ -298,6 +321,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			return RedirectToAction("Detail", new { id = id });
 		}
 
+		[Authorize(Roles = SD.Role_Staff)]
 		[HttpPost]
 		public async Task<IActionResult> AddPayment(int id, string method, DateTime date, int amount)
 		{
@@ -308,6 +332,11 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			var staff = await GetCurrentLoggedInStaffAsync();
 			if (staff == null)
 				return Unauthorized();
+
+			if (order.StaffId != null && order.StaffId != staff.StaffId)
+			{
+				return Unauthorized();
+			}
 
 			var totalTask = orderRepository.GetOrderTotalCostAsync(id);
 

@@ -111,6 +111,11 @@ else
                             @if (Model.AddressId == 0)
                             {
                                 <div class="address-info font-w-7">Chưa chọn địa chỉ giao hàng</div>
+                                <form action="AddAddress" method="post">
+                                    <input hidden name="model.Method" value="get" />
+                                    <input hidden name="model.CurrentShipInfoId" value="0" />
+                                    <button class="submit-btn-1 mt-30 btn-hover-1" type="submit">Thêm địa chỉ</button>
+                                </form>
                             }
                             else
                             {
@@ -118,11 +123,12 @@ else
                                 <div class="address-info">@shipInfo.CustomerName</div>
                                 <div class="address-info">@shipInfo.ShipAddress, @shipInfo.Ward, @shipInfo.District, @shipInfo.Province</div>
                                 <div class="address-info">@shipInfo.Phone</div>
+                                <form action="ChangeAddress" method="post">
+                                    <input hidden name="shipInfoId" value="@Model.AddressId" />
+                                    <button class="submit-btn-1 mt-30 btn-hover-1" type="submit">Thay đổi</button>
+                                </form>
                             }
-                            <form action="ChangeAddress" method="post">
-                                <input hidden name="shipInfoId" value="@Model.AddressId" />
-                                <button class="submit-btn-1 mt-30 btn-hover-1" type="submit">Thay đổi</button>
-                            </form>
+                            
                         </div>
                     </div>
                 </div>
