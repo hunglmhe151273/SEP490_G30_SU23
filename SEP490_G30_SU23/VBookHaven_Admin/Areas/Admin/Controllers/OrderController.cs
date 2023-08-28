@@ -109,10 +109,28 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
+			var staff = await GetCurrentLoggedInStaffAsync();
+			if (staff == null)
+				return Unauthorized();
+			var staffId = staff.StaffId;
+
 			var model = new ViewOrderManagementModel();
 			
 			model.Orders = await orderRepository.GetAllOrdersFullInfoAsync();
+			if (staffId != 1)
+			{
+				model.Orders = model.Orders.Where(o => o.StaffId == null || o.StaffId == staffId).ToList();
+			}	
 			model.Staffs = await orderRepository.GetAllStaffAsync();
+			if (staffId != 1)
+			{
+				model.Staffs = model.Staffs.Where(s => s.StaffId == staffId).ToList();
+			}	
+			else
+			{
+				model.Staffs = model.Staffs.Where(s => s.StaffId != 1).ToList();
+			}	
+
 			return View(model);
 		}
 

@@ -118,17 +118,19 @@
 												<label class="form-label">Đến ngày</label>
 												<input type="date" class="form-control filter" id="to">
 											</div>
+											
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Nhân viên xử lí</label>
 												<select class="form-select filter" id="staff">
 													<option value="-1" selected>--Tất cả--</option>
-													<option value="0">--Không--</option>
+													<option value="0">--Chưa xử lí--</option>
 													@foreach (var staff in Model.Staffs)
 													{
 														<option value="@staff.StaffId">@staff.FullName</option>
 													}
 												</select>
 											</div>
+											
 											<div class="col-md-6 mb-2">
 												<label class="form-label">Trạng thái</label>
 												<select class="form-select filter" id="status">
