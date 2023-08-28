@@ -7,24 +7,24 @@ namespace VBookHaven.Utility
 {
     public class EmailSender : IEmailSender
     {
-        public Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            //var message = new MimeMessage();
-            //message.From.Add(new MailboxAddress("BookStore Management System", "EmailAddress"));
-            //message.To.Add(new MailboxAddress(email, email));
-            //message.Subject = $"{subject}";
-            //message.Body = new TextPart("html")
-            //{
-            //    Text = $"{htmlMessage}",
-            //};
-            //using (var client = new MailKit.Net.Smtp.SmtpClient())
-            //{
-            //    await client.ConnectAsync("smtp.gmail.com", 587, false);
-            //    await client.AuthenticateAsync("", "");
-            //    await client.SendAsync(message);
-            //    await client.DisconnectAsync(true);
-            //}
-            return Task.CompletedTask;
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("BookStore Management System", "EmailAddress"));
+            message.To.Add(new MailboxAddress(email, email));
+            message.Subject = $"{subject}";
+            message.Body = new TextPart("html")
+            {
+                Text = $"{htmlMessage}",
+            };
+            using (var client = new MailKit.Net.Smtp.SmtpClient())
+            {
+                await client.ConnectAsync("smtp.gmail.com", 587, false);
+                await client.AuthenticateAsync("acchunglmhe151273@gmail.com", "lgmackmivgqpixfl");
+                await client.SendAsync(message);
+                await client.DisconnectAsync(true);
+            }
+            //return Task.CompletedTask;
             //c2
         }
     }
