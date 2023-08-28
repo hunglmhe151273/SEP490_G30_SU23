@@ -129,7 +129,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                      && od.Order.Status == OrderStatus.Done
                     && od.Order.OrderDate.Value.Date >= startDate
                      && od.Order.OrderDate.Value.Date <= endDate)
-                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0) * (1 + (od.Order.VAT ?? 0))));
             }
             else
             {
@@ -138,7 +138,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                     && od.Order.Status == OrderStatus.Done
                    && od.Order.OrderDate.Value.Date >= startDate
                     && od.Order.OrderDate.Value.Date <= endDate && od.Order.StaffId == staffId)
-                   .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0)));
+                   .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0) * (1 + (od.Order.VAT ?? 0))));
             }
         }
         private async Task<int> GetProcessOrder(DateTime startDate, DateTime endDate)

@@ -51,7 +51,7 @@ namespace VBookHaven.Models.DTO
             decimal? sum = 0;
             foreach (var order in orders)
             {
-                sum += totalPayment(order.OrderDetails);
+                sum += totalPayment(order.OrderDetails) * (decimal)(1 + (order.VAT ?? 0));
             }
             return sum;
         }
