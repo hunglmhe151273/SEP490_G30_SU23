@@ -210,7 +210,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 			else
 			{
 				var staffId = staff.StaffId;
-				if (staffId != 1 && staffId != order.StaffId)
+				if (staffId != 1 && order.StaffId != null && staffId != order.StaffId)
 					return Unauthorized();
 			}	
 			
