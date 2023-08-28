@@ -497,8 +497,10 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
 					}}
 				</style>
 				
+				<h4>Nhà sách Ngoại Ngữ</h4>
+				<h4>261 Trần Quốc Hoàn, Cầu Giấy, Hà Nội</h4>
 				<h1 style=""text-align: center"">HÓA ĐƠN BÁN HÀNG</h1>
-				<p style=""text-align: center"">{order.OrderDate.Value.ToString("dd/MM/yyyy")}</p>
+				<p style=""text-align: center"">Ngày tạo đơn: {order.OrderDate.Value.ToString("dd/MM/yyyy")}</p>
 				<table class=""start"">
 					<tr>
 						<th>Mã hóa đơn: </th>
