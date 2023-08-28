@@ -52,6 +52,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 return RedirectToAction("Login", "Account", new { area = "Identity" });
             var staffId = staffToView.Staff.StaffId;
             string userRole = _userManager.GetRolesAsync(staffToView).GetAwaiter().GetResult().FirstOrDefault();
+            
             if (userRole.Equals(SD.Role_Owner))
             {
                 var purchaseOrders = await _dbContext.PurchaseOrders
@@ -221,7 +222,7 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
             var staffEdit = await GetStaffByUserID();
             if (id == null || _dbContext.PurchaseOrders == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             var purchaseOrder = await _dbContext.PurchaseOrders
                 .Include(p => p.Staff)
@@ -231,10 +232,14 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                 .FirstOrDefaultAsync(m => m.PurchaseOrderId == id);
             if (purchaseOrder == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-            //Tổng tiền hàng
-            decimal totalForPayment = Math.Ceiling((decimal)totalPaymentNotVAT(purchaseOrder.PurchaseOrderDetails) * (1 + (decimal)purchaseOrder.VAT / 100));
+			if (purchaseOrder.StaffId != staffEdit.StaffId)
+			{
+				return BadRequest();
+			}
+			//Tổng tiền hàng
+			decimal totalForPayment = Math.Ceiling((decimal)totalPaymentNotVAT(purchaseOrder.PurchaseOrderDetails) * (1 + (decimal)purchaseOrder.VAT / 100));
             //Tổng đã trả
             decimal sumPaid = Math.Ceiling((decimal)totalPaid(purchaseOrder.PurchasePaymentHistories));
             //Tính số tiền còn thiếu

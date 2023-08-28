@@ -199,10 +199,14 @@ namespace VBookHaven.Areas.Identity.Pages.Account
                     }
                 }
 
-                //- TO DO: Neu add khong thanh cong xoa anh vua add
+                //Neu add khong thanh cong xoa anh vua add
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+					if (error.Code == "DuplicateUserName")
+					{
+						error.Description = "Email đã tồn tại. Hãy nhập email khác.";
+					}
+					ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             Input = new()
