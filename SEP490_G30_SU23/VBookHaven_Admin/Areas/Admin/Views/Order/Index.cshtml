@@ -151,15 +151,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-4">
-							@if (User.IsInRole(SD.Role_Staff))
-							{
-								<button type="button" class="btn btn-success">Nhập file</button>
-							}
-							<button type="button" class="btn btn-success">Xuất file</button>
+						<div class="col-4 row">
+							<div class="col-4" id="accordionExample"></div>
 							@if (User.IsInRole(SD.Role_Staff))
                         {
-							<a type="button" href="/Admin/Order/Add" class="btn btn-primary">Tạo đơn hàng mới</a>
+								<div class="col-8" id="accordionExample"> <a type="button" href="/Admin/Order/Add" class="btn btn-primary">Tạo đơn hàng mới</a></div>
+							
 						}
 						</div>
 						<div class="table-responsive mt-3">
