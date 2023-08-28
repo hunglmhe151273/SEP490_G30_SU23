@@ -137,7 +137,8 @@ namespace VBookHaven_Admin.Areas.Admin.Controllers
                    .Where(od => od.Order.OrderDate != null
                     && od.Order.Status == OrderStatus.Done
                    && od.Order.OrderDate.Value.Date >= startDate
-                    && od.Order.OrderDate.Value.Date <= endDate && od.Order.StaffId == staffId)
+                    && od.Order.OrderDate.Value.Date <= endDate 
+                    && od.Order.StaffId == staffId)
                    .Sum(od => (decimal)(od.UnitPrice * (1 - (od.Discount ?? 0) / 100) * (od.Quantity ?? 0) * (1 + (od.Order.VAT ?? 0))));
             }
         }
