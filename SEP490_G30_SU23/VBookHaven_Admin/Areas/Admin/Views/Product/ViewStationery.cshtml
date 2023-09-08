@@ -140,7 +140,10 @@
 								</tbody>
 							</table>
 							<input type="button" class="btn btn-secondary" value="Quay lại" onclick="history.back()">
-							<input type="button" class="btn btn-primary" value="Chỉnh sửa" onclick="window.location.href='/admin/product/editstationery/@Model.Product.ProductId'">
+							 @if (User.IsInRole(SD.Role_Staff))
+							{
+								<input type="button" class="btn btn-primary" value="Chỉnh sửa" onclick="window.location.href='/admin/product/editstationery/@Model.Product.ProductId'">
+							}
 							@*<input type="button" class="btn btn-outline-info" value="Quay lại" onclick="history.back()">*@
 						</div>
 					</div>
